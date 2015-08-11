@@ -18,7 +18,9 @@
   "homepage": "https://github.com/goodybag/goodybag-app",
   "dependencies": {
     "babel-runtime": "^5.8.20",
-    "react": "^0.13.3"
+    "backbone": "^1.2.1",
+    "react": "^0.13.3",
+    "z-schema": "^3.12.1"
   },
   "devDependencies": {
     "babel": "^5.8.21",
