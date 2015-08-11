@@ -24,3 +24,10 @@ Gulp tasks
 **Watch** will watch and re-do all the thing above when something changes.
 Unfortunately I don't have webpack setup to do delta-rebuilds but the build
 speed is fast enough for me.
+
+Mocha tests
+-----------
+
+Running `npm test` or simply `mocha` will run the test suite. If you want to
+have a tigher TDD-loop, or you just want your tests to run more rapidly, then
+start mocha in watch-mode with `mocha -w`. Try out the `-R min` reporter.
