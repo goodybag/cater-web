@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/bundle.js",
   "scripts": {
-    "prepublish": "webpack",
+    "prepublish": "gulp build",
     "test": "eslint . && NODE_ENV=test mocha",
     "lint": "eslint . && csscomb . --lint",
     "comb": "csscomb src --verbose"
