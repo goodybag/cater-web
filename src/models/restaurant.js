@@ -7,8 +7,7 @@ export class Restaurant extends Model {
         required: ['name', 'is_hidden'],
         properties: {
             name: {
-                type: 'string',
-                minLength: 1
+                type: 'string'
             },
 
             is_hidden: {

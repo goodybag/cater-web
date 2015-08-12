@@ -8,7 +8,6 @@ export class User extends Model {
         properties: {
             email: {
                 type: 'string',
-                minLength: 1,
                 maxLength: 250
             },
 
