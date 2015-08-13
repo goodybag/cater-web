@@ -1,6 +1,28 @@
 Goodybag App
 ============
 
+Setup
+-----
+
+To install dependencies and run the initial build:
+
+```sh
+npm install
+```
+
+To start the server:
+
+```sh
+export GOODYBAG_SID=... # paste your connect.sid cookie here
+node dist/src/server.js # you can also use nodemon here
+```
+
+To watch for changes:
+
+```sh
+gulp watch
+```
+
 Strong Recommendations
 ----------------------
 
