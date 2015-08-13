@@ -57,7 +57,8 @@ gulp.task('watch-bundle', function() {
 });
 
 // This watchs all the files
-gulp.task('watch', ['watch-bundle', 'compile', 'migrate'], function() {
+gulp.task('watch', ['build', 'watch-bundle', 'compile', 'migrate'], function() {
+    gulp.watch('src/**/*', ['build']);
     gulp.watch('src/styles/**/*.less', ['compile']);
     gulp.watch('public/**/*', ['migrate']);
 });
