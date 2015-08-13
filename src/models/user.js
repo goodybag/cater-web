@@ -4,41 +4,46 @@ import {validator} from '../util';
 export class User extends Model {
     static schema = {
         type: 'object',
-        required: ['email', 'restaurant_ids', 'groups'],
+        required: ['email', 'name', 'groups', 'points'],
         properties: {
+            id: {
+                type: 'integer',
+                minimum: 1
+            },
+
             email: {
                 type: 'string',
                 maxLength: 250
             },
 
-            restaurant_ids: {
-                type: 'array'
+            name: {
+                type: 'string'
             },
 
-            organization: {
-              type: ['string', 'null']
+            points: {
+                type: 'integer',
+                minimum: 0
             },
 
             groups: {
               type: 'array'
-            },
-
-            region_id: {
-              type: ['number', 'null']
             }
         }
-    }
-
-    defaults() {
-        return {
-            groups: [],
-            restaurant_ids: []
-        };
     }
 
     validate(attrs) {
         if (!validator.validate(attrs, User.schema)) {
             return validator.getLastError();
         }
+    }
+
+    isAdmin() {
+        return this.get('groups').some(function(groupObj) {
+            return groupObj.group === 'admin';
+        });
+    }
+
+    urlRoot() {
+        return 'https://www.goodybag.com/api/users';
     }
 }
