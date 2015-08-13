@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
     entry: './src/main.js',
@@ -19,5 +20,14 @@ module.exports = {
         }]
     },
 
-    devtool: 'cheap-source-map'
+    devtool: 'cheap-source-map',
+
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
+                GOODYBAG_API: JSON.stringify(process.env.GOODYBAG_API || 'https://www.goodybag.com/api')
+            }
+        })
+    ]
 }
