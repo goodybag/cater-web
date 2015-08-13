@@ -1,6 +1,49 @@
 Goodybag App
 ============
 
+Strong Recommendations
+----------------------
+
+### Components
+
+- Postfix component class names with `Component` such as `NavbarComponent` and
+  `RestaurantTabsComponent`.
+- Before commits try to make your code abide by ESLint rules.
+
+### Styling
+
+Most of these are derived from [SMACSS](https://smacss.com/book). Read it if
+you have the time. If you have any questions about them ask Tenor.
+
+- Prefix all CSS classes with `gb-{module}` such as `gb-navbar` for all navbar
+  classes.
+- Only use `div`s when possible. (exceptions being special elements like `input`, `img`, etc.)
+- Use one, case-specific, class for each element. For example instead of
+  writing:
+
+  ```
+  <div className="gb-navbar-item gb-navbar-points">...</div>
+  ```
+
+  do:
+    
+  ```
+  <div className="gb-navbar-points">...</div>
+  // in css:
+  .gb-navbar-points {
+    .gb-navbar-item;
+
+    // ...
+  }
+  ```
+- Avoid hard-coding magic numbers, especially colors. Create an entry in
+  `base.less` for colors, or include a variable declaration at the top of the
+  module for things magic measurements. 
+- Avoid resorting to absolute positioning in order to align elements. Try to
+  leverage padding/margin tricks or inline elements and floats.
+- Avoid using flex boxes and other expiremental/unsupported features when
+  possible.
+
 package.json
 ------------
 
