@@ -8,13 +8,14 @@ import {RestaurantComponent} from './restaurant';
 
 export class MainComponent extends Component {
     static propTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired,
-        order: React.PropTypes.instanceOf(Order).isRequired,
-        user: React.PropTypes.instanceOf(User).isRequired
+        restaurant: Restaurant.propType,
+        order: Order.propType,
+        user: User.propType,
+        title: React.PropTypes.string.isRequired
     }
 
     static childContextTypes = {
-        user: React.PropTypes.instanceOf(User)
+        user: User.propType
     }
 
     getChildContext() {
@@ -24,14 +25,25 @@ export class MainComponent extends Component {
     }
 
     render() {
-        const {restaurant, order} = this.props;
+        const {restaurant, order, title} = this.props;
 
         return (
-            <div className="gb-main" ref="gbMain">
-                <NavbarComponent/>
+            <html>
+                <head>
+                    <title>{title}</title>
+                    <meta charSet="utf-8"/>
+                    <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+                </head>
 
-                <RestaurantComponent restaurant={restaurant} order={order}/>
-            </div>
+                <body>
+                    <div className="gb-main" ref="gbMain">
+                        <NavbarComponent/>
+
+                        <RestaurantComponent restaurant={restaurant} order={order}/>
+                    </div>
+                </body>
+            </html>
         );
     }
 }

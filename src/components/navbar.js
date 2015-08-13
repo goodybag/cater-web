@@ -4,12 +4,12 @@ import {User} from '../models/user';
 
 export class NavbarComponent extends Component {
     static contextTypes = {
-        user: React.PropTypes.instanceOf(User).isRequired
+        user: User.propType
     }
 
     render() {
         const {user} = this.context;
-        const {points, name} = user.toJSON();
+        const {points, name} = user;
 
         return (
             <div className="gb-navbar-container">

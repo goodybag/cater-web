@@ -1,47 +1,33 @@
 import React from 'react';
 import Backbone from 'backbone';
-import $ from 'jquery';
+import sync from 'backbone-super-sync';
 
 import {MainComponent} from './components/main';
 import {Restaurant} from './models/restaurant';
 import {Order} from './models/order';
-import {CurrentUser} from './models/user';
+import {User} from './models/user';
 
-const originalAjax = Backbone.ajax;
+sync.editRequest = editRequest;
 
-Backbone.ajax = betterAjax;
+Backbone.sync = sync;
 
-// TODO: have a loading screen, but whatevs
-const restaurant = new Restaurant({id: 111});
-const user = new CurrentUser();
+const {restaurantData, userData, orderData} = window.gbData;
 
-$.when(restaurant.fetch(), user.fetch()).then(function() {
-    const order = new Order({
-        user_id: user.id,
-        restaurant_id: restaurant.id
-    });
+const restaurant = new Restaurant(restaurantData, {parse: true});
+const user = new User(userData, {parse: true});
+const order = new Order(orderData, {parse: true});
 
-    const main = (
-        <MainComponent
-            restaurant={restaurant}
-            user={user}
-            order={order}
-        />
-    );
+const main = (
+    <MainComponent
+        restaurant={restaurant.toJSON()}
+        user={user.toJSON()}
+        order={order.toJSON()}
+        title="Goodybag"
+    />
+);
 
-    React.render(main, document.body);
-}, function() {
-    const main = (
-        <div>couldn't fetch user and restaurant data</div>
-    );
+React.render(main, document);
 
-    React.render(main, document.body);
-});
-
-function betterAjax(opts) {
-    var fields = opts.xhrFields || {};
-    fields.withCredentials = true;
-    opts.xhrFields = fields;
-
-    return originalAjax.call(this, opts);
+function editRequest(req) {
+    req.withCredentials();
 }

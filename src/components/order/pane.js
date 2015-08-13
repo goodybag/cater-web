@@ -4,11 +4,11 @@ import {Order} from '../../models/order';
 
 export class OrderPaneComponent extends Component {
     static propTypes = {
-        order: React.PropTypes.instanceOf(Order).isRequired
+        order: Order.propType
     }
 
     static childContextTypes = {
-        order: React.PropTypes.instanceOf(Order)
+        order: Order.propType
     }
 
     getChildContext() {

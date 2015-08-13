@@ -18,6 +18,12 @@ export class Restaurant extends Model {
         }
     }
 
+    static propType(props, propName) {
+        const obj = props[propName];
+
+        return new Restaurant(obj).validate(obj, {});
+    }
+
     validate(attrs) {
         if (!validator.validate(attrs, Restaurant.schema)) {
             return validator.getLastError();

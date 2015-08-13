@@ -31,6 +31,12 @@ export class User extends Model {
         }
     }
 
+    static propType(props, propName) {
+        const obj = props[propName];
+
+        return new User(obj).validate(obj, {});
+    }
+
     validate(attrs) {
         if (!validator.validate(attrs, User.schema)) {
             return validator.getLastError();

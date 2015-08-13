@@ -10,7 +10,13 @@ gulp.task('default', ['bundle', 'compile', 'migrate']);
 // into ES5 versions (with source maps). This
 // does not perform any bundling.
 gulp.task('build', function() {
-    return transpileBabel()
+    // Requiring inline saves startup time for other builds
+    var babel = require('gulp-babel');
+
+    return gulp.src('src/**/*.js')
+        .pipe(smaps.init())
+        .pipe(babel())
+        .pipe(smaps.write('.'))
         .pipe(gulp.dest('dist/src'));
 });
 
@@ -18,9 +24,7 @@ gulp.task('build', function() {
 // into a single bundle (and source map) for
 // dist/build
 gulp.task('bundle', function(cb) {
-    var compiler = getWebpack();
-
-    compiler.run(handleWebpackErrors(cb));
+    getWebpack().run(handleWebpackErrors(cb));
 });
 
 // This compiles all LESS files from src/styles
@@ -28,10 +32,12 @@ gulp.task('bundle', function(cb) {
 // dist/build
 gulp.task('compile', function() {
     var less = require('gulp-less');
+    var cssmin = require('gulp-minify-css');
 
     return gulp.src('./src/styles/main.less')
         .pipe(smaps.init())
         .pipe(less())
+        .pipe(cssmin())
         .pipe(smaps.write('.'))
         .pipe(gulp.dest('dist/build'));
 });
@@ -39,38 +45,21 @@ gulp.task('compile', function() {
 // This moves all the files from public/ to
 // dist/build
 gulp.task('migrate', function() {
-    return gulp.src('public/**/*')
-        .pipe(gulp.dest('dist/build'));
+    return gulp.src('public/**/*').pipe(gulp.dest('dist/build'));
 });
 
 gulp.task('watch-bundle', function() {
-    getWebpack().watch({}, handleWebpackErrors(function(err, stats) {
-        if (err) {
-            gutil.log(err);
-        } else {
-            gutil.log(stats.toString({
-                chunks: false,
-                chunkModules: false
-            }));
-        }
-    }));
+    getWebpack().watch({}, handleWebpackErrors(logWebpackErrors));
 });
 
 // This watchs all the files
-gulp.task('watch', ['watch-bundle', 'compile', 'migrate'], function() {
+gulp.task('watch', ['build', 'watch-bundle', 'compile', 'migrate'], function() {
+    gulp.watch('src/**/*', ['build']);
     gulp.watch('src/styles/**/*.less', ['compile']);
     gulp.watch('public/**/*', ['migrate']);
 });
 
-function transpileBabel() {
-    // Requiring inline saves startup time for other builds
-    var babel = require('gulp-babel');
-
-    return gulp.src('src/**/*.js')
-        .pipe(smaps.init())
-        .pipe(babel())
-        .pipe(smaps.write('.'));
-}
+// You can safely disregard the unfortune that is below.
 
 function handleWebpackErrors(cb) {
     return function(err, stats) {
@@ -94,4 +83,15 @@ function getWebpack() {
     var webpack = require('webpack');
 
     return webpack(require('./webpack.config'));
+}
+
+function logWebpackErrors(err, stats) {
+    if (err) {
+        gutil.log(err);
+    } else {
+        gutil.log(stats.toString({
+            chunks: false,
+            chunkModules: false
+        }));
+    }
 }
