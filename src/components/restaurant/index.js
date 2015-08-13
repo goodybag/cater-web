@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 
 import {Restaurant} from '../../models/restaurant';
+import {Order} from '../../models/order';
+import {OrderPaneComponent} from '../order/pane';
 import {RestaurantCoverComponent} from './cover.js';
 import {RestaurantTabsComponent} from './tabs.js';
 
 export class RestaurantComponent extends Component {
     static propTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired
+        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired,
+        order: React.PropTypes.instanceOf(Order).isRequired
     }
 
     static childContextTypes = {
@@ -20,6 +23,7 @@ export class RestaurantComponent extends Component {
     }
 
     render() {
+        const {order} = this.props;
         const tabs = [];
 
         return (
@@ -27,6 +31,7 @@ export class RestaurantComponent extends Component {
                 <RestaurantCoverComponent/>
 
                 <RestaurantTabsComponent tabs={tabs}/>
+                <OrderPaneComponent order={order}/>
             </div>
         );
     }
