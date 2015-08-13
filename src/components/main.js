@@ -10,7 +10,9 @@ export class MainComponent extends Component {
     static propTypes = {
         restaurant: React.PropTypes.instanceOf(Restaurant).isRequired,
         order: React.PropTypes.instanceOf(Order).isRequired,
-        user: React.PropTypes.instanceOf(User).isRequired
+        user: React.PropTypes.instanceOf(User).isRequired,
+        style: React.PropTypes.element.isRequired,
+        title: React.PropTypes.string.isRequired
     }
 
     static childContextTypes = {
@@ -24,16 +26,17 @@ export class MainComponent extends Component {
     }
 
     render() {
-        const {restaurant, order} = this.props;
+        const {restaurant, order, style, title} = this.props;
 
         return (
             <html>
                 <head>
-                    <title>GoodyBag</title>
+                    <title>{title}</title>
                     <meta charSet="utf-8"/>
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-                    <link rel="stylesheet" href="main.css"/>
+
+                    {style}
                 </head>
 
                 <body>

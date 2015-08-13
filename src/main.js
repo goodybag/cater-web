@@ -26,6 +26,8 @@ $.when(restaurant.fetch(), user.fetch()).then(function() {
             restaurant={restaurant}
             user={user}
             order={order}
+            style={<link rel="stylesheet" href="main.css"/>}
+            title="Goodybag"
         />
     );
 
