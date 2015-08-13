@@ -47,3 +47,9 @@ export class User extends Model {
         return 'https://www.goodybag.com/api/users';
     }
 }
+
+export class CurrentUser extends User {
+    url() {
+        return this.urlRoot() + '/me';
+    }
+}

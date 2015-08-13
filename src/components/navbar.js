@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
 
+import {User} from '../models/user';
+
 export class NavbarComponent extends Component {
+    static contextTypes = {
+        user: React.PropTypes.instanceOf(User).isRequired
+    }
+
     render() {
-        const points = 500;
+        const {user} = this.context;
+        const {points, name} = user.toJSON();
 
         return (
             <div className="gb-navbar-container">
@@ -20,7 +27,7 @@ export class NavbarComponent extends Component {
                         </div>
 
                         <div className="gb-navbar-account">
-                            <div className="gb-navbar-account-button">My Account</div>
+                            <div className="gb-navbar-account-button">{name}</div>
                         </div>
                     </div>
                 </div>
