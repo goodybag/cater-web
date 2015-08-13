@@ -43,13 +43,11 @@ export class User extends Model {
         });
     }
 
-    urlRoot() {
-        return 'https://www.goodybag.com/api/users';
-    }
+    urlRoot = `${process.env.GOODYBAG_API}/users`;
 }
 
 export class CurrentUser extends User {
     url() {
-        return this.urlRoot() + '/me';
+        return `${this.urlRoot}/me`;
     }
 }

@@ -24,5 +24,5 @@ export class Restaurant extends Model {
         }
     }
 
-    urlRoot = 'https://www.goodybag.com/api/restaurants'
+    urlRoot = `${process.env.GOODYBAG_API}/restaurants`
 }
