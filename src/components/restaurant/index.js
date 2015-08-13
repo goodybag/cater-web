@@ -8,12 +8,12 @@ import {RestaurantTabsComponent} from './tabs.js';
 
 export class RestaurantComponent extends Component {
     static propTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired,
-        order: React.PropTypes.instanceOf(Order).isRequired
+        restaurant: Restaurant.propType,
+        order: Order.propType
     }
 
     static childContextTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant)
+        restaurant: Restaurant.propType
     }
 
     getChildContext() {

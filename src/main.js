@@ -1,21 +1,21 @@
 import React from 'react';
 import Backbone from 'backbone';
-import $ from 'jquery';
+import sync from 'backbone-super-sync';
 
 import {MainComponent} from './components/main';
 import {Restaurant} from './models/restaurant';
 import {Order} from './models/order';
 import {CurrentUser} from './models/user';
 
-const originalAjax = Backbone.ajax;
+sync.editRequest = editRequest;
 
-Backbone.ajax = betterAjax;
+Backbone.sync = sync;
 
 // TODO: have a loading screen, but whatevs
 const restaurant = new Restaurant({id: 111});
 const user = new CurrentUser();
 
-$.when(restaurant.fetch(), user.fetch()).then(function() {
+Promise.all([restaurant.fetch(), user.fetch()]).then(function() {
     const order = new Order({
         user_id: user.id,
         restaurant_id: restaurant.id
@@ -23,9 +23,9 @@ $.when(restaurant.fetch(), user.fetch()).then(function() {
 
     const main = (
         <MainComponent
-            restaurant={restaurant}
-            user={user}
-            order={order}
+            restaurant={restaurant.toJSON()}
+            user={user.toJSON()}
+            order={order.toJSON()}
             style={<link rel="stylesheet" href="main.css"/>}
             title="Goodybag"
         />
@@ -40,10 +40,6 @@ $.when(restaurant.fetch(), user.fetch()).then(function() {
     React.render(main, document.body);
 });
 
-function betterAjax(opts) {
-    var fields = opts.xhrFields || {};
-    fields.withCredentials = true;
-    opts.xhrFields = fields;
-
-    return originalAjax.call(this, opts);
+function editRequest(req) {
+    req.withCredentials();
 }

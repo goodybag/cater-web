@@ -4,12 +4,12 @@ import {Restaurant} from '../../models/restaurant';
 
 export class RestaurantCoverComponent extends Component {
     static contextTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired
+        restaurant: Restaurant.propType
     }
 
     render() {
         const {restaurant} = this.context;
-        const {name} = restaurant.toJSON();
+        const {name} = restaurant;
 
         return (
             <div className="gb-restaurant-cover">

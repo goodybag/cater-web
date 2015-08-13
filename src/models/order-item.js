@@ -27,6 +27,12 @@ export class OrderItem extends Model {
         }
     }
 
+    static propType(props, propName) {
+        const obj = props[propName];
+
+        return new OrderItem(obj).validate(obj, {});
+    }
+
     defaults() {
         return {
             quantity: 1,

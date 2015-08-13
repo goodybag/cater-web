@@ -8,15 +8,15 @@ import {RestaurantComponent} from './restaurant';
 
 export class MainComponent extends Component {
     static propTypes = {
-        restaurant: React.PropTypes.instanceOf(Restaurant).isRequired,
-        order: React.PropTypes.instanceOf(Order).isRequired,
-        user: React.PropTypes.instanceOf(User).isRequired,
+        restaurant: Restaurant.propType,
+        order: Order.propType,
+        user: User.propType,
         style: React.PropTypes.element.isRequired,
         title: React.PropTypes.string.isRequired
     }
 
     static childContextTypes = {
-        user: React.PropTypes.instanceOf(User)
+        user: User.propType
     }
 
     getChildContext() {
