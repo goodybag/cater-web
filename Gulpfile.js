@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var smaps = require('gulp-sourcemaps');
 
-gulp.task('default', ['bundle', 'compile', 'migrate']);
+gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
 
 // This step will compile the ES6/JSX in src/
 // into ES5 versions (with source maps). This
