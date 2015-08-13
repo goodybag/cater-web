@@ -2,6 +2,7 @@ import express from 'express';
 import React from 'react';
 import Backbone from 'backbone';
 import sync from 'backbone-super-sync';
+import {readFileSync} from 'fs';
 
 import {MainComponent} from './components/main';
 import {Restaurant} from './models/restaurant';
@@ -13,6 +14,8 @@ sync.editRequest = editRequest;
 Backbone.sync = sync;
 
 export const app = express();
+
+const styles = readFileSync(`${__dirname}/../build/main.css`, 'utf-8');
 
 app.get('/', function(req, res, next) {
     const restaurant = new Restaurant({id: 111});
@@ -34,14 +37,13 @@ app.get('/', function(req, res, next) {
                 restaurant={restaurantData}
                 user={userData}
                 order={orderData}
-                style={<link rel="stylesheet" href="main.css"/>}
                 title="Goodybag"
             />
         );
 
         const markup = React.renderToString(main);
 
-        res.send(`<!doctype html>${markup}<script>window.jQuery={};window.gbData=${JSON.stringify(data)};</script><script src="bundle.js"></script>`);
+        res.send(`<!doctype html><style>${styles}</style>${markup}<script>window.jQuery={};window.gbData=${JSON.stringify(data)};</script><script src="bundle.js"></script>`);
     }, next);
 });
 

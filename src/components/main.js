@@ -11,7 +11,6 @@ export class MainComponent extends Component {
         restaurant: Restaurant.propType,
         order: Order.propType,
         user: User.propType,
-        style: React.PropTypes.element.isRequired,
         title: React.PropTypes.string.isRequired
     }
 
@@ -26,7 +25,7 @@ export class MainComponent extends Component {
     }
 
     render() {
-        const {restaurant, order, style, title} = this.props;
+        const {restaurant, order, title} = this.props;
 
         return (
             <html>
@@ -35,8 +34,6 @@ export class MainComponent extends Component {
                     <meta charSet="utf-8"/>
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
                     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-
-                    {style}
                 </head>
 
                 <body>

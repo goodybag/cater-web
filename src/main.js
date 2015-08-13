@@ -22,7 +22,6 @@ const main = (
         restaurant={restaurant.toJSON()}
         user={user.toJSON()}
         order={order.toJSON()}
-        style={<link rel="stylesheet" href="main.css"/>}
         title="Goodybag"
     />
 );
