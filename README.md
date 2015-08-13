@@ -9,6 +9,8 @@ Strong Recommendations
 - Postfix component class names with `Component` such as `NavbarComponent` and
   `RestaurantTabsComponent`.
 - Before commits try to make your code abide by ESLint rules.
+- Include `propTypes` and `contextTypes` declarations for all components.
+- Group import statements into relative and non-relative blocks.
 
 ### Styling
 

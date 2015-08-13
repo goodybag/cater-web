@@ -4,6 +4,7 @@ import $ from 'jquery';
 
 import {MainComponent} from './components/main';
 import {Restaurant} from './models/restaurant';
+import {Order} from './models/order';
 import {CurrentUser} from './models/user';
 
 const originalAjax = Backbone.ajax;
@@ -15,10 +16,16 @@ const restaurant = new Restaurant({id: 111});
 const user = new CurrentUser();
 
 $.when(restaurant.fetch(), user.fetch()).then(function() {
+    const order = new Order({
+        user_id: user.id,
+        restaurant_id: restaurant.id
+    });
+
     const main = (
         <MainComponent
             restaurant={restaurant}
             user={user}
+            order={order}
         />
     );
 
