@@ -29,5 +29,10 @@ module.exports = {
                 GOODYBAG_API: JSON.stringify(process.env.GOODYBAG_API || 'https://www.goodybag.com/api')
             }
         })
-    ]
+    ],
+
+    externals: {
+        jquery: 'jQuery' // jQuery probably won't get loaded,
+                         // this is so Backbone won't complain
+    }
 }
