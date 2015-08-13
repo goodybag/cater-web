@@ -27,11 +27,23 @@ export class MainComponent extends Component {
         const {restaurant, order} = this.props;
 
         return (
-            <div className="gb-main" ref="gbMain">
-                <NavbarComponent/>
+            <html>
+                <head>
+                    <title>GoodyBag</title>
+                    <meta charSet="utf-8"/>
+                    <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+                    <link rel="stylesheet" href="main.css"/>
+                </head>
 
-                <RestaurantComponent restaurant={restaurant} order={order}/>
-            </div>
+                <body>
+                    <div className="gb-main" ref="gbMain">
+                        <NavbarComponent/>
+
+                        <RestaurantComponent restaurant={restaurant} order={order}/>
+                    </div>
+                </body>
+            </html>
         );
     }
 }
