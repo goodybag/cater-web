@@ -1,0 +1,33 @@
+.gb-restaurant {
+    .gb-body;
+
+    padding: 0;
+}
+
+.gb-restaurant-content {
+    // borders can go here, but for now I'm leaving them out
+}
+
+.gb-restaurant-cover {
+    background-image: url(coverphoto-temp.jpg); // TODO
+    background-size: cover;
+    background-position: center;
+    height: 193px; // TODO
+    padding: 15px 25px;
+
+    &::before { // TL;DR: magic for bottom alignment
+        display: inline-block;
+        content: '';
+        height: 100%;
+        vertical-align: bottom;
+    }
+}
+
+.gb-restaurant-cover-text {
+    color: @gb-white;
+    display: inline-block;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 36px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
