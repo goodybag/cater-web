@@ -18,9 +18,11 @@ export class Restaurant extends Model {
         }
     }
 
-    validate(attrs, options) {
+    validate(attrs) {
         if (!validator.validate(attrs, Restaurant.schema)) {
             return validator.getLastError();
         }
     }
+
+    urlRoot = 'https://www.goodybag.com/api/restaurants'
 }

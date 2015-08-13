@@ -16,11 +16,11 @@ export class User extends Model {
             },
 
             organization: {
-              type: ['string', 'null'],
+              type: ['string', 'null']
             },
 
             groups: {
-              type: 'array',
+              type: 'array'
             },
 
             region_id: {
@@ -36,11 +36,7 @@ export class User extends Model {
         };
     }
 
-    constructor(attrs, options) {
-        super(attrs, options);
-    }
-
-    validate(attrs, options) {
+    validate(attrs) {
         if (!validator.validate(attrs, User.schema)) {
             return validator.getLastError();
         }
