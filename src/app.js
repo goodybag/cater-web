@@ -17,34 +17,53 @@ export const app = express();
 
 const styles = readFileSync(`${__dirname}/../build/main.css`, 'utf-8');
 
+export const restaurant = new Restaurant({id: 111});
+export const user = new CurrentUser();
+const order = new Order({
+    user_id: user.id,
+    restaurant_id: restaurant.id
+});
+
 app.get('/', function(req, res, next) {
-    const restaurant = new Restaurant({id: 111});
-    const user = new CurrentUser();
+    const restaurantData = restaurant.toJSON();
+    const userData = user.toJSON();
+    const orderData = order.toJSON();
+    const data = {restaurantData, userData, orderData};
 
-    Promise.all([restaurant.fetch(), user.fetch()]).then(function() {
-        const order = new Order({
-            user_id: user.id,
-            restaurant_id: restaurant.id
-        });
+    const scriptStr = `window.jQuery={};window.gbData=${JSON.stringify(data)}`;
 
-        const restaurantData = restaurant.toJSON();
-        const userData = user.toJSON();
-        const orderData = order.toJSON();
-        const data = {restaurantData, userData, orderData};
+    const main = (
+        <MainComponent
+            restaurant={restaurantData}
+            user={userData}
+            order={orderData}
+        />
+    );
 
-        const main = (
-            <MainComponent
-                restaurant={restaurantData}
-                user={userData}
-                order={orderData}
-                title="Goodybag"
-            />
-        );
+    const mainMarkup = React.renderToString(main);
 
-        const markup = React.renderToString(main);
+    const doc = (
+        <html>
+            <head>
+                <title>Goodybag</title>
+                <meta charSet="utf-8"/>
+                <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
 
-        res.send(`<!doctype html><style>${styles}</style>${markup}<script>window.jQuery={};window.gbData=${JSON.stringify(data)};</script><script src="bundle.js"></script>`);
-    }, next);
+                <style dangerouslySetInnerHTML={{__html: styles}}/>
+            </head>
+
+            <body>
+                <div id="gb-body" dangerouslySetInnerHTML={{__html: mainMarkup}}/>
+
+                <script dangerouslySetInnerHTML={{__html: scriptStr}}/>
+                <script src="bundle.js"/>
+            </body>
+        </html>
+    );
+
+    const markup = React.renderToStaticMarkup(doc);
+    res.send(`<!doctype html>${markup}`);
 });
 
 app.use(express.static(`${__dirname}/../build/`));

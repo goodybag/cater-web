@@ -22,11 +22,10 @@ const main = (
         restaurant={restaurant.toJSON()}
         user={user.toJSON()}
         order={order.toJSON()}
-        title="Goodybag"
     />
 );
 
-React.render(main, document);
+React.render(main, document.getElementById('gb-body'));
 
 function editRequest(req) {
     req.withCredentials();
