@@ -34,7 +34,7 @@ export class User extends Model {
     static propType(props, propName) {
         const obj = props[propName];
 
-        return new User(obj).validate(obj, {});
+        return new User(obj).isValid();
     }
 
     validate(attrs) {

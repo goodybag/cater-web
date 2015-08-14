@@ -21,7 +21,7 @@ export class Restaurant extends Model {
     static propType(props, propName) {
         const obj = props[propName];
 
-        return new Restaurant(obj).validate(obj, {});
+        return new Restaurant(obj).isValid();
     }
 
     validate(attrs) {

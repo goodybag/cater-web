@@ -31,7 +31,7 @@ export class Order extends Model {
     static propType(props, propName) {
         const obj = props[propName];
 
-        return new Order(obj).validate(obj, {});
+        return new Order(obj).isValid();
     }
 
     defaults() {
