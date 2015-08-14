@@ -19,10 +19,12 @@ export class OrderPaneComponent extends Component {
     }
 
     render() {
+        const {order} = this.props;
+
         return (
             <div className="gb-order-pane">
                 <div className="gb-order-pane-header">
-                    <div className="gb-order-pane-header-text">Order</div>
+                    <div className="gb-order-pane-header-text">Order {order.id && `– #${order.id}`}</div>
                 </div>
 
                 <OrderPaneInfoComponent/>
