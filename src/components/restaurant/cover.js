@@ -9,7 +9,7 @@ export class RestaurantCoverComponent extends Component {
 
     render() {
         const {restaurant} = this.context;
-        const {name} = restaurant;
+        const {name} = restaurant.attributes;
 
         return (
             <div className="gb-restaurant-cover">

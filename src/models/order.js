@@ -1,3 +1,4 @@
+import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 import {validator} from '../util';
 
@@ -28,11 +29,7 @@ export class Order extends Model {
         }
     }
 
-    static propType(props, propName) {
-        const obj = props[propName];
-
-        return new Order(obj).isValid();
-    }
+    static propType = PropTypes.instanceOf(Order)
 
     defaults() {
         return {

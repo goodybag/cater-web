@@ -35,9 +35,9 @@ app.get('/', function(req, res, next) {
 
     const main = (
         <MainComponent
-            restaurant={restaurantData}
-            user={userData}
-            order={orderData}
+            restaurant={restaurant}
+            user={user}
+            order={order}
         />
     );
 

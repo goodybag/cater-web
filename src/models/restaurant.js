@@ -1,3 +1,4 @@
+import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 import {validator} from '../util';
 
@@ -18,11 +19,7 @@ export class Restaurant extends Model {
         }
     }
 
-    static propType(props, propName) {
-        const obj = props[propName];
-
-        return new Restaurant(obj).isValid();
-    }
+    static propType = PropTypes.instanceOf(Restaurant)
 
     validate(attrs) {
         if (!validator.validate(attrs, Restaurant.schema)) {

@@ -1,3 +1,4 @@
+import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 import {validator} from '../util';
 
@@ -31,11 +32,7 @@ export class User extends Model {
         }
     }
 
-    static propType(props, propName) {
-        const obj = props[propName];
-
-        return new User(obj).isValid();
-    }
+    static propType = PropTypes.instanceOf(User)
 
     validate(attrs) {
         if (!validator.validate(attrs, User.schema)) {

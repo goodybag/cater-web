@@ -9,7 +9,7 @@ export class NavbarComponent extends Component {
 
     render() {
         const {user} = this.context;
-        const {points, name} = user;
+        const {points, name} = user.attributes;
 
         return (
             <div className="gb-navbar-container">

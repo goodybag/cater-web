@@ -19,9 +19,9 @@ const order = new Order(orderData, {parse: true});
 
 const main = (
     <MainComponent
-        restaurant={restaurant.toJSON()}
-        user={user.toJSON()}
-        order={order.toJSON()}
+        restaurant={restaurant}
+        user={user}
+        order={order}
     />
 );
 
