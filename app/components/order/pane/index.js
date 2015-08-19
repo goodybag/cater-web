@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {Order} from '../../../models/order';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
+import {OrderPaneItemsComponent} from './items';
 
 export class OrderPaneComponent extends Component {
     static propTypes = {
@@ -25,7 +26,9 @@ export class OrderPaneComponent extends Component {
         return (
             <div className="gb-order-pane">
                 <div className="gb-order-pane-header">
-                    <div className="gb-order-pane-header-text">Order {order.id && `– #${order.id}`}</div>
+                    <div className="gb-order-pane-header-text">
+                        Order {order.id && `– #${order.id}`}
+                    </div>
                 </div>
 
                 <OrderPaneInfoComponent/>
@@ -35,6 +38,12 @@ export class OrderPaneComponent extends Component {
                 </div>
 
                 <OrderPaneShareComponent/>
+
+                <div className="gb-order-pane-header">
+                    <div className="gb-order-pane-header-text">Items</div>
+                </div>
+
+                <OrderPaneItemsComponent/>
             </div>
         );
     }
