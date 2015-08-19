@@ -26,12 +26,15 @@ app.get('/', function(req, res, next) {
         restaurant_id: restaurant.id
     });
 
-    const restaurantData = restaurant.toJSON();
-    const userData = user.toJSON();
-    const orderData = order.toJSON();
-    const data = {restaurantData, userData, orderData};
+    const data = {
+        restaurantData: restaurant,
+        userData: user,
+        orderData: order
+    };
 
-    const scriptStr = `window.jQuery={};window.gbData=${JSON.stringify(data)}`;
+    const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
+
+    const scriptStr = `window.jQuery={};window.gbData='${encodedData}'`;
 
     const main = (
         <MainComponent
@@ -40,8 +43,6 @@ app.get('/', function(req, res, next) {
             order={order}
         />
     );
-
-    const mainMarkup = React.renderToString(main);
 
     const doc = (
         <html>
@@ -55,7 +56,7 @@ app.get('/', function(req, res, next) {
             </head>
 
             <body>
-                <div id="gb-body" dangerouslySetInnerHTML={{__html: mainMarkup}}/>
+                <div id="gb-body">{main}</div>
 
                 <script dangerouslySetInnerHTML={{__html: scriptStr}}/>
                 <script src="bundle.js"/>

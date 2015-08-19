@@ -11,7 +11,7 @@ sync.editRequest = editRequest;
 
 Backbone.sync = sync;
 
-const {restaurantData, userData, orderData} = window.gbData;
+const {restaurantData, userData, orderData} = JSON.parse(atob(window.gbData));
 
 const restaurant = new Restaurant(restaurantData, {parse: true});
 const user = new User(userData, {parse: true});
