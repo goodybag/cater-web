@@ -39,7 +39,19 @@ export class OrderItem extends Model {
         };
     }
 
-    order = new Order({id: this.get('order_id')});
+    order = new Order(null, {order_id: this.get('order_id')});
 }
 
-export class OrderItemCollection extends Collection {}
+export class OrderItemCollection extends Collection {
+    static propType = PropTypes.instanceOf(OrderItemCollection)
+
+    constructor(models, options) {
+        super(models, options);
+
+        this.order_id = options.order_id;
+    }
+
+    url() {
+        return `${process.env.GOODYBAG_API}/orders/${this.order_id}`;
+    }
+}
