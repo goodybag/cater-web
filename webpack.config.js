@@ -32,7 +32,7 @@ module.exports = {
     ],
 
     externals: {
-        jquery: 'jQuery' // jQuery probably won't get loaded,
-                         // this is so Backbone won't complain
+        jquery: '{}' // jQuery probably won't get loaded,
+                     // this is so Backbone won't complain
     }
 }

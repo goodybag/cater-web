@@ -11,11 +11,11 @@ sync.editRequest = editRequest;
 
 Backbone.sync = sync;
 
-const {restaurantData, userData, orderData} = JSON.parse(atob(window.gbData));
+const targets = JSON.parse(atob(document.getElementById('gb-data').textContent));
 
-const restaurant = new Restaurant(restaurantData, {parse: true});
-const user = new User(userData, {parse: true});
-const order = new Order(orderData, {parse: true});
+const restaurant = new Restaurant(targets.restaurant, {parse: true});
+const user = new User(targets.user, {parse: true});
+const order = new Order(targets.order, {parse: true});
 
 const main = (
     <MainComponent

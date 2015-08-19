@@ -26,23 +26,20 @@ app.get('/', function(req, res, next) {
         restaurant_id: restaurant.id
     });
 
-    const data = {
-        restaurantData: restaurant,
-        userData: user,
-        orderData: order
-    };
+    const markup = renderPage({restaurant, user, order});
+    res.send(`<!doctype html>${markup}`);
+});
 
-    const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
+app.use(express.static(`${__dirname}/../build/`));
 
-    const scriptStr = `window.jQuery={};window.gbData='${encodedData}'`;
+function editRequest(req) {
+    req.cookies = `connect.sid=${process.env.GOODYBAG_SID}`;
+}
 
-    const main = (
-        <MainComponent
-            restaurant={restaurant}
-            user={user}
-            order={order}
-        />
-    );
+function renderPage(targets) {
+    const {restaurant, user, order} = targets;
+
+    const data = new Buffer(JSON.stringify(targets)).toString('base64');
 
     const doc = (
         <html>
@@ -56,20 +53,19 @@ app.get('/', function(req, res, next) {
             </head>
 
             <body>
-                <div id="gb-body">{main}</div>
+                <div id="gb-body">
+                    <MainComponent
+                        restaurant={restaurant}
+                        user={user}
+                        order={order}
+                    />
+                </div>
 
-                <script dangerouslySetInnerHTML={{__html: scriptStr}}/>
+                <script id="gb-data" type="text/base64.gbdata">{data}</script>
                 <script src="bundle.js"/>
             </body>
         </html>
     );
 
-    const markup = React.renderToStaticMarkup(doc);
-    res.send(`<!doctype html>${markup}`);
-});
-
-app.use(express.static(`${__dirname}/../build/`));
-
-function editRequest(req) {
-    req.cookies = `connect.sid=${process.env.GOODYBAG_SID}`;
+    return React.renderToStaticMarkup(doc);
 }
