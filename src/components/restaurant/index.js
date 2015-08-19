@@ -8,12 +8,12 @@ import {RestaurantTabsComponent} from './tabs.js';
 
 export class RestaurantComponent extends Component {
     static propTypes = {
-        restaurant: Restaurant.propType,
-        order: Order.propType
+        restaurant: Restaurant.propType.isRequired,
+        order: Order.propType.isRequired
     }
 
     static childContextTypes = {
-        restaurant: Restaurant.propType
+        restaurant: Restaurant.propType.isRequired
     }
 
     getChildContext() {

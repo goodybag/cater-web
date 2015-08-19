@@ -5,7 +5,7 @@ export class RestaurantTabsComponent extends Component {
         tabs: React.PropTypes.arrayOf(React.PropTypes.shape({
             title: React.PropTypes.element,
             body: React.PropTypes.element
-        }))
+        })).isRequired
     }
 
     render() {

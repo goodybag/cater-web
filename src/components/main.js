@@ -8,13 +8,13 @@ import {RestaurantComponent} from './restaurant';
 
 export class MainComponent extends Component {
     static propTypes = {
-        restaurant: Restaurant.propType,
-        order: Order.propType,
-        user: User.propType
+        restaurant: Restaurant.propType.isRequired,
+        order: Order.propType.isRequired,
+        user: User.propType.isRequired
     }
 
     static childContextTypes = {
-        user: User.propType
+        user: User.propType.isRequired
     }
 
     getChildContext() {

@@ -4,7 +4,7 @@ import {Restaurant} from '../../models/restaurant';
 
 export class RestaurantCoverComponent extends Component {
     static contextTypes = {
-        restaurant: Restaurant.propType
+        restaurant: Restaurant.propType.isRequired
     }
 
     render() {

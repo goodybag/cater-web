@@ -4,7 +4,7 @@ import {User} from '../models/user';
 
 export class NavbarComponent extends Component {
     static contextTypes = {
-        user: User.propType
+        user: User.propType.isRequired
     }
 
     render() {
