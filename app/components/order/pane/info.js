@@ -4,7 +4,7 @@ import {Order} from '../../../models/order';
 
 export class OrderPaneInfoComponent extends Component {
     static contextTypes = {
-        order: Order.propType
+        order: Order.propType.isRequired
     }
 
     render() {

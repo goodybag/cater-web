@@ -4,7 +4,8 @@ import {Order} from '../../../models/order';
 
 export class OrderPaneShareComponent extends Component {
     static contextTypes = {
-        order: Order.propType
+        order: Order.propType.isRequired
+    }
 
     handleClick = () => {
         const {gbOrderPaneShareLinkbox} = this.refs;

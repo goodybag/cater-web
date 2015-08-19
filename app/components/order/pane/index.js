@@ -6,11 +6,11 @@ import {OrderPaneShareComponent} from './share';
 
 export class OrderPaneComponent extends Component {
     static propTypes = {
-        order: Order.propType
+        order: Order.propType.isRequired
     }
 
     static childContextTypes = {
-        order: Order.propType
+        order: Order.propType.isRequired
     }
 
     getChildContext() {
