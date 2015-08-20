@@ -44,7 +44,7 @@ function editRequest(req) {
 }
 
 function renderPage(targets) {
-    const {restaurant, user, order, orderItems} = targets;
+    // const {restaurant, user, order, orderItems} = targets;
 
     const data = new Buffer(JSON.stringify(targets)).toString('base64');
 

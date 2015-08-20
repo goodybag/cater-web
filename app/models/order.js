@@ -2,7 +2,6 @@ import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 import ZSchema from 'z-schema';
 
-import {User} from './user';
 import {OrderItemCollection} from './order-item';
 
 export const validator = new ZSchema();
@@ -71,7 +70,7 @@ export class Order extends Model {
             total: attrs.total,
             type: attrs.type,
             orderItems: attrs.orderItems && new OrderItemCollection(attrs.orderItems, {order_id: this.id, parse: true})
-        }
+        };
     }
 
     items() {
