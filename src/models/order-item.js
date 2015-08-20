@@ -1,8 +1,10 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
-import {validator} from '../util';
+import ZSchema from 'z-schema';
 
 import {Order} from './order';
+
+export const validator = new ZSchema();
 
 export class OrderItem extends Model {
     static schema = {

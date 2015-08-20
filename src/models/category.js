@@ -1,5 +1,7 @@
 import {Model} from 'backbone';
-import {validator} from '../util';
+import {ZSchema} from 'z-schema';
+
+export const validator = new ZSchema();
 
 export class Category extends Model {
     static schema = {
