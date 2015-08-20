@@ -38,8 +38,6 @@ export class OrderItem extends Model {
             notes: ''
         };
     }
-
-    order = new Order(null, {order_id: this.get('order_id')});
 }
 
 export class OrderItemCollection extends Collection {
@@ -55,3 +53,5 @@ export class OrderItemCollection extends Collection {
         return `${process.env.GOODYBAG_API}/orders/${this.order_id}`;
     }
 }
+
+OrderItemCollection.prototype.model = OrderItem;

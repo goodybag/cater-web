@@ -29,14 +29,11 @@ const styles = readFileSync(`${__dirname}/../build/main.css`, 'utf-8');
 
 export const restaurant = new Restaurant({id: 111});
 export const user = new CurrentUser();
+export const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
+export const orderItems = order.items();
 
 app.get('/', function(req, res) {
-    const order = new Order({
-        user_id: user.id,
-        restaurant_id: restaurant.id
-    });
-
-    const markup = renderPage({restaurant, user, order});
+    const markup = renderPage({restaurant, user, order, orderItems});
     res.send(`<!doctype html>${markup}`);
 });
 
@@ -47,7 +44,7 @@ function editRequest(req) {
 }
 
 function renderPage(targets) {
-    const {restaurant, user, order} = targets;
+    const {restaurant, user, order, orderItems} = targets;
 
     const data = new Buffer(JSON.stringify(targets)).toString('base64');
 
@@ -68,6 +65,7 @@ function renderPage(targets) {
                         restaurant={restaurant}
                         user={user}
                         order={order}
+                        orderItems={orderItems}
                     />
                 </div>
 

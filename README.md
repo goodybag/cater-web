@@ -6,14 +6,16 @@ Setup
 
 To install dependencies and run the initial build:
 
-```sh
+```bash
 npm install
 ```
 
 To start the server:
 
-```sh
+```bash
 export GOODYBAG_SID=... # paste your connect.sid cookie here
+export GOODYBAG_API=https://www.goodybag.com/api # or http://localhost:3000/api
+export GOODYBAG_ORDER_ID=... # paste an order id here
 node dist/app/server.js # you can also use nodemon here
 ```
 
