@@ -6,14 +6,14 @@ var smaps = require('gulp-sourcemaps');
 
 gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
 
-// This step will compile the ES6/JSX in src/
+// This step will compile the ES6/JSX in app/
 // into ES5 versions (with source maps). This
 // does not perform any bundling.
 gulp.task('build', function() {
     // Requiring inline saves startup time for other builds
     var babel = require('gulp-babel');
 
-    return gulp.src('src/**/*.js')
+    return gulp.src('app/**/*.js')
         .pipe(smaps.init())
         .pipe(babel())
         .pipe(smaps.write('.'))
@@ -27,14 +27,14 @@ gulp.task('bundle', function(cb) {
     getWebpack().run(handleWebpackErrors(cb));
 });
 
-// This compiles all LESS files from src/styles
+// This compiles all LESS files from app/styles
 // into a single CSS bundle (and source map) in
 // dist/build
 gulp.task('compile', function() {
     var less = require('gulp-less');
     var cssmin = require('gulp-minify-css');
 
-    return gulp.src('./src/styles/main.less')
+    return gulp.src('./app/styles/main.less')
         .pipe(smaps.init())
         .pipe(less())
         .pipe(cssmin())
@@ -54,8 +54,8 @@ gulp.task('watch-bundle', function() {
 
 // This watchs all the files
 gulp.task('watch', ['build', 'watch-bundle', 'compile', 'migrate'], function() {
-    gulp.watch('src/**/*', ['build']);
-    gulp.watch('src/styles/**/*.less', ['compile']);
+    gulp.watch('app/**/*.js', ['build']);
+    gulp.watch('app/styles/**/*.less', ['compile']);
     gulp.watch('public/**/*', ['migrate']);
 });
 

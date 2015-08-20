@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import {Order} from '../../src/models/order';
+import {Order} from '../../app/models/order';
 
 describe('Order', function() {
     it('should validate a valid order', function() {

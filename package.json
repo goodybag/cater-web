@@ -4,7 +4,7 @@
   "main": "dist/bundle.js",
   "scripts": {
     "prepublish": "gulp build",
-    "test": "eslint src && NODE_ENV=test mocha"
+    "test": "eslint app && NODE_ENV=test mocha"
   },
   "repository": {
     "type": "git",

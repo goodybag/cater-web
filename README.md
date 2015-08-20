@@ -14,7 +14,7 @@ To start the server:
 
 ```sh
 export GOODYBAG_SID=... # paste your connect.sid cookie here
-node dist/src/server.js # you can also use nodemon here
+node dist/app/server.js # you can also use nodemon here
 ```
 
 To watch for changes:
@@ -82,11 +82,11 @@ Gulp tasks
 
 **Default** does these steps:
 
-1. **Build** will compile all the ES6 in `src` into ES5 files in `dist/src`
-2. **Bundle** will bundle (and compile) all the ES6 in `src` into the bundle
+1. **Build** will compile all the ES6 in `app` into ES5 files in `dist/src`
+2. **Bundle** will bundle (and compile) all the ES6 in `app` into the bundle
    `dist/build/bundle.js`
 3. **Migrate** will copy all files from `public` to `dist/build`
-4. **Compile** will compile `src/styles/main.less` to `dist/build/main.css`
+4. **Compile** will compile `app/styles/main.less` to `dist/build/main.css`
 pick
 
 **Watch** will watch and re-do all the things above when something changes.

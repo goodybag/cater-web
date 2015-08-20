@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import {Restaurant} from '../../src/models/restaurant';
+import {Restaurant} from '../../app/models/restaurant';
 
 // TODO
 describe('Restaurant', function() {
