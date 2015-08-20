@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {Restaurant} from '../models/restaurant';
 import {Order} from '../models/order';
+import {OrderItemCollection} from '../models/order-item';
 import {User} from '../models/user';
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';

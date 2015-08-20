@@ -1,3 +1,40 @@
 .gb-order-pane-items {
     .gb-order-pane-section;
 }
+
+.gb-order-pane-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: hidden;
+
+    &:first-of-type {
+        padding-top: 0;
+    }
+
+    &:last-of-type {
+        padding-bottom: 0;
+    }
+}
+
+.gb-order-pane-item-info {
+    float: left;
+    width: 80%;
+}
+
+.gb-order-pane-item-price {
+    float: right;
+    width: 20%;
+    text-align: right;
+}
+
+.gb-order-pane-item-name {
+    float: left;
+}
+
+.gb-order-pane-item-quantity {
+    float: right;
+
+    &:before {
+        content: 'x';
+    }
+}
