@@ -1,3 +1,13 @@
+/**
+ * This is only a temporarily hacked-together web
+ * server to demonstrate server-side rendering
+ * capabilities. This should not be used in the
+ * long-term and eventually should become replaced
+ * with a more stream-lined routing and
+ * target-fetching system.
+ */
+
+
 import express from 'express';
 import React from 'react';
 import Backbone from 'backbone';

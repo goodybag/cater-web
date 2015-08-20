@@ -33,6 +33,9 @@ Strong Recommendations
 - Before commits try to make your code abide by ESLint rules.
 - Include `propTypes` and `contextTypes` declarations for all components.
 - Group import statements into relative and non-relative blocks.
+- Use ES7 class properties to create automatically-bound methods for event
+  handling. See [this blog post](http://facebook.github.io/react/blog/2015/01/27/react-v0.13.0-beta-1.html#es6-classes)
+  for more information.
 
 ### Styling
 
