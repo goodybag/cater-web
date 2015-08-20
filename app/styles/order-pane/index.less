@@ -1,3 +1,6 @@
+@import "info";
+@import "share";
+
 .gb-order-pane {
     width: 320px;
     float: right;
@@ -23,32 +26,4 @@
     color: @gb-grey;
     font-weight: 600;
     text-transform: uppercase;
-}
-
-.gb-order-pane-info {
-    .gb-order-pane-section;
-}
-
-.gb-order-pane-info-line {
-    font-size: 13px;
-}
-
-.gb-order-pane-info-location,
-.gb-order-pane-info-time,
-.gb-order-pane-info-guests {
-    .gb-order-pane-info-line;
-}
-
-.gb-order-pane-info-edit {
-    display: inline-block;
-    font-size: 13px;
-    position: absolute;
-    bottom: 15px;
-    right: 25px;
-    color: @gb-blue;
-
-    &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-    }
 }
