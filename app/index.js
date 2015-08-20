@@ -30,7 +30,7 @@ const styles = readFileSync(`${__dirname}/../build/main.css`, 'utf-8');
 export const restaurant = new Restaurant({id: 111});
 export const user = new CurrentUser();
 
-app.get('/', function(req, res, next) {
+app.get('/', function(req, res) {
     const order = new Order({
         user_id: user.id,
         restaurant_id: restaurant.id

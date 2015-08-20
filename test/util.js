@@ -1,4 +1,3 @@
-import React, {Component} from 'react';
 import TestUtils from 'react/lib/ReactTestUtils';
 
 export function setupElement(element) {

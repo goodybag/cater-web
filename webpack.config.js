@@ -35,4 +35,4 @@ module.exports = {
         jquery: '{}' // jQuery probably won't get loaded,
                      // this is so Backbone won't complain
     }
-}
+};

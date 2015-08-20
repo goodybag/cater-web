@@ -36,7 +36,7 @@ export class OrderItem extends Model {
         return {
             quantity: 1,
             notes: ''
-        }
+        };
     }
 
     order = new Order({id: this.get('order_id')});

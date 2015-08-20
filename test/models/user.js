@@ -1,3 +1,4 @@
+/* globals describe, it */
 import expect from 'expect';
 
 import {User} from '../../app/models/user';
