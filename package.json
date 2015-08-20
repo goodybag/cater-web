@@ -1,7 +1,6 @@
 {
   "name": "goodybag-app",
   "version": "1.0.0",
-  "main": "dist/bundle.js",
   "scripts": {
     "prepublish": "gulp build",
     "test": "eslint app && NODE_ENV=test mocha"
@@ -41,5 +40,8 @@
     "json-loader": "^0.5.2",
     "mocha": "^2.2.5",
     "webpack": "^1.11.0"
-  }
+  },
+  "files": [
+    "dist/src"
+  ]
 }
