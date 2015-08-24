@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Order} from '../../../models/order';
 
 export class OrderPaneShareComponent extends Component {
-    static contextTypes = {
+    static propTypes = {
         order: Order.propType.isRequired
     }
 

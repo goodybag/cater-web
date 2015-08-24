@@ -18,6 +18,7 @@ import {readFileSync} from 'fs';
 import {MainComponent} from './components/main';
 import {Restaurant} from './models/restaurant';
 import {Order} from './models/order';
+import {OrderItemCollection} from './models/order-item';
 import {CurrentUser} from './models/user';
 
 sync.editRequest = editRequest;
@@ -31,7 +32,7 @@ const styles = readFileSync(`${__dirname}/../build/main.css`, 'utf-8');
 export const restaurant = new Restaurant({id: 111});
 export const user = new CurrentUser();
 export const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
-export const orderItems = order.items();
+export const orderItems = new OrderItemCollection([], {order_id: order.id});
 
 app.get('/', function(req, res) {
     const markup = renderPage({restaurant, user, order, orderItems});

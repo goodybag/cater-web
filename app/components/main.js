@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {Restaurant} from '../models/restaurant';
 import {Order} from '../models/order';
+import {OrderItemCollection} from '../models/order-item';
 import {User} from '../models/user';
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';
@@ -24,13 +25,17 @@ export class MainComponent extends Component {
     }
 
     render() {
-        const {restaurant, order} = this.props;
+        const {restaurant, order, orderItems} = this.props;
 
         return (
             <div className="gb-main" ref="gbMain">
                 <NavbarComponent/>
 
-                <RestaurantComponent restaurant={restaurant} order={order}/>
+                <RestaurantComponent
+                    restaurant={restaurant}
+                    order={order}
+                    orderItems={orderItems}
+                />
             </div>
         );
     }

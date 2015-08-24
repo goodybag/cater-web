@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 
-import {Order} from '../../../models/order';
-import {OrderItem} from '../../../models/order-item';
+import {OrderItem, OrderItemCollection} from '../../../models/order-item';
 
 export class OrderPaneItemsComponent extends Component {
-    static contextTypes = {
-        order: Order.propType.isRequired
+    static propTypes = {
+        orderItems: OrderItemCollection.propType.isRequired
     }
 
     render() {
-        const {order} = this.context;
-        const orderItems = order.items();
+        const {orderItems} = this.props;
 
         return (
             <div className="gb-order-pane-items">
