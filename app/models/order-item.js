@@ -47,11 +47,11 @@ export class OrderItemCollection extends Collection {
     constructor(models, options) {
         super(models, options);
 
-        this.order_id = options.order_id;
+        this.order_id = options && options.order_id;
     }
 
     url() {
-        return `${process.env.GOODYBAG_API}/orders/${this.order_id}`;
+        return `${process.env.GOODYBAG_API}/orders/${this.order_id}/items`;
     }
 }
 
