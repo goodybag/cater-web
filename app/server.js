@@ -1,6 +1,6 @@
 import {createServer} from 'http';
 
-import {app, user, restaurant} from './app';
+import {app, user, restaurant} from './';
 
 export const server = createServer(app);
 

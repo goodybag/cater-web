@@ -1,6 +1,6 @@
 import expect from 'expect';
 
-import {User} from '../../src/models/user';
+import {User} from '../../app/models/user';
 
 // TODO
 describe('User', function() {
