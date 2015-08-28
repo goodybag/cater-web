@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-
-var cx = require('classnames');
+import cx from 'classnames';
 
 export class RestaurantTabTitleComponent extends Component {
     static propTypes = {
