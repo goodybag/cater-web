@@ -9,5 +9,7 @@ Promise.all([user.fetch(), restaurant.fetch()]).then(function() {
         console.log('Listening...');
     });
 }, function(err) {
-    throw err;
+    process.nextTick(function() {
+        throw err;
+    });
 });
