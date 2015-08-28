@@ -2,16 +2,22 @@
 @gb-background: #ffffff;
 @gb-white: #ffffff;
 @gb-shadow: rgba(0, 0, 0, 0.1);
-@gb-bold: #000000;
+@gb-bold: #3B3F47;
 @gb-soft: #ccd1d9;
 @gb-subtle: #aab2bd;
-@gb-red: #ed4242;
+@gb-red: #ff3333; // web-safe version of #ed4242
+
+@base-border-radius: 4px;
 
 html {
     -webkit-font-smoothing: antialiased;
+    -mox-osx-font-smoothing: grayscale;
     background-color: @gb-background;
     color: @gb-foreground;
     font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    &, & a {     // minute font smoothing for smaller screens
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    }
 }
 
 body {
