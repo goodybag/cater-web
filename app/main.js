@@ -1,3 +1,5 @@
+import './setup';
+
 import React from 'react';
 import Backbone from 'backbone';
 import sync from 'backbone-super-sync';

@@ -1,8 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
-import ZSchema from 'z-schema';
-
-export const validator = new ZSchema();
 
 export class User extends Model {
     static schema = {
@@ -29,7 +26,7 @@ export class User extends Model {
             },
 
             groups: {
-              type: 'array'
+                type: 'array'
             }
         }
     }
@@ -37,8 +34,8 @@ export class User extends Model {
     static propType = PropTypes.instanceOf(User)
 
     validate(attrs) {
-        if (!validator.validate(attrs, User.schema)) {
-            return validator.getLastError();
+        if (!this.validator.validate(attrs, User.schema)) {
+            return this.validator.getLastError();
         }
     }
 

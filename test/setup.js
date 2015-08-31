@@ -1,6 +1,7 @@
 /* global before */
 
 import {jsdom} from 'jsdom';
+import '../app/setup';
 
 before(function() {
     // This is for virtually mounting React components

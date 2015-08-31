@@ -1,8 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
-import ZSchema from 'z-schema';
-
-export const validator = new ZSchema();
 
 export class Restaurant extends Model {
     static schema = {
@@ -24,8 +21,8 @@ export class Restaurant extends Model {
     static propType = PropTypes.instanceOf(Restaurant)
 
     validate(attrs) {
-        if (!validator.validate(attrs, Restaurant.schema)) {
-            return validator.getLastError();
+        if (!this.validator.validate(attrs, Restaurant.schema)) {
+            return this.validator.getLastError();
         }
     }
 

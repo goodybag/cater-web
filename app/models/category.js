@@ -1,7 +1,4 @@
 import {Model} from 'backbone';
-import {ZSchema} from 'z-schema';
-
-export const validator = new ZSchema();
 
 export class Category extends Model {
     static schema = {
@@ -35,8 +32,8 @@ export class Category extends Model {
     }
 
     validate(attrs) {
-        if (!validator.validate(attrs, Category.schema)) {
-            return validator.getLastError();
+        if (!this.validator.validate(attrs, Category.schema)) {
+            return this.validator.getLastError();
         }
     }
 }

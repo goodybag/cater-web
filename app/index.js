@@ -7,6 +7,7 @@
  * target-fetching system.
  */
 
+import './setup';
 
 import express from 'express';
 import React from 'react';

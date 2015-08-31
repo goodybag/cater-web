@@ -1,8 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
-import ZSchema from 'z-schema';
-
-export const validator = new ZSchema();
 
 export class OrderItem extends Model {
     static schema = {
@@ -29,6 +26,12 @@ export class OrderItem extends Model {
     }
 
     static propType = PropTypes.instanceOf(OrderItem)
+
+    validate(attrs) {
+        if (!this.validator.validate(attrs, OrderItem.schema)) {
+            return this.validator.getLastError();
+        }
+    }
 
     defaults() {
         return {
