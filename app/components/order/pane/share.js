@@ -25,6 +25,10 @@ export class OrderPaneShareComponent extends Component {
                 className="gb-order-pane-share"
                 onClick={this.handleClick}>
 
+                <div className="gb-order-pane-share-desc">
+                    Let others add their own food by sharing this order:
+                </div>
+
                 <input
                     ref="gbOrderPaneShareLinkbox"
                     className="gb-order-pane-share-linkbox"
