@@ -1,6 +1,7 @@
 import './setup';
 
 import React from 'react';
+import {Dispatcher} from 'flux';
 import Backbone from 'backbone';
 import sync from 'backbone-super-sync';
 
@@ -27,6 +28,7 @@ const main = (
         user={user}
         order={order}
         orderItems={orderItems}
+        dispatcher={new Dispatcher()}
     />
 );
 

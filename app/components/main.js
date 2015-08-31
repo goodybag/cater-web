@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Dispatcher} from 'flux';
 
 import {Restaurant} from '../models/restaurant';
 import {Order} from '../models/order';
@@ -11,17 +12,20 @@ export class MainComponent extends Component {
     static propTypes = {
         restaurant: Restaurant.propType.isRequired,
         order: Order.propType.isRequired,
-        user: User.propType.isRequired
+        orderItems: OrderItemCollection.propType.isRequired,
+        user: User.propType.isRequired,
+        dispatcher: React.PropTypes.instanceOf(Dispatcher).isRequired
     }
 
     static childContextTypes = {
-        user: User.propType.isRequired
+        user: User.propType,
+        dispatcher: React.PropTypes.instanceOf(Dispatcher)
     }
 
     getChildContext() {
-        const {user} = this.props;
+        const {user, dispatcher} = this.props;
 
-        return {user};
+        return {user, dispatcher};
     }
 
     render() {

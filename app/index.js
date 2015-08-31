@@ -9,8 +9,9 @@
 
 import './setup';
 
-import express from 'express';
 import React from 'react';
+import {Dispatcher} from 'flux';
+import express from 'express';
 import Backbone from 'backbone';
 import sync from 'backbone-super-sync';
 import {readFileSync} from 'fs';
@@ -68,6 +69,7 @@ function renderPage(targets) {
                         user={user}
                         order={order}
                         orderItems={orderItems}
+                        dispatcher={new Dispatcher()}
                     />
                 </div>
 
