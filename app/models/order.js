@@ -79,4 +79,14 @@ export class Order extends Model {
             return orderItems;
         }
     }
+
+    displayAddress() {
+        const {street, city, state, zip} = this.attributes;
+
+        if (street == null || city == null || state == null) {
+            return `${zip}`;
+        } else {
+            return `${street}, ${city}, ${state}`;
+        }
+    }
 }
