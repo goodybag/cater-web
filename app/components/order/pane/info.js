@@ -1,26 +1,100 @@
 import React, {Component} from 'react';
+import {Dispatcher} from 'flux';
 
 import {Order} from '../../../models/order';
+import {OrderPaneInfoEditComponent} from './edit';
 
 export class OrderPaneInfoComponent extends Component {
     static propTypes = {
         order: Order.propType.isRequired
     }
 
+    static contextTypes = {
+        dispatcher: React.PropTypes.instanceOf(Dispatcher).isRequired
+    }
+
+    state = {
+        editing: false
+    }
+
+    startEditing = () => {
+        this.setState({editing: true});
+    }
+
+    // popsolopsopacalous
+
+    stopEditing = ({changes}) => {
+        const {dispatcher} = this.context;
+        const {order} = this.props;
+
+        // dispatcher.dispatch(new UpdateOrderAction({order, changes}));
+        this.setState({editing: false});
+    }
+
+    renderBody() {
+        const {order} = this.props;
+        const {editing} = this.state;
+
+        if (editing) {
+            return (
+                <OrderPaneInfoEditComponent
+                    order={order}
+                    onSaveInfo={this.stopEditing}
+                />
+            );
+        } else {
+            return (
+                <OrderPaneInfoShowComponent
+                    order={order}
+                    onStartEditing={this.startEditing}
+                />
+            );
+        }
+    }
+
     render() {
-        const location = '7901 Cameron Rd, Austin, TX 78754';
-        const time = '1/22/2015 12:15 PM — 12:30 PM';
-        const guests = 30;
+        const body = this.renderBody();
 
         return (
-            <div className="gb-order-pane-info">
-                <div className="gb-order-pane-info-location">{location}</div>
+            <div className="gb-order-pane-info">{body}</div>
+        );
+    }
+}
 
-                <div className="gb-order-pane-info-time">{time}</div>
+export class OrderPaneInfoShowComponent extends Component {
+    static propTypes = {
+        order: Order.propType.isRequired,
+        onStartEditing: React.PropTypes.func.isRequired
+    }
 
-                <div className="gb-order-pane-info-guests">{guests}</div>
+    startEditing = () => {
+        const {onStartEditing} = this.props;
 
-                <div className="gb-order-pane-info-edit">Edit</div>
+        onStartEditing();
+    }
+
+    render() {
+        const {order, onStartEditing} = this.props;
+        const {guests, datetime} = order.attributes;
+        const address = order.displayAddress();
+
+        return (
+            <div className="gb-order-pane-info-show">
+                <div className="gb-order-pane-info-location">
+                    {address}
+                </div>
+
+                <div className="gb-order-pane-info-time">
+                    {datetime}
+                </div>
+
+                <div className="gb-order-pane-info-guests">
+                    {guests}
+                </div>
+
+                <div className="gb-order-pane-info-editbutton" onClick={this.startEditing}>
+                    Edit
+                </div>
             </div>
         );
     }
