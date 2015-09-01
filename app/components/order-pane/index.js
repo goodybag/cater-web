@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
-import {Order} from '../../../models/order';
-import {OrderItemCollection} from '../../../models/order-item';
+import {Order} from '../../models/order';
+import {OrderItemCollection} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';

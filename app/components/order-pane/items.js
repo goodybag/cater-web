@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {OrderItem, OrderItemCollection} from '../../../models/order-item';
+import {OrderItem, OrderItemCollection} from '../../models/order-item';
 
 export class OrderPaneItemsComponent extends Component {
     static propTypes = {

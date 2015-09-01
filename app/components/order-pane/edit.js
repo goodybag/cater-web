@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Order} from '../../../models/order';
+import {Order} from '../../models/order';
 
 export class OrderPaneInfoEditComponent extends Component {
     static propTypes = {

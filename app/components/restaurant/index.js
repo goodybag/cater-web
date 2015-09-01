@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Restaurant} from '../../models/restaurant';
 import {Order} from '../../models/order';
 import {OrderItemCollection} from '../../models/order-item';
-import {OrderPaneComponent} from '../order/pane';
+import {OrderPaneComponent} from '../order-pane';
 import {RestaurantCoverComponent} from './cover.js';
 import {RestaurantTabsComponent} from './tabs.js';
 

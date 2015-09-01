@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Dispatcher} from 'flux';
 
-import {Order} from '../../../models/order';
+import {Order} from '../../models/order';
 import {OrderPaneInfoEditComponent} from './edit';
 
 export class OrderPaneInfoComponent extends Component {
