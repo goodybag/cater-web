@@ -4,8 +4,12 @@ import {Restaurant} from '../../models/restaurant';
 import {Order} from '../../models/order';
 import {OrderItemCollection} from '../../models/order-item';
 import {OrderPaneComponent} from '../order-pane';
-import {RestaurantCoverComponent} from './cover.js';
-import {RestaurantTabsComponent} from './tabs.js';
+import {RestaurantCoverComponent} from './cover';
+import {RestaurantTabsComponent} from './tabs';
+import {RestaurantMenuComponent} from './menu';
+import {RestaurantInfoComponent} from './info';
+import {RestaurantReviewsComponent} from './reviews';
+import {RestaurantOrdersComponent} from './past-orders';
 
 export class RestaurantComponent extends Component {
     static propTypes = {
@@ -18,6 +22,14 @@ export class RestaurantComponent extends Component {
         restaurant: Restaurant.propType.isRequired
     }
 
+    state = {
+        currentTabIndex: 0
+    }
+
+    handleNewTabIndex = (index) => {
+        this.setState({currentTabIndex: index});
+    }
+
     getChildContext() {
         const {restaurant} = this.props;
 
@@ -26,14 +38,51 @@ export class RestaurantComponent extends Component {
 
     render() {
         const {order, orderItems} = this.props;
-        const tabs = [];
+        const {currentTabIndex} = this.state;
+
+        const tabs = [
+            {
+                title: 'Menu',
+                body: <RestaurantMenuComponent/>
+            },
+
+            {
+                title: 'Info',
+                body: <RestaurantInfoComponent/>
+            },
+
+            {
+                title: 'Reviews',
+                body: <RestaurantReviewsComponent/>
+            },
+
+            {
+                title: (
+                    <span>
+                        Past Orders
+                        <div className="gb-restaurant-tab-ncount">3</div>
+                    </span>
+                ),
+                body: <RestaurantOrdersComponent/>
+            }
+        ];
 
         return (
             <div className="gb-restaurant">
                 <RestaurantCoverComponent/>
 
-                <RestaurantTabsComponent tabs={tabs}/>
-                <OrderPaneComponent order={order} orderItems={orderItems}/>
+                <OrderPaneComponent
+                    order={order}
+                    orderItems={orderItems}
+                />
+
+                <RestaurantTabsComponent
+                    tabs={tabs}
+                    onNewTabIndex={this.handleNewTabIndex}
+                    currentTabIndex={currentTabIndex}
+                />
+
+                {tabs[currentTabIndex].body}
             </div>
         );
     }

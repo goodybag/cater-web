@@ -6,17 +6,23 @@
 @gb-darker: #2c3239;
 @gb-grey: #7b828d;
 @gb-shadow: rgba(0, 0, 0, 0.1);
-@gb-bold: #000000;
+@gb-bold: #3B3F47;
 @gb-soft: #ccd1d9;
 @gb-subtle: #aab2bd;
 @gb-red: #ed4242;
 @gb-blue: #5d9cec;
+@gb-red: #ff3333; // web-safe version of #ed4242
+@gb-border-radius: 4px;
 
 html {
     -webkit-font-smoothing: antialiased;
+    -mox-osx-font-smoothing: grayscale;
     background-color: @gb-background;
     color: @gb-foreground;
     font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    &, & a {     // minute font smoothing for smaller screens
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    }
 }
 
 body {
@@ -34,4 +40,13 @@ input, textarea {
     max-width: 960px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.gb-small-arrow {
+    border-color: transparent;
+    border-style: solid;
+    border-top: 0;
+    border-width: 10px;
+    height: 0;
+    width: 0;
 }
