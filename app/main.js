@@ -22,6 +22,10 @@ const user = new User(targets.user, {parse: true});
 const order = new Order(targets.order, {parse: true});
 const orderItems = new OrderItemCollection(targets.orderItems, {parse: true});
 
+if (user.get('name') === 'Guest') {
+    console.warn('User is not signed in!');
+}
+
 const main = (
     <MainComponent
         restaurant={restaurant}
