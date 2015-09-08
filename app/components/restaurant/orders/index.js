@@ -9,6 +9,7 @@ export class RestaurantOrdersComponent extends Component {
         return (
             <div className="gb-restaurant-orders">
                 {/* TODO */}
+                <div>Past Orders at Austin Daily Press</div>
             </div>
         )
     }
