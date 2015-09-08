@@ -1,4 +1,4 @@
-@gb-foreground: #434a54;
+@gb-foreground: #424a54;
 @gb-background: #ffffff;
 @gb-white: #ffffff;
 @gb-bright: #e6e9ed;
@@ -9,9 +9,11 @@
 @gb-bold: #3B3F47;
 @gb-soft: #ccd1d9;
 @gb-subtle: #aab2bd;
-@gb-red: #ed4242;
-@gb-blue: #5d9cec;
+@gb-gray: #7B828D;
 @gb-red: #ff3333; // web-safe version of #ed4242
+@gb-yellow: #F4BB41;
+@gb-blue: #4A89DC;
+
 @gb-border-radius: 4px;
 
 html {
@@ -54,4 +56,47 @@ a {
     border-width: 10px;
     height: 0;
     width: 0;
+}
+
+// * TWO-COLUMN LAYOUT STYLES
+//////////////////////////////
+.col {
+    float: left;
+    width: 50%;
+}
+
+.fix-collapse { // keeps parent div from collapsing
+                // when children are floating
+    overflow: auto;
+}
+
+// * LINK STYLES
+/////////////////
+a {
+    color: @gb-blue;
+    text-decoration: none;
+}
+
+// * BUTTON STYLES
+///////////////////
+input[type="button"],
+.btn {
+    display: block;
+    color: @gb-background;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 20px;
+}
+
+.action-btn {
+    background: @gb-red;
+    border: 1px solid darken(@gb-red, 20%);
+    border-top: none;
+    border-bottom: 2px solid darken(@gb-red, 20%);
+    border-radius: @gb-border-radius / 2px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: lighten(@gb-red, 3%);
+    }
 }
