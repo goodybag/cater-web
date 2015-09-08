@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 export class RestaurantDollarsComponent extends Component {
     static propTypes = {
-        price: React.PropTypes.number
+        price: React.PropTypes.number.isRequired
     }
 
     returnDollarSigns = (price) => {
