@@ -9,7 +9,7 @@ export default class Resolver {
     }
 
     resolveFrom(data) {
-        const results = this.dependencies.map(dep => {
+        const results = this.dependencies.filter(hasParser).map(dep => {
             return dep.token.parse(data[dep.name]);
         });
 
@@ -82,4 +82,8 @@ export function mockParams(params) {
 
 function toDependency(token, name) {
     return {name, token};
+}
+
+function hasParser(dependency) {
+    return dependency.token && typeof dependency.token.parse === 'function';
 }
