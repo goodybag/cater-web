@@ -1,46 +1,65 @@
 import React, {Component} from 'react';
-import {Dispatcher} from 'flux';
 
-import {Restaurant} from '../models/restaurant';
-import {Order} from '../models/order';
-import {OrderItemCollection} from '../models/order-item';
-import {User} from '../models/user';
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';
 
 export class MainComponent extends Component {
     static propTypes = {
-        restaurant: Restaurant.propType.isRequired,
-        order: Order.propType.isRequired,
-        orderItems: OrderItemCollection.propType.isRequired,
-        user: User.propType.isRequired,
-        dispatcher: React.PropTypes.instanceOf(Dispatcher).isRequired
+        children: React.PropTypes.node
     }
 
-    static childContextTypes = {
-        user: User.propType,
-        dispatcher: React.PropTypes.instanceOf(Dispatcher)
-    }
+    static dependencies = {...NavbarComponent.dependencies}
 
-    getChildContext() {
-        const {user, dispatcher} = this.props;
-
-        return {user, dispatcher};
+    static route(router) {
+        router.use(RestaurantComponent);
     }
 
     render() {
-        const {restaurant, order, orderItems} = this.props;
+        const {children} = this.props;
 
         return (
             <div className="gb-main" ref="gbMain">
                 <NavbarComponent/>
 
-                <RestaurantComponent
-                    restaurant={restaurant}
-                    order={order}
-                    orderItems={orderItems}
-                />
+                {children}
             </div>
         );
     }
 }
+
+export class MainContainerComponent extends React.Component {
+    static childContextTypes = {
+        dependencies: React.PropTypes.object,
+        route: React.PropTypes.object
+    }
+
+    static propTypes = {
+        dependencies: React.PropTypes.object.isRequired,
+        components: React.PropTypes.arrayOf(React.PropTypes.func).isRequired,
+        route: React.PropTypes.object.isRequired
+    }
+
+    getChildContext() {
+        const {dependencies, route} = this.props;
+
+        return {dependencies, route};
+    }
+
+    // components:
+    // [Main, Restaurant, RestaurantMenu]
+    //
+    // render:
+    // <Main>
+    //   <Restaurant>
+    //     <RestaurantMenu/>
+    //   </Restaurant>
+    // </Main>
+    render() {
+        const {components} = this.props;
+
+        return components.slice(0, -1).reduceRight(function(left, right) {
+            return React.createElement(right, null, left);
+        }, React.createElement(components[components.length - 1], null));
+    }
+}
+

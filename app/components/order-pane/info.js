@@ -10,12 +10,12 @@ export class OrderPaneInfoComponent extends Component {
         order: Order.propType.isRequired
     }
 
-    static dependencies = {
-        dispatcher: Dispatcher
-    }
-
     static contextTypes = {
         dependencies: React.PropTypes.object.isRequired
+    }
+
+    static dependencies = {
+        dispatcher: Dispatcher
     }
 
     state = {
@@ -79,7 +79,7 @@ export class OrderPaneInfoShowComponent extends Component {
     }
 
     render() {
-        const {order, onStartEditing} = this.props;
+        const {order} = this.props;
         const {guests, datetime} = order.attributes;
         const address = order.displayAddress();
 

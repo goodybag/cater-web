@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 export class RestaurantMenuComponent extends Component {
-    static propTypes = {}
+    static dependencies = {}
 
     render() {
         return (
