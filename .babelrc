@@ -1,6 +1,7 @@
 {
-    "optional": ["es7.classProperties", "es7.decorators", "runtime"],
+    "optional": ["es7.classProperties", "es7.decorators", "es7.objectRestSpread", "runtime"],
     "loose": "all",
+    "sourceMaps": true,
     "ignore": [
         "node_modules/"
     ]

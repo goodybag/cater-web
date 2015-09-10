@@ -38,7 +38,9 @@ gulp.task('compile', function() {
         .pipe(smaps.init())
         .pipe(less())
         .pipe(cssmin())
-        .pipe(smaps.write('.'))
+        .pipe(smaps.write('.', {
+            sourceMappingURLPrefix: '/'
+        }))
         .pipe(gulp.dest('dist/build'));
 });
 
@@ -87,7 +89,7 @@ function getWebpack() {
 
 function logWebpackErrors(err, stats) {
     if (err) {
-        gutil.log(err);
+        gutil.log(err.toString().replace(new RegExp(__dirname, 'g'), '.'));
     } else {
         gutil.log(stats.toString({
             chunks: false,

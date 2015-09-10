@@ -20,7 +20,7 @@ module.exports = {
         }]
     },
 
-    devtool: 'cheap-source-map',
+    devtool: 'source-map',
 
     plugins: [
         new webpack.DefinePlugin({
