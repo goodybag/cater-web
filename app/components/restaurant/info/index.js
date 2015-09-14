@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 
+import {PriceComponent} from '../../price';
 import {RestaurantResolver} from '../../../models/restaurant';
 import {RestaurantGmapComponent} from './gmap';
+import {RestaurantInfoSectionComponent} from './section';
+import {RestaurantInfoHeaderComponent} from './header';
 
 export class RestaurantInfoComponent extends Component {
     static contextTypes = {
@@ -144,62 +147,6 @@ export class RestaurantInfoComponent extends Component {
             return (
                 <a key={website} href={website}>{website}</a>
             );
-        }
-    }
-}
-
-class RestaurantInfoSectionComponent extends Component {
-    static propTypes = {
-        children: React.PropTypes.node
-    }
-
-    render() {
-        const {children} = this.props;
-
-        return (
-            <div className="gb-restaurant-info-section">
-                {children}
-            </div>
-        );
-    }
-}
-
-class RestaurantInfoHeaderComponent extends Component {
-    static propTypes = {
-        children: React.PropTypes.node
-    }
-
-    render() {
-        const {children} = this.props;
-
-        return (
-            <div className="gb-restaurant-info-header">
-                {children}
-            </div>
-        );
-    }
-}
-
-class PriceComponent extends Component {
-    static propTypes = {
-        price: React.PropTypes.number.isRequired
-    }
-
-    render() {
-        const {price} = this.props;
-
-        const dollars = [1, 2, 3, 4].map(renderValue);
-
-        return (
-            <div className="gb-price">{dollars}</div>
-        );
-
-        function renderValue(value) {
-            if (value <= price) {
-                return <div key={value} className="gb-price-fill">$</div>;
-            } else {
-                return <div key={value} className="gb-price-empty">$</div>;
-            }
         }
     }
 }
