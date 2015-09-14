@@ -17,15 +17,12 @@ export class RestaurantTabTitleComponent extends Component {
         const {active} = this.props;
         const {orderNotifications} = this;
 
-        var clsNs = cx({
-            "gb-restaurant-tab-title"  : true,
-            "active"                   : active
-        });
+        var clsNs = cx('gb-restaurant-tab-title', {active});
 
         return (
             <div className={clsNs}>
                 <span>{title}</span>
-                { title==='Past Orders' ? orderNotifications() : null }
+                {title === 'Past Orders' && orderNotifications()}
             </div>
         );
     }

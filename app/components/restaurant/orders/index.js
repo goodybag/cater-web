@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 
 export class RestaurantOrdersComponent extends Component {
-    static propTypes = {
-
+    static contextTypes = {
+        dependencies: React.PropTypes.object.isRequired
     }
+
+    static dependencies = {}
 
     render() {
         return (
@@ -11,6 +13,6 @@ export class RestaurantOrdersComponent extends Component {
                 {/* TODO */}
                 <div>Past Orders at Austin Daily Press</div>
             </div>
-        )
+        );
     }
 }
