@@ -1,35 +1,39 @@
 import React, {Component} from 'react';
 
-import {RestaurantReviewsStarsComponent} from './stars';
+import {StarsComponent} from '../../stars';
 
 export class RestaurantReviewComponent extends Component {
     static propTypes = {
+        data: React.PropTypes.object.isRequired,
         review: React.PropTypes.object.isRequired
     }
 
     render() {
-        const {review} = this.props;
+        const {review, data} = this.props;
+        const url = `${data.url}#hrid:${review.id}`;
 
         return (
-            <div className="gb-restaurant-review fix-collapse">
-                <div className="col left">
-                    <div className="user-profile">
-                        <div className="user-profile-pic">
-                            <img src={review.user.image_url} alt="User's Profile Picture" />
-                        </div>
-                        <div className="user-profile-name">
-                            {review.user.name}
-                        </div>
+            <div className="gb-restaurant-review">
+                <div className="gb-restaurant-review-user">
+                    <div className="gb-restaurant-review-user-pic">
+                        <img width={50} height={50} src={review.user.image_url}/>
+                    </div>
+
+                    <div className="gb-restaurant-review-user-name">
+                        {review.user.name}
                     </div>
                 </div>
-                <div className="col right">
-                    <RestaurantReviewsStarsComponent stars={review.rating} />
-                    <div className="user-review">
+
+                <div className="gb-restaurant-review-content">
+                    <StarsComponent rating={review.rating}/>
+
+                    <div className="gb-restaurant-review-excerpt">
                         {review.excerpt}
-                        <span className="read-more-link">
-                            <a href="#">Read More</a>
-                        </span>
                     </div>
+
+                    <a href={url} className="gb-restaurant-review-readmore">
+                        Read More
+                    </a>
                 </div>
             </div>
         );

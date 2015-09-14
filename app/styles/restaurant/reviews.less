@@ -2,81 +2,90 @@
     .gb-restaurant-content;
 }
 
-.gb-restaurant-reviews-total {
-    position: relative;
-    margin-bottom: 50px;
+.gb-restaurant-reviews-count {
+    font-weight: 600;
 
-    div {
+    .gb-stars {
+        font-size: 20px;
+        margin-left: 5px;
+    }
+
+    & > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
+.gb-restaurant-reviews-bottom {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.gb-restaurant-reviews-seeall {
+    background: @gb-red;
+    border-bottom: 2px solid darken(@gb-red, 20%);
+    border-radius: @gb-border-radius / 2px;
+    border-top: none;
+    border: 1px solid darken(@gb-red, 20%);
+    color: @gb-white;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+
+    @media screen and (min-width: 960px) {
         display: inline-block;
     }
-
-    .reviews-total {
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-    .gb-restaurant-reviews-stars {
-        position: absolute;
-        top: 0;
-        margin-left: 6px;
-        font-size: 20px;
-        color: @gb-yellow;
-    }
 }
 
-.gb-restaurant-reviews-review {
-    margin-bottom: 50px;
+.gb-restaurant-review {
+    margin-top: 50px;
+}
 
-    .col.left {
-        width: 100px;
-        margin-right: 20px;
-    }
+.gb-restaurant-review-user {
+    display: inline-block;
+    margin-right: 20px;
+    margin-top: 20px;
+    text-align: center;
+    vertical-align: top;
+    width: 100px;
 
-    .col.right {
-        width: 70%;
-    }
-
-    .user-profile {
-        div,
-        img {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-
-    .user-profile-pic > img {
-        margin-top: 15px;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-    }
-
-    .user-profile-name {
-        margin-top: 5px;
-        text-align: center;
-        color: @gb-gray;
-    }
-
-    .gb-restaurant-reviews-stars {
-        font-size: 17px;
-        margin-bottom: 4px;
-    }
-
-    .read-more-link {
+    @media screen and (max-width: 960px) {
         display: block;
-        margin-top: 8px;
-    }
-}
-
-.gb-restaurant-reviews-button {
-    margin-top: 150px;
-
-    .btn {
         margin: 0 auto;
     }
 }
 
-.gb-restaurant-reviews-stars {
-    color: @gb-yellow;
+.gb-restaurant-review-user-pic {
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+}
+
+.gb-restaurant-review-user-name {
+    color: @gb-gray;
+}
+
+.gb-restaurant-review-content {
+    display: inline-block;
+    max-width: 400px;
+
+    & > .gb-stars {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 17px;
+
+        @media screen and (max-width: 960px) {
+            text-align: center;
+        }
+    }
+}
+
+.gb-restaurant-review-readmore {
+    .gb-link;
+
+    display: block;
+    margin-top: 10px;
 }

@@ -11,16 +11,65 @@
 
 [class^="icon-"], [class*=" icon-"] {
 	font-family: 'icomoon';
-	speak: none;
 	font-style: normal;
-	font-weight: normal;
 	font-variant: normal;
-	text-transform: none;
+	font-weight: normal;
 	line-height: 1;
+	speak: none;
+	text-transform: none;
+    display: inline;
 
 	/* Better Font Rendering =========== */
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.gb-icon {
+	font-family: 'icomoon';
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	line-height: 1;
+	speak: none;
+	text-transform: none;
+    display: inline;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.gb-stars {
+    display: inline;
+}
+
+.gb-stars-full {
+    .gb-icon;
+
+    &:before {
+        content: "\e605";
+        color: @gb-yellow;
+    }
+}
+
+.gb-stars-half {
+    .gb-icon;
+    display: inline;
+
+    &:before {
+        content: "\e606";
+        color: @gb-yellow;
+    }
+}
+
+.gb-stars-empty {
+    .gb-icon;
+    display: inline;
+
+    &:before {
+        content: "\e603";
+        color: @gb-yellow;
+    }
 }
 
 .icon-arrow_side:before {
