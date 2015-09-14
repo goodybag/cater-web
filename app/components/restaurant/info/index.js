@@ -1,129 +1,205 @@
 import React, {Component} from 'react';
 
-import {Restaurant} from '../../../models/restaurant';
-import {RestaurantDollarsComponent} from './dollars';
+import {RestaurantResolver} from '../../../models/restaurant';
 import {RestaurantGmapComponent} from './gmap';
 
 export class RestaurantInfoComponent extends Component {
-    static propTypes = {
-        restaurant: Restaurant.propType.isRequired
+    static contextTypes = {
+        dependencies: React.PropTypes.object.isRequired
+    }
+
+    static dependencies = {
+        restaurant: RestaurantResolver
     }
 
     render() {
-        const { restaurant }            = this.props;
-        const { cuisine, price,
-                minimum_order, street,
-                city, state, zip,
-                websites }              = restaurant.attributes;
-        const { returnDollarSigns }     = this;
+        const {dependencies} = this.context;
+        const {restaurant} = dependencies;
+
+        const {
+            cuisine,
+            price,
+            minimum_order,
+            street,
+            city,
+            state,
+            zip,
+            websites
+        } = restaurant.attributes;
+
+        const hours = [
+            {day: 'Monday', time: '11:00 am — 9:00 pm'},
+            {day: 'Tuesday', time: '11:00 am — 9:00 pm'},
+            {day: 'Wednesday', time: '11:00 am — 9:00 pm'},
+            {day: 'Thursday', time: '11:00 am — 9:00 pm'},
+            {day: 'Friday', time: '11:00 am — 9:00 pm'},
+            {day: 'Saturday', time: '11:00 am — 9:00 pm'},
+            {day: 'Sunday', time: '11:00 am — 9:00 pm'}
+        ];
+
+        const leadTimes = [
+            {guests: 30, hours: 16},
+            {guests: 50, hours: 24},
+            {guests: 100, hours: 36},
+            {guests: 200, hours: 48}
+        ];
 
         return (
-            <div className="gb-restaurant-info fix-collapse">
-                <div className="col left">
-                    <div className="gb-restaurant-info-cuisine section">
-                        <div className="content">
-                            <div className="cuisine">
-                                {cuisine}
-                            </div>
-                            <div>
-                                <i className="icon-bullet">&bull;</i>
-                            </div>
-                            <RestaurantDollarsComponent price={price} />
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-delivery-hours section fix-collapse">
-                        <div className="title">
+            <div className="gb-restaurant-info">
+                <div className="gb-restaurant-info-left">
+                    <RestaurantInfoSectionComponent>
+                        {cuisine} &bull; <PriceComponent price={price}/>
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Delivery Hours
-                        </div>
-                        <div className="content">
-                            <div className="col left">
-                                <span>Monday</span>
-                                <span>Tuesday</span>
-                                <span>Wednesday</span>
-                                <span>Thursday</span>
-                                <span>Friday</span>
-                                <span>Saturday</span>
-                                <span>Sunday</span>
-                            </div>
-                            <div className="col right">
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                                <span>11:00 am - 9:00 pm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-lead-times section fix-collapse">
-                        <div className="title">
+                        </RestaurantInfoHeaderComponent>
+
+                        <table>
+                            <tbody>{hours.map(renderHour)}</tbody>
+                        </table>
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Lead Times
-                        </div>
-                        <div className="content">
-                            <div className="col left">
-                                <span>Up to 30 guests</span>
-                                <span>Up to 50 guests</span>
-                                <span>Up to 100 guests</span>
-                                <span>Up to 200 guests</span>
-                            </div>
-                            <div className="col right">
-                                <span>16 hrs</span>
-                                <span>24 hrs</span>
-                                <span>36 hrs</span>
-                                <span>48 hrs</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-order-minimum section">
-                        <div className="title">
+                        </RestaurantInfoHeaderComponent>
+
+                        <table>
+                            <tbody>{leadTimes.map(renderLeadTime)}</tbody>
+                        </table>
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Order Minimum
-                        </div>
-                        <div className="content">
-                            {minimum_order ? minimum_order : "$0.00"}
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-max-guests section">
-                        <div className="title">
+                        </RestaurantInfoHeaderComponent>
+
+                        {minimum_order ? minimum_order : 'None'}
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Max Guests
-                        </div>
-                        <div className="content">
-                            500
-                        </div>
-                    </div>
+                        </RestaurantInfoHeaderComponent>
+
+                        500
+                    </RestaurantInfoSectionComponent>
                 </div>
-                <div className="col right">
-                    <div className="section">
+
+                <div className="gb-restaurant-info-right">
+                    <RestaurantInfoSectionComponent>
                         <RestaurantGmapComponent />
-                    </div>
-                    <div className="gb-restaurant-info-address section">
-                        <div className="title">
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Address
-                        </div>
-                        <div className="content">
-                            <span>{street}</span>
-                            <span>{city+", "+state+" "+zip}</span>
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-phone section">
-                        <div className="title">
+                        </RestaurantInfoHeaderComponent>
+
+                        <div>{street}</div>
+                        <div>{city}, {state} {zip}</div>
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Phone
-                        </div>
-                        <div className="content">
-                            Give us a call to place an order here!
-                            <span>512-270-6555</span>
-                        </div>
-                    </div>
-                    <div className="gb-restaurant-info-website section">
-                        <div className="title">
+                        </RestaurantInfoHeaderComponent>
+
+                        <div>Give us a call to place an order here!</div>
+                        <div>512-270-6555</div>
+                    </RestaurantInfoSectionComponent>
+
+                    <RestaurantInfoSectionComponent>
+                        <RestaurantInfoHeaderComponent>
                             Website
-                        </div>
-                        <div className="content">
-                            {websites}
-                        </div>
-                    </div>
+                        </RestaurantInfoHeaderComponent>
+
+                        {websites.map(renderWebsite)}
+                    </RestaurantInfoSectionComponent>
                 </div>
             </div>
-        )
+        );
+
+        function renderHour({day, time}) {
+            return (
+                <tr key={day}>
+                    <td>{day}</td>
+                    <td>{time}</td>
+                </tr>
+            );
+        }
+
+        function renderLeadTime({guests, hours}) {
+            return (
+                <tr key={guests}>
+                    <td>Up to {guests} guests</td>
+                    <td>{hours} hrs</td>
+                </tr>
+            );
+        }
+
+        function renderWebsite(website) {
+            return (
+                <a key={website} href={website}>{website}</a>
+            );
+        }
+    }
+}
+
+class RestaurantInfoSectionComponent extends Component {
+    static propTypes = {
+        children: React.PropTypes.node
+    }
+
+    render() {
+        const {children} = this.props;
+
+        return (
+            <div className="gb-restaurant-info-section">
+                {children}
+            </div>
+        );
+    }
+}
+
+class RestaurantInfoHeaderComponent extends Component {
+    static propTypes = {
+        children: React.PropTypes.node
+    }
+
+    render() {
+        const {children} = this.props;
+
+        return (
+            <div className="gb-restaurant-info-header">
+                {children}
+            </div>
+        );
+    }
+}
+
+class PriceComponent extends Component {
+    static propTypes = {
+        price: React.PropTypes.number.isRequired
+    }
+
+    render() {
+        const {price} = this.props;
+
+        const dollars = [1, 2, 3, 4].map(renderValue);
+
+        return (
+            <div className="gb-price">{dollars}</div>
+        );
+
+        function renderValue(value) {
+            if (value <= price) {
+                return <div key={value} className="gb-price-fill">$</div>;
+            } else {
+                return <div key={value} className="gb-price-empty">$</div>;
+            }
+        }
     }
 }

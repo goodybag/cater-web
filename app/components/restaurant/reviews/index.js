@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
 
-import {Restaurant} from '../../../models/restaurant';
+import {RestaurantResolver} from '../../../models/restaurant';
 import {RestaurantReviewsStarsComponent} from './stars';
 import {RestaurantReviewComponent} from './review';
 
 export class RestaurantReviewsComponent extends Component {
-    static propTypes = {
-        restaurant: Restaurant.propType.isRequired
+    static contextTypes = {
+        dependencies: React.PropTypes.object.isRequired
     }
 
+    static dependencies = {
+        restaurant: RestaurantResolver
+    }
+
+
     render() {
-        const {restaurant} = this.props;
+        const {dependencies} = this.context;
+        const {restaurant} = dependencies;
         const {yelp_data} = restaurant.attributes;
 
         return (
