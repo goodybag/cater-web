@@ -1,8 +1,6 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 
-import {OrderItemCollection} from './order-item';
-
 export class Order extends Model {
     static schema = {
         type: 'object',
@@ -65,19 +63,8 @@ export class Order extends Model {
             delivery_instructions: attrs.delivery_instructions,
             status: attrs.status,
             total: attrs.total,
-            type: attrs.type,
-            orderItems: attrs.orderItems && new OrderItemCollection(attrs.orderItems, {order_id: this.id, parse: true})
+            type: attrs.type
         };
-    }
-
-    items() {
-        if (this.has('orderItems')) {
-            return this.get('orderItems');
-        } else {
-            const orderItems = new OrderItemCollection([], {order_id: this.id});
-            this.set({orderItems});
-            return orderItems;
-        }
     }
 
     displayAddress() {
@@ -88,5 +75,17 @@ export class Order extends Model {
         } else {
             return `${street}, ${city}, ${state}`;
         }
+    }
+}
+
+export class OrderResolver {
+    static parse(order) {
+        return new Order(order, {parse: true});
+    }
+
+    constructor() {
+        const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
+
+        return order.fetch().then(() => order);
     }
 }

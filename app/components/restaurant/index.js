@@ -1,8 +1,5 @@
 import React, {Component} from 'react';
 
-import {Restaurant} from '../../models/restaurant';
-import {Order} from '../../models/order';
-import {OrderItemCollection} from '../../models/order-item';
 import {OrderPaneComponent} from '../order-pane';
 import {RestaurantCoverComponent} from './cover';
 import {RestaurantTabsComponent} from './tabs';
@@ -13,76 +10,34 @@ import {RestaurantOrdersComponent} from './past-orders';
 
 export class RestaurantComponent extends Component {
     static propTypes = {
-        restaurant: Restaurant.propType.isRequired,
-        order: Order.propType.isRequired,
-        orderItems: OrderItemCollection.propType.isRequired
+        children: React.PropTypes.node
     }
 
-    static childContextTypes = {
-        restaurant: Restaurant.propType.isRequired
+    static route(router) {
+        router.dir('restaurants').param('restaurant_id').call(router => {
+            router.index(RestaurantMenuComponent);
+            router.dir('info').index(RestaurantInfoComponent);
+            router.dir('reviews').index(RestaurantReviewsComponent);
+            router.dir('orders').index(RestaurantOrdersComponent);
+        });
     }
 
-    state = {
-        currentTabIndex: 0
-    }
-
-    handleNewTabIndex = (index) => {
-        this.setState({currentTabIndex: index});
-    }
-
-    getChildContext() {
-        const {restaurant} = this.props;
-
-        return {restaurant};
+    static dependencies = {
+        ...RestaurantCoverComponent.dependencies,
+        ...OrderPaneComponent.dependencies,
+        ...RestaurantTabsComponent.dependencies
     }
 
     render() {
-        const {order, orderItems} = this.props;
-        const {currentTabIndex} = this.state;
-
-        const tabs = [
-            {
-                title: 'Menu',
-                body: <RestaurantMenuComponent/>
-            },
-
-            {
-                title: 'Info',
-                body: <RestaurantInfoComponent/>
-            },
-
-            {
-                title: 'Reviews',
-                body: <RestaurantReviewsComponent/>
-            },
-
-            {
-                title: (
-                    <span>
-                        Past Orders
-                        <div className="gb-restaurant-tab-ncount">3</div>
-                    </span>
-                ),
-                body: <RestaurantOrdersComponent/>
-            }
-        ];
+        const {children} = this.props;
 
         return (
             <div className="gb-restaurant">
                 <RestaurantCoverComponent/>
+                <OrderPaneComponent/>
+                <RestaurantTabsComponent/>
 
-                <OrderPaneComponent
-                    order={order}
-                    orderItems={orderItems}
-                />
-
-                <RestaurantTabsComponent
-                    tabs={tabs}
-                    onNewTabIndex={this.handleNewTabIndex}
-                    currentTabIndex={currentTabIndex}
-                />
-
-                {tabs[currentTabIndex].body}
+                {children}
             </div>
         );
     }

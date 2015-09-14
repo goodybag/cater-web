@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Dispatcher} from 'flux';
 
+import {UpdateOrderAction} from '../../actions/order';
 import {Order} from '../../models/order';
 import {OrderPaneInfoEditComponent} from './edit';
 
@@ -10,7 +11,11 @@ export class OrderPaneInfoComponent extends Component {
     }
 
     static contextTypes = {
-        dispatcher: React.PropTypes.instanceOf(Dispatcher).isRequired
+        dependencies: React.PropTypes.object.isRequired
+    }
+
+    static dependencies = {
+        dispatcher: Dispatcher
     }
 
     state = {
@@ -27,7 +32,7 @@ export class OrderPaneInfoComponent extends Component {
         const {dispatcher} = this.context;
         const {order} = this.props;
 
-        // dispatcher.dispatch(new UpdateOrderAction({order, changes}));
+        dispatcher.dispatch(new UpdateOrderAction({order, changes}));
         this.setState({editing: false});
     }
 
@@ -74,7 +79,7 @@ export class OrderPaneInfoShowComponent extends Component {
     }
 
     render() {
-        const {order, onStartEditing} = this.props;
+        const {order} = this.props;
         const {guests, datetime} = order.attributes;
         const address = order.displayAddress();
 

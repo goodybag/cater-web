@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 
-import {Restaurant} from '../../models/restaurant';
+import {RestaurantResolver} from '../../models/restaurant';
 
 export class RestaurantCoverComponent extends Component {
     static contextTypes = {
-        restaurant: Restaurant.propType.isRequired
+        dependencies: React.PropTypes.object.isRequired
     }
 
+    static dependencies = {restaurant: RestaurantResolver}
+
     render() {
-        const {restaurant} = this.context;
+        const {dependencies} = this.context;
+        const {restaurant} = dependencies;
         const {name} = restaurant.attributes;
 
         return (

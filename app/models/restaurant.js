@@ -1,11 +1,16 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
+import {inject, Params} from '../lib/injection';
 
 export class Restaurant extends Model {
     static schema = {
         type: 'object',
         required: ['name', 'is_hidden'],
         properties: {
+            id: {
+                type: 'number'
+            },
+
             name: {
                 type: 'string'
             },
@@ -27,4 +32,21 @@ export class Restaurant extends Model {
     }
 
     urlRoot = `${process.env.GOODYBAG_API}/restaurants`
+}
+
+@inject(Params)
+export class RestaurantResolver {
+    static parse(restaurant) {
+        return new Restaurant(restaurant, {parse: true});
+    }
+
+    constructor(params) {
+        if (isNaN(+params.restaurant_id)) {
+            throw new TypeError(`restaurant_id ${params.restaurant_id} is not a number`);
+        }
+
+        const restaurant = new Restaurant({id: params.restaurant_id});
+
+        return restaurant.fetch().then(() => restaurant);
+    }
 }
