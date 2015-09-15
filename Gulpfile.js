@@ -70,6 +70,14 @@ gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('compress', ['final'], function() {
+    var gzip = require('gulp-gzip');
+
+    return gulp.src('dist/final/**/!(*.gz)')
+        .pipe(gzip())
+        .pipe(gulp.dest('dist/final'));
+});
+
 gulp.task('watch-bundle', function() {
     getWebpack().watch({}, handleWebpackErrors(logWebpackErrors));
 });
