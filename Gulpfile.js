@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var smaps = require('gulp-sourcemaps');
+var filter = require('gulp-filter');
 
 gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
 
@@ -48,6 +49,25 @@ gulp.task('compile', function() {
 // dist/build
 gulp.task('migrate', function() {
     return gulp.src('public/**/*').pipe(gulp.dest('dist/build'));
+});
+
+gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
+    var RevAll = require('gulp-rev-all');
+    var uglify = require('gulp-uglify');
+
+    var onlyJs = filter('*.js', {restore: true});
+    var revAll = new RevAll();
+
+    revAll.revisioner.pathBase = ''; // TODO: PR for gulp-rev-all
+
+    return gulp.src('dist/build/**/!(*.map)')
+        .pipe(onlyJs)
+        .pipe(uglify())
+        .pipe(onlyJs.restore)
+        .pipe(revAll.revision())
+        .pipe(gulp.dest('dist/final'))
+        .pipe(revAll.manifestFile())
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch-bundle', function() {
