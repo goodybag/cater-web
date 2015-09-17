@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "prepublish": "gulp compress",
+    "prepublish": "rm -rf dist && gulp compress",
     "test": "eslint app && NODE_ENV=test mocha"
   },
   "repository": {
