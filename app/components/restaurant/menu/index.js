@@ -7,6 +7,8 @@ export class RestaurantMenuComponent extends Component {
         return (
             <div className="gb-restaurant-menu">
                 {/* TODO */}
+                <div>CATERING MENU INDIVIDUAL MENU</div>
+                <div>Popular Items</div>
             </div>
         );
     }

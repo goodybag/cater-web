@@ -1,0 +1,50 @@
+.gb-restaurant-info {
+    .gb-restaurant-content;
+
+    overflow: hidden;
+}
+
+.gb-restaurant-info-column {
+    @media screen and (min-width: 960px) {
+        width: 50%;
+    }
+}
+
+.gb-restaurant-info-left {
+    .gb-restaurant-info-column;
+
+    @media screen and (min-width: 960px) {
+        float: left;
+    }
+}
+
+.gb-restaurant-info-right {
+    .gb-restaurant-info-column;
+
+    @media screen and (min-width: 960px) {
+        float: right;
+    }
+}
+
+.gb-restaurant-info-section {
+    & + & {
+        margin-top: 25px;
+    }
+
+    table tr > td:first-of-type {
+        padding-right: 20px;
+    }
+}
+
+.gb-restaurant-info-header {
+    font-weight: 600;
+}
+
+// Google map
+.gb-restaurant-info-gmap {
+    width: 98%;
+    height: 320px;
+    background: @gb-soft;
+    border: 1px solid @gb-subtle;
+    border-radius: @gb-border-radius / 2;
+}

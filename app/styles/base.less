@@ -1,4 +1,4 @@
-@gb-foreground: #434a54;
+@gb-foreground: #424a54;
 @gb-background: #ffffff;
 @gb-white: #ffffff;
 @gb-bright: #e6e9ed;
@@ -9,9 +9,11 @@
 @gb-bold: #3B3F47;
 @gb-soft: #ccd1d9;
 @gb-subtle: #aab2bd;
-@gb-red: #ed4242;
-@gb-blue: #5d9cec;
+@gb-gray: #7B828D;
 @gb-red: #ff3333; // web-safe version of #ed4242
+@gb-yellow: #F4BB41;
+@gb-blue: #4A89DC;
+
 @gb-border-radius: 4px;
 
 html {
@@ -39,12 +41,14 @@ a {
     text-decoration: none;
 }
 
+table {
+    border-spacing: 0;
+}
+
 .gb-body {
     margin-left: auto;
     margin-right: auto;
     max-width: 960px;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 .gb-small-arrow {
@@ -54,4 +58,61 @@ a {
     border-width: 10px;
     height: 0;
     width: 0;
+}
+
+.gb-link {
+    color: @gb-blue;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// * TWO-COLUMN LAYOUT STYLES
+//////////////////////////////
+.col {
+    float: left;
+    width: 50%;
+}
+
+.fix-collapse { // keeps parent div from collapsing
+                // when children are floating
+    overflow: auto;
+}
+
+// * BUTTON STYLES
+///////////////////
+input[type="button"],
+.btn {
+    display: block;
+    color: @gb-background;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 20px;
+}
+
+.action-btn {
+    background: @gb-red;
+    border: 1px solid darken(@gb-red, 20%);
+    border-top: none;
+    border-bottom: 2px solid darken(@gb-red, 20%);
+    border-radius: @gb-border-radius / 2px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: lighten(@gb-red, 3%);
+    }
+}
+
+.gb-price {
+    display: inline;
+}
+
+.gb-price-fill {
+    display: inline;
+}
+
+.gb-price-empty {
+    display: inline;
+    color: @gb-subtle;
 }
