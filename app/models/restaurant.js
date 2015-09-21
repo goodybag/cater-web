@@ -41,10 +41,6 @@ export class RestaurantResolver {
     }
 
     constructor(params) {
-        if (isNaN(+params.restaurant_id)) {
-            throw new TypeError(`restaurant_id ${params.restaurant_id} is not a number`);
-        }
-
         const restaurant = new Restaurant({id: params.restaurant_id});
 
         return restaurant.fetch().then(() => restaurant);

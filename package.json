@@ -1,8 +1,9 @@
 {
   "name": "goodybag-app",
+  "private": true,
   "version": "1.0.0",
   "scripts": {
-    "prepublish": "gulp final",
+    "prepublish": "rm -rf dist && gulp compress",
     "test": "eslint app && NODE_ENV=test mocha"
   },
   "repository": {
@@ -41,6 +42,7 @@
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.0",
     "gulp-filter": "^3.0.1",
+    "gulp-gzip": "^1.2.0",
     "gulp-less": "^3.0.3",
     "gulp-minify-css": "^1.2.0",
     "gulp-rev-all": "^0.8.21",
