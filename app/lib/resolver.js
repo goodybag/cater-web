@@ -9,8 +9,12 @@ export default class Resolver {
     }
 
     resolveFrom(data) {
-        const results = this.dependencies.filter(hasParser).map(dep => {
-            return dep.token.parse(data[dep.name]);
+        const results = this.dependencies.map(dep => {
+            if (hasParser(dep)) {
+                return dep.token.parse(data[dep.name]);
+            } else {
+                return null;
+            }
         });
 
         return this.shapeResults(results);
