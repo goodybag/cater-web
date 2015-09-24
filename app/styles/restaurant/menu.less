@@ -1,0 +1,33 @@
+.gb-restaurant-menu {
+    overflow: hidden;
+    box-sizing: border-box;
+
+    @media screen and (min-width: 960px) {
+        max-width: 600px;
+        margin: 45px 45px 0 0;
+    }
+}
+
+.gb-restaurant-menu-tab-title {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px 0;
+    border: 1px solid @gb-subtle;
+    text-align: center;
+    width: 140px;
+    border-top: 3px solid @gb-blue;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.75em;
+
+    & + & {
+        margin-left: 5px;
+    }
+}
+
+.gb-restaurant-menu-searchbox {
+    float: right;
+    padding: 5px;
+}

@@ -1,4 +1,7 @@
-import {Model} from 'backbone';
+import {Model, Collection} from 'backbone';
+import {inject, Params} from '../lib/injection';
+
+import {MenuItemCollection} from './menu-item';
 
 export class Category extends Model {
     static schema = {
@@ -25,15 +28,50 @@ export class Category extends Model {
                 minLength: 1,
                 items: {
                     type: 'string',
-                    pattern: /^(?:Group|Individual)$/
+                    pattern: /^(?:group|individual)$/i
                 }
             }
         }
+    }
+
+    parse(attrs) {
+        attrs.items = new MenuItemCollection(attrs.items, {parse: true});
+
+        return attrs;
     }
 
     validate(attrs) {
         if (!this.validator.validate(attrs, Category.schema)) {
             return this.validator.getLastError();
         }
+    }
+}
+
+export class Menu extends Collection {
+    constructor(models, options) {
+        super(models, options);
+
+        this.restaurant_id = options && options.restaurant_id;
+    }
+
+    url() {
+        return `${process.env.GOODYBAG_API}/restaurants/${this.restaurant_id}/menu`;
+    }
+}
+
+Menu.prototype.model = Category;
+
+@inject(Params)
+export class MenuResolver {
+    static parse(menu) {
+        return new Menu(menu, {parse: true});
+    }
+
+    constructor(params) {
+        const menu = new Menu(null, {
+            restaurant_id: params.restaurant_id
+        });
+
+        return menu.fetch().then(() => menu);
     }
 }
