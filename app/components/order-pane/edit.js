@@ -47,27 +47,63 @@ export class OrderPaneInfoEditComponent extends Component {
         return (
             <div className="gb-order-pane-info-edit">
                 <div className="gb-order-pane-info-edit-location">
-                    <input
-                        type="text"
-                        value={address}
-                        onChange={this.handleAddressChange}
-                    />
+                    <div className="gb-order-pane-info-edit-text">
+                        Full address (street, city, state, zip)
+                    </div>
+                    <div className="gb-order-pane-info-edit-input">
+                        <i className="icon-locationpin"></i>
+                        <input
+                            type="text"
+                            value={address}
+                            onChange={this.handleAddressChange}
+                            className="gb-order-pane-info-edit-box"
+                        />
+                    </div>
+                </div>
+
+                <div className="gb-order-pane-info-edit-date">
+                    <div className="gb-order-pane-info-edit-text">
+                        Delivery date
+                    </div>
+                    <div className="gb-order-pane-info-edit-input">
+                        <i className="icon-calendar"></i>
+                        <input
+                            type="datetime"
+                            value={datetime}
+                            onChange={this.handleTimeChange}
+                            className="gb-order-pane-info-edit-box"
+                        />
+                    </div>
                 </div>
 
                 <div className="gb-order-pane-info-edit-time">
-                    <input
-                        type="datetime"
-                        value={datetime}
-                        onChange={this.handleTimeChange}
-                    />
+                    <div className="gb-order-pane-info-edit-text">
+                        Delivery time
+                    </div>
+                    <div className="gb-order-pane-info-edit-input">
+                        <i className="icon-clock"></i>
+                        <input
+                            type="datetime"
+                            value={datetime}
+                            onChange={this.handleTimeChange}
+                            className="gb-order-pane-info-edit-box"
+                        />
+                    </div>
                 </div>
 
                 <div className="gb-order-pane-info-edit-guests">
-                    <input
-                        type="number"
-                        value={guests}
-                        onChange={this.handleGuestsChange}
-                    />
+                    <div className="gb-order-pane-info-edit-text">
+                        Guests
+                    </div>
+                    <div className="gb-order-pane-info-edit-input">
+                        <i className="icon-profile"></i>
+                        <input
+                            type="number"
+                            value={guests}
+                            onChange={this.handleGuestsChange}
+                            className="gb-order-pane-info-edit-box"
+                        />
+                    </div>
                 </div>
 
                 <div className="gb-order-pane-info-edit-save" onClick={this.saveInfo}>

@@ -1,0 +1,58 @@
+.gb-order-pane-info-edit-location,
+.gb-order-pane-info-edit-date,
+.gb-order-pane-info-edit-time,
+.gb-order-pane-info-edit-guests {
+    margin-bottom: 10px;
+}
+
+.gb-order-pane-info-edit-input {
+    .gb-order-pane-box;
+
+    background: @gb-white;
+    color: @gb-foreground;
+    font-weight: normal;
+    padding-left: 10px;
+
+    &:hover {
+        cursor: text;
+    }
+
+    & > * {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    i[class^="icon-"] {
+        display: inline-block;
+        margin-right: 3px;
+        color: @gb-gray;
+        font-size: 18px;
+    }
+
+    .gb-order-pane-info-edit-box {
+        font-size: 1em;
+        border: 0;
+        outline: 0;
+        width: 80%;
+    }
+}
+
+.gb-order-pane-info-edit-text {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.gb-order-pane-info-edit-save {
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 7px 0;
+    background: @gb-red;
+    border: 1px solid darken(@gb-red, 20%);
+    border-bottom: 2px solid darken(@gb-red, 20%);
+    border-radius: @gb-border-radius / 2px;
+    border-top: none;
+}
