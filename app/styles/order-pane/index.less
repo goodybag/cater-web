@@ -2,6 +2,8 @@
 @import "share";
 @import "items";
 @import "edit";
+@import "datetime";
+@import "timeleft";
 
 .gb-order-pane {
     width: 320px;
@@ -17,7 +19,7 @@
 }
 
 .gb-order-pane-section {
-    padding: 15px 25px;
+    padding: 12px 25px;
     position: relative;
 }
 
@@ -25,7 +27,10 @@
     .gb-order-pane-section;
 
     background-color: @gb-darker;
-    color: @gb-grey;
+    border-top: 1px solid @gb-shadow-light;
+    border-bottom: 1px solid @gb-shadow-dark;
+    color: @gb-gray;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
 }
