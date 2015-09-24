@@ -4,6 +4,7 @@ import {Dispatcher} from 'flux';
 import {UpdateOrderAction} from '../../actions/order';
 import {Order} from '../../models/order';
 import {OrderPaneInfoEditComponent} from './edit';
+import {OrderPaneDateTimeComponent} from './datetime';
 
 export class OrderPaneInfoComponent extends Component {
     static propTypes = {
@@ -78,22 +79,54 @@ export class OrderPaneInfoShowComponent extends Component {
         onStartEditing();
     }
 
+    returnDate = (datetime) => {
+        const date = new Date(datetime);
+
+        return (
+            date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
+        );
+    }
+
+    returnTime = (date) => {
+        return (
+            date.getHours() + ":" + date.getMinutes()
+        );
+    }
+
     render() {
         const {order} = this.props;
-        const {guests, datetime} = order.attributes;
+        const {guests, datetime, timezone} = order.attributes;
         const address = order.displayAddress();
+        const {returnDate} = this;
+        const {returnTime} = this;
 
         return (
             <div className="gb-order-pane-info-show">
                 <div className="gb-order-pane-info-location">
+                    <i className="icon-locationpin"></i>
                     {address}
                 </div>
 
+                <div className="gb-order-pane-info-date">
+                    <i className="icon-calendar"></i>
+                        <OrderPaneDateTimeComponent
+                            datetime={datetime}
+                            timezone={timezone}
+                            displayDate={true}
+                        />
+                </div>
+
                 <div className="gb-order-pane-info-time">
-                    {datetime}
+                    <i className="icon-clock"></i>
+                    <OrderPaneDateTimeComponent
+                        datetime={datetime}
+                        timezone={timezone}
+                        displayTimeRange={true}
+                    />
                 </div>
 
                 <div className="gb-order-pane-info-guests">
+                    <i className="icon-profile"></i>
                     {guests}
                 </div>
 
