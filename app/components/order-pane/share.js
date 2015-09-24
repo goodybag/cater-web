@@ -29,12 +29,30 @@ export class OrderPaneShareComponent extends Component {
                     Let others add their own food by sharing this order:
                 </div>
 
-                <input
-                    ref="gbOrderPaneShareLinkbox"
-                    className="gb-order-pane-share-linkbox"
-                    value={url}
-                    readOnly
-                />
+                <div className="gb-order-pane-share-box">
+                    <div className="gb-order-pane-share-head">
+                        <i className="icon-link"></i>
+                        Send link to others:
+                    </div>
+                    <input
+                        ref="gbOrderPaneShareLinkbox"
+                        className="gb-order-pane-share-linkbox"
+                        value={url}
+                        readOnly
+                    />
+                </div>
+
+                <div className="gb-order-pane-share-box">
+                    <div className="gb-order-pane-share-head">
+                        <i className="icon-email2"></i>
+                        Or invite by email:
+                    </div>
+                    <a href="/" className="gb-order-pane-share-email">
+                        Share order by email
+                    </a>
+                </div>
+
+
             </div>
         );
     }
