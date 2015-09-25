@@ -73,6 +73,11 @@ export class RestaurantOrdersComponent extends Component {
                             <th>DELIVERY DATE</th>
                             <th>DELIVERY TIME</th>
                             <th>TOTAL</th>
+                            <th>{/* Expired */}</th>
+                            <th>{/* Resume */}</th>
+                            <th>{/* View */}</th>
+                            <th>{/* Duplicate */}</th>
+                            <th>{/* Cancel */}</th>
                         </tr>
                     </thead>
                     <tbody className="gb-restaurant-orders-tbody">

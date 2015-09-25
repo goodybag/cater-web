@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import {RestaurantOrdersStatusLabelComponent} from './status-label';
+
 import moment from 'moment-timezone';
 
 export class RestaurantOrdersRowComponent extends Component {
@@ -8,14 +10,6 @@ export class RestaurantOrdersRowComponent extends Component {
         datetime: React.PropTypes.string.isRequired,
         timezone: React.PropTypes.string.isRequired,
         total: React.PropTypes.number.isRequired
-    }
-
-    displayStatus = (status) => {
-        if(status==="pending") {
-            return "Draft"
-        } else {
-            return [status.slice(0,1).toUpperCase(), status.slice(1)].join('');
-        }
     }
 
     formatPrice = (price) => {
@@ -30,13 +24,15 @@ export class RestaurantOrdersRowComponent extends Component {
     render() {
         const {status, datetime, timezone, total} = this.props;
         const {displayStatus, formatPrice} = this;
-        const date = moment.tz(datetime, timezone).format('MM/DD/YYYY');
+        const date = moment.tz(datetime, timezone).format('M/DD/YY');
         const time = moment.tz(datetime, timezone).format('HH:mm a');
 
         return (
             <tr className="gb-restaurant-orders-row">
                 <td className="gb-restaurant-orders-row-status">
-                    {displayStatus(status)}
+                    <RestaurantOrdersStatusLabelComponent
+                        status={status}
+                    />
                 </td>
                 <td className="gb-restaurant-orders-row-date">
                     {date}
@@ -68,7 +64,7 @@ export class RestaurantOrdersRowComponent extends Component {
                         Duplicate
                     </a>
                 </td>
-                <td classname="gb-restaurant-orders-row-cancel">
+                <td className="gb-restaurant-orders-row-cancel">
                     <a href="#">
                         {
                             status === "canceled" ? "" :

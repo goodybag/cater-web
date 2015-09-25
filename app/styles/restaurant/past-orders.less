@@ -1,3 +1,90 @@
 .gb-restaurant-orders {
     .gb-restaurant-content;
+
+    font-size: 14px;
+}
+
+.gb-restaurant-orders-title {
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.gb-restaurant-orders-table {
+    text-align: left;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.gb-restaurant-orders-thead {
+    font-size: 12px;
+    color: @gb-subtle;
+
+    th {
+        border-bottom: 1px solid @gb-soft;
+        vertical-align: bottom;
+    }
+
+    th:nth-child(2),    // Delivery date
+    th:nth-child(3) {   // Delivery time
+        width: 90px;
+    }
+}
+
+.gb-restaurant-orders-tbody {
+    tr {
+        line-height: 3;
+    }
+
+    td a {
+        color: @gb-blue;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+// TODO: Abstract into status-label.less
+.gb-restaurant-orders-status-label {
+    position: relative;
+
+    // TODO: extract
+    div[class^="gb-restaurant-orders-status-label-"] {
+        line-height: 1.6;
+        font-weight: 600;
+        color: @gb-white;
+        width: 80px;
+        text-align: center;
+        font-size: 13px;
+        border-radius: 3px;
+    }
+}
+
+.gb-restaurant-orders-status-label-draft {
+    background-color: @gb-yellow;
+
+    &::before { // Red Dot
+        content: "";
+        position: absolute;
+        top: 5px;
+        left: -14px;
+        display: inline-block;
+        background-color: @gb-red;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        margin-right: 30px;
+    }
+}
+
+.gb-restaurant-orders-status-label-submitted {
+    background-color: @gb-skyblue;
+}
+
+.gb-restaurant-orders-status-label-accepted {
+    background-color: @gb-teal;
+}
+
+.gb-restaurant-orders-status-label-canceled {
+    background-color: @gb-gray;
 }
