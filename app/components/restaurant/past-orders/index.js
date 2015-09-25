@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import {RestaurantResolver} from '../../../models/restaurant';
 import {RestaurantOrdersRowComponent} from './row';
+import {RestaurantOrdersAlertComponent} from './alert';
 
 export class RestaurantOrdersComponent extends Component {
     static dependencies = {}
@@ -66,6 +67,11 @@ export class RestaurantOrdersComponent extends Component {
                 <div className="gb-restaurant-orders-title">
                     Past Orders at {restaurantName}
                 </div>
+                {/* TODO: Add alerts here
+                    <RestaurantOrdersAlertComponent
+                        message="This order has been restored to a Draft."
+                    />
+                */}
                 <table className="gb-restaurant-orders-table">
                     <thead className="gb-restaurant-orders-thead">
                         <tr>

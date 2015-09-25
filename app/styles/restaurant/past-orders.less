@@ -2,6 +2,7 @@
     .gb-restaurant-content;
 
     font-size: 14px;
+    position: relative;
 }
 
 .gb-restaurant-orders-title {
@@ -66,7 +67,7 @@
     &::before { // Red Dot
         content: "";
         position: absolute;
-        top: 5px;
+        top: 6px;
         left: -14px;
         display: inline-block;
         background-color: @gb-red;
@@ -87,4 +88,28 @@
 
 .gb-restaurant-orders-status-label-canceled {
     background-color: @gb-gray;
+}
+
+//TODO: Abstract into alert.less
+
+.gb-restaurant-orders-alert {
+    box-sizing: border-box;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    background: @gb-pale-yellow;
+    border-top: 1px solid @gb-yellow;
+    border-bottom: 1px solid @gb-yellow;
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+
+    a {
+        color: @gb-blue;
+        margin-left: 2px;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
