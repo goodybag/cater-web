@@ -1,5 +1,26 @@
 .gb-order-pane-share {
     .gb-order-pane-section;
+
+    border-top: 1px solid @gb-shadow-light;
+    border-bottom: 1px solid @gb-shadow-dark;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.gb-order-pane-share-box {
+    margin: 12px 0;
+}
+
+.gb-order-pane-share-head {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+
+    i[class^="icon-"] {
+        font-size: 15px;
+        color: @gb-red;
+        margin-right: 10px;
+    }
 }
 
 .gb-order-pane-share-linkbox {
@@ -13,5 +34,22 @@
 
     &:hover {
         cursor: text;
+    }
+}
+
+.gb-order-pane-share-email {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: 1px solid @gb-white;
+    border-radius: 3px;
+    padding: 7px 0;
+
+    &:hover {
+        background: @gb-red;
+        border: 1px solid darken(@gb-red, 20%);
+        border-bottom: 2px solid darken(@gb-red, 20%);
+        border-radius: @gb-border-radius / 2px;
+        border-top: none;
     }
 }

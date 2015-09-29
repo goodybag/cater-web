@@ -73,7 +73,7 @@ export class Order extends Model {
         if (street == null || city == null || state == null) {
             return `${zip}`;
         } else {
-            return `${street}, ${city}, ${state}`;
+            return `${street}, ${city}, ${state}, ${zip}`;
         }
     }
 }

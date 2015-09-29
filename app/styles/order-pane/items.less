@@ -1,41 +1,54 @@
 .gb-order-pane-items {
     .gb-order-pane-section;
-}
 
-.gb-order-pane-item {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    overflow: hidden;
-    font-size: 14px;
-
-    &:first-of-type {
-        padding-top: 0;
-    }
-
-    &:last-of-type {
-        padding-bottom: 0;
-    }
+    border-top: 1px solid @gb-shadow-light;
+    border-bottom: 1px solid @gb-shadow-dark;
+    font-size: 13px;
+    position: relative;
 }
 
 .gb-order-pane-item-info {
-    float: left;
-    width: 80%;
+    width: 100%;
 }
 
-.gb-order-pane-item-price {
-    float: right;
-    width: 20%;
+.gb-order-pane-item-info-quantity {
+    text-align: center;
+}
+
+.gb-order-pane-item-info-price {
     text-align: right;
 }
 
-.gb-order-pane-item-name {
-    float: left;
+.gb-order-pane-item-links {
+    color: @gb-blue;
+    font-weight: 600;
 }
 
-.gb-order-pane-item-quantity {
-    float: right;
+.gb-order-pane-item-links-del {
+    color: @gb-white;
+    font-weight: 500;
+    margin: 0 10px;
+}
 
-    &:before {
-        content: 'x';
-    }
+.gb-order-pane-item-subtotal {
+    margin: 30px 0;
+    width: 100%;
+}
+
+.gb-order-pane-item-subtotal-price {
+    text-align: right;
+}
+
+.gb-order-pane-item-checkout {
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 7px 0;
+    background: @gb-red;
+    border: 1px solid darken(@gb-red, 20%);
+    border-bottom: 2px solid darken(@gb-red, 20%);
+    border-radius: @gb-border-radius / 2px;
+    border-top: none;
 }
