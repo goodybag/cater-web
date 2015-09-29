@@ -25,6 +25,7 @@
     "hiroshima": "^1.1.0",
     "link-delegate": "0.0.1",
     "lodash": "^3.10.1",
+    "moment-timezone": "^0.4.0",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
     "source-map-support": "^0.3.2",

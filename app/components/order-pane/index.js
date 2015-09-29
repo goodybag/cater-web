@@ -5,6 +5,7 @@ import {OrderItemCollectionResolver} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
+import {OrderPaneTimeLeftComponent} from './timeleft';
 
 export class OrderPaneComponent extends Component {
     static contextTypes = {
@@ -20,11 +21,18 @@ export class OrderPaneComponent extends Component {
     render() {
         const {dependencies} = this.context;
         const {order, orderItems} = dependencies;
+        const {datetime, timezone} = order.attributes;
 
         return (
             <div className="gb-order-pane">
+
+                <OrderPaneTimeLeftComponent
+                    datetime={datetime}
+                    timezone={timezone}
+                />
+
                 <OrderPaneHeaderComponent
-                    title={order.isNew() ? 'Order' : `Order – #${order.id}`}
+                    title={order.isNew() ? 'Order Info' : `Order – #${order.id}`}
                 />
 
                 <OrderPaneInfoComponent
@@ -32,7 +40,7 @@ export class OrderPaneComponent extends Component {
                 />
 
                 <OrderPaneHeaderComponent
-                    title="Share"
+                    title="Share Order (Optional)"
                 />
 
                 <OrderPaneShareComponent
@@ -40,7 +48,7 @@ export class OrderPaneComponent extends Component {
                 />
 
                 <OrderPaneHeaderComponent
-                    title="Items"
+                    title="Order Items"
                 />
 
                 <OrderPaneItemsComponent
