@@ -1,26 +1,36 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
-import {OrderResolver} from '../../models/order';
-import {OrderItemCollectionResolver} from '../../models/order-item';
+import {OrderStore} from '../../stores/order';
+import {OrderItemStore} from '../../stores/order-item';
+import {Order} from '../../models/order';
+import {OrderItemCollection} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
 import {OrderPaneTimeLeftComponent} from './timeleft';
 
-export class OrderPaneComponent extends Component {
-    static contextTypes = {
-        dependencies: React.PropTypes.object.isRequired
-    }
+@dependencies({
+    orderStore: OrderStore,
+    orderItemStore: OrderItemStore
+}, [OrderPaneInfoComponent])
+@listeningTo(['orderStore', 'orderItemStore'], dependencies => {
+    const {orderStore, orderItemStore} = dependencies;
 
-    static dependencies = {
-        order: OrderResolver,
-        orderItems: OrderItemCollectionResolver,
-        ...OrderPaneInfoComponent.dependencies
+    return {
+        order: orderStore.getOrder(),
+        orderItems: orderItemStore.getOrderItems()
+    };
+})
+export class OrderPaneComponent extends Component {
+    static propTypes = {
+        order: PropTypes.instanceOf(Order).isRequired,
+        orderItems: PropTypes.instanceOf(OrderItemCollection).isRequired
     }
 
     render() {
-        const {dependencies} = this.context;
-        const {order, orderItems} = dependencies;
+        const {order, orderItems} = this.props;
         const {datetime, timezone} = order.attributes;
 
         return (

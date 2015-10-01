@@ -13,11 +13,17 @@ module.exports = {
         loaders: [{
             test: /\.js$/,
             loader: 'babel-loader',
-            exclude: path.resolve(__dirname, 'node_modules')
+            exclude: path.join(__dirname, 'node_modules')
         }, {
             test: /\.json$/,
             loader: 'json-loader'
         }]
+    },
+
+    resolveLoader: {
+        modulesDirectories: [
+            path.join(__dirname, 'node_modules')
+        ]
     },
 
     devtool: 'source-map',

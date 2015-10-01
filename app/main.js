@@ -16,12 +16,6 @@ sync.editRequest = editRequest;
 
 Backbone.sync = sync;
 
-const rawData = document.getElementById('gb-data').textContent;
-
-const data = JSON.parse(atob(rawData));
-
-const dispatcher = new Dispatcher();
-
 const router = new Router().call(function(router) {
     router.use(MainComponent);
 });
@@ -31,16 +25,13 @@ initialLoad();
 function initialLoad() {
     const {route, resolver, components} = getContext(window.location.href);
 
-    const dependencies = {
-        dispatcher,
-        ...resolver.resolveFrom(data)
-    };
-
-    renderPage({route, components, dependencies}, function() {
-        // don't handle routing client-side for IE 7/8/9
-        if ([7, 8, 9].indexOf(document.documentMode) === -1) {
-            link(handleReroute);
-        }
+    resolver.resolve().then(function(dependencies) {
+        renderPage({route, components, dependencies}, function() {
+            // don't handle routing client-side for IE 7/8/9
+            if ([7, 8, 9].indexOf(document.documentMode) === -1) {
+                link(handleReroute);
+            }
+        });
     });
 }
 

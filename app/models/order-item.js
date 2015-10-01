@@ -1,7 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
-import {inject} from '../lib/injection';
-import {OrderResolver} from './order';
 
 export class OrderItem extends Model {
     static schema = {
@@ -58,18 +56,3 @@ export class OrderItemCollection extends Collection {
 }
 
 OrderItemCollection.prototype.model = OrderItem;
-
-@inject(OrderResolver)
-export class OrderItemCollectionResolver {
-    static parse(orderItems) {
-        return new OrderItemCollection(orderItems, {parse: true});
-    }
-
-    constructor(order) {
-        const orderItems = new OrderItemCollection(null, {
-            order_id: order.id
-        });
-
-        return orderItems.fetch().then(() => orderItems);
-    }
-}

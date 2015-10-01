@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {dependencies} from 'yokohama';
 
 import {OrderPaneComponent} from '../order-pane';
 import {RestaurantCoverComponent} from './cover';
@@ -8,6 +9,11 @@ import {RestaurantInfoComponent} from './info';
 import {RestaurantReviewsComponent} from './reviews';
 import {RestaurantOrdersComponent} from './past-orders';
 
+@dependencies({}, [
+    RestaurantCoverComponent,
+    RestaurantTabsComponent,
+    OrderPaneComponent
+])
 export class RestaurantComponent extends Component {
     static propTypes = {
         children: React.PropTypes.node
@@ -20,12 +26,6 @@ export class RestaurantComponent extends Component {
             router.dir('reviews').index(RestaurantReviewsComponent);
             router.dir('orders').index(RestaurantOrdersComponent);
         });
-    }
-
-    static dependencies = {
-        ...RestaurantCoverComponent.dependencies,
-        ...OrderPaneComponent.dependencies,
-        ...RestaurantTabsComponent.dependencies
     }
 
     render() {
