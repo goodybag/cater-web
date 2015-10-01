@@ -45,6 +45,11 @@ export class Category extends Model {
             return this.validator.getLastError();
         }
     }
+
+    // these are horrible names
+    hasMenu(menuName) {
+        return this.get('menus').indexOf(menuName) !== -1;
+    }
 }
 
 export class Menu extends Collection {
@@ -57,9 +62,14 @@ export class Menu extends Collection {
     url() {
         return `${process.env.GOODYBAG_API}/restaurants/${this.restaurant_id}/menu`;
     }
+
+    forMenu(menuName) {
+        return this.filter(category => category.hasMenu(menuName));
+    }
 }
 
 Menu.prototype.model = Category;
+Menu.prototype.comparator = 'order';
 
 @inject(Params)
 export class MenuResolver {
