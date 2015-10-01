@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 
 import {MenuResolver} from '../../../models/category';
+import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
 import {RestaurantMenuSearchboxComponent} from './searchbox';
 
@@ -15,11 +16,22 @@ class RestaurantMenuCateringComponent extends Component {
 
     render() {
         const {dependencies: {menu}} = this.context;
+        const categories = menu.forMenu('group');
 
         return (
             <div className="gb-restaurant-menu-catering">
+                {categories.map(renderCategory)}
             </div>
         );
+
+        function renderCategory(category) {
+            return (
+                <RestaurantMenuCategoryComponent
+                    category={category}
+                    key={category.id}
+                />
+            );
+        }
     }
 }
 
@@ -34,11 +46,22 @@ class RestaurantMenuIndividualComponent extends Component {
 
     render() {
         const {dependencies: {menu}} = this.context;
+        const categories = menu.forMenu('individual');
 
         return (
-            <div className="gb-restaurant-menu-catering">
+            <div className="gb-restaurant-menu-individual">
+                {categories.map(renderCategory)}
             </div>
         );
+
+        function renderCategory(category) {
+            return (
+                <RestaurantMenuCategoryComponent
+                    category={category}
+                    key={category.id}
+                />
+            );
+        }
     }
 }
 
@@ -74,11 +97,15 @@ export class RestaurantMenuComponent extends Component {
             <div className="gb-restaurant-menu">
                 <RestaurantMenuSearchboxComponent/>
 
-                <RestaurantMenuTabComponent href={path}>
+                <RestaurantMenuTabComponent
+                    href={path}
+                    type="catering">
                     Catering Menu
                 </RestaurantMenuTabComponent>
 
-                <RestaurantMenuTabComponent href={`${path}/individual`}>
+                <RestaurantMenuTabComponent
+                    href={`${path}/individual`}
+                    type="individual">
                     Individual Menu
                 </RestaurantMenuTabComponent>
 

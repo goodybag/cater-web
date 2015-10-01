@@ -4,8 +4,9 @@ import cx from 'classnames';
 
 export class RestaurantMenuTabComponent extends Component {
     static propTypes = {
-        href: React.PropTypes.string.isRequired,
-        children: React.PropTypes.node.isRequired
+        type: PropTypes.string.isRequired,
+        href: PropTypes.string.isRequired,
+        children: PropTypes.node.isRequired
     }
 
     static contextTypes = {
@@ -14,14 +15,17 @@ export class RestaurantMenuTabComponent extends Component {
 
     render() {
         const {route} = this.context;
-        const {href, children} = this.props;
+        const {href, children, type} = this.props;
         const {path} = route;
 
         const {pathname} = url.parse(href);
 
         const active = path === pathname;
 
-        const className = cx('gb-restaurant-menu-tab-title', {active});
+        const className = cx(
+            `gb-restaurant-menu-tab-title-${type}`,
+            {active}
+        );
 
         return (
             <a href={href} className={className}>
