@@ -15,7 +15,7 @@ export class RestaurantComponent extends Component {
 
     static route(router) {
         router.dir('restaurants').param('restaurant_id').call(router => {
-            router.index(RestaurantMenuComponent);
+            router.use(RestaurantMenuComponent);
             router.dir('info').index(RestaurantInfoComponent);
             router.dir('reviews').index(RestaurantReviewsComponent);
             router.dir('orders').index(RestaurantOrdersComponent);

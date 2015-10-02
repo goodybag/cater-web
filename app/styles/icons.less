@@ -39,10 +39,6 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.gb-stars {
-    display: inline;
-}
-
 .gb-stars-full {
     .gb-icon;
 
@@ -54,7 +50,6 @@
 
 .gb-stars-half {
     .gb-icon;
-    display: inline;
 
     &:before {
         content: "\e606";
@@ -64,11 +59,18 @@
 
 .gb-stars-empty {
     .gb-icon;
-    display: inline;
 
     &:before {
         content: "\e603";
         color: @gb-yellow;
+    }
+}
+
+.gb-search {
+    .gb-icon;
+
+    &:before {
+        content: "\e60b";
     }
 }
 
