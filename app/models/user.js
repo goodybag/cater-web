@@ -1,6 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
-import {inject} from '../lib/injection';
 
 export class User extends Model {
     static schema = {
@@ -52,18 +51,5 @@ export class User extends Model {
 export class CurrentUser extends User {
     url() {
         return `${this.urlRoot}/me`;
-    }
-}
-
-@inject()
-export class CurrentUserResolver {
-    static parse(user) {
-        return new CurrentUser(user, {parse: true});
-    }
-
-    constructor() {
-        const user = new CurrentUser();
-
-        return user.fetch().then(() => user);
     }
 }
