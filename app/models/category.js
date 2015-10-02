@@ -70,18 +70,3 @@ export class Menu extends Collection {
 
 Menu.prototype.model = Category;
 Menu.prototype.comparator = 'order';
-
-@inject(Params)
-export class MenuResolver {
-    static parse(menu) {
-        return new Menu(menu, {parse: true});
-    }
-
-    constructor(params) {
-        const menu = new Menu(null, {
-            restaurant_id: params.restaurant_id
-        });
-
-        return menu.fetch().then(() => menu);
-    }
-}
