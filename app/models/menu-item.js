@@ -1,6 +1,5 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
-import {inject, Params} from '../lib/injection';
 
 export class MenuItem extends Model {
     static schema = {
