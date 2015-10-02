@@ -1,13 +1,32 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
-import {RestaurantResolver} from '../../../models/restaurant';
+import {RestaurantStore} from '../../../stores/restaurant';
+import {Restaurant} from '../../../models/restaurant';
 import {RestaurantOrdersRowComponent} from './row';
 import {RestaurantOrdersAlertComponent} from './alert';
 
+@dependencies({
+    restaurantStore: RestaurantStore
+})
+@listeningTo(['restaurantStore'], dependencies => {
+    const {restaurantStore} = dependencies;
+
+    return {
+        restaurant: restaurantStore.getRestaurant()
+    };
+})
+
 export class RestaurantOrdersComponent extends Component {
-    static dependencies = {}
+    static propTypes = {
+        restaurant: PropTypes.instanceOf(Restaurant)
+    }
+
 
     render() {
+        const {restaurant} = this.props;
+
         // TODO: replace with model data
         var restaurantName = "Austin Daily Press";
         const pastOrders = [

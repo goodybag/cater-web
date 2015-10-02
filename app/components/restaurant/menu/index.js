@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
 import {MenuStore} from '../../../stores/menu';
 import {Menu} from '../../../models/category';

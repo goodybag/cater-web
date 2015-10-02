@@ -1,19 +1,28 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
-import {CurrentUser, CurrentUserResolver} from '../models/user';
+import {CurrentUserStore} from '../stores/user';
+import {CurrentUser} from '../models/user';
+
+@dependencies({
+    currentUserStore: CurrentUserStore
+})
+@listeningTo(['currentUserStore'], dependencies => {
+    const {currentUserStore} = dependencies;
+
+    return {
+        user: currentUserStore.getUser()
+    }
+})
 
 export class NavbarComponent extends Component {
-    static contextTypes = {
-        dependencies: React.PropTypes.shape({
-            user: React.PropTypes.instanceOf(CurrentUser).isRequired
-        })
+    static propTypes = {
+        user: PropTypes.instanceOf(CurrentUser)
     }
 
-    static dependencies = {user: CurrentUserResolver}
-
     render() {
-        const {dependencies} = this.context;
-        const {user} = dependencies;
+        const {user} = this.props;
         const {points, name} = user.attributes;
 
         return (

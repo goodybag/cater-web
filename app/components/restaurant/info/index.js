@@ -1,23 +1,32 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
 import {PriceComponent} from '../../price';
-import {RestaurantResolver} from '../../../models/restaurant';
+import {RestaurantStore} from '../../../stores/restaurant';
+import {Restaurant} from '../../../models/restaurant';
 import {RestaurantGmapComponent} from './gmap';
 import {RestaurantInfoSectionComponent} from './section';
 import {RestaurantInfoHeaderComponent} from './header';
 
-export class RestaurantInfoComponent extends Component {
-    static contextTypes = {
-        dependencies: React.PropTypes.object.isRequired
-    }
+@dependencies({
+    restaurantStore: RestaurantStore
+})
+@listeningTo(['restaurantStore'], dependencies => {
+    const {restaurantStore} = dependencies;
 
-    static dependencies = {
-        restaurant: RestaurantResolver
+    return {
+        restaurant: restaurantStore.getRestaurant()
+    };
+})
+
+export class RestaurantInfoComponent extends Component {
+    static propTypes = {
+        restaurant: PropTypes.instanceOf(Restaurant)
     }
 
     render() {
-        const {dependencies} = this.context;
-        const {restaurant} = dependencies;
+        const {restaurant} = this.props;
 
         const {
             cuisine,

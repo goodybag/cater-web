@@ -3,7 +3,7 @@ import {inject} from 'yokohama';
 import {Params} from '../lib/injection';
 import {Dispatcher} from 'flux';
 
-import {MenuItem} from '../models/menu-item';
+import {MenuItem, MenuItemCollection} from '../models/menu-item';
 
 @inject(Params)
 export class MenuItemCollectionResolver {
@@ -21,7 +21,7 @@ export class MenuItemCollectionResolver {
 }
 
 @inject(Dispatcher, MenuItemCollectionResolver)
-export class MenuItemStore extends Store {
+export class MenuItemsStore extends Store {
     constructor(dispatcher, menuItems) {
         super(dispatcher);
 

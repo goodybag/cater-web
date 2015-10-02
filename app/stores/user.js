@@ -3,7 +3,7 @@ import {inject} from 'yokohama';
 import {Params} from '../lib/injection';
 import {Dispatcher} from 'flux';
 
-import {User} from '../models/user';
+import {CurrentUser} from '../models/user';
 
 @inject()
 export class CurrentUserResolver {
@@ -19,7 +19,7 @@ export class CurrentUserResolver {
 }
 
 @inject(Dispatcher, CurrentUserResolver)
-export class UserStore extends Store {
+export class CurrentUserStore extends Store {
     constructor(dispatcher, user) {
         super(dispatcher);
 
