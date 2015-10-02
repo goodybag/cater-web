@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {depenencies} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {RestaurantStore} from '../../stores/restaurant';
@@ -12,10 +12,9 @@ import {Restaurant} from '../../models/restaurant';
     const {restaurantStore} = dependencies;
 
     return {
-        restaurant: restaurantStore.getRestaurant();
+        restaurant: restaurantStore.getRestaurant()
     }
 })
-
 export class RestaurantCoverComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant)

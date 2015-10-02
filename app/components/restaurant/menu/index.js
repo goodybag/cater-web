@@ -1,21 +1,26 @@
 import React, {Component, PropTypes} from 'react';
 
-import {MenuResolver} from '../../../models/category';
+import {MenuStore} from '../../../stores/menu';
+import {Menu} from '../../../models/category';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
 import {RestaurantMenuSearchboxComponent} from './searchbox';
 
+@dependencies({
+    menuStore: MenuStore
+})
+@listeningTo(['menuStore'], ({menuStore}) => {
+    return {
+        menu: menuStore.getMenu()
+    };
+})
 class RestaurantMenuCateringComponent extends Component {
-    static contextTypes = {
-        dependencies: PropTypes.object.isRequired
-    }
-
-    static dependencies = {
-        menu: MenuResolver
+    static propTypes = {
+        menu: PropTypes.instanceOf(Menu)
     }
 
     render() {
-        const {dependencies: {menu}} = this.context;
+        const {menu} = this.props;
         const categories = menu.forMenu('group');
 
         return (
@@ -35,14 +40,19 @@ class RestaurantMenuCateringComponent extends Component {
     }
 }
 
+@dependencies({
+    menuStore: MenuStore
+})
+@listeningTo(['menuStore'], ({menuStore}) => {
+    return {
+        menu: menuStore.getMenu()
+    };
+})
 class RestaurantMenuIndividualComponent extends Component {
-    static contextTypes = {
-        dependencies: PropTypes.object.isRequired
+    static propTypes = {
+        menu: PropTypes.instanceOf(Menu)
     }
 
-    static dependencies = {
-        menu: MenuResolver
-    }
 
     render() {
         const {dependencies: {menu}} = this.context;
@@ -65,21 +75,18 @@ class RestaurantMenuIndividualComponent extends Component {
     }
 }
 
+@dependencies({}, [
+    RestaurantMenuCateringComponent,
+    RestaurantMenuIndividualComponent,
+    RestaurantMenuSearchboxComponent
+])
 export class RestaurantMenuComponent extends Component {
     static contextTypes = {
-        dependencies: PropTypes.object.isRequired,
-        route: React.PropTypes.object.isRequired
+        route: PropTypes.object.isRequired
     }
 
     static propTypes = {
-        children: React.PropTypes.node
-    }
-
-    static dependencies = {
-        menu: MenuResolver,
-        ...RestaurantMenuCateringComponent.dependencies,
-        ...RestaurantMenuIndividualComponent.dependencies,
-        ...RestaurantMenuSearchboxComponent.dependencies
+        children: PropTypes.node
     }
 
     static route(router) {
