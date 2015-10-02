@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {dependencies} from 'yokohama';
 
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';
@@ -8,7 +9,9 @@ export class MainComponent extends Component {
         children: React.PropTypes.node
     }
 
-    static dependencies = {...NavbarComponent.dependencies}
+    @dependencies({}, [
+        NavbarComponent
+    ]);
 
     static route(router) {
         router.use(RestaurantComponent);
@@ -62,4 +65,3 @@ export class MainContainerComponent extends React.Component {
         }, React.createElement(components[components.length - 1], null));
     }
 }
-

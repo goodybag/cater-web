@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 export class RestaurantMenuSearchboxComponent extends Component {
@@ -6,9 +7,9 @@ export class RestaurantMenuSearchboxComponent extends Component {
         dependencies: React.PropTypes.object.isRequired
     }
 
-    static dependencies = {
+    @dependencies({
         dispatcher: Dispatcher
-    }
+    })
 
     render() {
         return (

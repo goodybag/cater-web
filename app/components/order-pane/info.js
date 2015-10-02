@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {UpdateOrderAction} from '../../actions/order';
@@ -15,9 +16,9 @@ export class OrderPaneInfoComponent extends Component {
         dependencies: React.PropTypes.object.isRequired
     }
 
-    static dependencies = {
+    @dependencies({
         dispatcher: Dispatcher
-    }
+    })
 
     state = {
         editing: false
