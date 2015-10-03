@@ -64,6 +64,8 @@ export class OrderPaneComponent extends Component {
                 <OrderPaneItemsComponent
                     orderItems={orderItems}
                 />
+
+                <div className="gb-order-pane-endcap"></div>
             </div>
         );
     }
