@@ -20,7 +20,7 @@
 
 .gb-order-pane-section {
     background-color: @gb-dark;
-    padding: 12px 25px;
+    padding: 15px 25px;
     position: relative;
 }
 
@@ -54,4 +54,9 @@
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     height: 5px;
+    visibility: hidden;
+
+    @media screen and (min-width: 960px) {
+        visibility: visible;
+    }
 }
