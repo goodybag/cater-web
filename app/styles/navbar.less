@@ -18,6 +18,7 @@
 }
 
 .gb-navbar-item {
+    position: relative;
     margin-left: 5px;
     margin-right: 5px;
     display: inline-block;
@@ -29,6 +30,27 @@
 
     &:last-of-type {
         margin-right: 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.gb-navbar-button {
+    border-radius: 4px;
+    border: 1px solid @gb-subtle;
+    box-sizing: border-box;
+    font-weight: 500;
+    height: @gb-navbar-height;
+    padding-left: 18px;
+    padding-right: 48px;
+
+    & > i[class^="icon-"] {
+        position: absolute;
+        top: 15px;
+        right: 18px;
+        font-size: 12px;
     }
 }
 
@@ -76,17 +98,26 @@
     font-weight: 500;
 }
 
+.gb-navbar-city {
+    .gb-navbar-item;
+}
+
+.gb-navbar-city-button {
+    .gb-navbar-button;
+}
+
+.gb-navbar-orders {
+    .gb-navbar-item;
+}
+
+.gb-navbar-orders-button {
+    .gb-navbar-button;
+}
+
 .gb-navbar-account {
     .gb-navbar-item;
 }
 
-// TODO: break this out into a more general button class
 .gb-navbar-account-button {
-    border-radius: 4px;
-    border: 1px solid @gb-subtle;
-    box-sizing: border-box;
-    font-weight: 500;
-    height: @gb-navbar-height;
-    padding-left: 15px;
-    padding-right: 15px;
+    .gb-navbar-button;
 }

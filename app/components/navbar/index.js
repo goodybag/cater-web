@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
-import {CurrentUserStore} from '../stores/user';
-import {CurrentUser} from '../models/user';
+import {CurrentUserStore} from '../../stores/user';
+import {CurrentUser} from '../../models/user';
 
 @dependencies({
     currentUserStore: CurrentUserStore
@@ -24,6 +24,7 @@ export class NavbarComponent extends Component {
     render() {
         const {user} = this.props;
         const {points, name} = user.attributes;
+        const cityName = user.attributes.region.name;
 
         return (
             <div className="gb-navbar-container">
@@ -41,8 +42,25 @@ export class NavbarComponent extends Component {
                             <div className="gb-navbar-points-text">{points} points</div>
                         </div>
 
+                        <div className="gb-navbar-city">
+                            <div className="gb-navbar-city-button">
+                                {cityName}
+                                <i className="icon-arrow_down"></i>
+                            </div>
+                        </div>
+
+                        <div className="gb-navbar-orders">
+                            <div className="gb-navbar-orders-button">
+                                My Orders
+                                <i className="icon-arrow_down"></i>
+                            </div>
+                        </div>
+
                         <div className="gb-navbar-account">
-                            <div className="gb-navbar-account-button">{name}</div>
+                            <div className="gb-navbar-account-button">
+                                Hi, {name}
+                                <i className="icon-arrow_down"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
