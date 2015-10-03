@@ -50,23 +50,6 @@ export class OrderPaneItemComponent extends Component {
                         Remove
                     </a>
                 </div>
-
-                {/*
-                <table className="gb-order-pane-checkout-subtotal">
-                    <tbody>
-                        <tr>
-                            <td className="gb-order-pane-checkout-subtotal-text">
-                                Subtotal
-                            </td>
-                            <td className="gb-order-pane-checkout-subtotal-price">
-                                {formatPrice(price)}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="gb-order-pane-checkout-btn">
-                    Checkout
-                </div> */}
             </div>
         );
     }

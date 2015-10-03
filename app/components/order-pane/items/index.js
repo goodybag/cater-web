@@ -23,14 +23,27 @@ export class OrderPaneItemsComponent extends Component {
         orderItems: PropTypes.instanceOf(OrderItemCollection)
     }
 
+    returnAllPrices = (orderItems) => {
+        let prices = [];
+
+        orderItems.map(function(orderItem) {
+            prices.push(orderItem.attributes.price);
+        });
+
+        return (
+            prices
+        );
+    }
+
     render() {
         const {orderItems} = this.props;
+        const {returnAllPrices} = this;
 
         return (
             <div className="gb-order-pane-items">
                 {orderItems.map(renderOrderItem)}
                 <OrderPaneCheckoutComponent
-                    prices={[1, 2, 3]}
+                    prices={returnAllPrices(orderItems)}
                 />
             </div>
         );

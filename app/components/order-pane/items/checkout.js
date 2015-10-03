@@ -14,9 +14,23 @@ export class OrderPaneCheckoutComponent extends Component {
         );
     }
 
+    addAll = (arr) => {
+        const {formatPrice} = this;
+        let total = 0;
+
+        for ( let i = 0; i < arr.length; i++ ) {
+            total += arr[i];
+        }
+
+        return (
+            formatPrice(total)
+        );
+    }
+
     render() {
         const {prices} = this.props;
         const {formatPrice} = this;
+        const {addAll} = this;
 
         return (
             <div className="gb-order-pane-checkout">
@@ -27,7 +41,7 @@ export class OrderPaneCheckoutComponent extends Component {
                                 Subtotal
                             </td>
                             <td className="gb-order-pane-checkout-subtotal-price">
-                                {/*formatPrice(price)*/}
+                                {addAll(prices)}
                             </td>
                         </tr>
                     </tbody>
