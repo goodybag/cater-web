@@ -1,31 +1,6 @@
 import React, {Component} from 'react';
 
-import {OrderItem, OrderItemCollection} from '../../models/order-item';
-
-export class OrderPaneItemsComponent extends Component {
-    static propTypes = {
-        orderItems: OrderItemCollection.propType.isRequired
-    }
-
-    render() {
-        const {orderItems} = this.props;
-
-        return (
-            <div className="gb-order-pane-items">
-                {orderItems.map(renderOrderItem)}
-            </div>
-        );
-
-        function renderOrderItem(orderItem) {
-            return (
-                <OrderPaneItemComponent
-                    key={orderItem.id}
-                    orderItem={orderItem}
-                />
-            );
-        }
-    }
-}
+import {OrderItem} from '../../../models/order-item';
 
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
@@ -76,21 +51,22 @@ export class OrderPaneItemComponent extends Component {
                     </a>
                 </div>
 
-                <table className="gb-order-pane-item-subtotal">
+                {/*
+                <table className="gb-order-pane-checkout-subtotal">
                     <tbody>
                         <tr>
-                            <td className="gb-order-pane-item-subtotal-text">
+                            <td className="gb-order-pane-checkout-subtotal-text">
                                 Subtotal
                             </td>
-                            <td className="gb-order-pane-item-subtotal-price">
+                            <td className="gb-order-pane-checkout-subtotal-price">
                                 {formatPrice(price)}
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div className="gb-order-pane-item-checkout">
+                <div className="gb-order-pane-checkout-btn">
                     Checkout
-                </div>
+                </div> */}
             </div>
         );
     }
