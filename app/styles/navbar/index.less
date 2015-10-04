@@ -58,10 +58,6 @@
         right: 18px;
         font-size: 12px;
     }
-
-    &:hover {
-        border-color: @gb-subtle;
-    }
 }
 
 .gb-navbar-left {
@@ -112,13 +108,17 @@
 .gb-navbar-orders-button,
 .gb-navbar-account-button {
     .gb-navbar-button;
+
+    &:hover {
+        border-color: @gb-subtle;
+    }
 }
 
 .gb-navbar-city-button-selected,
 .gb-navbar-orders-button-selected,
 .gb-navbar-account-button-selected {
     .gb-navbar-button;
-    border-color: @gb-subtle;
+    border-color: @gb-gray;
 }
 
 
