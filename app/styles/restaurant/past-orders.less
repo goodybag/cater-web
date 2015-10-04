@@ -1,7 +1,7 @@
 .gb-restaurant-orders {
     .gb-restaurant-content;
 
-    font-size: 14px;
+    font-size: 0.93em;
     position: relative;
 }
 
@@ -17,17 +17,32 @@
 }
 
 .gb-restaurant-orders-thead {
-    font-size: 12px;
-    color: @gb-subtle;
+    font-size: 0.8em;
+    color: @gb-gray;
 
     th {
         border-bottom: 1px solid @gb-soft;
         vertical-align: bottom;
     }
 
-    th:nth-child(2),    // Delivery date
-    th:nth-child(3) {   // Delivery time
-        width: 90px;
+    th:nth-child(1) {   // Status column
+        width: 100px;
+    }
+
+    th:nth-child(2) {   // Delivery date column
+        width: 75px;
+    }
+
+    th:nth-child(3) {   // Delivery time column
+        width: 80px;
+    }
+
+    th:nth-child(4) {  // Total column
+        width: 70px;
+    }
+
+    th:nth-child(5) { // Expired column
+        width: 70px;
     }
 }
 
@@ -51,7 +66,7 @@
 
     // TODO: extract
     div[class^="gb-restaurant-orders-status-label-"] {
-        line-height: 1.6;
+        line-height: 1.7;
         font-weight: 600;
         color: @gb-white;
         width: 80px;
@@ -87,7 +102,7 @@
 }
 
 .gb-restaurant-orders-status-label-canceled {
-    background-color: @gb-gray;
+    background-color: @gb-subtle;
 }
 
 //TODO: Abstract into alert.less
