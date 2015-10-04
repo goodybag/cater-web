@@ -81,21 +81,21 @@ export class NavbarComponent extends Component {
                         <div className="gb-navbar-city">
                             <div className={"gb-navbar-city-button" + cxnames({'-selected':cityBtnActive})} onClick={handleNavBtnClick.bind(this, "my-city")}>
                                 {cityName}
-                                <i className="icon-arrow_down"></i>
+                                <i className={cxnames({"icon-arrow_side":!cityBtnActive, "icon-arrow_down":cityBtnActive})}></i>
                             </div>
                         </div>
 
                         <div className="gb-navbar-orders">
                             <div className={"gb-navbar-orders-button" + cxnames({'-selected':orderBtnActive})} onClick={handleNavBtnClick.bind(this, "my-orders")}>
                                 My Orders
-                                <i className="icon-arrow_down"></i>
+                                <i className={cxnames({"icon-arrow_side":!orderBtnActive, "icon-arrow_down":orderBtnActive})}></i>
                             </div>
                         </div>
 
                         <div className="gb-navbar-account">
                             <div className={"gb-navbar-account-button" + cxnames({'-selected':accountBtnActive})} onClick={handleNavBtnClick.bind(this, "my-account")}>
                                 Hi, {name}
-                                <i className="icon-arrow_down"></i>
+                                <i className={cxnames({"icon-arrow_side":!accountBtnActive, "icon-arrow_down":accountBtnActive})}></i>
                             </div>
                         </div>
                     </div>
