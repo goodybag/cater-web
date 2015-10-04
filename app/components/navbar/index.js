@@ -5,6 +5,7 @@ import cxnames from 'classnames';
 
 import {CurrentUserStore} from '../../stores/user';
 import {CurrentUser} from '../../models/user';
+import {NavbarSubbarComponent} from './subbar';
 
 @dependencies({
     currentUserStore: CurrentUserStore
@@ -30,7 +31,6 @@ export class NavbarComponent extends Component {
 
     handleNavBtnClick = (btn) => {
         if(btn==="my-city") {
-            console.log("City button clicked!");
             this.setState({
                 cityBtnActive: !this.state.cityBtnActive,
                 orderBtnActive: false,
@@ -39,7 +39,6 @@ export class NavbarComponent extends Component {
         }
 
         if(btn==="my-orders") {
-            console.log("Orders button clicked!");
             this.setState({
                 cityBtnActive: false,
                 orderBtnActive: !this.state.orderBtnActive,
@@ -48,7 +47,6 @@ export class NavbarComponent extends Component {
         }
 
         if(btn==="my-account") {
-            console.log("Account button clicked!");
             this.setState({
                 cityBtnActive: false,
                 orderBtnActive: false,
@@ -62,6 +60,7 @@ export class NavbarComponent extends Component {
         const {points, name} = user.attributes;
         const cityName = user.attributes.region.name;
         const {handleNavBtnClick} = this;
+        let {cityBtnActive, orderBtnActive, accountBtnActive} = this.state;
 
         return (
             <div className="gb-navbar-container">
@@ -80,27 +79,33 @@ export class NavbarComponent extends Component {
                         </div>
 
                         <div className="gb-navbar-city">
-                            <div className={"gb-navbar-city-button" + cxnames({'-selected':this.state.cityBtnActive})} onClick={handleNavBtnClick.bind(this, "my-city")}>
+                            <div className={"gb-navbar-city-button" + cxnames({'-selected':cityBtnActive})} onClick={handleNavBtnClick.bind(this, "my-city")}>
                                 {cityName}
                                 <i className="icon-arrow_down"></i>
                             </div>
                         </div>
 
                         <div className="gb-navbar-orders">
-                            <div className={"gb-navbar-orders-button" + cxnames({'-selected':this.state.orderBtnActive})} onClick={handleNavBtnClick.bind(this, "my-orders")}>
+                            <div className={"gb-navbar-orders-button" + cxnames({'-selected':orderBtnActive})} onClick={handleNavBtnClick.bind(this, "my-orders")}>
                                 My Orders
                                 <i className="icon-arrow_down"></i>
                             </div>
                         </div>
 
                         <div className="gb-navbar-account">
-                            <div className={"gb-navbar-account-button" + cxnames({'-selected':this.state.accountBtnActive})} onClick={handleNavBtnClick.bind(this, "my-account")}>
+                            <div className={"gb-navbar-account-button" + cxnames({'-selected':accountBtnActive})} onClick={handleNavBtnClick.bind(this, "my-account")}>
                                 Hi, {name}
                                 <i className="icon-arrow_down"></i>
                             </div>
                         </div>
                     </div>
                 </div>
+                <NavbarSubbarComponent
+                    cityBtnActive={cityBtnActive}
+                    orderBtnActive={orderBtnActive}
+                    accountBtnActive={accountBtnActive}
+                    currentCity={cityName}
+                />
             </div>
         );
     }
