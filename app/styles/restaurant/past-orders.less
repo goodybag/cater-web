@@ -17,6 +17,23 @@
     border-collapse: collapse;
 }
 
+// Mobile View of Table
+@media screen and (max-width: 700px) {
+    .gb-restaurant-orders-row-view,
+    .gb-restaurant-orders-row-duplicate,
+    .gb-restaurant-orders-row-resume,
+    .gb-restaurant-orders-row-cancel {
+        display: none;
+    }
+
+    .gb-restaurant-orders-thead {
+        th:nth-child(5) ~ th { // selects all elements after 5th col
+            display: none;
+        }
+    }
+}
+
+// TODO: Clean this up
 .gb-restaurant-orders-thead {
     font-size: 0.8em;
     color: @gb-gray;
@@ -27,29 +44,59 @@
     }
 
     th:nth-child(1) {   // Status column
-        width: 100px;
+        @media screen and (min-width: 700px) {
+            width: 120px;
+        }
     }
 
     th:nth-child(2) {   // Delivery date column
-        width: 75px;
+        @media screen and (min-width: 700px) {
+            width: 75px;
+        }
     }
 
     th:nth-child(3) {   // Delivery time column
-        width: 80px;
+        @media screen and (min-width: 700px) {
+            width: 80px;
+        }
     }
 
     th:nth-child(4) {  // Total column
-        width: 70px;
+        @media screen and (min-width: 700px) {
+            width: 70px;
+        }
     }
 
     th:nth-child(5) { // Expired column
-        width: 70px;
+        min-width: 70px;
+    }
+
+    th:nth-child(6) { // Resume column
+        @media screen and (max-width: 1180px) {
+            width: 85px;
+        }
+    }
+
+    th:nth-child(7) { // View column
+        @media screen and (max-width: 1180px) {
+            width: 60px;
+        }
+    }
+
+    th:nth-child(8) { // Cancel column
+        @media screen and (max-width: 1180px) {
+            width: 80px;
+        }
     }
 }
 
 .gb-restaurant-orders-tbody {
     tr {
         line-height: 3;
+
+        @media screen and (max-width: 1180px) {
+            border-bottom: 1px solid @gb-bright;
+        }
     }
 
     td a {
@@ -74,6 +121,7 @@
         text-align: center;
         font-size: 13px;
         border-radius: 3px;
+        margin: 0 auto;
     }
 }
 
@@ -84,7 +132,7 @@
         content: "";
         position: absolute;
         top: 6px;
-        left: -14px;
+        left: 0;
         display: inline-block;
         background-color: @gb-red;
         width: 7px;
