@@ -23,9 +23,59 @@ export class RestaurantOrdersComponent extends Component {
         restaurant: PropTypes.instanceOf(Restaurant)
     }
 
+    state = {
+        alertOpen: false,
+        message: ""
+    }
+
+    signalAlertOpen = (action) => {
+        console.log("A link has been clicked!");
+        this.setState({
+            alertOpen: true
+        });
+
+        if(action==="resume") {
+            this.setState({
+                message: "This order has been resumed."
+            });
+        }
+
+        if(action==="uncancel") {
+            this.setState({
+                message: "This order has been restored to a Draft."
+            });
+        }
+
+        if(action==="view") {
+            this.setState({
+                message: "This order is currently being viewed."
+            });
+        }
+
+        if(action==="duplicate") {
+            this.setState({
+                message: "This order has been duplicated."
+            });
+        }
+
+        if(action==="cancel") {
+            this.setState({
+                message: "This order has been canceled."
+            });
+        }
+    }
+
+    signalAlertClose = () => {
+        this.setState({
+            alertOpen: false
+        });
+    }
+
 
     render() {
         const {restaurant} = this.props;
+        const {signalAlertOpen, signalAlertClose} = this;
+        let {alertOpen, message} = this.state
 
         // TODO: replace with model data
         var restaurantName = "Austin Daily Press";
@@ -86,11 +136,14 @@ export class RestaurantOrdersComponent extends Component {
                 <div className="gb-restaurant-orders-title">
                     Past Orders at {restaurantName}
                 </div>
-                {/* TODO: Add alerts here
-                    <RestaurantOrdersAlertComponent
-                        message="This order has been restored to a Draft."
-                    />
-                */}
+                {
+                    alertOpen ?
+                        <RestaurantOrdersAlertComponent
+                            message={message}
+                            initAlertState={alertOpen}
+                            signalAlertClose={signalAlertClose}
+                        /> : ""
+                }
                 <table className="gb-restaurant-orders-table">
                     <thead className="gb-restaurant-orders-thead">
                         <tr>
@@ -120,6 +173,8 @@ export class RestaurantOrdersComponent extends Component {
                     datetime={order.datetime}
                     timezone={order.timezone}
                     total={order.total}
+                    initAlertState={alertOpen}
+                    signalAlertOpen={signalAlertOpen}
                 />
             );
         }
