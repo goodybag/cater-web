@@ -1,15 +1,23 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes, cloneElement} from 'react';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
-import cxnames from 'classnames';
+import cx from 'classnames';
 
 import {CurrentUserStore} from '../../stores/user';
 import {CurrentUser} from '../../models/user';
-import {NavbarSubbarComponent} from './subbar';
+
+import {NavbarRegionMenuComponent} from './menus/region';
+import {NavbarOrderMenuComponent} from './menus/order';
+import {NavbarAccountMenuComponent} from './menus/account';
 
 @dependencies({
     currentUserStore: CurrentUserStore
-})
+}, [
+    NavbarRegionMenuComponent,
+    NavbarOrderMenuComponent,
+    NavbarAccountMenuComponent
+])
 @listeningTo(['currentUserStore'], dependencies => {
     const {currentUserStore} = dependencies;
 
@@ -17,96 +25,131 @@ import {NavbarSubbarComponent} from './subbar';
         user: currentUserStore.getUser()
     }
 })
-
 export class NavbarComponent extends Component {
     static propTypes = {
         user: PropTypes.instanceOf(CurrentUser)
     }
 
     state = {
-        cityBtnActive: false,
-        orderBtnActive: false,
-        accountBtnActive: false
+        activeItemName: null
     }
 
-    handleNavBtnClick = (btn) => {
-        if(btn==="my-city") {
-            this.setState({
-                cityBtnActive: !this.state.cityBtnActive,
-                orderBtnActive: false,
-                accountBtnActive: false
-            });
-        }
+    handleItemClick = itemName => {
+        const {activeItemName} = this.state;
 
-        if(btn==="my-orders") {
-            this.setState({
-                cityBtnActive: false,
-                orderBtnActive: !this.state.orderBtnActive,
-                accountBtnActive: false
-            });
-        }
-
-        if(btn==="my-account") {
-            this.setState({
-                cityBtnActive: false,
-                orderBtnActive: false,
-                accountBtnActive: !this.state.accountBtnActive
-            });
+        if (itemName === activeItemName) {
+            this.setState({activeItemName: null});
+        } else {
+            this.setState({activeItemName: itemName});
         }
     }
 
     render() {
         const {user} = this.props;
-        const {points, name} = user.attributes;
-        const cityName = user.attributes.region.name;
-        const {handleNavBtnClick} = this;
-        let {cityBtnActive, orderBtnActive, accountBtnActive} = this.state;
+        const {points, name, region: {name: regionName}} = user.attributes;
+        const {activeItemName} = this.state;
+
+        const items = {
+            region: <NavbarRegionMenuComponent key="region"/>,
+            orders: <NavbarOrderMenuComponent key="orders"/>,
+            account: <NavbarAccountMenuComponent key="account"/>
+        };
+
+        // TODO: make this into an iterating array thingy
 
         return (
-            <div className="gb-navbar-container">
-                <div className="gb-navbar">
-                    <div className="gb-navbar-left">
-                        <div className="gb-navbar-logo">
-                            <img className="gb-navbar-logo-large" width={155} height={30} src="/logo-large.svg"/>
+            <span>
+                <div className="gb-navbar-container">
+                    <div className="gb-navbar">
+                        <div className="gb-navbar-left">
+                            <div className="gb-navbar-logo">
+                                <img className="gb-navbar-logo-large" width={155} height={30} src="/logo-large.svg"/>
 
-                            <img className="gb-navbar-logo-small" height={40} src="/logo-small.svg"/>
-                        </div>
-                    </div>
-
-                    <div className="gb-navbar-right">
-                        <div className="gb-navbar-points">
-                            <div className="gb-navbar-points-text">{points} points</div>
-                        </div>
-
-                        <div className="gb-navbar-city">
-                            <div className={"gb-navbar-city-button" + cxnames({'-selected':cityBtnActive})} onClick={handleNavBtnClick.bind(this, "my-city")}>
-                                {cityName}
-                                <i className={cxnames({"icon-arrow_side":!cityBtnActive, "icon-arrow_down":cityBtnActive})}></i>
+                                <img className="gb-navbar-logo-small" height={40} src="/logo-small.svg"/>
                             </div>
                         </div>
 
-                        <div className="gb-navbar-orders">
-                            <div className={"gb-navbar-orders-button" + cxnames({'-selected':orderBtnActive})} onClick={handleNavBtnClick.bind(this, "my-orders")}>
-                                My Orders
-                                <i className={cxnames({"icon-arrow_side":!orderBtnActive, "icon-arrow_down":orderBtnActive})}></i>
+                        <div className="gb-navbar-right">
+                            <div className="gb-navbar-points">
+                                <div className="gb-navbar-points-text">{points} points</div>
                             </div>
-                        </div>
 
-                        <div className="gb-navbar-account">
-                            <div className={"gb-navbar-account-button" + cxnames({'-selected':accountBtnActive})} onClick={handleNavBtnClick.bind(this, "my-account")}>
-                                Hi, {name}
-                                <i className={cxnames({"icon-arrow_side":!accountBtnActive, "icon-arrow_down":accountBtnActive})}></i>
-                            </div>
+                            <NavbarItemComponent
+                                title={regionName}
+                                name="region"
+                                active={activeItemName === 'region'}
+                                onClick={this.handleItemClick}
+                            />
+
+                            {transition(activeItemName === 'region' && items.region)}
+
+                            <NavbarItemComponent
+                                title="My Orders"
+                                name="orders"
+                                active={activeItemName === 'orders'}
+                                onClick={this.handleItemClick}
+                            />
+
+                            {transition(activeItemName === 'orders' && items.orders)}
+
+                            <NavbarItemComponent
+                                title={`Hi, ${name}`}
+                                name="account"
+                                active={activeItemName === 'account'}
+                                onClick={this.handleItemClick}
+                            />
+
+                            {transition(activeItemName === 'account' && items.account)}
                         </div>
                     </div>
                 </div>
-                <NavbarSubbarComponent
-                    cityBtnActive={cityBtnActive}
-                    orderBtnActive={orderBtnActive}
-                    accountBtnActive={accountBtnActive}
-                    currentCity={cityName}
-                />
+
+                {transition(items[activeItemName])}
+            </span>
+        );
+
+        function transition(el) {
+            return (
+                <CSSTransitionGroup
+                    transitionName="gb-navbar-menu"
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}>
+                    {el}
+                </CSSTransitionGroup>
+            );
+        }
+    }
+}
+
+class NavbarItemComponent extends Component {
+    static propTypes = {
+        title: PropTypes.node.isRequired,
+        name: PropTypes.string.isRequired,
+        active: PropTypes.bool.isRequired,
+        onClick: PropTypes.func.isRequired
+    }
+
+    handleClick = () => {
+        const {name, onClick} = this.props;
+
+        onClick(name);
+    }
+
+    render() {
+        const {title, name, active} = this.props;
+
+        const set = cx(`gb-navbar-item-${name}`, {active});
+
+        return (
+            <div className={set} onClick={this.handleClick}>
+                {title}
+
+                <div className="gb-navbar-item-arrow">
+                    <div className={active ? 'gb-arrow-down' : 'gb-arrow-right'}/>
+                </div>
             </div>
         );
     }
+
+    // <i className={cxnames({"icon-arrow_side":!accountBtnActive, "icon-arrow_down":accountBtnActive})}></i>
 }
