@@ -29,7 +29,6 @@ export class RestaurantOrdersComponent extends Component {
     }
 
     signalAlertOpen = (action) => {
-        console.log("A link has been clicked!");
         this.setState({
             alertOpen: true
         });
