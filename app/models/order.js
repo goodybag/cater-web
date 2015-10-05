@@ -78,6 +78,10 @@ export class Order extends Model {
     }
 }
 
+export class OrderCollection {}
+
+OrderCollection.prototype.model = Order;
+
 export class OrderResolver {
     static parse(order) {
         return new Order(order, {parse: true});
