@@ -9,7 +9,20 @@ export class RestaurantOrdersRowComponent extends Component {
         status: React.PropTypes.string.isRequired,
         datetime: React.PropTypes.string.isRequired,
         timezone: React.PropTypes.string.isRequired,
-        total: React.PropTypes.number.isRequired
+        total: React.PropTypes.number.isRequired,
+        initAlertState: React.PropTypes.bool.isRequired,
+        signalAlertOpen: React.PropTypes.func.isRequired
+    }
+
+    state = {
+        alertOpen: this.props.initAlertState
+    }
+
+    onLinkClicked = (action) => {
+        this.setState({
+            alertOpen: true
+        });
+        this.props.signalAlertOpen(action);
     }
 
     formatPrice = (price) => {
@@ -26,6 +39,8 @@ export class RestaurantOrdersRowComponent extends Component {
         const {displayStatus, formatPrice} = this;
         const date = moment.tz(datetime, timezone).format('M/DD/YY');
         const time = moment.tz(datetime, timezone).format('HH:mm a');
+
+        const {onLinkClicked} = this;
 
         return (
             <tr className="gb-restaurant-orders-row">
@@ -47,25 +62,29 @@ export class RestaurantOrdersRowComponent extends Component {
                     {/*TODO: Expired*/}
                 </td>
                 <td className="gb-restaurant-orders-row-resume">
-                    <a href="#">
-                        {
-                            status==="pending" ? "Resume" :
-                            status==="canceled" ? "Uncancel" : ""
-                        }
-                    </a>
+                    {
+                        status==="pending" ?
+                            <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "resume")}>
+                                Resume
+                            </a> :
+                        status==="canceled" ?
+                            <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "uncancel")}>
+                                Uncancel
+                            </a> : ""
+                    }
                 </td>
                 <td className="gb-restaurant-orders-row-view">
-                    <a href="#">
+                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "view")}>
                         View
                     </a>
                 </td>
                 <td className="gb-restaurant-orders-row-duplicate">
-                    <a href="#">
+                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "duplicate")}>
                         Duplicate
                     </a>
                 </td>
                 <td className="gb-restaurant-orders-row-cancel">
-                    <a href="#">
+                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "cancel")}>
                         {
                             status === "canceled" ? "" :
                             "Cancel"
