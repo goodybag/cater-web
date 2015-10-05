@@ -1,6 +1,8 @@
 .gb-restaurant-menu {
     overflow: hidden;
     box-sizing: border-box;
+    margin-top: 25px;
+    margin: 25px 3px 0 3px;
 
     @media screen and (min-width: 960px) {
         max-width: 600px;
@@ -59,10 +61,14 @@
 .gb-restaurant-menu-searchbox {
     float: right;
     padding: 5px;
+
+    @media screen and (max-width: 480px) {
+        float: none;
+    }
 }
 
 .gb-restaurant-menu-category {
-    &:first-of-type {
+    &:first-child {
         .gb-restaurant-menu-category-title {
             border-top-left-radius: 0;
         }

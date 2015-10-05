@@ -39,9 +39,7 @@ gulp.task('compile', function() {
         .pipe(smaps.init())
         .pipe(less())
         .pipe(cssmin())
-        .pipe(smaps.write('.', {
-            sourceMappingURLPrefix: '/'
-        }))
+        .pipe(smaps.write('.'))
         .pipe(gulp.dest('dist/build'));
 });
 

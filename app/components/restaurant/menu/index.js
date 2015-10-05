@@ -57,7 +57,7 @@ class RestaurantMenuIndividualComponent extends Component {
 
 
     render() {
-        const {dependencies: {menu}} = this.context;
+        const {menu} = this.props;
         const categories = menu.forMenu('individual');
 
         return (
@@ -106,17 +106,19 @@ export class RestaurantMenuComponent extends Component {
             <div className="gb-restaurant-menu">
                 <RestaurantMenuSearchboxComponent/>
 
-                <RestaurantMenuTabComponent
-                    href={path}
-                    type="catering">
-                    Catering Menu
-                </RestaurantMenuTabComponent>
+                <div className="gb-restaurant-menu-tabs">
+                    <RestaurantMenuTabComponent
+                        href={path}
+                        type="catering">
+                        Catering Menu
+                    </RestaurantMenuTabComponent>
 
-                <RestaurantMenuTabComponent
-                    href={`${path}/individual`}
-                    type="individual">
-                    Individual Menu
-                </RestaurantMenuTabComponent>
+                    <RestaurantMenuTabComponent
+                        href={`${path}/individual`}
+                        type="individual">
+                        Individual Menu
+                    </RestaurantMenuTabComponent>
+                </div>
 
                 {children}
             </div>
