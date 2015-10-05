@@ -14,10 +14,6 @@ export class OrderPaneTimeLeftComponent extends Component {
         const daysRemaining = scheduledTime.diff(currentTime, 'days');
         const hoursRemaining = scheduledTime.diff(currentTime, 'hours');
 
-        if(!daysRemaining) {
-            console.log("calculate hours: " + hoursRemaining);
-        }
-
         return (
             <div className="gb-order-pane-timeleft">
                 <i className="icon-timer"></i>
