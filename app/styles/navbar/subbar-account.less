@@ -6,9 +6,13 @@
     display: inline-block;
     padding-left: 36px;
     padding-right: 36px;
+    box-sizing: border-box;
+    height: @gb-navbar-height;
+    border-top: 3px solid @gb-white;
+    border-bottom: 3px solid @gb-white;
 
     &:hover {
         cursor: pointer;
-        background-color: @gb-bright;
+        border-top: 3px solid @gb-red;
     }
 }

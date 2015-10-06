@@ -4,9 +4,13 @@
     margin-top: 25px;
     margin: 25px 3px 0 3px;
 
-    @media screen and (min-width: 960px) {
-        max-width: 600px;
+    @media screen and (min-width: 1180px) {
+        max-width: 717px;
         margin: 45px 45px 0 0;
+    }
+
+    @media screen and (max-width: 1180px) {
+        margin-top: 45px;
     }
 }
 
@@ -55,12 +59,51 @@
 .gb-restaurant-menu-tab-title-individual {
     .gb-restaurant-menu-tab-title;
 
-    border-top-color: @gb-green;
+    border-top-color: @gb-teal;
 }
 
 .gb-restaurant-menu-searchbox {
+    position: relative;
     float: right;
-    padding: 5px;
+    padding: 2px 5px;
+    border: 1px solid @gb-subtle;
+    border-radius: 4px;
+    width: 275px;
+    height: 34px;
+
+    @media screen and (max-width: 700px) {
+        display: none;
+    }
+
+    &, & > * {
+        box-sizing: border-box;
+    }
+
+    input {
+        font-size: 13px;
+        height: 28px;
+        width: 230px;
+        padding-left: 10px;
+    }
+
+    .gb-search {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        color: @gb-subtle;
+        font-size: 17px;
+        transition: color 0.5s;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &:hover {
+        .gb-search {
+            color: @gb-gray;
+        }
+    }
 
     @media screen and (max-width: 480px) {
         float: none;
@@ -84,7 +127,7 @@
 }
 
 .gb-restaurant-menu-items {
-    padding: 10px 0;
+    padding: 18px 0;
     border: 1px solid rgba(0, 0, 0, 0);
 }
 

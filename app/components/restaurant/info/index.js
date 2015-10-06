@@ -60,7 +60,9 @@ export class RestaurantInfoComponent extends Component {
             <div className="gb-restaurant-info">
                 <div className="gb-restaurant-info-left">
                     <RestaurantInfoSectionComponent>
-                        {cuisine} &bull; <PriceComponent price={price}/>
+                        {cuisine}
+                        <div className="gb-restaurant-info-bull">&bull;</div>
+                        <PriceComponent price={price}/>
                     </RestaurantInfoSectionComponent>
 
                     <RestaurantInfoSectionComponent>

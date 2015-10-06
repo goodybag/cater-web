@@ -12,20 +12,28 @@
     padding: 25px;
     box-sizing: border-box;
 
-    @media screen and (min-width: 960px) {
-        max-width: 600px;
+    @media screen and (min-width: 1180px) {
+        max-width: 717px;
         margin: 45px 45px 0 0;
         border: 1px solid @gb-soft;
         border-radius: @gb-border-radius;
     }
+
+    @media screen and (max-width: 1180px) {
+        padding: 40px 30px;
+        font-size: 1em;
+    }
 }
 
 .gb-restaurant-cover {
+    box-sizing: border-box;
     background-image: url(/coverphoto-temp.jpg); // TODO
     background-size: cover;
     background-position: center;
-    height: 193px; // TODO
+    height: 250px; // TODO
     padding: 15px 25px;
+    width: 100%;
+    max-width: 1140px;
 
     &::before { // TL;DR: magic for bottom alignment
         display: inline-block;

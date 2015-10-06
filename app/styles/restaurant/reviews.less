@@ -1,5 +1,7 @@
 .gb-restaurant-reviews {
     .gb-restaurant-content;
+
+    font-size: 0.95em;
 }
 
 .gb-restaurant-reviews-count {
@@ -17,7 +19,7 @@
 }
 
 .gb-restaurant-reviews-bottom {
-    margin-top: 20px;
+    margin-top: 70px;
     text-align: center;
 }
 
@@ -32,9 +34,15 @@
     font-size: 14px;
     font-weight: 600;
     padding: 8px 20px;
+    max-width: 250px;
+    margin: 0 auto;
 
-    @media screen and (min-width: 960px) {
+    @media screen and (min-width: 1180px) {
         display: inline-block;
+    }
+
+    @media screen and (max-width: 1180px) {
+        font-size: 1em;
     }
 }
 
@@ -50,7 +58,7 @@
     vertical-align: top;
     width: 100px;
 
-    @media screen and (max-width: 960px) {
+    @media screen and (max-width: 1180px) {
         display: block;
         margin: 0 auto;
     }
@@ -70,16 +78,25 @@
 
 .gb-restaurant-review-content {
     display: inline-block;
-    max-width: 400px;
+    max-width: 500px;
 
     & > .gb-stars {
         display: block;
         margin-bottom: 4px;
         font-size: 17px;
 
-        @media screen and (max-width: 960px) {
+        @media screen and (max-width: 1180px) {
             text-align: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
         }
+    }
+
+    @media screen and (max-width: 1180px) {
+        display: block;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
@@ -87,5 +104,5 @@
     .gb-link;
 
     display: block;
-    margin-top: 10px;
+    margin-top: 12px;
 }

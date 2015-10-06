@@ -2,10 +2,12 @@
     .gb-restaurant-content;
 
     overflow: hidden;
+    font-size: 0.91em;
+    line-height: 1.5;
 }
 
 .gb-restaurant-info-column {
-    @media screen and (min-width: 960px) {
+    @media screen and (min-width: 700px) {
         width: 50%;
     }
 }
@@ -13,31 +15,45 @@
 .gb-restaurant-info-left {
     .gb-restaurant-info-column;
 
-    @media screen and (min-width: 960px) {
+    @media screen and (min-width: 700px) {
         float: left;
+    }
+
+    @media screen and (max-width: 700px) {
+        padding-bottom: 30px;
     }
 }
 
 .gb-restaurant-info-right {
     .gb-restaurant-info-column;
 
-    @media screen and (min-width: 960px) {
+    @media screen and (min-width: 700px) {
         float: right;
     }
 }
 
 .gb-restaurant-info-section {
     & + & {
-        margin-top: 25px;
+        margin-top: 30px;
     }
 
     table tr > td:first-of-type {
         padding-right: 20px;
     }
+
+    @media screen and (max-width: 700px) {
+        text-align: center;
+
+        & > table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
 }
 
 .gb-restaurant-info-header {
     font-weight: 600;
+    padding-bottom: 2px;
 }
 
 // Google map
@@ -47,4 +63,10 @@
     background: @gb-soft;
     border: 1px solid @gb-subtle;
     border-radius: @gb-border-radius / 2;
+}
+
+.gb-restaurant-info-bull {
+    display: inline-block;
+    padding-left: 12px;
+    padding-right: 12px;
 }

@@ -6,13 +6,13 @@
 @import "timeleft";
 
 .gb-order-pane {
-    width: 320px;
+    width: 383px;
     float: right;
     color: @gb-bright;
     font-weight: 500;
     cursor: default;
 
-    @media screen and (max-width: 960px) {
+    @media screen and (max-width: 1180px) {
         float: none;
         width: auto;
     }
@@ -20,7 +20,7 @@
 
 .gb-order-pane-section {
     background-color: @gb-dark;
-    padding: 15px 25px;
+    padding: 18px 25px;
     position: relative;
 }
 
@@ -40,11 +40,44 @@
     border-radius: 3px;
     box-sizing: border-box;
     display: inline-block;
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
     width: 100%;
     font-size: 14px;
     font-weight: 700;
+}
+
+// tablet view
+@media screen and (min-width: 700px) and (max-width: 1180px) {
+    .gb-order-pane {
+        overflow: auto;
+        position: relative;
+        height: 520px;
+        background: @gb-dark;
+    }
+
+    .gb-order-pane-items,
+    .gb-order-pane-share {
+        border-bottom: none;
+    }
+
+    .gb-order-pane-tablet-left,
+    .gb-order-pane-tablet-right {
+        position: absolute;
+        width: 50%;
+        height: 85%;
+        border-left: 1px solid @gb-shadow-light;
+        border-right: 1px solid @gb-shadow-dark;
+        box-sizing: border-box;
+    }
+
+    .gb-order-pane-tablet-left {
+        left: 0;
+    }
+
+    .gb-order-pane-tablet-right {
+        right: 0;
+    }
 }
 
 .gb-order-pane-endcap {
@@ -56,7 +89,7 @@
     height: 5px;
     visibility: hidden;
 
-    @media screen and (min-width: 960px) {
+    @media screen and (min-width: 1180px) {
         visibility: visible;
     }
 }

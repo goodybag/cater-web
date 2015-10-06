@@ -41,29 +41,33 @@ export class OrderPaneComponent extends Component {
                     timezone={timezone}
                 />
 
-                <OrderPaneHeaderComponent
-                    title={order.isNew() ? 'Order Info' : `Order – #${order.id}`}
-                />
+                <div className="gb-order-pane-tablet-left">
+                    <OrderPaneHeaderComponent
+                        title={order.isNew() ? 'Order Info' : `Order – #${order.id}`}
+                    />
 
-                <OrderPaneInfoComponent
-                    order={order}
-                />
+                    <OrderPaneInfoComponent
+                        order={order}
+                    />
 
-                <OrderPaneHeaderComponent
-                    title="Share Order (Optional)"
-                />
+                    <OrderPaneHeaderComponent
+                        title="Share Order (Optional)"
+                    />
 
-                <OrderPaneShareComponent
-                    order={order}
-                />
+                    <OrderPaneShareComponent
+                        order={order}
+                    />
+                </div>
 
-                <OrderPaneHeaderComponent
-                    title="Order Items"
-                />
+                <div className="gb-order-pane-tablet-right">
+                    <OrderPaneHeaderComponent
+                        title="Order Items"
+                    />
 
-                <OrderPaneItemsComponent
-                    orderItems={orderItems}
-                />
+                    <OrderPaneItemsComponent
+                        orderItems={orderItems}
+                    />
+                </div>
 
                 <div className="gb-order-pane-endcap"></div>
             </div>
