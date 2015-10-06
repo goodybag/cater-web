@@ -109,7 +109,6 @@ export class OrderPaneComponent extends Component {
                         !itemsHeaderClosed ?
                             <OrderPaneItemsComponent orderItems={orderItems} /> : ""
                     }
-
                 </div>
 
                 <div className="gb-order-pane-endcap"></div>
