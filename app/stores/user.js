@@ -1,6 +1,5 @@
 import {Store} from 'tokyo';
 import {inject} from 'yokohama';
-import {Params} from '../lib/injection';
 import {Dispatcher} from 'flux';
 
 import {CurrentUser} from '../models/user';

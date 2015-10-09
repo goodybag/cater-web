@@ -1,5 +1,4 @@
 import {Model, Collection} from 'backbone';
-import {inject, Params} from '../lib/injection';
 
 import {MenuItemCollection} from './menu-item';
 

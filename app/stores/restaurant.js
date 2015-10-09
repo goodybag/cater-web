@@ -1,17 +1,13 @@
 import {Store} from 'tokyo';
 import {inject} from 'yokohama';
-import {Params} from '../lib/injection';
+import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
 import {Restaurant} from '../models/restaurant';
 
-@inject(Params)
+@inject(Route)
 export class RestaurantResolver {
-    static parse(restaurant) {
-        return new Restaurant(restaurant, {parse: true});
-    }
-
-    constructor(params) {
+    constructor({params}) {
         const restaurant = new Restaurant({id: params.restaurant_id});
 
         return restaurant.fetch().then(() => restaurant);

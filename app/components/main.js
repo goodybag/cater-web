@@ -1,20 +1,17 @@
 import React, {Component} from 'react';
+import {router} from 'hiroshima';
 import {dependencies} from 'yokohama';
 
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';
 
+@router(route => {
+    route.use(RestaurantComponent);
+})
+@dependencies({}, [NavbarComponent])
 export class MainComponent extends Component {
     static propTypes = {
         children: React.PropTypes.node
-    }
-
-    @dependencies({}, [
-        NavbarComponent
-    ]);
-
-    static route(router) {
-        router.use(RestaurantComponent);
     }
 
     render() {
@@ -32,20 +29,18 @@ export class MainComponent extends Component {
 
 export class MainContainerComponent extends React.Component {
     static childContextTypes = {
-        dependencies: React.PropTypes.object,
-        route: React.PropTypes.object
+        dependencies: React.PropTypes.object
     }
 
     static propTypes = {
         dependencies: React.PropTypes.object.isRequired,
-        components: React.PropTypes.arrayOf(React.PropTypes.func).isRequired,
-        route: React.PropTypes.object.isRequired
+        components: React.PropTypes.arrayOf(React.PropTypes.func).isRequired
     }
 
     getChildContext() {
-        const {dependencies, route} = this.props;
+        const {dependencies} = this.props;
 
-        return {dependencies, route};
+        return {dependencies};
     }
 
     // components:

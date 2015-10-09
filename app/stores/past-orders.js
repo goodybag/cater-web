@@ -1,13 +1,13 @@
 import {Store} from 'tokyo';
 import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
-import {Params} from '../lib/injection';
+import {Route} from 'hiroshima';
 
 import {OrderCollection} from '../models/order';
 
-@inject(Params)
+@inject(Route)
 class OrdersResolver {
-    constructor(params) {
+    constructor({params}) {
         const orders = new OrderCollection([], {
             url: `${process.env.GOODYBAG_APP}/restaurants/${params.restaurant_id}/orders`
         });
