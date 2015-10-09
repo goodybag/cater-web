@@ -1,15 +1,27 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {findDOMNode} from 'react-dom';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 
+import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
 
+@dependencies({
+    orderStore: OrderStore
+})
+@listeningTo(['orderStore'], ({orderStore}) => {
+    return {
+        order: orderStore.getOrder()
+    };
+})
 export class OrderPaneShareComponent extends Component {
     static propTypes = {
-        order: Order.propType.isRequired
+        order: PropTypes.instanceOf(Order).isRequired
     }
 
     handleClick = () => {
         const {gbOrderPaneShareLinkbox} = this.refs;
-        const node = React.findDOMNode(gbOrderPaneShareLinkbox);
+        const node = findDOMNode(gbOrderPaneShareLinkbox);
 
         // TODO: look into this
         node.focus();
@@ -21,9 +33,7 @@ export class OrderPaneShareComponent extends Component {
         const url = `https://example.com/some-url-here?token=${token}`;
 
         return (
-            <div
-                className="gb-order-pane-share"
-                onClick={this.handleClick}>
+            <div className="gb-order-pane-share" onClick={this.handleClick}>
 
                 <div className="gb-order-pane-share-desc">
                     Let others add their own food by sharing this order:
@@ -34,6 +44,7 @@ export class OrderPaneShareComponent extends Component {
                         <i className="icon-link"></i>
                         Send link to others:
                     </div>
+
                     <input
                         ref="gbOrderPaneShareLinkbox"
                         className="gb-order-pane-share-linkbox"
@@ -47,12 +58,11 @@ export class OrderPaneShareComponent extends Component {
                         <i className="icon-email2"></i>
                         Or invite by email:
                     </div>
+
                     <a href="/" className="gb-order-pane-share-email">
                         Share order by email
                     </a>
                 </div>
-
-
             </div>
         );
     }

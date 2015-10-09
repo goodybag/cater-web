@@ -2,7 +2,6 @@
 @import "share";
 @import "items";
 @import "edit";
-@import "datetime";
 @import "timeleft";
 
 .gb-order-pane {
@@ -40,10 +39,18 @@
     }
 }
 
-.gb-order-pane-header-text {
-    i[class^="icon-"] {
-        float: right;
+.gb-order-pane-header-arrow {
+    display: inline-block;
+    float: right;
+
+    .gb-arrow-right, .gb-arrow-down {
+        vertical-align: middle;
     }
+}
+
+.gb-order-pane-header-text {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .gb-order-pane-box {
