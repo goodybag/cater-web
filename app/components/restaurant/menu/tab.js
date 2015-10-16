@@ -1,21 +1,30 @@
 import React, {Component, PropTypes} from 'react';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
+import {Route} from 'hiroshima';
 import url from 'url';
 import cx from 'classnames';
 
+import {RouteStore} from '../../../stores/route';
+
+@dependencies({
+    routeStore: RouteStore
+})
+@listeningTo(['routeStore'], ({routeStore}) => {
+    return {
+        route: routeStore.getRoute()
+    };
+})
 export class RestaurantMenuTabComponent extends Component {
     static propTypes = {
+        route: PropTypes.instanceOf(Route).isRequired,
         type: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired
     }
 
-    static contextTypes = {
-        route: React.PropTypes.object.isRequired
-    }
-
     render() {
-        const {route} = this.context;
-        const {href, children, type} = this.props;
+        const {href, children, type, route} = this.props;
         const {path} = route;
 
         const {pathname} = url.parse(href);

@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
+import {router, Route} from 'hiroshima';
 
 import {MenuStore} from '../../../stores/menu';
+import {RouteStore} from '../../../stores/route';
 import {Menu} from '../../../models/category';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
@@ -77,48 +79,66 @@ class RestaurantMenuIndividualComponent extends Component {
     }
 }
 
-@dependencies({}, [
+@dependencies({
+    routeStore: RouteStore
+}, [
     RestaurantMenuCateringComponent,
-    RestaurantMenuIndividualComponent,
     RestaurantMenuSearchboxComponent
 ])
-export class RestaurantMenuComponent extends Component {
-    static contextTypes = {
-        route: PropTypes.object.isRequired
-    }
-
+@listeningTo(['routeStore'], ({routeStore}) => {
+    return {
+        route: routeStore.getRoute()
+    };
+})
+class RestaurantMenuTabsComponent extends Component {
     static propTypes = {
-        children: PropTypes.node
-    }
-
-    static route(router) {
-        router.index(RestaurantMenuCateringComponent);
-        router.dir('individual').index(RestaurantMenuIndividualComponent);
+        route: PropTypes.instanceOf(Route).isRequired
     }
 
     render() {
-        const {route} = this.context;
-        const {children} = this.props;
+        const {route} = this.props;
         const {restaurant_id} = route.params;
         const path = `/restaurants/${restaurant_id}`;
+
+        return (
+            <div className="gb-restaurant-menu-tabs">
+                <RestaurantMenuTabComponent
+                    href={path}
+                    type="catering">
+                    Catering Menu
+                </RestaurantMenuTabComponent>
+
+                <RestaurantMenuTabComponent
+                    href={`${path}/individual`}
+                    type="individual">
+                    Individual Menu
+                </RestaurantMenuTabComponent>
+            </div>
+        );
+    }
+}
+
+@router(route => {
+    route.index(RestaurantMenuCateringComponent);
+    route.dir('individual').index(RestaurantMenuIndividualComponent);
+})
+@dependencies({}, [
+    RestaurantMenuSearchboxComponent,
+    RestaurantMenuTabsComponent
+])
+export class RestaurantMenuComponent extends Component {
+    static propTypes = {
+        children: PropTypes.node.isRequired
+    }
+
+    render() {
+        const {children} = this.props;
 
         return (
             <div className="gb-restaurant-menu">
                 <RestaurantMenuSearchboxComponent/>
 
-                <div className="gb-restaurant-menu-tabs">
-                    <RestaurantMenuTabComponent
-                        href={path}
-                        type="catering">
-                        Catering Menu
-                    </RestaurantMenuTabComponent>
-
-                    <RestaurantMenuTabComponent
-                        href={`${path}/individual`}
-                        type="individual">
-                        Individual Menu
-                    </RestaurantMenuTabComponent>
-                </div>
+                <RestaurantMenuTabsComponent/>
 
                 {children}
             </div>

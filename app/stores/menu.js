@@ -1,17 +1,13 @@
 import {Store} from 'tokyo';
 import {inject} from 'yokohama';
-import {Params} from '../lib/injection';
+import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
 import {Menu} from '../models/category';
 
-@inject(Params)
+@inject(Route)
 export class MenuResolver {
-    static parse(menu) {
-        return new Menu(menu, {parse: true});
-    }
-
-    constructor(params) {
+    constructor({params}) {
         const menu = new Menu(null, {
             restaurant_id: params.restaurant_id
         });

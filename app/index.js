@@ -12,20 +12,19 @@ import './setup';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
-import Router from 'hiroshima';
 
-import {MainComponent} from './components/main';
+import router from './router';
 
 export const app = express();
 
-const router = new Router().call(function(router) {
-    router.use(MainComponent);
-});
-
 app.use(function(req, res, next) {
-    const {components} = router.match(req.path);
+    const {components} = router.match(req.path, {
+        method: req.method,
+        query: req.query
+    });
+
     if (components.length === 0) {
-        return next();
+        next();
     } else {
         const markup = renderPage();
         res.send(`<!doctype html>${markup}`);

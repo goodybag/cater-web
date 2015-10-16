@@ -22,7 +22,7 @@
     "di": "2.0.0-pre-14",
     "express": "^4.13.3",
     "flux": "^2.1.1",
-    "hiroshima": "^1.1.0",
+    "hiroshima": "^2.2.0",
     "link-delegate": "0.0.1",
     "lodash": "^3.10.1",
     "moment-timezone": "^0.4.0",

@@ -1,32 +1,45 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {Route} from 'hiroshima';
+import {listeningTo} from 'tokyo';
+import {dependencies} from 'yokohama';
 import cx from 'classnames';
 import url from 'url';
 
+import {RouteStore} from '../../stores/route';
+
+@dependencies({
+    routeStore: RouteStore
+})
+@listeningTo(['routeStore'], ({routeStore}) => {
+    return {
+        route: routeStore.getRoute()
+    };
+})
 export class RestaurantTabsComponent extends Component {
-    static contextTypes = {
-        route: React.PropTypes.object.isRequired
+    static propTypes = {
+        route: PropTypes.instanceOf(Route).isRequired
     }
 
     render() {
-        const {route} = this.context;
+        const {route} = this.props;
         const {restaurant_id} = route.params;
         const path = `/restaurants/${restaurant_id}`;
 
         return (
             <div className="gb-restaurant-tabs">
-                <RestaurantTabComponent href={path}>
+                <RestaurantTabComponent href={path} route={route}>
                     Menu
                 </RestaurantTabComponent>
 
-                <RestaurantTabComponent href={`${path}/info`}>
+                <RestaurantTabComponent href={`${path}/info`} route={route}>
                     Info
                 </RestaurantTabComponent>
 
-                <RestaurantTabComponent href={`${path}/reviews`}>
+                <RestaurantTabComponent href={`${path}/reviews`} route={route}>
                     Reviews
                 </RestaurantTabComponent>
 
-                <RestaurantTabComponent href={`${path}/orders`}>
+                <RestaurantTabComponent href={`${path}/orders`} route={route}>
                     Past Orders
                     <div className="gb-restaurant-tab-ncount">3</div>
                 </RestaurantTabComponent>
@@ -37,17 +50,13 @@ export class RestaurantTabsComponent extends Component {
 
 class RestaurantTabComponent extends Component {
     static propTypes = {
-        href: React.PropTypes.string.isRequired,
-        children: React.PropTypes.node.isRequired
-    }
-
-    static contextTypes = {
-        route: React.PropTypes.object.isRequired
+        href: PropTypes.string.isRequired,
+        children: PropTypes.node.isRequired,
+        route: PropTypes.instanceOf(Route).isRequired
     }
 
     render() {
-        const {route} = this.context;
-        const {href, children} = this.props;
+        const {href, children, route} = this.props;
         const {path} = route;
 
         const {pathname} = url.parse(href);

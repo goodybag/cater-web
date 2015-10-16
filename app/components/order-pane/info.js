@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
 import {Dispatcher} from 'flux';
 
 import {UpdateOrderAction} from '../../actions/order';
@@ -7,18 +8,17 @@ import {Order} from '../../models/order';
 import {OrderPaneInfoEditComponent} from './edit';
 import {OrderPaneDateTimeComponent} from './datetime';
 
+@dependencies({
+    dispatcher: Dispatcher
+})
+@listeningTo([], ({dispatcher}) => {
+    return {dispatcher};
+})
 export class OrderPaneInfoComponent extends Component {
     static propTypes = {
-        order: Order.propType.isRequired
+        order: PropTypes.instanceOf(Order).isRequired,
+        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired
     }
-
-    static contextTypes = {
-        dependencies: React.PropTypes.object.isRequired
-    }
-
-    @dependencies({
-        dispatcher: Dispatcher
-    })
 
     state = {
         editing: false
@@ -31,8 +31,7 @@ export class OrderPaneInfoComponent extends Component {
     // popsolopsopacalous
 
     stopEditing = ({changes}) => {
-        const {dispatcher} = this.context;
-        const {order} = this.props;
+        const {dispatcher, order} = this.props;
 
         dispatcher.dispatch(new UpdateOrderAction({order, changes}));
         this.setState({editing: false});
