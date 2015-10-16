@@ -7,6 +7,7 @@ function editRequest(req) {
 }
 
 sync.editRequest = editRequest;
+sync.timeout = 5000;
 
 Backbone.sync = sync;
 
