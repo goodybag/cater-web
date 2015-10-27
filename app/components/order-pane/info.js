@@ -1,8 +1,8 @@
 import React, {Component, PropTypes} from 'react';
+import {FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'flux';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
-import moment from 'moment-timezone';
 
 import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
@@ -82,8 +82,6 @@ export class OrderPaneInfoShowComponent extends Component {
         const {guests} = order.attributes;
         const datetime = order.getDatetimeMoment();
         const address = order.displayAddress();
-        const date = datetime.format('MM/DD/YYYY');
-        const time = datetime.format('h:mm a');
 
         return (
             <div className="gb-order-pane-info-show">
@@ -94,12 +92,12 @@ export class OrderPaneInfoShowComponent extends Component {
 
                 <div className="gb-order-pane-info-date">
                     <i className="icon-calendar"></i>
-                    {date}
+                    <FormattedDate value={datetime}/>
                 </div>
 
                 <div className="gb-order-pane-info-time">
                     <i className="icon-clock"></i>
-                    {time}
+                    <FormattedTime value={datetime} format="hhmma"/>
                 </div>
 
                 <div className="gb-order-pane-info-guests">

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {FormattedNumber} from 'react-intl';
+import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 
@@ -29,8 +29,7 @@ export class RestaurantOrdersRowComponent extends Component {
     render() {
         const {status, datetime, timezone, total} = this.props;
         const {displayStatus} = this;
-        const date = moment.tz(datetime, timezone).format('M/DD/YY');
-        const time = moment.tz(datetime, timezone).format('HH:mm a');
+        const tzdatetime = moment.tz(datetime, timezone);
 
         const {onLinkClicked} = this;
 
@@ -41,12 +40,15 @@ export class RestaurantOrdersRowComponent extends Component {
                         status={status}
                     />
                 </td>
+
                 <td className="gb-restaurant-orders-row-date">
-                    {date}
+                    <FormattedDate value={tzdatetime}/>
                 </td>
+
                 <td className="gb-restaurant-orders-row-time">
-                    {time}
+                    <FormattedTime value={tzdatetime} format="hhmma"/>
                 </td>
+
                 <td className="gb-restaurant-orders-row-total">
                     <FormattedNumber
                         value={total / 100}

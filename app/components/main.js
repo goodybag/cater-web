@@ -3,6 +3,7 @@ import {IntlProvider} from 'react-intl';
 import {router} from 'hiroshima';
 import {dependencies} from 'yokohama';
 
+import * as formats from '../formats';
 import {NavbarComponent} from './navbar';
 import {RestaurantComponent} from './restaurant';
 
@@ -61,7 +62,7 @@ export class MainContainerComponent extends React.Component {
         }, React.createElement(components[components.length - 1], null));
 
         return (
-            <IntlProvider locale="en">
+            <IntlProvider locale="en" formats={formats}>
                 {element}
             </IntlProvider>
         );
