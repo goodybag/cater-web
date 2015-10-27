@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {IntlProvider} from 'react-intl';
 import {router} from 'hiroshima';
 import {dependencies} from 'yokohama';
 
@@ -55,8 +56,14 @@ export class MainContainerComponent extends React.Component {
     render() {
         const {components} = this.props;
 
-        return components.slice(0, -1).reduceRight(function(left, right) {
+        const element = components.slice(0, -1).reduceRight(function(left, right) {
             return React.createElement(right, null, left);
         }, React.createElement(components[components.length - 1], null));
+
+        return (
+            <IntlProvider locale="en">
+                {element}
+            </IntlProvider>
+        );
     }
 }

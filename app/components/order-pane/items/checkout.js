@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {formatPrice} from '../../../lib/price';
+import {FormattedNumber} from 'react-intl';
 
 export class OrderPaneCheckoutComponent extends Component {
     static propTypes = {
@@ -19,7 +19,11 @@ export class OrderPaneCheckoutComponent extends Component {
                             </td>
 
                             <td className="gb-order-pane-checkout-subtotal-price">
-                                {formatPrice(total)}
+                                <FormattedNumber
+                                    value={total / 100}
+                                    style="currency"
+                                    currency="USD"
+                                />
                             </td>
                         </tr>
                     </tbody>

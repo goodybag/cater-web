@@ -1,3 +1,9 @@
+import assign from 'babel-runtime/core-js/object/assign';
+
+import 'di';
+
+Object.assign = assign;
+
 import Backbone, {Model} from 'backbone';
 import ZSchema from 'z-schema';
 import sync from 'backbone-super-sync';

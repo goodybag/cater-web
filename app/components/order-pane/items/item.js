@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import {FormattedNumber} from 'react-intl';
 
-import {formatPrice} from '../../../lib/price';
 import {OrderItem} from '../../../models/order-item';
 
 export class OrderPaneItemComponent extends Component {
@@ -26,7 +26,11 @@ export class OrderPaneItemComponent extends Component {
                             </td>
 
                             <td className="gb-order-pane-item-info-price">
-                                {formatPrice(price)}
+                                <FormattedNumber
+                                    value={price / 100}
+                                    style="currency"
+                                    currency="USD"
+                                />
                             </td>
                         </tr>
                     </tbody>
