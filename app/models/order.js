@@ -1,4 +1,4 @@
-import PropTypes from 'react/lib/ReactPropTypes';
+import moment from 'moment-timezone';
 import {Model} from 'backbone';
 
 export class Order extends Model {
@@ -25,8 +25,6 @@ export class Order extends Model {
             }
         }
     }
-
-    static propType = PropTypes.instanceOf(Order)
 
     defaults() {
         return {
@@ -75,6 +73,12 @@ export class Order extends Model {
         } else {
             return `${street}, ${city}, ${state}, ${zip}`;
         }
+    }
+
+    getDatetimeMoment() {
+        const {datetime, timezone} = this.attributes;
+
+        return moment.tz(datetime, timezone);
     }
 }
 

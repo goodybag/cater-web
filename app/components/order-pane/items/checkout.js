@@ -1,36 +1,13 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {FormattedNumber} from 'react-intl';
 
 export class OrderPaneCheckoutComponent extends Component {
     static propTypes = {
-        prices: React.PropTypes.array.isRequired
-    }
-
-    formatPrice = (price) => {
-        const dollars = price.toString().slice(0, -2);
-        const cents = price.toString().slice(-2);
-
-        return (
-            ['$', dollars, '.', cents].join('')
-        );
-    }
-
-    addAll = (arr) => {
-        const {formatPrice} = this;
-        let total = 0;
-
-        for ( let i = 0; i < arr.length; i++ ) {
-            total += arr[i];
-        }
-
-        return (
-            formatPrice(total)
-        );
+        total: PropTypes.number.isRequired
     }
 
     render() {
-        const {prices} = this.props;
-        const {formatPrice} = this;
-        const {addAll} = this;
+        const {total} = this.props;
 
         return (
             <div className="gb-order-pane-checkout">
@@ -40,12 +17,18 @@ export class OrderPaneCheckoutComponent extends Component {
                             <td className="gb-order-pane-checkout-subtotal-text">
                                 Subtotal
                             </td>
+
                             <td className="gb-order-pane-checkout-subtotal-price">
-                                {addAll(prices)}
+                                <FormattedNumber
+                                    value={total / 100}
+                                    style="currency"
+                                    currency="USD"
+                                />
                             </td>
                         </tr>
                     </tbody>
                 </table>
+
                 <div className="gb-order-pane-checkout-btn">
                     Checkout
                 </div>

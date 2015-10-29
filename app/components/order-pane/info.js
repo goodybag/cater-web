@@ -1,23 +1,27 @@
 import React, {Component, PropTypes} from 'react';
+import {FormattedDate, FormattedTime} from 'react-intl';
+import {Dispatcher} from 'flux';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
 
-import {UpdateOrderAction} from '../../actions/order';
+import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
+import {UpdateOrderAction} from '../../actions/order';
 import {OrderPaneInfoEditComponent} from './edit';
-import {OrderPaneDateTimeComponent} from './datetime';
 
 @dependencies({
-    dispatcher: Dispatcher
+    dispatcher: Dispatcher,
+    orderStore: OrderStore
 })
-@listeningTo([], ({dispatcher}) => {
-    return {dispatcher};
+@listeningTo(['orderStore'], ({dispatcher, orderStore}) => {
+    return {
+        dispatcher,
+        order: orderStore.getOrder()
+    };
 })
 export class OrderPaneInfoComponent extends Component {
     static propTypes = {
-        order: PropTypes.instanceOf(Order).isRequired,
-        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired
+        order: PropTypes.instanceOf(Order).isRequired
     }
 
     state = {
@@ -69,36 +73,15 @@ export class OrderPaneInfoComponent extends Component {
 
 export class OrderPaneInfoShowComponent extends Component {
     static propTypes = {
-        order: Order.propType.isRequired,
-        onStartEditing: React.PropTypes.func.isRequired
-    }
-
-    startEditing = () => {
-        const {onStartEditing} = this.props;
-
-        onStartEditing();
-    }
-
-    returnDate = (datetime) => {
-        const date = new Date(datetime);
-
-        return (
-            date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear()
-        );
-    }
-
-    returnTime = (date) => {
-        return (
-            date.getHours() + ":" + date.getMinutes()
-        );
+        order: PropTypes.instanceOf(Order).isRequired,
+        onStartEditing: PropTypes.func.isRequired
     }
 
     render() {
-        const {order} = this.props;
-        const {guests, datetime, timezone} = order.attributes;
+        const {order, onStartEditing: startEditing} = this.props;
+        const {guests} = order.attributes;
+        const datetime = order.getDatetimeMoment();
         const address = order.displayAddress();
-        const {returnDate} = this;
-        const {returnTime} = this;
 
         return (
             <div className="gb-order-pane-info-show">
@@ -109,20 +92,12 @@ export class OrderPaneInfoShowComponent extends Component {
 
                 <div className="gb-order-pane-info-date">
                     <i className="icon-calendar"></i>
-                        <OrderPaneDateTimeComponent
-                            datetime={datetime}
-                            timezone={timezone}
-                            displayDate={true}
-                        />
+                    <FormattedDate value={datetime}/>
                 </div>
 
                 <div className="gb-order-pane-info-time">
                     <i className="icon-clock"></i>
-                    <OrderPaneDateTimeComponent
-                        datetime={datetime}
-                        timezone={timezone}
-                        displayTimeRange={true}
-                    />
+                    <FormattedTime value={datetime} format="hhmma"/>
                 </div>
 
                 <div className="gb-order-pane-info-guests">
@@ -130,7 +105,9 @@ export class OrderPaneInfoShowComponent extends Component {
                     {guests}
                 </div>
 
-                <div className="gb-order-pane-info-editbutton" onClick={this.startEditing}>
+                <div
+                    className="gb-order-pane-info-editbutton"
+                    onClick={startEditing}>
                     Edit
                 </div>
             </div>

@@ -30,88 +30,34 @@ export class OrderPaneComponent extends Component {
         orderItems: PropTypes.instanceOf(OrderItemCollection).isRequired
     }
 
-    state = {
-        infoHeaderClosed: false,
-        shareHeaderClosed: true,
-        itemsHeaderClosed: false
-    }
-
-    handlePaneHeaderClick = (btn) => {
-        if(btn === "info-header") {
-            this.setState({
-                infoHeaderClosed: !this.state.infoHeaderClosed
-            });
-        }
-
-        if(btn === "share-header") {
-            this.setState({
-                shareHeaderClosed: !this.state.shareHeaderClosed
-            });
-        }
-
-        if(btn === "items-header") {
-            this.setState({
-                itemsHeaderClosed: !this.state.itemsHeaderClosed
-            });
-        }
-    }
-
     render() {
         const {order, orderItems} = this.props;
         const {datetime, timezone} = order.attributes;
-        const {handlePaneHeaderClick} = this;
-        let {infoHeaderClosed, shareHeaderClosed, itemsHeaderClosed} = this.state;
+        const infoTitle = order.isNew() ? 'Order Info' : `Order - #${order.id}`;
 
         return (
             <div className="gb-order-pane">
-
-                <OrderPaneTimeLeftComponent
-                    datetime={datetime}
-                    timezone={timezone}
-                />
+                <OrderPaneTimeLeftComponent order={order}/>
 
                 <div className="gb-order-pane-tablet-left">
-                    <div className="gb-order-pane-header-container" onClick={handlePaneHeaderClick.bind(this, "info-header")}>
-                        <OrderPaneHeaderComponent
-                            title={order.isNew() ? 'Order Info' : `Order – #${order.id}`}
-                            closed={infoHeaderClosed}
-                        />
-                    </div>
+                    <OrderPaneHeaderComponent title={infoTitle}>
+                        <OrderPaneInfoComponent/>
+                    </OrderPaneHeaderComponent>
 
-                    {
-                        !infoHeaderClosed ?
-                            <OrderPaneInfoComponent order={order} /> : ""
-                    }
-
-                    <div className="gb-order-pane-header-container" onClick={handlePaneHeaderClick.bind(this, "share-header")}>
-                        <OrderPaneHeaderComponent
-                            title="Share Order (Optional)"
-                            closed={shareHeaderClosed}
-                        />
-                    </div>
-
-                    {
-                        !shareHeaderClosed ?
-                            <OrderPaneShareComponent order={order} /> : ""
-                    }
-
-                </div>
+                    <OrderPaneHeaderComponent
+                        title="Share Order (Optional)"
+                        initiallyClosed>
+                        <OrderPaneShareComponent/>
+                    </OrderPaneHeaderComponent>
+               </div>
 
                 <div className="gb-order-pane-tablet-right">
-                    <div className="gb-order-pane-header-container" onClick={handlePaneHeaderClick.bind(this, "items-header")}>
-                        <OrderPaneHeaderComponent
-                            title="Order Items"
-                            closed={itemsHeaderClosed}
-                        />
-                    </div>
-
-                    {
-                        !itemsHeaderClosed ?
-                            <OrderPaneItemsComponent orderItems={orderItems} /> : ""
-                    }
+                    <OrderPaneHeaderComponent title="Order Items">
+                        <OrderPaneItemsComponent/>
+                    </OrderPaneHeaderComponent>
                 </div>
 
-                <div className="gb-order-pane-endcap"></div>
+                <div className="gb-order-pane-endcap"/>
             </div>
         );
     }
@@ -119,19 +65,42 @@ export class OrderPaneComponent extends Component {
 
 class OrderPaneHeaderComponent extends Component {
     static propTypes = {
-        title: React.PropTypes.string.isRequired,
-        closed: React.PropTypes.bool.isRequired
+        title: PropTypes.string.isRequired,
+        children: PropTypes.node.isRequired,
+        initiallyClosed: PropTypes.bool
+    }
+
+    state = {
+        open: !this.props.initiallyClosed
+    }
+
+    handleClick = () => {
+        this.setState(({open}) => {
+            return {
+                open: !open
+            };
+        });
     }
 
     render() {
-        const {title, closed} = this.props;
+        const {open} = this.state;
+        const {title, children} = this.props;
+
+        const iconx = open ? 'gb-arrow-down' : 'gb-arrow-right';
 
         return (
-            <div className="gb-order-pane-header">
-                <div className="gb-order-pane-header-text">
-                    {title}
-                    <i className={"icon-arrow_" + cxnames({"side":closed, "down":!closed})}></i>
+            <div className="gb-order-pane-block">
+                <div className="gb-order-pane-header" onClick={this.handleClick}>
+                    <div className="gb-order-pane-header-text">
+                        {title}
+                    </div>
+
+                    <div className="gb-order-pane-header-arrow">
+                        <div className={iconx}/>
+                    </div>
                 </div>
+
+                {open && children}
             </div>
         );
     }

@@ -1,63 +1,63 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
+import {FormattedMessage} from 'react-intl';
 import moment from 'moment-timezone';
+import {dependencies} from 'yokohama';
+import {listeningTo} from 'tokyo';
+import cx from 'classnames';
 
+import {OrderStore} from '../../stores/order';
+import {Order} from '../../models/order';
+
+@dependencies({
+    orderStore: OrderStore
+})
+@listeningTo(['orderStore'], ({orderStore}) => {
+    return {
+        order: orderStore.getOrder()
+    };
+})
 export class OrderPaneTimeLeftComponent extends Component {
     static propTypes = {
-        datetime: React.PropTypes.string.isRequired,
-        timezone: React.PropTypes.string.isRequired
+        order: PropTypes.instanceOf(Order).isRequired
     }
 
     render() {
-        const {datetime, timezone} = this.props;
-        const currentTime = moment().tz(timezone);
-        const scheduledTime = moment.tz(datetime, timezone);
-        const daysRemaining = scheduledTime.diff(currentTime, 'days');
-        const hoursRemaining = scheduledTime.diff(currentTime, 'hours');
+        const {order} = this.props;
+        const {timezone, datetime} = order.attributes;
+        const now = moment().tz(timezone);
+        const then = order.getDatetimeMoment();
+        const time = moment.duration(now - then);
+
+        const set = cx('gb-order-pane-timeleft', {
+            'gb-order-pane-timeleft-urgent': time.asHours() < 3
+        });
 
         return (
-            <div className="gb-order-pane-timeleft">
-                <i className="icon-timer"></i>
-                TIME LEFT TO PLACE ORDER:
-                <span className="gb-order-pane-timeleft-time">
-                    {renderTimeRemaining()}
-                </span>
+            <div className={set}>
+                <div className="gb-order-pane-timeleft-timer"/>
+
+                <div className="gb-order-pane-timeleft-text">
+                    Time left to place order:
+                </div>
+
+                <OrderPaneTimeLeftMetricComponent time={time}/>
             </div>
         );
+    }
+}
 
-        function renderTimeRemaining() {
-            if(!daysRemaining) {
-                if(!hoursRemaining) {
-                    return (
-                        <span className="gb-no-time-remaining">
-                            { hoursRemaining + " HRS" }
-                        </span>
-                    );
-                } else if (hoursRemaining===1) {
-                    return (
-                        <span className="gb-no-time-remaining">
-                            { hoursRemaining + " HR" }
-                        </span>
-                    );
-                } else {
-                    return (
-                        <span className="gb-hours-remaining">
-                            { hoursRemaining + " HRS" }
-                        </span>
-                    );
-                }
-            } else if(daysRemaining===1) {
-                return (
-                    <span className="gb-days-remaining">
-                        { daysRemaining + " DAY" }
-                    </span>
-                )
-            } else {
-                return (
-                    <span className="gb-days-remaining">
-                        { daysRemaining + " DAYS" }
-                    </span>
-                );
-            }
-        }
+export class OrderPaneTimeLeftMetricComponent extends Component {
+    static propTypes = {
+        time: PropTypes.instanceOf(moment.duration.fn.constructor).isRequired
+    }
+
+    render() {
+        const {time} = this.props;
+
+        return (
+            <div className="gb-order-pane-timeleft-metric">
+                {time.humanize()}
+            </div>
+        );
     }
 }

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 
 import {Order} from '../../models/order';
 
 export class OrderPaneInfoEditComponent extends Component {
     static propTypes = {
-        order: Order.propType.isRequired,
-        onSaveInfo: React.PropTypes.func.isRequired
+        order: PropTypes.instanceOf(Order).isRequired,
+        onSaveInfo: PropTypes.func.isRequired
     }
 
     componentWillMount() {
@@ -17,10 +17,10 @@ export class OrderPaneInfoEditComponent extends Component {
     }
 
     saveInfo = () => {
-        const {onSaveInfo} = this.props;
+        const {onSaveInfo: saveInfo} = this.props;
         const {address, guests, datetime} = this.state;
 
-        onSaveInfo({address, guests, datetime});
+        saveInfo({address, guests, datetime});
     }
 
     handleAddressChange = (event) => {

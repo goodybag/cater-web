@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 
@@ -25,20 +26,10 @@ export class RestaurantOrdersRowComponent extends Component {
         this.props.signalAlertOpen(action);
     }
 
-    formatPrice = (price) => {
-        const dollars = price.toString().slice(0, -2);
-        const cents = price.toString().slice(-2);
-
-        return (
-            ['$', dollars, '.', cents].join('')
-        );
-    }
-
     render() {
         const {status, datetime, timezone, total} = this.props;
-        const {displayStatus, formatPrice} = this;
-        const date = moment.tz(datetime, timezone).format('M/DD/YY');
-        const time = moment.tz(datetime, timezone).format('HH:mm a');
+        const {displayStatus} = this;
+        const tzdatetime = moment.tz(datetime, timezone);
 
         const {onLinkClicked} = this;
 
@@ -49,14 +40,21 @@ export class RestaurantOrdersRowComponent extends Component {
                         status={status}
                     />
                 </td>
+
                 <td className="gb-restaurant-orders-row-date">
-                    {date}
+                    <FormattedDate value={tzdatetime}/>
                 </td>
+
                 <td className="gb-restaurant-orders-row-time">
-                    {time}
+                    <FormattedTime value={tzdatetime} format="hhmma"/>
                 </td>
+
                 <td className="gb-restaurant-orders-row-total">
-                    {formatPrice(total)}
+                    <FormattedNumber
+                        value={total / 100}
+                        style="currency"
+                        currency="USD"
+                    />
                 </td>
                 <td className="gb-restaurant-orders-row-expired">
                     {/*TODO: Expired*/}
