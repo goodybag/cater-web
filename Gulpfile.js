@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var smaps = require('gulp-sourcemaps');
 var filter = require('gulp-filter');
+var url = require('url');
 
 gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
 
@@ -33,12 +34,10 @@ gulp.task('bundle', function(cb) {
 // dist/build
 gulp.task('compile', function() {
     var less = require('gulp-less');
-    var cssmin = require('gulp-minify-css');
 
     return gulp.src('./app/styles/main.less')
         .pipe(smaps.init())
         .pipe(less())
-        .pipe(cssmin())
         .pipe(smaps.write('.'))
         .pipe(gulp.dest('dist/build'));
 });
@@ -52,16 +51,23 @@ gulp.task('migrate', function() {
 gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
     var RevAll = require('gulp-rev-all');
     var uglify = require('gulp-uglify');
+    var cssmin = require('gulp-minify-css');
 
     var onlyJs = filter('*.js', {restore: true});
-    var revAll = new RevAll();
-
-    revAll.revisioner.pathBase = ''; // TODO: PR for gulp-rev-all
+    var onlyCss = filter('*.css', {restore: true});
+    var revAll = new RevAll({
+        transformPath: function(rev) {
+            return url.resolve(process.env.GOODYBAG_CDN_PREFIX, rev);
+        }
+    });
 
     return gulp.src('dist/build/**/!(*.map)')
-        .pipe(onlyJs)
-        .pipe(uglify())
-        .pipe(onlyJs.restore)
+        // currently there's an issue with the system
+        // when compiled with uglify. It's due to some
+        // bugs in older versions of tracuer which is
+        // included in di.js which has yet to be replaced
+        // .pipe(onlyJs).pipe(uglify()).pipe(onlyJs.restore)
+        .pipe(onlyCss).pipe(cssmin()).pipe(onlyCss.restore)
         .pipe(revAll.revision())
         .pipe(gulp.dest('dist/final'))
         .pipe(revAll.manifestFile())
