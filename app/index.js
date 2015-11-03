@@ -13,6 +13,7 @@ import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
 
+import {urlForAsset} from './asset';
 import router from './router';
 
 export const app = express();
@@ -39,14 +40,14 @@ function renderPage() {
                 <meta charSet="utf-8"/>
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-                <link rel="stylesheet" href="/main.css"/>
+                <link rel="stylesheet" href={urlForAsset('main.css')}/>
             </head>
 
             <body>
                 <div id="gb-body"/>
 
                 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"/>
-                <script src="/bundle.js"/>
+                <script src={urlForAsset('bundle.js')}/>
             </body>
         </html>
     );
