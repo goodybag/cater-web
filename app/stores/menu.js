@@ -3,6 +3,7 @@ import {dependencies} from 'yokohama';
 import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
+import {UpdateMenuSearchAction} from '../actions/menu';
 import {Menu} from '../models/category';
 
 @dependencies(Route)
@@ -21,8 +22,21 @@ export class MenuStore extends Store {
     constructor(dispatcher, menu) {
         super(dispatcher);
 
+        this.queryText = '';
+
         this.menu = menu;
         this.menu.on('change', () => this.emit('change'));
+
+        this.bind(UpdateMenuSearchAction, this.updateMenuSearch);
+    }
+
+    updateMenuSearch({queryText}) {
+        this.queryText = queryText.toLowerCase();
+        this.emit('change');
+    }
+
+    getQueryText() {
+        return this.queryText;
     }
 
     getMenu() {
