@@ -14,7 +14,8 @@ export class RestaurantMenuItemComponent extends Component {
             name,
             tags,
             min_qty,
-            price
+            price,
+            description
         } = item.attributes;
 
         return (
@@ -40,6 +41,12 @@ export class RestaurantMenuItemComponent extends Component {
                     />
 
                     {min_qty ? ' per person' : null}
+                </div>
+
+                <div className="gb-restaurant-menu-item-desc">
+                    <div className="gb-restaurant-menu-item-desc-text">
+                        {description}
+                    </div>
                 </div>
             </div>
         );
