@@ -11,18 +11,19 @@ export function handleError(err) {
                 boxSizing: 'border-box',
                 maxWidth: '500px',
                 margin: '0 auto',
-                padding: '20px'
+                padding: '20px 0'
             },
 
             header: {
-                marginBottom: '10px'
+                marginBottom: '10px',
+                padding: '0 20px'
             },
 
             headerTitle: {
                 display: 'inline-block',
                 fontSize: '32px',
                 fontWeight: 600,
-                lineHeight: '36px',
+                lineHeight: '36px'
             },
 
             headerAttribution: {
@@ -31,11 +32,20 @@ export function handleError(err) {
                 fontSize: '14px'
             },
 
-            text: {},
+            text: {
+                padding: '0 20px'
+            },
 
             line: {
                 fontSize: '18px',
                 margin: '5px 0'
+            },
+
+            stackTrace: {
+                backgroundColor: '#fafafa',
+                fontSize: '14px',
+                overflow: 'scroll',
+                padding: '20px'
             }
         };
 
@@ -54,6 +64,8 @@ export function handleError(err) {
                     <div style={gb.line}>Try not to worry.</div>
                     <div style={gb.line}>Everything will be ok.</div>
                 </div>
+
+                <pre style={gb.stackTrace}>{err.message}{'\n'}{err.stack}</pre>
             </div>
         );
 
