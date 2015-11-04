@@ -44,6 +44,8 @@ function renderPage() {
 
             <body>
                 <div id="gb-body"/>
+
+                <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"/>
                 <script src="/bundle.js"/>
             </body>
         </html>
