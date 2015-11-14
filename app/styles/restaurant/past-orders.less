@@ -1,182 +1,182 @@
-.gb-restaurant-orders {
-    .gb-restaurant-content;
-
-    font-size: 0.93em;
-    position: relative;
-    cursor: default;
-}
-
-.gb-restaurant-orders-title {
-    font-weight: 700;
-    margin-bottom: 30px;
-}
-
-.gb-restaurant-orders-table {
-    text-align: left;
-    width: 100%;
-    border-collapse: collapse;
-}
-
-// Mobile View of Table
-@media screen and (max-width: 700px) {
-    .gb-restaurant-orders-row-view,
-    .gb-restaurant-orders-row-duplicate,
-    .gb-restaurant-orders-row-resume,
-    .gb-restaurant-orders-row-cancel {
-        display: none;
-    }
-
-    .gb-restaurant-orders-thead {
-        th:nth-child(5) ~ th { // selects all elements after 5th col
-            display: none;
-        }
-    }
-}
-
-// TODO: Clean this up
-.gb-restaurant-orders-thead {
-    font-size: 0.8em;
-    color: @gb-gray;
-
-    th {
-        border-bottom: 1px solid @gb-soft;
-        vertical-align: bottom;
-    }
-
-    th:nth-child(1) {   // Status column
-        @media screen and (min-width: 700px) {
-            width: 120px;
-        }
-    }
-
-    th:nth-child(2) {   // Delivery date column
-        @media screen and (min-width: 700px) {
-            width: 75px;
-        }
-    }
-
-    th:nth-child(3) {   // Delivery time column
-        @media screen and (min-width: 700px) {
-            width: 80px;
-        }
-    }
-
-    th:nth-child(4) {  // Total column
-        @media screen and (min-width: 700px) {
-            width: 70px;
-        }
-    }
-
-    th:nth-child(5) { // Expired column
-        min-width: 70px;
-    }
-
-    th:nth-child(6) { // Resume column
-        @media screen and (max-width: 1180px) {
-            width: 85px;
-        }
-    }
-
-    th:nth-child(7) { // View column
-        @media screen and (max-width: 1180px) {
-            width: 60px;
-        }
-    }
-
-    th:nth-child(8) { // Cancel column
-        @media screen and (max-width: 1180px) {
-            width: 80px;
-        }
-    }
-}
-
-.gb-restaurant-orders-tbody {
-    tr {
-        line-height: 3;
-
-        @media screen and (max-width: 1180px) {
-            border-bottom: 1px solid @gb-bright;
-        }
-    }
-
-    td a {
-        color: @gb-blue;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-}
-
-// TODO: Abstract into status-label.less
-.gb-restaurant-orders-status-label {
-    position: relative;
-
-    // TODO: extract
-    div[class^="gb-restaurant-orders-status-label-"] {
-        line-height: 1.7;
-        font-weight: 600;
-        color: @gb-white;
-        width: 80px;
-        text-align: center;
-        font-size: 13px;
-        border-radius: 3px;
-        margin: 0 auto;
-    }
-}
-
-.gb-restaurant-orders-status-label-draft {
-    background-color: @gb-yellow;
-
-    &::before { // Red Dot
-        content: "";
-        position: absolute;
-        top: 6px;
-        left: 0;
-        @media screen and (max-width: 600px) {
-            left: -10px;
-        }
-        display: inline-block;
-        background-color: @gb-red;
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        margin-right: 30px;
-    }
-}
-
-.gb-restaurant-orders-status-label-submitted {
-    background-color: @gb-skyblue;
-}
-
-.gb-restaurant-orders-status-label-accepted {
-    background-color: @gb-teal;
-}
-
-.gb-restaurant-orders-status-label-canceled {
-    background-color: @gb-subtle;
-}
-
-//TODO: Abstract into alert.less
-
-.gb-restaurant-orders-alert {
-    box-sizing: border-box;
-    position: absolute;
-    top: 20px;
-    left: 0;
-    background: @gb-pale-yellow;
-    border-top: 1px solid @gb-yellow;
-    border-bottom: 1px solid @gb-yellow;
-    width: 100%;
-    text-align: center;
-    padding: 8px;
-
-    a {
-        color: @gb-blue;
-        margin-left: 2px;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-}
+// .gb-restaurant-orders {
+//     .gb-restaurant-content;
+//
+//     font-size: 0.93em;
+//     position: relative;
+//     cursor: default;
+// }
+//
+// .gb-restaurant-orders-title {
+//     font-weight: 700;
+//     margin-bottom: 30px;
+// }
+//
+// .gb-restaurant-orders-table {
+//     text-align: left;
+//     width: 100%;
+//     border-collapse: collapse;
+// }
+//
+// // Mobile View of Table
+// @media screen and (max-width: 700px) {
+//     .gb-restaurant-orders-row-view,
+//     .gb-restaurant-orders-row-duplicate,
+//     .gb-restaurant-orders-row-resume,
+//     .gb-restaurant-orders-row-cancel {
+//         display: none;
+//     }
+//
+//     .gb-restaurant-orders-thead {
+//         th:nth-child(5) ~ th { // selects all elements after 5th col
+//             display: none;
+//         }
+//     }
+// }
+//
+// // TODO: Clean this up
+// .gb-restaurant-orders-thead {
+//     font-size: 0.8em;
+//     color: @gb-gray;
+//
+//     th {
+//         border-bottom: 1px solid @gb-soft;
+//         vertical-align: bottom;
+//     }
+//
+//     th:nth-child(1) {   // Status column
+//         @media screen and (min-width: 700px) {
+//             width: 120px;
+//         }
+//     }
+//
+//     th:nth-child(2) {   // Delivery date column
+//         @media screen and (min-width: 700px) {
+//             width: 75px;
+//         }
+//     }
+//
+//     th:nth-child(3) {   // Delivery time column
+//         @media screen and (min-width: 700px) {
+//             width: 80px;
+//         }
+//     }
+//
+//     th:nth-child(4) {  // Total column
+//         @media screen and (min-width: 700px) {
+//             width: 70px;
+//         }
+//     }
+//
+//     th:nth-child(5) { // Expired column
+//         min-width: 70px;
+//     }
+//
+//     th:nth-child(6) { // Resume column
+//         @media screen and (max-width: 1180px) {
+//             width: 85px;
+//         }
+//     }
+//
+//     th:nth-child(7) { // View column
+//         @media screen and (max-width: 1180px) {
+//             width: 60px;
+//         }
+//     }
+//
+//     th:nth-child(8) { // Cancel column
+//         @media screen and (max-width: 1180px) {
+//             width: 80px;
+//         }
+//     }
+// }
+//
+// .gb-restaurant-orders-tbody {
+//     tr {
+//         line-height: 3;
+//
+//         @media screen and (max-width: 1180px) {
+//             border-bottom: 1px solid @gb-bright;
+//         }
+//     }
+//
+//     td a {
+//         color: @gb-blue;
+//
+//         &:hover {
+//             text-decoration: underline;
+//         }
+//     }
+// }
+//
+// // TODO: Abstract into status-label.less
+// .gb-restaurant-orders-status-label {
+//     position: relative;
+//
+//     // TODO: extract
+//     div[class^="gb-restaurant-orders-status-label-"] {
+//         line-height: 1.7;
+//         font-weight: 600;
+//         color: @gb-white;
+//         width: 80px;
+//         text-align: center;
+//         font-size: 13px;
+//         border-radius: 3px;
+//         margin: 0 auto;
+//     }
+// }
+//
+// .gb-restaurant-orders-status-label-draft {
+//     background-color: @gb-yellow;
+//
+//     &::before { // Red Dot
+//         content: "";
+//         position: absolute;
+//         top: 6px;
+//         left: 0;
+//         @media screen and (max-width: 600px) {
+//             left: -10px;
+//         }
+//         display: inline-block;
+//         background-color: @gb-red;
+//         width: 7px;
+//         height: 7px;
+//         border-radius: 50%;
+//         margin-right: 30px;
+//     }
+// }
+//
+// .gb-restaurant-orders-status-label-submitted {
+//     background-color: @gb-skyblue;
+// }
+//
+// .gb-restaurant-orders-status-label-accepted {
+//     background-color: @gb-teal;
+// }
+//
+// .gb-restaurant-orders-status-label-canceled {
+//     background-color: @gb-subtle;
+// }
+//
+// //TODO: Abstract into alert.less
+//
+// .gb-restaurant-orders-alert {
+//     box-sizing: border-box;
+//     position: absolute;
+//     top: 20px;
+//     left: 0;
+//     background: @gb-pale-yellow;
+//     border-top: 1px solid @gb-yellow;
+//     border-bottom: 1px solid @gb-yellow;
+//     width: 100%;
+//     text-align: center;
+//     padding: 8px;
+//
+//     a {
+//         color: @gb-blue;
+//         margin-left: 2px;
+//
+//         &:hover {
+//             text-decoration: underline;
+//         }
+//     }
+// }
