@@ -1,63 +1,76 @@
-// @gb-foreground: #424a54;
-// @gb-background: #ffffff;
-// @gb-white: #ffffff;
-// @gb-black: #000000;
-// @gb-bright: #e6e9ed;
-// @gb-dark: #383d46;
-// @gb-darker: #2c3239;
-// @gb-shadow: rgba(0, 0, 0, 0.1);
-// @gb-shadow-light: #494E55;
-// @gb-shadow-dark: #242832;
-// @gb-bold: #3B3F47;
-// @gb-soft: #ccd1d9;
-// @gb-subtle: #aab2bd;
-// @gb-gray: #7B828D;
-// @gb-red: #ff3333; // web-safe version of #ed4242
-// @gb-yellow: #F4BB41;
-// @gb-pale-yellow: #F9EBCB;
-// @gb-blue: #4A89DC;
-// @gb-skyblue: #36BAE7;
-// @gb-teal: #41CEAB;
-// @gb-green: #8CC155;
-//
-// @gb-border-radius: 4px;
-//
-// html {
-//     -webkit-font-smoothing: antialiased;
-//     -mox-osx-font-smoothing: grayscale;
-//     background-color: @gb-background;
-//     color: @gb-foreground;
-//     font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-//     &, & a {     // minute font smoothing for smaller screens
-//         text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
-//     }
-// }
-//
-// body {
-//     margin: 0;
-//     padding: 0;
-// }
-//
-// input, textarea {
-//     border: 0;
-// }
-//
-// a {
-//     color: inherit;
-//     text-decoration: none;
-// }
-//
-// table {
-//     border-spacing: 0;
-// }
-//
-// .gb-body {
-//     margin-left: auto;
-//     margin-right: auto;
-//     width: 100%;
-//     max-width: 1140px;
-// }
-//
+@gb-foreground: #424a54;
+@gb-background: #ffffff;
+@gb-white: #ffffff;
+@gb-black: #000000;
+@gb-bright: #e6e9ed;
+@gb-dark: #383d46;
+@gb-darker: #2c3239;
+@gb-shadow: rgba(0, 0, 0, 0.1);
+@gb-shadow-light: #494E55;
+@gb-shadow-dark: #242832;
+@gb-bold: #3B3F47;
+@gb-soft: #ccd1d9;
+@gb-subtle: #aab2bd;
+@gb-gray: #7B828D;
+@gb-red: #ff3333; // web-safe version of #ed4242
+@gb-yellow: #F4BB41;
+@gb-pale-yellow: #F9EBCB;
+@gb-blue: #4A89DC;
+@gb-skyblue: #36BAE7;
+@gb-teal: #41CEAB;
+@gb-green: #8CC155;
+
+@gb-breakpoint-mobile: 480px;
+@gb-breakpoint-tablet: 769px;
+@gb-breakpoint-laptop: 1680px;
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -mox-osx-font-smoothing: grayscale;
+    background-color: @gb-background;
+    color: @gb-foreground;
+    font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        font-size: 1.05em;
+    }
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+        font-size: 0.998em;
+    }
+    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
+        font-size: 0.924em;
+    }
+    &, & a {     // minute font smoothing for smaller screens
+        text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+input, textarea {
+    border: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+table {
+    border-spacing: 0;
+}
+
+#gb-body {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    @media screen and (max-width: @gb-breakpoint-laptop) {
+        max-width: 1108px;
+    }
+}
+
 // .gb-small-arrow {
 //     border-color: transparent;
 //     border-style: solid;
