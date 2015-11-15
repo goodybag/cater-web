@@ -1,0 +1,37 @@
+.gb-navbar-points,
+[class^="gb-navbar-item-"] {
+    display: inline-block;
+    font-weight: 500;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.gb-navbar-right > [class^="gb-navbar-item-"] {
+    margin-left: 12px;
+    font-size: 0.935em;
+    box-shadow: inset 0 1px 0 @gb-box-shadow-light-1;
+    border: 1px solid @gb-shadow-cadet-blue;
+    border-radius: 4px;
+
+    @media screen and (max-width: @gb-breakpoint-laptop) {
+        margin-top: 2px;
+        margin-bottom: 2px;
+        padding: 10px 18px;
+    }
+}
+
+.gb-navbar-item-arrow {
+    font-size: 0.875em;
+    margin-left: 12px;
+}
+
+.gb-navbar-points {
+    margin-right: 12px;
+}
+
+.gb-navbar-points-text {
+    color: @gb-red;
+    font-size: 1.05em;
+}
