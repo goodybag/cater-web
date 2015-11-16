@@ -13,20 +13,12 @@
 
     &::before {
         content: "";
-        position: absolute;
-        top: -16px;
-        left: 16px;
-        border: 8px solid rgba(0, 0, 0, 0);
-        border-bottom-color: @gb-shadow-cadet-blue;
+        .gb-arrow-up(8px, @gb-shadow-cadet-blue, -8px, auto, auto, 23px);
     }
 
     &::after {
         content: "";
-        position: absolute;
-        top: -14px;
-        left: 17px;
-        border: 7px solid rgba(0, 0, 0, 0);
-        border-bottom-color: @gb-white;
+        .gb-arrow-up(7px, @gb-white, -7px, auto, auto, 23px);
     }
 }
 

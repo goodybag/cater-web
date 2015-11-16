@@ -1,0 +1,23 @@
+.gb-arrow-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.gb-arrow-up(@size, @color, @offset-top, @offset-right, @offset-bottom, @offset-left) {
+    position: absolute;
+    top: @offset-top;
+    right: @offset-right;
+    bottom: @offset-bottom;
+    left: @offset-left;
+    width: 0;
+    height: 0;
+    margin-left: -@size;
+    border-color: transparent;
+    border-style: solid;
+    border-top: 0;
+    border-width: @size;
+    border-bottom-color: @color;
+}
