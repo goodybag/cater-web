@@ -7,7 +7,22 @@
 [class^="gb-navbar-item-"].active + span > .gb-navbar-menu-container {
     .gb-popover-modal;
     display: block;
+    top: 47px;
+    left: -1px;
 }
+
+.gb-navbar-menu {
+    .gb-popover-modal-body;
+}
+
+.gb-navbar-menu-link {
+    .gb-popover-modal-item;
+    font-weight: 500;
+    font-size: 0.935em;
+}
+
+// Animations
+/////////////
 
 .gb-navbar-menu-enter {
     transform: scale(0);
@@ -28,14 +43,4 @@
         transform: scale(0);
         opacity: 0;
     }
-}
-
-.gb-navbar-menu {
-    .gb-popover-modal-body;
-}
-
-.gb-navbar-menu-link {
-    .gb-popover-modal-item;
-    font-weight: 500;
-    font-size: 0.935em;
 }

@@ -1,5 +1,5 @@
 .gb-navbar-points,
-[class^="gb-navbar-item-"] {
+.gb-navbar-button {
     display: inline-block;
     font-weight: 500;
 
@@ -8,7 +8,9 @@
     }
 }
 
-.gb-navbar-right > [class^="gb-navbar-item-"] {
+.gb-navbar-button {
+    .gb-popover-wrapper;
+    display: inline-block;
     margin-left: 12px;
     font-size: 0.935em;
     box-shadow: inset 0 1px 0 @gb-box-shadow-light-1;
@@ -23,6 +25,7 @@
 }
 
 .gb-navbar-item-arrow {
+    display: inline;
     font-size: 0.875em;
     margin-left: 12px;
 }

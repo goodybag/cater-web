@@ -75,32 +75,38 @@ export class NavbarComponent extends Component {
                                 <div className="gb-navbar-points-text">{points} points</div>
                             </div>
 
-                            <NavbarItemComponent
-                                title={regionName}
-                                name="region"
-                                active={activeItemName === 'region'}
-                                onClick={this.handleItemClick}
-                            />
+                            <div className="gb-navbar-button">
+                                <NavbarItemComponent
+                                    title={regionName}
+                                    name="region"
+                                    active={activeItemName === 'region'}
+                                    onClick={this.handleItemClick}
+                                />
 
-                            {transition(activeItemName === 'region' && items.region)}
+                                {transition(activeItemName === 'region' && items.region)}
+                            </div>
 
-                            <NavbarItemComponent
-                                title="My Orders"
-                                name="orders"
-                                active={activeItemName === 'orders'}
-                                onClick={this.handleItemClick}
-                            />
+                            <div className="gb-navbar-button">
+                                <NavbarItemComponent
+                                    title="My Orders"
+                                    name="orders"
+                                    active={activeItemName === 'orders'}
+                                    onClick={this.handleItemClick}
+                                />
 
-                            {transition(activeItemName === 'orders' && items.orders)}
+                                {transition(activeItemName === 'orders' && items.orders)}
+                            </div>
 
-                            <NavbarItemComponent
-                                title={`Hi, ${name}`}
-                                name="account"
-                                active={activeItemName === 'account'}
-                                onClick={this.handleItemClick}
-                            />
+                            <div className="gb-navbar-button">
+                                <NavbarItemComponent
+                                    title={`Hi, ${name}`}
+                                    name="account"
+                                    active={activeItemName === 'account'}
+                                    onClick={this.handleItemClick}
+                                />
 
-                            {transition(activeItemName === 'account' && items.account)}
+                                {transition(activeItemName === 'account' && items.account)}
+                            </div>
                         </div>
                     </div>
                 </div>
