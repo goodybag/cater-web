@@ -1,3 +1,49 @@
+.gb-restaurant-tab-title {
+    position: relative;
+    line-height: @gb-restaurant-tab-height;
+    text-align: center;
+    font-size: 1em;
+
+    @media screen and (min-width: @gb-breakpoint-mobile) {
+        display: inline-block;
+        padding-left: 22px;
+        padding-right: 22px;
+    }
+
+    &.active {
+        font-weight: 600;
+        @media screen and (max-width: @gb-breakpoint-mobile) {
+            .gb-restaurant-tab-title-content {
+                background: @gb-shadow-athens-gray;
+            }
+        }
+    }
+}
+
+.gb-restaurant-tab-title-content {
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        &:active {
+            background: @gb-shadow-athens-gray;
+        }
+    }
+}
+
+.gb-restaurant-tab-ncount {
+    box-sizing: border-box;
+    display: inline-block;
+    line-height: 14px;
+    height: 15px;
+    margin-top: -3px;
+    margin-left: 5px;
+    padding: 1px 4px;
+    vertical-align: middle;
+    background: @gb-red;
+    border-radius: 4px;
+    color: @gb-white;
+    font-size: 0.745em;
+    font-weight: 900;
+}
+
 // .gb-restaurant-tabs-tab-title {
 //     @media screen and (max-width: 370px) {
 //         padding: 12px;

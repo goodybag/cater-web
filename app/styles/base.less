@@ -4,10 +4,14 @@
 @gb-black: #000000;
 @gb-text-mako: #434a54;          // (dark blue/gray)
 @gb-box-shadow-light-1: rgba(255, 255, 255, 0.1);
+@gb-box-shadow-1: rgba(0, 0, 0, 0.1);
+@gb-box-shadow-2: rgba(0, 0, 0, 0.2);
 @gb-box-shadow-3: rgba(0, 0, 0, 0.3);
 @gb-shadow-tide: #b7b6ad;        // (gray/yellow)
 @gb-shadow-cadet-blue: #aab2bd;  // (light blue/gray)
 @gb-shadow-athens-gray: #e6e9ed; // (light gray)
+@gb-shadow-mystic: #d9e0ea;      // (light blue/gray)
+@gb-shadow-mischka: #d3d8de;     // (light blue/gray)
 
 
 // @gb-bright: #e6e9ed;
@@ -55,6 +59,7 @@ html {
 body {
     margin: 0;
     padding: 0;
+    cursor: default;
 }
 
 input, textarea {
@@ -77,6 +82,12 @@ table {
     padding-right: 17px;
     box-sizing: border-box;
     width: 100%;
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
     @media screen and (max-width: @gb-breakpoint-laptop) {
         max-width: 1108px;
     }
