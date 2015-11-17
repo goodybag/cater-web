@@ -1,5 +1,6 @@
 @import "cover";
 @import "tabs/index";
+@import "menu/index";
 
 .gb-restaurant {
     .gb-body;
@@ -10,6 +11,18 @@
 
     @media screen and (min-width: @gb-breakpoint-laptop) {
         margin-top: @gb-navbar-height-large;
+    }
+}
+
+.gb-restaurant-content {
+    box-sizing: border-box;
+    background: pink;
+
+    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
+        width: 67%;
+        max-width: 740px;
+        margin: 42px 0;
+        padding-right: 42px;
     }
 }
 
