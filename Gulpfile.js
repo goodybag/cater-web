@@ -56,9 +56,7 @@ gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
     var onlyJs = filter('*.js', {restore: true});
     var onlyCss = filter('*.css', {restore: true});
     var revAll = new RevAll({
-        transformPath: function(rev) {
-            return url.resolve(process.env.GOODYBAG_CDN_PREFIX, rev);
-        }
+        dontSearchFile: ['.js']
     });
 
     return gulp.src('dist/build/**/!(*.map)')

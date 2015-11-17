@@ -1,6 +1,8 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
 
+import {API_PREFIX} from '../config';
+
 export class OrderItem extends Model {
     static schema = {
         type: 'object',
@@ -51,7 +53,7 @@ export class OrderItemCollection extends Collection {
     }
 
     url() {
-        return `${process.env.GOODYBAG_API}/orders/${this.order_id}/items`;
+        return `${API_PREFIX}/orders/${this.order_id}/items`;
     }
 }
 

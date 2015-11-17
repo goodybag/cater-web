@@ -1,6 +1,8 @@
 import moment from 'moment-timezone';
 import {Model} from 'backbone';
 
+import {API_PREFIX} from '../config';
+
 export class Order extends Model {
     static schema = {
         type: 'object',
@@ -39,7 +41,7 @@ export class Order extends Model {
         }
     }
 
-    urlRoot = `${process.env.GOODYBAG_API}/orders`
+    urlRoot = `${API_PREFIX}/orders`
 
     parse(attrs) {
         return {

@@ -1,6 +1,8 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
 
+import {API_PREFIX} from '../config';
+
 export class Restaurant extends Model {
     static schema = {
         type: 'object',
@@ -30,5 +32,5 @@ export class Restaurant extends Model {
         }
     }
 
-    urlRoot = `${process.env.GOODYBAG_API}/restaurants`
+    urlRoot = `${API_PREFIX}/restaurants`
 }

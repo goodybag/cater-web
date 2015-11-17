@@ -14,6 +14,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
 
 import {urlForAsset} from './asset';
+import * as config from './config';
 import router from './router';
 
 export const app = express();
@@ -27,12 +28,16 @@ app.use(function(req, res, next) {
     if (components.length === 0) {
         next();
     } else {
-        const markup = renderPage();
+        const markup = renderPage({config});
+
         res.send(`<!doctype html>${markup}`);
     }
 });
 
-function renderPage() {
+function renderPage(data) {
+    const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
+    const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
+
     const doc = (
         <html>
             <head>
@@ -46,6 +51,7 @@ function renderPage() {
             <body>
                 <div id="gb-body"/>
 
+                <script dangerouslySetInnerHTML={{__html: script}}/>
                 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"/>
                 <script src={urlForAsset('bundle.js')}/>
             </body>
