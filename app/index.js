@@ -19,6 +19,10 @@ import router from './router';
 
 export const app = express();
 
+if (process.env.NODE_ENV === 'development') {
+    app.use('/assets', express.static(`${__dirname}/../build`));
+}
+
 app.use(function(req, res, next) {
     const {components} = router.match(req.path, {
         method: req.method,
