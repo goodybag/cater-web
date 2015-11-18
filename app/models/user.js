@@ -1,5 +1,8 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
+import url from 'url';
+
+import {API_PREFIX} from '../config';
 
 export class User extends Model {
     static schema = {
@@ -45,7 +48,7 @@ export class User extends Model {
         });
     }
 
-    urlRoot = `${process.env.GOODYBAG_API}/users`;
+    urlRoot = url.resolve(API_PREFIX, 'users');
 }
 
 export class CurrentUser extends User {

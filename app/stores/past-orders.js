@@ -2,14 +2,17 @@ import {Store} from 'tokyo';
 import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {Route} from 'hiroshima';
+import url from 'url';
 
 import {OrderCollection} from '../models/order';
+import {API_PREFIX} from '../config';
 
 @inject(Route)
 class OrdersResolver {
     constructor({params}) {
         const orders = new OrderCollection([], {
-            url: `${process.env.GOODYBAG_APP}/restaurants/${params.restaurant_id}/orders`
+            url: url.resolve(API_PREFIX,
+                             `restaurants/${params.restaurant_id}/orders`)
         });
 
         return orders.fetch().then(() => orders);

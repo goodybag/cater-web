@@ -13,9 +13,15 @@ import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
 
+import {urlForAsset} from './asset';
+import * as config from './config';
 import router from './router';
 
 export const app = express();
+
+if (process.env.NODE_ENV === 'development') {
+    app.use('/assets', express.static(`${__dirname}/../build`));
+}
 
 app.use(function(req, res, next) {
     const {components} = router.match(req.path, {
@@ -26,12 +32,16 @@ app.use(function(req, res, next) {
     if (components.length === 0) {
         next();
     } else {
-        const markup = renderPage();
+        const markup = renderPage({config});
+
         res.send(`<!doctype html>${markup}`);
     }
 });
 
-function renderPage() {
+function renderPage(data) {
+    const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
+    const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
+
     const doc = (
         <html>
             <head>
@@ -39,14 +49,15 @@ function renderPage() {
                 <meta charSet="utf-8"/>
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-                <link rel="stylesheet" href="/main.css"/>
+                <link rel="stylesheet" href={urlForAsset('main.css')}/>
             </head>
 
             <body>
                 <div id="gb-body"/>
 
+                <script dangerouslySetInnerHTML={{__html: script}}/>
                 <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"/>
-                <script src="/bundle.js"/>
+                <script src={urlForAsset('bundle.js')}/>
             </body>
         </html>
     );

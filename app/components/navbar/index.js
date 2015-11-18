@@ -3,6 +3,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import cx from 'classnames';
+import {urlForAsset} from '../../asset';
 
 import {CurrentUserStore} from '../../stores/user';
 import {CurrentUser} from '../../models/user';
@@ -63,9 +64,9 @@ export class NavbarComponent extends Component {
                     <div className="gb-navbar">
                         <div className="gb-navbar-left">
                             <div className="gb-navbar-logo">
-                                <img className="gb-navbar-logo-large" width={155} height={30} src="/logo-large.svg"/>
+                                <img className="gb-navbar-logo-large" width={155} height={30} src={urlForAsset('logo-large.svg')}/>
 
-                                <img className="gb-navbar-logo-small" height={40} src="/logo-small.svg"/>
+                                <img className="gb-navbar-logo-small" height={40} src={urlForAsset('logo-small.svg')}/>
                             </div>
                         </div>
 
