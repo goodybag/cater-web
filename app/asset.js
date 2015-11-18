@@ -1,6 +1,12 @@
 import url from 'url';
-import {manifest, CDN_PREFIX} from './config';
+import {MANIFEST, CDN_PREFIX} from './config';
+
+const cache = {};
 
 export function urlForAsset(assetName) {
-    return url.resolve(CDN_PREFIX, manifest[assetName] || assetName);
+    return cache[assetName] || (cache[assetName] = genURL(assetName));
+}
+
+function genURL(assetName) {
+    return url.resolve(CDN_PREFIX, MANIFEST[assetName] || assetName);
 }
