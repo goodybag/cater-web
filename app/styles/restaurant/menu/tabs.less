@@ -8,6 +8,7 @@
 .gb-restaurant-menu-tab-title-individual {
     display: inline-block;
     position: relative;
+    background: @gb-background;
     height: 52px;
     border: 1px solid @gb-shadow-mischka;
     border-top-left-radius: 4px;
@@ -15,7 +16,8 @@
     box-sizing: border-box;
 
     &.active {
-        border-bottom: 1px solid @gb-background;
+        border-bottom: none;
+        z-index: 100;
     }
 
     @media screen and (max-width: @gb-breakpoint-tablet) {
