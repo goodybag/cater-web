@@ -1,5 +1,6 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model} from 'backbone';
+import url from 'url';
 
 import {API_PREFIX} from '../config';
 
@@ -32,5 +33,5 @@ export class Restaurant extends Model {
         }
     }
 
-    urlRoot = `${API_PREFIX}/restaurants`
+    urlRoot = url.resolve(API_PREFIX, 'restaurants');
 }

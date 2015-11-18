@@ -1,4 +1,5 @@
 import {Model, Collection} from 'backbone';
+import url from 'url';
 
 import {API_PREFIX} from '../config';
 import {MenuItemCollection} from './menu-item';
@@ -60,7 +61,7 @@ export class Menu extends Collection {
     }
 
     url() {
-        return `${API_PREFIX}/restaurants/${this.restaurant_id}/menu`;
+        return url.resolve(API_PREFIX, `restaurants/${this.restaurant_id}/menu`);
     }
 
     forMenu(menuName) {

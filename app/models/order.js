@@ -1,5 +1,6 @@
 import moment from 'moment-timezone';
 import {Model} from 'backbone';
+import url from 'url';
 
 import {API_PREFIX} from '../config';
 
@@ -41,7 +42,7 @@ export class Order extends Model {
         }
     }
 
-    urlRoot = `${API_PREFIX}/orders`
+    urlRoot = url.resolve(API_PREFIX, 'orders');
 
     parse(attrs) {
         return {

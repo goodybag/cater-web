@@ -2,6 +2,7 @@ import {Store} from 'tokyo';
 import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {Route} from 'hiroshima';
+import url from 'url';
 
 import {OrderCollection} from '../models/order';
 import {API_PREFIX} from '../config';
@@ -10,7 +11,8 @@ import {API_PREFIX} from '../config';
 class OrdersResolver {
     constructor({params}) {
         const orders = new OrderCollection([], {
-            url: `${API_PREFIX}/restaurants/${params.restaurant_id}/orders`
+            url: url.resolve(API_PREFIX,
+                             `restaurants/${params.restaurant_id}/orders`)
         });
 
         return orders.fetch().then(() => orders);

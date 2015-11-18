@@ -1,5 +1,6 @@
 import PropTypes from 'react/lib/ReactPropTypes';
 import {Model, Collection} from 'backbone';
+import url from 'url';
 
 import {API_PREFIX} from '../config';
 
@@ -53,7 +54,7 @@ export class OrderItemCollection extends Collection {
     }
 
     url() {
-        return `${API_PREFIX}/orders/${this.order_id}/items`;
+        return url.resolve(API_PREFIX, `orders/${this.order_id}/items`);
     }
 }
 
