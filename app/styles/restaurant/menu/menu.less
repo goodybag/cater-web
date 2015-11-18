@@ -1,3 +1,5 @@
+// Menu Tabs
+
 .gb-restaurant-menu-catering,
 .gb-restaurant-menu-individual {
     margin-top: -7px;
@@ -6,6 +8,8 @@
         margin-top: -6px;
     }
 }
+
+// Menu Category Titles
 
 .gb-restaurant-menu-category:first-of-type {
     .gb-restaurant-menu-category-title {
@@ -26,4 +30,84 @@
     padding: 10px 13px;
     font-size: 1.53em;
     font-weight: 900;
+}
+
+// Menu Items
+
+.gb-restaurant-menu-items {
+    box-sizing: border-box;
+    display: table;
+    width: 100%;
+    padding: 17px 13px;
+    font-size: 0.95em;
+}
+
+.gb-restaurant-menu-item {
+    display: table-row;
+
+    & > div {
+        padding: 14px 2px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+.gb-restaurant-menu-item-title {
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        width: 40%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+        width: 50%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-tablet) {
+        width: 60%;
+        max-width: 420px;
+    }
+}
+
+.gb-restaurant-menu-item-title-content {
+    display: inline-block;
+    font-weight: 600;
+}
+
+.gb-restaurant-menu-item-quantity {
+    font-weight: 500;
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        width: 30%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+        text-align: center;
+        width: 25%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-tablet) {
+        width: 20%;
+        max-width: 132px;
+    }
+}
+
+.gb-restaurant-menu-item-price {
+    font-weight: 500;
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        width: 30%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+        width: 25%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-tablet) {
+        width: 20%;
+        max-width: 132px;
+    }
+}
+
+// Tags
+.gb-restaurant-menu-item-tags {
+    display: inline-block;
 }
