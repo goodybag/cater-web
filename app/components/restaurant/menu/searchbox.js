@@ -15,7 +15,7 @@ export class RestaurantMenuSearchboxComponent extends Component {
             <div className="gb-restaurant-menu-searchbox">
                 <input
                     defaultValue=""
-                    placeholder="Search menu..."
+                    placeholder="Search menu"
                     type="text"
                 />
 

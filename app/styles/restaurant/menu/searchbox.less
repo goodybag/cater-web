@@ -1,0 +1,45 @@
+.gb-searchbox-height {
+    height: 35px;
+}
+
+.gb-restaurant-menu-searchbox {
+    .gb-searchbox-height;
+    position: relative;
+    border: 1px solid @gb-shadow-mischka;
+    border-radius: 4px;
+
+    @media screen and (max-width: @gb-breakpoint-tablet) {
+        margin: 17px auto;
+        width: 96%;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
+        position: absolute;
+        top: 0;
+        right: 42px;
+        width: 36%;
+        max-width: 256px;
+    }
+
+    input {
+        .gb-input-box;
+        .gb-searchbox-height;
+        color: @gb-shadow-mako;
+        font-size: 0.92em;
+        font-weight: 500;
+        border: none;
+        padding-right: 30px;
+    }
+}
+
+.gb-search {
+    color: @gb-shadow-cadet-blue;
+    position: absolute;
+    top: 8px;
+    right: 7px;
+    font-size: 1.22em;
+
+    &:hover {
+        cursor: pointer;
+    }
+}

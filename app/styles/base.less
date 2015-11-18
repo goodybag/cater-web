@@ -41,6 +41,9 @@
 @gb-breakpoint-tablet: 769px;
 @gb-breakpoint-laptop: 1680px;
 
+@gb-body-padding-large: 17px;
+@gb-body-padding-small: 4px;
+
 html {
     -webkit-font-smoothing: antialiased;
     -mox-osx-font-smoothing: grayscale;
@@ -83,18 +86,16 @@ table {
 .gb-body {
     margin-left: auto;
     margin-right: auto;
-    padding-left: 17px;
-    padding-right: 17px;
+    padding: 0 @gb-body-padding-large;
     box-sizing: border-box;
     width: 100%;
 
     @media screen and (max-width: @gb-breakpoint-mobile) {
-        padding-left: 4px;
-        padding-right: 4px;
+        padding: 0 @gb-body-padding-small;
     }
 
     @media screen and (max-width: @gb-breakpoint-laptop) {
-        max-width: 1108px;
+        max-width: 1111px + (@gb-body-padding-large * 2);
     }
 }
 
