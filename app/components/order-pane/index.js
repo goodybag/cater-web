@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import cxnames from 'classnames';
 
@@ -12,12 +12,12 @@ import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
 import {OrderPaneTimeLeftComponent} from './timeleft';
 
-@dependencies({
+@inject({
     orderStore: OrderStore,
     orderItemStore: OrderItemStore
 }, [OrderPaneInfoComponent])
-@listeningTo(['orderStore', 'orderItemStore'], dependencies => {
-    const {orderStore, orderItemStore} = dependencies;
+@listeningTo([OrderStore, OrderItemStore], props => {
+    const {orderStore, orderItemStore} = props;
 
     return {
         order: orderStore.getOrder(),
@@ -47,13 +47,17 @@ export class OrderPaneComponent extends Component {
                     <OrderPaneHeaderComponent
                         title="Share Order (Optional)"
                         initiallyClosed>
-                        <OrderPaneShareComponent/>
+
+                        <OrderPaneShareComponent order={order}/>
                     </OrderPaneHeaderComponent>
                </div>
 
                 <div className="gb-order-pane-tablet-right">
                     <OrderPaneHeaderComponent title="Order Items">
-                        <OrderPaneItemsComponent/>
+                        <OrderPaneItemsComponent
+                            order={order}
+                            orderItems={orderItems}
+                        />
                     </OrderPaneHeaderComponent>
                 </div>
 

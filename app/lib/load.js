@@ -7,11 +7,13 @@ import {getContextFromURL, renderPage, handleReroute} from './reroute';
 export function load(element) {
     const href = window.location.href;
 
-    const {route, resolver, components} = getContextFromURL(href);
+    const {route, injector, tokens, components} = getContextFromURL(href);
 
-    resolver.resolve().then(dependencies => {
+    injector.get(tokens).then(values => {
+        const dependencyCache = injector.dump();
+
         return Promise.fromNode(cb => {
-            renderPage({route, components, dependencies}, element, cb);
+            renderPage({route, components, dependencyCache}, element, cb);
         });
     }).then(() => {
         // don't handle routing client-side for IE 7/8/9

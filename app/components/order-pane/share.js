@@ -1,19 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
-import {dependencies} from 'yokohama';
-import {listeningTo} from 'tokyo';
 
 import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
 
-@dependencies({
-    orderStore: OrderStore
-})
-@listeningTo(['orderStore'], ({orderStore}) => {
-    return {
-        order: orderStore.getOrder()
-    };
-})
 export class OrderPaneShareComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired

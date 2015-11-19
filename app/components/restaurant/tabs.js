@@ -1,16 +1,16 @@
 import React, {Component, PropTypes} from 'react';
 import {Route} from 'hiroshima';
 import {listeningTo} from 'tokyo';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import cx from 'classnames';
 import url from 'url';
 
 import {RouteStore} from '../../stores/route';
 
-@dependencies({
+@inject({
     routeStore: RouteStore
 })
-@listeningTo(['routeStore'], ({routeStore}) => {
+@listeningTo([RouteStore], ({routeStore}) => {
     return {
         route: routeStore.getRoute()
     };

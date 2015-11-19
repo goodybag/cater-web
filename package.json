@@ -32,8 +32,8 @@
     "react-dom": "^0.14.0-rc1",
     "react-intl": "^2.0.0-pr-3",
     "source-map-support": "^0.3.2",
-    "tokyo": "^1.0.0",
-    "yokohama": "^0.1.1",
+    "tokyo": "^1.1.0",
+    "yokohama": "^1.1.0",
     "z-schema": "^3.12.1"
   },
   "devDependencies": {

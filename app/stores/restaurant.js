@@ -1,11 +1,11 @@
 import {Store} from 'tokyo';
-import {inject} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
 import {Restaurant} from '../models/restaurant';
 
-@inject(Route)
+@dependencies(Route)
 export class RestaurantResolver {
     constructor({params}) {
         const restaurant = new Restaurant({id: params.restaurant_id});
@@ -14,7 +14,7 @@ export class RestaurantResolver {
     }
 }
 
-@inject(Dispatcher, RestaurantResolver)
+@dependencies(Dispatcher, RestaurantResolver)
 export class RestaurantStore extends Store {
     constructor(dispatcher, restaurant) {
         super(dispatcher);

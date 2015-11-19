@@ -1,10 +1,10 @@
 import {Store} from 'tokyo';
-import {inject, injectPromise} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {Order} from '../models/order';
 
-@injectPromise()
+@dependencies()
 class OrderResolver {
     constructor() {
         const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
@@ -13,7 +13,7 @@ class OrderResolver {
     }
 }
 
-@inject(Dispatcher, OrderResolver)
+@dependencies(Dispatcher, OrderResolver)
 export class OrderStore extends Store {
     constructor(dispatcher, order) {
         super(dispatcher);

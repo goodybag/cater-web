@@ -1,15 +1,14 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 
+@inject({
+    dispatcher: Dispatcher
+})
 export class RestaurantMenuSearchboxComponent extends Component {
-    static contextTypes = {
-        dependencies: React.PropTypes.object.isRequired
+    static propTypes = {
+        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired
     }
-
-    @dependencies({
-        dispatcher: Dispatcher
-    })
 
     render() {
         return (

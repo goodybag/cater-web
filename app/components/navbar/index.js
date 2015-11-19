@@ -1,6 +1,6 @@
 import React, {Component, PropTypes, cloneElement} from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import cx from 'classnames';
 import {urlForAsset} from '../../asset';
@@ -12,19 +12,19 @@ import {NavbarRegionMenuComponent} from './menus/region';
 import {NavbarOrderMenuComponent} from './menus/order';
 import {NavbarAccountMenuComponent} from './menus/account';
 
-@dependencies({
+@inject({
     currentUserStore: CurrentUserStore
 }, [
     NavbarRegionMenuComponent,
     NavbarOrderMenuComponent,
     NavbarAccountMenuComponent
 ])
-@listeningTo(['currentUserStore'], dependencies => {
-    const {currentUserStore} = dependencies;
+@listeningTo([CurrentUserStore], props => {
+    const {currentUserStore} = props;
 
     return {
         user: currentUserStore.getUser()
-    }
+    };
 })
 export class NavbarComponent extends Component {
     static propTypes = {

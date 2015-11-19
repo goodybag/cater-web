@@ -1,5 +1,5 @@
 import {Store} from 'tokyo';
-import {inject} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {Route} from 'hiroshima';
 import url from 'url';
@@ -7,7 +7,7 @@ import url from 'url';
 import {OrderCollection} from '../models/order';
 import {API_PREFIX} from '../config';
 
-@inject(Route)
+@dependencies(Route)
 class OrdersResolver {
     constructor({params}) {
         const orders = new OrderCollection([], {
@@ -19,7 +19,7 @@ class OrdersResolver {
     }
 }
 
-@inject(Dispatcher, OrdersResolver)
+@dependencies(Dispatcher, OrdersResolver)
 export class PastOrdersStore extends Store {
     constructor(dispatcher, orders) {
         super(dispatcher);

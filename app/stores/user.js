@@ -1,10 +1,10 @@
 import {Store} from 'tokyo';
-import {inject} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {CurrentUser} from '../models/user';
 
-@inject()
+@dependencies()
 export class CurrentUserResolver {
     static parse(user) {
         return new CurrentUser(user, {parse: true});
@@ -17,7 +17,7 @@ export class CurrentUserResolver {
     }
 }
 
-@inject(Dispatcher, CurrentUserResolver)
+@dependencies(Dispatcher, CurrentUserResolver)
 export class CurrentUserStore extends Store {
     constructor(dispatcher, user) {
         super(dispatcher);

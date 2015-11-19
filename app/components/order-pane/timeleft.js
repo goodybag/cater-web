@@ -1,21 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedMessage} from 'react-intl';
 import moment from 'moment-timezone';
-import {dependencies} from 'yokohama';
-import {listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
 
-@dependencies({
-    orderStore: OrderStore
-})
-@listeningTo(['orderStore'], ({orderStore}) => {
-    return {
-        order: orderStore.getOrder()
-    };
-})
 export class OrderPaneTimeLeftComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired

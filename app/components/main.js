@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {IntlProvider} from 'react-intl';
 import {router} from 'hiroshima';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 
 import * as formats from '../formats';
 import {NavbarComponent} from './navbar';
@@ -10,10 +10,10 @@ import {RestaurantComponent} from './restaurant';
 @router(route => {
     route.use(RestaurantComponent);
 })
-@dependencies({}, [NavbarComponent])
+@inject({}, [NavbarComponent])
 export class MainComponent extends Component {
     static propTypes = {
-        children: React.PropTypes.node
+        children: PropTypes.node
     }
 
     render() {
@@ -31,18 +31,18 @@ export class MainComponent extends Component {
 
 export class MainContainerComponent extends React.Component {
     static childContextTypes = {
-        dependencies: React.PropTypes.object
+        dependencyCache: PropTypes.instanceOf(Map)
     }
 
     static propTypes = {
-        dependencies: React.PropTypes.object.isRequired,
-        components: React.PropTypes.arrayOf(React.PropTypes.func).isRequired
+        dependencyCache: PropTypes.instanceOf(Map).isRequired,
+        components: PropTypes.arrayOf(React.PropTypes.func).isRequired
     }
 
     getChildContext() {
-        const {dependencies} = this.props;
+        const {dependencyCache} = this.props;
 
-        return {dependencies};
+        return {dependencyCache};
     }
 
     // components:

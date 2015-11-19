@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {Route} from 'hiroshima';
 import url from 'url';
@@ -7,10 +7,10 @@ import cx from 'classnames';
 
 import {RouteStore} from '../../../stores/route';
 
-@dependencies({
+@inject({
     routeStore: RouteStore
 })
-@listeningTo(['routeStore'], ({routeStore}) => {
+@listeningTo([RouteStore], ({routeStore}) => {
     return {
         route: routeStore.getRoute()
     };
