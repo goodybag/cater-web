@@ -19,7 +19,7 @@ import router from './router';
 
 export const app = express();
 
-if (process.env.NODE_ENV === 'development') {
+if (config.DEV_MODE) {
     app.use('/assets', express.static(`${__dirname}/../build`));
 }
 
