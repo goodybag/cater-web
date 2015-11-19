@@ -5,15 +5,8 @@ import {inject} from 'yokohama';
 import cx from 'classnames';
 import url from 'url';
 
-import {RouteStore} from '../../stores/route';
-
 @inject({
-    routeStore: RouteStore
-})
-@listeningTo([RouteStore], ({routeStore}) => {
-    return {
-        route: routeStore.getRoute()
-    };
+    route: Route
 })
 export class RestaurantTabsComponent extends Component {
     static propTypes = {

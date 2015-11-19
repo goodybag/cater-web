@@ -4,7 +4,6 @@ import {listeningTo} from 'tokyo';
 import {router, Route} from 'hiroshima';
 
 import {MenuStore} from '../../../stores/menu';
-import {RouteStore} from '../../../stores/route';
 import {Menu} from '../../../models/category';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
@@ -80,17 +79,12 @@ class RestaurantMenuIndividualComponent extends Component {
 }
 
 @inject({
-    routeStore: RouteStore
+    route: Route
 }, [
     RestaurantMenuCateringComponent,
     RestaurantMenuSearchboxComponent,
     RestaurantMenuTabComponent
 ])
-@listeningTo([RouteStore], ({routeStore}) => {
-    return {
-        route: routeStore.getRoute()
-    };
-})
 class RestaurantMenuTabsComponent extends Component {
     static propTypes = {
         route: PropTypes.instanceOf(Route).isRequired
