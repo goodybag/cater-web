@@ -58,6 +58,8 @@
     "webpack": "^1.11.0"
   },
   "files": [
-    "dist/src"
+    "server.js",
+    "index.js",
+    "dist"
   ]
 }
