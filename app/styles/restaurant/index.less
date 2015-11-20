@@ -26,11 +26,24 @@
         padding-right: 4px;
     }
 
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-laptop) {
+        margin-top: 42px;
+        margin-bottom: 42px;
+    }
+
     @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
-        width: 67%;
-        max-width: 740px;
-        margin: 42px 0;
-        padding-right: 42px;
+        width: 65%;
+        max-width: 696px;
+    }
+}
+
+.gb-restaurant-content-border {
+    padding: 26px;
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-laptop) {
+        border: 1px solid @gb-shadow-mischka;
+        border-radius: 4px;
+        box-shadow: 1px 1px 1px @gb-box-shadow-1;
     }
 }
 
