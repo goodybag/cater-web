@@ -1,14 +1,14 @@
 import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
+import {RouteParams} from '../lib/route';
 import {UpdateMenuSearchAction} from '../actions/menu';
 import {Menu} from '../models/category';
 
-@dependencies(Route)
+@dependencies(RouteParams)
 export class MenuResolver {
-    constructor({params}) {
+    constructor(params) {
         const menu = new Menu(null, {
             restaurant_id: params.restaurant_id
         });

@@ -1,15 +1,15 @@
 import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
-import {Route} from 'hiroshima';
 import url from 'url';
 
+import {RouteParams} from '../lib/route';
 import {OrderCollection} from '../models/order';
 import {API_PREFIX} from '../config';
 
-@dependencies(Route)
+@dependencies(RouteParams)
 class OrdersResolver {
-    constructor({params}) {
+    constructor(params) {
         const orders = new OrderCollection([], {
             url: url.resolve(API_PREFIX,
                              `restaurants/${params.restaurant_id}/orders`)
