@@ -60,7 +60,9 @@ export class RestaurantInfoComponent extends Component {
             <div className="gb-restaurant-info">
                 <div className="gb-restaurant-info-left">
                     <RestaurantInfoSectionComponent>
-                        {cuisine}
+                        <div className="gb-restaurant-info-cuisine">
+                            {cuisine}
+                        </div>
                         <div className="gb-restaurant-info-bull">&bull;</div>
                         <PriceComponent price={price}/>
                     </RestaurantInfoSectionComponent>
@@ -70,7 +72,7 @@ export class RestaurantInfoComponent extends Component {
                             Delivery Hours
                         </RestaurantInfoHeaderComponent>
 
-                        <table>
+                        <table className="gb-restaurant-info-table">
                             <tbody>{hours.map(renderHour)}</tbody>
                         </table>
                     </RestaurantInfoSectionComponent>
@@ -80,7 +82,7 @@ export class RestaurantInfoComponent extends Component {
                             Lead Times
                         </RestaurantInfoHeaderComponent>
 
-                        <table>
+                        <table className="gb-restaurant-info-table">
                             <tbody>{leadTimes.map(renderLeadTime)}</tbody>
                         </table>
                     </RestaurantInfoSectionComponent>

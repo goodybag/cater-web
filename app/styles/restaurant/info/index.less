@@ -1,4 +1,80 @@
 .gb-restaurant-info {
     .gb-restaurant-content;
     .gb-restaurant-content-border;
+    overflow: auto;
+}
+
+// Single-Column Layout
+
+.gb-restaurant-info-section {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.gb-restaurant-info-header {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.gb-restaurant-info-cuisine,
+.gb-restaurant-info-bull,
+.gb-price,
+.gb-price-fill,
+.gb-price-empty {
+    display: inline-block;
+}
+
+.gb-restaurant-info-bull {
+    padding-left: 17px;
+    padding-right: 17px;
+}
+
+.gb-restaurant-info-table {
+    margin-left: auto;
+    margin-right: auto;
+
+    td {
+        text-align: left;
+        padding-right: 17px;
+    }
+}
+
+.gb-restaurant-info-gmap {
+    width: 100%;
+    height: 324px;
+    background: @gb-shadow-athens-gray;
+    border: 1px solid @gb-shadow-mischka;
+    border-radius: 1px;
+}
+
+// Two-Column Layout
+
+.gb-restaurant-info-dbl-col {
+    .gb-restaurant-info-left {
+        .gb-float(left, 50%);
+    }
+
+    .gb-restaurant-info-right {
+        .gb-float(right, 50%);
+    }
+
+    .gb-restaurant-info-section {
+        margin-bottom: 40px;
+        text-align: left;
+    }
+
+    .gb-restaurant-info-table {
+        margin-left: 0;
+    }
+}
+
+
+// Two-Column Breakpoints
+
+@media screen and (min-width: @gb-breakpoint-mid-tablet) and (max-width: @gb-breakpoint-tablet) {
+    .gb-restaurant-info-dbl-col;
+}
+
+@media screen and (min-width: @gb-breakpoint-mid-laptop) and (max-width: @gb-breakpoint-laptop) {
+    .gb-restaurant-info-dbl-col;
 }
