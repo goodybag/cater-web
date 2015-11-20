@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'flux';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {OrderStore} from '../../stores/order';
@@ -9,18 +9,18 @@ import {Order} from '../../models/order';
 import {UpdateOrderAction} from '../../actions/order';
 import {OrderPaneInfoEditComponent} from './edit';
 
-@dependencies({
+@inject({
     dispatcher: Dispatcher,
     orderStore: OrderStore
 })
-@listeningTo(['orderStore'], ({dispatcher, orderStore}) => {
+@listeningTo([OrderStore], ({orderStore}) => {
     return {
-        dispatcher,
         order: orderStore.getOrder()
     };
 })
 export class OrderPaneInfoComponent extends Component {
     static propTypes = {
+        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
         order: PropTypes.instanceOf(Order).isRequired
     }
 

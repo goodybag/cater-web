@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {router} from 'hiroshima';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 
 import {OrderPaneComponent} from '../order-pane';
 import {RestaurantCoverComponent} from './cover';
@@ -18,7 +18,7 @@ import {RestaurantOrdersComponent} from './past-orders';
         route.dir('orders').index(RestaurantOrdersComponent);
     });
 })
-@dependencies({}, [
+@inject({}, [
     RestaurantCoverComponent,
     RestaurantTabsComponent,
     OrderPaneComponent

@@ -1,11 +1,11 @@
 import {Store} from 'tokyo';
-import {inject} from 'yokohama';
+import {dependencies} from 'yokohama';
 import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
 import {Menu} from '../models/category';
 
-@inject(Route)
+@dependencies(Route)
 export class MenuResolver {
     constructor({params}) {
         const menu = new Menu(null, {
@@ -16,7 +16,7 @@ export class MenuResolver {
     }
 }
 
-@inject(Dispatcher, MenuResolver)
+@dependencies(Dispatcher, MenuResolver)
 export class MenuStore extends Store {
     constructor(dispatcher, menu) {
         super(dispatcher);

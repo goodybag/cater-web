@@ -1,19 +1,12 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {Route} from 'hiroshima';
 import url from 'url';
 import cx from 'classnames';
 
-import {RouteStore} from '../../../stores/route';
-
-@dependencies({
-    routeStore: RouteStore
-})
-@listeningTo(['routeStore'], ({routeStore}) => {
-    return {
-        route: routeStore.getRoute()
-    };
+@inject({
+    route: Route
 })
 export class RestaurantMenuTabComponent extends Component {
     static propTypes = {

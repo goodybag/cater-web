@@ -60,11 +60,7 @@ gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
     });
 
     return gulp.src('dist/build/**/!(*.map)')
-        // currently there's an issue with the system
-        // when compiled with uglify. It's due to some
-        // bugs in older versions of tracuer which is
-        // included in di.js which has yet to be replaced
-        // .pipe(onlyJs).pipe(uglify()).pipe(onlyJs.restore)
+        .pipe(onlyJs).pipe(uglify()).pipe(onlyJs.restore)
         .pipe(onlyCss).pipe(cssmin()).pipe(onlyCss.restore)
         .pipe(revAll.revision())
         .pipe(gulp.dest('dist/final'))

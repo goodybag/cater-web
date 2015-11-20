@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {PriceComponent} from '../../price';
@@ -9,11 +9,11 @@ import {RestaurantGmapComponent} from './gmap';
 import {RestaurantInfoSectionComponent} from './section';
 import {RestaurantInfoHeaderComponent} from './header';
 
-@dependencies({
+@inject({
     restaurantStore: RestaurantStore
 })
-@listeningTo(['restaurantStore'], dependencies => {
-    const {restaurantStore} = dependencies;
+@listeningTo([RestaurantStore], props => {
+    const {restaurantStore} = props;
 
     return {
         restaurant: restaurantStore.getRestaurant()

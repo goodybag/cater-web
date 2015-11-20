@@ -1,15 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {User} from '../../../models/user';
 import {CurrentUserStore} from '../../../stores/user';
 import {NavbarMenuComponent, NavbarMenuLinkComponent} from '../menu';
 
-@dependencies({
+@inject({
     currentUserStore: CurrentUserStore
 })
-@listeningTo(['currentUserStore'], ({currentUserStore}) => {
+@listeningTo([CurrentUserStore], ({currentUserStore}) => {
     return {
         user: currentUserStore.getUser()
     }

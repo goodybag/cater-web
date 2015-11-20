@@ -1,13 +1,14 @@
 import React from 'react';
 import url from 'url';
-import {Resolver, provide} from 'yokohama';
+import {Injector, provide} from 'yokohama';
 import {Route} from 'hiroshima';
 import {render} from 'react-dom';
-import {Injector} from 'di';
 
 import router from '../router';
 import {preventDefault, stopPropogation} from './dom';
 import {MainContainerComponent} from '../components/main';
+
+export const sharedInjector = new Injector();
 
 export function getContextFromURL(href) {
     const {
@@ -26,19 +27,19 @@ export function getContextFromURL(href) {
         }
     }
 
-    const injector = new Injector([MockRoute]);
+    const injector = sharedInjector.createChild([MockRoute]);
 
-    const resolver = Resolver.from(components, injector);
+    const tokens = components.map(component => component.Dependency);
 
-    return {route, resolver, components};
+    return {route, injector, tokens, components};
 }
 
-export function renderPage({route, components, dependencies}, element, cb) {
+export function renderPage({route, components, dependencyCache}, element, cb) {
     const main = (
         <MainContainerComponent
             route={route}
             components={components}
-            dependencies={dependencies}
+            dependencyCache={dependencyCache}
         />
     );
 
@@ -47,7 +48,7 @@ export function renderPage({route, components, dependencies}, element, cb) {
 
 export function handleReroute(event, element) {
     const {href} = event.delegateTarget;
-    const {route, components, resolver} = getContextFromURL(href);
+    const {route, tokens, components, injector} = getContextFromURL(href);
 
     // Only handle reroute if the route matches
     // TODO: check domains in addition to doing this
@@ -57,8 +58,10 @@ export function handleReroute(event, element) {
 
         window.history.pushState({}, '', href);
 
-        resolver.resolve().then(function(dependencies) {
-            renderPage({route, components, dependencies}, element);
+        injector.get(tokens).then(values => {
+            const dependencyCache = injector.dump();
+
+            renderPage({route, components, dependencyCache}, element);
         });
     }
 }

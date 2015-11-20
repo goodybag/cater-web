@@ -1,15 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {RestaurantStore} from '../../stores/restaurant';
 import {Restaurant} from '../../models/restaurant';
 
-@dependencies({
+@inject({
     restaurantStore: RestaurantStore
 })
-@listeningTo(['restaurantStore'], dependencies => {
-    const {restaurantStore} = dependencies;
+@listeningTo([RestaurantStore], props => {
+    const {restaurantStore} = props;
 
     return {
         restaurant: restaurantStore.getRestaurant()

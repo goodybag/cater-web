@@ -1,19 +1,18 @@
 import React, {Component, PropTypes} from 'react';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {router, Route} from 'hiroshima';
 
 import {MenuStore} from '../../../stores/menu';
-import {RouteStore} from '../../../stores/route';
 import {Menu} from '../../../models/category';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
 import {RestaurantMenuSearchboxComponent} from './searchbox';
 
-@dependencies({
+@inject({
     menuStore: MenuStore
 })
-@listeningTo(['menuStore'], ({menuStore}) => {
+@listeningTo([MenuStore], ({menuStore}) => {
     return {
         menu: menuStore.getMenu()
     };
@@ -44,10 +43,10 @@ class RestaurantMenuCateringComponent extends Component {
     }
 }
 
-@dependencies({
+@inject({
     menuStore: MenuStore
 })
-@listeningTo(['menuStore'], ({menuStore}) => {
+@listeningTo([MenuStore], ({menuStore}) => {
     return {
         menu: menuStore.getMenu()
     };
@@ -79,17 +78,13 @@ class RestaurantMenuIndividualComponent extends Component {
     }
 }
 
-@dependencies({
-    routeStore: RouteStore
+@inject({
+    route: Route
 }, [
     RestaurantMenuCateringComponent,
-    RestaurantMenuSearchboxComponent
+    RestaurantMenuSearchboxComponent,
+    RestaurantMenuTabComponent
 ])
-@listeningTo(['routeStore'], ({routeStore}) => {
-    return {
-        route: routeStore.getRoute()
-    };
-})
 class RestaurantMenuTabsComponent extends Component {
     static propTypes = {
         route: PropTypes.instanceOf(Route).isRequired
@@ -122,7 +117,7 @@ class RestaurantMenuTabsComponent extends Component {
     route.index(RestaurantMenuCateringComponent);
     route.dir('individual').index(RestaurantMenuIndividualComponent);
 })
-@dependencies({}, [
+@inject({}, [
     RestaurantMenuSearchboxComponent,
     RestaurantMenuTabsComponent
 ])
