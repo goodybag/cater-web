@@ -104,10 +104,10 @@ gulp.task('upload', function() {
     };
 
     return gulp.src('dist/final/**/!(*.gz)')
-        .pipe(awspublish.gzip({ext: '.gz'}))
         .pipe(rename(function(path) {
             path.dirname += '/assets';
         }))
+        .pipe(awspublish.gzip())
         .pipe(publisher.publish(headers))
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
