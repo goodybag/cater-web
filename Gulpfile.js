@@ -87,6 +87,32 @@ gulp.task('watch', ['build', 'watch-bundle', 'compile', 'migrate'], function() {
     gulp.watch('public/**/*', ['migrate']);
 });
 
+gulp.task('upload', function() {
+    var awspublish = require('gulp-awspublish');
+    var rename = require('gulp-rename');
+
+    var publisher = awspublish.create({
+        params: {
+            Bucket: process.env.GOODYBAG_S3_BUCKET
+        }
+    });
+
+    const headers = {
+        // Two Year cache policy (1000 * 60 * 60 * 24 * 730)
+        'Cache-Control': "max-age=630720000, public",
+        Expires: new Date(Date.now() + 63072000000).toISOString()
+    };
+
+    return gulp.src('dist/final/**/!(*.gz)')
+        .pipe(rename(function(path) {
+            path.dirname += '/assets';
+        }))
+        .pipe(awspublish.gzip())
+        .pipe(publisher.publish(headers))
+        .pipe(publisher.cache())
+        .pipe(awspublish.reporter());
+});
+
 // You can safely disregard the unfortune that is below.
 
 function handleWebpackErrors(cb) {
