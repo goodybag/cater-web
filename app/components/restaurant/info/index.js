@@ -124,7 +124,8 @@ export class RestaurantInfoComponent extends Component {
                         </RestaurantInfoHeaderComponent>
 
                         <div>Give us a call to place an order here!</div>
-                        <div>512-270-6555</div>
+                        <div className="gb-restaurant-info-phone-icon"></div>
+                        <div className="gb-restaurant-info-phone-number">512-270-6555</div>
                     </RestaurantInfoSectionComponent>
 
                     <RestaurantInfoSectionComponent>
@@ -158,7 +159,7 @@ export class RestaurantInfoComponent extends Component {
 
         function renderWebsite(website) {
             return (
-                <a key={website} href={website}>{website}</a>
+                <a className="gb-restaurant-info-website" key={website} href={website}>{website}</a>
             );
         }
     }
