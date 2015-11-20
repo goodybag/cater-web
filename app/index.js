@@ -56,7 +56,7 @@ function renderPage(data) {
                 <div id="gb-body"/>
 
                 <script dangerouslySetInnerHTML={{__html: script}}/>
-                <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"/>
+                <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en,atob"/>
                 <script src={urlForAsset('bundle.js')}/>
             </body>
         </html>
