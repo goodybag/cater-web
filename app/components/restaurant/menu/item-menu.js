@@ -1,18 +1,15 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import {bind} from 'lodash-decorators';
-import {dependencies} from 'yokohama';
+import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {listeningTo} from 'tokyo';
 
 import {MenuItem} from '../../../models/menu-item';
 import {AddItemToOrderAction} from '../../../actions/menu';
 
-@dependencies({
+@inject({
     dispatcher: Dispatcher
-})
-@listeningTo([], ({dispatcher}) => {
-    return {dispatcher};
 })
 export class RestaurantMenuItemMenuComponent extends Component {
     static propTypes = {
@@ -76,7 +73,6 @@ export class RestaurantMenuItemMenuComponent extends Component {
     }
 }
 
-@dependencies({}, [RestaurantMenuItemMenuComponent])
 export class RestaurantMenuItemMenuWrapperComponent extends Component {
     componentWillEnter(done) {
         const {wrapper, child} = this.refs;

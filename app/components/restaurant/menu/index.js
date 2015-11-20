@@ -85,7 +85,8 @@ class RestaurantMenuIndividualComponent extends Component {
 }, [
     RestaurantMenuCateringComponent,
     RestaurantMenuSearchboxComponent,
-    RestaurantMenuTabComponent
+    RestaurantMenuTabComponent,
+    RestaurantMenuCategoryComponent
 ])
 class RestaurantMenuTabsComponent extends Component {
     static propTypes = {

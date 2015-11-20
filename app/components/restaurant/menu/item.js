@@ -2,11 +2,16 @@ import React, {Component, PropTypes} from 'react';
 import {bind} from 'lodash-decorators';
 import TransitionGroup from 'react-addons-transition-group';
 import cx from 'classnames';
+import {inject} from 'yokohama';
 import {FormattedNumber} from 'react-intl';
 
 import {MenuItem} from '../../../models/menu-item';
-import {RestaurantMenuItemMenuWrapperComponent} from './item-menu';
+import {
+    RestaurantMenuItemMenuWrapperComponent,
+    RestaurantMenuItemMenuComponent
+} from './item-menu';
 
+@inject({}, [RestaurantMenuItemMenuComponent])
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired
