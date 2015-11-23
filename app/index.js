@@ -12,6 +12,7 @@ import './setup';
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
+import {getPolyfillString} from 'polyfill-service';
 
 import {urlForAsset} from './asset';
 import * as config from './config';
@@ -32,13 +33,24 @@ app.use(function(req, res, next) {
     if (components.length === 0) {
         next();
     } else {
-        const markup = renderPage({config});
+        const userAgent = req.headers['user-agent'];
 
-        res.send(`<!doctype html>${markup}`);
+        getPolyfillString({
+            uaString: userAgent,
+            minify: true,
+            features: {
+                'Intl.~locale.en': {flags: ['gated']},
+                'atob': {flags: ['gated']}
+            }
+        }).then(polyfills => {
+            const markup = renderPage({config}, polyfills);
+
+            res.send(`<!doctype html>${markup}`);
+        }).catch(err => next(err));
     }
 });
 
-function renderPage(data) {
+function renderPage(data, polyfills) {
     const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
     const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
 
@@ -56,7 +68,7 @@ function renderPage(data) {
                 <div id="gb-body"/>
 
                 <script dangerouslySetInnerHTML={{__html: script}}/>
-                <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en,atob"/>
+                <script dangerouslySetInnerHTML={{__html: polyfills}}/>
                 <script src={urlForAsset('bundle.js')}/>
             </body>
         </html>
