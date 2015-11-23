@@ -145,10 +145,12 @@ export class RestaurantOrdersComponent extends Component {
                 }
                 <div className="gb-restaurant-orders-table">
                     <div className="gb-restaurant-orders-row-head">
-                        <div className="gb-restaurant-orders-col-status">Status</div>
-                        <div className="gb-restaurant-orders-col-date">Delivery Date</div>
-                        <div className="gb-restaurant-orders-col-time">Delivery Time</div>
-                        <div className="gb-restaurant-orders-col-total">Total</div>
+                        <div className="gb-restaurant-orders-row-group-first">
+                            <div className="gb-restaurant-orders-col-status">Status</div>
+                            <div className="gb-restaurant-orders-col-date">Delivery Date</div>
+                            <div className="gb-restaurant-orders-col-time">Delivery Time</div>
+                            <div className="gb-restaurant-orders-col-total">Total</div>
+                        </div>
                     </div>
                     <div className="gb-restaurant-orders-table-body">
                         {pastOrders.map(renderPastOrderItem)}

@@ -35,14 +35,17 @@ export class RestaurantOrdersRowComponent extends Component {
 
         return (
             <div className="gb-restaurant-orders-row">
-                <div className="gb-restaurant-orders-row-group">
+                <div className="gb-restaurant-orders-row-group-first">
                     <div className="gb-restaurant-orders-col-status">
                         <RestaurantOrdersStatusLabelComponent
                             status={status}
                         />
                     </div>
                     <div className="gb-restaurant-orders-col-date">
-                        <FormattedDate value={tzdatetime}/>
+                        {/* TODO: Change mm/dd/yyyy to mm/dd/yy format
+                            <FormattedDate value={tzdatetime}/>
+                         */}
+                        3/12/15
                     </div>
                     <div className="gb-restaurant-orders-col-time">
                         <FormattedTime value={tzdatetime} format="hhmma"/>
@@ -54,12 +57,13 @@ export class RestaurantOrdersRowComponent extends Component {
                             currency="USD"
                         />
                     </div>
-                    <div className="gb-restaurant-orders-col-expired">
-                        {/*TODO: Expired*/}
-                        Expired
-                    </div>
                 </div>
-                <div className="gb-restaurant-orders-row-group">
+                <div className="gb-restaurant-orders-row-group-second">
+                    <div className="gb-restaurant-orders-col-expired">
+                        {/*TODO: Expired*/
+                            status==="pending" ? "Expired" : ""
+                        }
+                    </div>
                     <div className="gb-restaurant-orders-col-resume">
                         {
                             status==="pending" ?
