@@ -34,63 +34,65 @@ export class RestaurantOrdersRowComponent extends Component {
         const {onLinkClicked} = this;
 
         return (
-            <tr className="gb-restaurant-orders-row">
-                <td className="gb-restaurant-orders-row-status">
-                    <RestaurantOrdersStatusLabelComponent
-                        status={status}
-                    />
-                </td>
-
-                <td className="gb-restaurant-orders-row-date">
-                    <FormattedDate value={tzdatetime}/>
-                </td>
-
-                <td className="gb-restaurant-orders-row-time">
-                    <FormattedTime value={tzdatetime} format="hhmma"/>
-                </td>
-
-                <td className="gb-restaurant-orders-row-total">
-                    <FormattedNumber
-                        value={total / 100}
-                        style="currency"
-                        currency="USD"
-                    />
-                </td>
-                <td className="gb-restaurant-orders-row-expired">
-                    {/*TODO: Expired*/}
-                </td>
-                <td className="gb-restaurant-orders-row-resume">
-                    {
-                        status==="pending" ?
-                            <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "resume")}>
-                                Resume
-                            </a> :
-                        status==="canceled" ?
-                            <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "uncancel")}>
-                                Uncancel
-                            </a> : ""
-                    }
-                </td>
-                <td className="gb-restaurant-orders-row-view">
-                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "view")}>
-                        View
-                    </a>
-                </td>
-                <td className="gb-restaurant-orders-row-duplicate">
-                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "duplicate")}>
-                        Duplicate
-                    </a>
-                </td>
-                <td className="gb-restaurant-orders-row-cancel">
-                    <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "cancel")}>
+            <div className="gb-restaurant-orders-row">
+                <div className="gb-restaurant-orders-row-group">
+                    <div className="gb-restaurant-orders-col-status">
+                        <RestaurantOrdersStatusLabelComponent
+                            status={status}
+                        />
+                    </div>
+                    <div className="gb-restaurant-orders-col-date">
+                        <FormattedDate value={tzdatetime}/>
+                    </div>
+                    <div className="gb-restaurant-orders-col-time">
+                        <FormattedTime value={tzdatetime} format="hhmma"/>
+                    </div>
+                    <div className="gb-restaurant-orders-col-total">
+                        <FormattedNumber
+                            value={total / 100}
+                            style="currency"
+                            currency="USD"
+                        />
+                    </div>
+                    <div className="gb-restaurant-orders-col-expired">
+                        {/*TODO: Expired*/}
+                        Expired
+                    </div>
+                </div>
+                <div className="gb-restaurant-orders-row-group">
+                    <div className="gb-restaurant-orders-col-resume">
                         {
-                            status === "canceled" ? "" :
-                            "Cancel"
-                            /* TODO: add logic if too close to delivery time */
+                            status==="pending" ?
+                                <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "resume")}>
+                                    Resume
+                                </a> :
+                            status==="canceled" ?
+                                <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "uncancel")}>
+                                    Uncancel
+                                </a> : ""
                         }
-                    </a>
-                </td>
-            </tr>
+                    </div>
+                    <div className="gb-restaurant-orders-col-view">
+                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "view")}>
+                            View
+                        </a>
+                    </div>
+                    <div className="gb-restaurant-orders-col-duplicate">
+                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "duplicate")}>
+                            Duplicate
+                        </a>
+                    </div>
+                    <div className="gb-restaurant-orders-col-cancel">
+                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "cancel")}>
+                            {
+                                status === "canceled" ? "" :
+                                "Cancel"
+                                /* TODO: add logic if too close to delivery time */
+                            }
+                        </a>
+                    </div>
+                </div>
+            </div>
         );
     }
 }
