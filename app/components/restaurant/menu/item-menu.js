@@ -27,7 +27,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
 
     render() {
         const {item, onClose: close} = this.props;
-        const {description, min_qty} = item.attributes;
+        const {description, min_qty} = item;
 
         return (
             <div className="gb-restaurant-menu-item-menu">

@@ -37,7 +37,7 @@ export class RestaurantInfoComponent extends Component {
             state,
             zip,
             websites
-        } = restaurant.attributes;
+        } = restaurant;
 
         const hours = [
             {day: 'Monday', time: '11:00 am — 9:00 pm'},

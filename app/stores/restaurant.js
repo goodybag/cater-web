@@ -3,14 +3,12 @@ import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {RouteParams} from '../lib/route';
-import {Restaurant} from '../models/restaurant';
+import {RestaurantService} from '../services/restaurant';
 
-@dependencies(RouteParams)
+@dependencies(RestaurantService, RouteParams)
 export class RestaurantResolver {
-    constructor(params) {
-        const restaurant = new Restaurant({id: params.restaurant_id});
-
-        return restaurant.fetch().then(() => restaurant);
+    constructor(restaurantService, params) {
+        return restaurantService.fetchById(params.restaurant_id);
     }
 }
 
@@ -20,7 +18,6 @@ export class RestaurantStore extends Store {
         super(dispatcher);
 
         this.restaurant = restaurant;
-        this.restaurant.on('change', () => this.emit('change'));
     }
 
     getRestaurant() {

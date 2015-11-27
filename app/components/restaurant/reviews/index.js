@@ -25,7 +25,7 @@ export class RestaurantReviewsComponent extends Component {
 
     render() {
         const {restaurant} = this.props;
-        const {yelp_data} = restaurant.attributes;
+        const {yelp_data} = restaurant;
 
         return (
             <div className="gb-restaurant-reviews">

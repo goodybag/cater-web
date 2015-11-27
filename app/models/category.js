@@ -3,7 +3,7 @@ import url from 'url';
 import fuzzy from 'fuzzysearch';
 
 import {API_PREFIX} from '../config';
-import {MenuItemCollection} from './menu-item';
+import {MenuItem} from './menu-item';
 
 export class Category extends Model {
     static schema = {
@@ -37,7 +37,7 @@ export class Category extends Model {
     }
 
     parse(attrs) {
-        attrs.items = new MenuItemCollection(attrs.items, {parse: true});
+        attrs.items = attrs.items.map(MenuItem.parse);
 
         return attrs;
     }
@@ -57,14 +57,14 @@ export class Category extends Model {
         const revised = this.clone();
 
         const revisedItems = revised.get('items').filter(item => {
-            var {name, description} = item.attributes;
+            var {name, description} = item;
             name = (name || '').toLowerCase();
             description = (description || '').toLowerCase();
 
-            return fuzzy(text, name || '') || fuzzy(text, description || '');
+            return fuzzy(text, name) || fuzzy(text, description);
         });
 
-        revised.set({items: new MenuItemCollection(revisedItems)});
+        revised.set({items: revisedItems});
 
         return revised;
     }
@@ -88,7 +88,7 @@ export class Menu extends Collection {
     applySearch(text) {
         return this.models
             .map(category => category.applySearch(text))
-            .filter(category => !category.get('items').isEmpty());
+            .filter(category => category.get('items').length !== 0);
     }
 }
 
