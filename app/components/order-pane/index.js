@@ -6,7 +6,7 @@ import cxnames from 'classnames';
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
 import {Order} from '../../models/order';
-import {OrderItemCollection} from '../../models/order-item';
+import {OrderItem} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
@@ -27,7 +27,7 @@ import {OrderPaneTimeLeftComponent} from './timeleft';
 export class OrderPaneComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
-        orderItems: PropTypes.instanceOf(OrderItemCollection).isRequired
+        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     }
 
     render() {

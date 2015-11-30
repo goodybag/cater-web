@@ -2,16 +2,12 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {OrderItemCollection} from '../models/order-item';
+import {OrderItemService} from '../services/order-item';
 
-@dependencies()
+@dependencies(OrderItemService)
 class OrderItemsResolver {
-    constructor() {
-        const orderItems = new OrderItemCollection(null, {
-            order_id: process.env.GOODYBAG_ORDER_ID
-        });
-
-        return orderItems.fetch().then(() => orderItems);
+    constructor(orderItemService) {
+        return orderItemService.fetchAllByOrderId(process.env.GOODYBAG_ORDER_ID);
     }
 }
 
@@ -21,7 +17,6 @@ export class OrderItemStore extends Store {
         super(dispatcher);
 
         this.orderItems = orderItems;
-        this.orderItems.on('add change remove', () => this.emit('change'));
     }
 
     getOrderItems() {

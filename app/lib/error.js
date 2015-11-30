@@ -3,9 +3,11 @@ import {render} from 'react-dom';
 import Promise from 'bluebird';
 
 export function handleError(err) {
-    return Promise.try(() => {
-        console.error(err.stack);
+    setImmediate(() => {
+        throw err;
+    });
 
+    return Promise.try(() => {
         const gb = {
             container: {
                 boxSizing: 'border-box',
@@ -73,8 +75,6 @@ export function handleError(err) {
             render(page, document.getElementById('gb-body'), cb);
         });
     }).catch(err => {
-        console.error(err.stack);
-
         alert('An error occured when displaying an error page');
     });
 }
