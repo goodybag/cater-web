@@ -32,15 +32,14 @@ export class OrderPaneComponent extends Component {
 
     render() {
         const {order, orderItems} = this.props;
-        const {datetime, timezone} = order.attributes;
-        const infoTitle = order.isNew() ? 'Order Info' : `Order - #${order.id}`;
+        const {datetime, timezone} = order;
 
         return (
             <div className="gb-order-pane">
                 <OrderPaneTimeLeftComponent order={order}/>
 
                 <div className="gb-order-pane-tablet-left">
-                    <OrderPaneHeaderComponent title={infoTitle}>
+                    <OrderPaneHeaderComponent title={`Order - #${order.id}`}>
                         <OrderPaneInfoComponent/>
                     </OrderPaneHeaderComponent>
 

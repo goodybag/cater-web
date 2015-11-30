@@ -1,102 +1,100 @@
-import moment from 'moment-timezone';
-import {Model} from 'backbone';
-import url from 'url';
+import {Restaurant} from './restaurant';
+import {User} from './user';
 
-import {API_PREFIX} from '../config';
+export class Order {
+    static parse(attrs) {
+        const created_at = new Date(attrs.created_at);
 
-export class Order extends Model {
-    static schema = {
-        type: 'object',
-        required: ['user_id', 'restaurant_id', 'type', 'status'],
-        properties: {
-            user_id: {
-                type: 'integer'
-            },
+        const restaurant = attrs.restaurant
+            ? Restaurant.parse(attrs.restaurant)
+            : new Restaurant({id: attrs.restaurant_id});
 
-            restaurant_id: {
-                type: 'integer'
-            },
+        const user = attrs.user
+            ? new User(attrs.user, {parse: true}) // TODO
+            : new User({id: attrs.user_id});
 
-            type: {
-                type: 'string',
-                enum: ['pickup', 'delivery', 'courier']
-            },
+        const datetime = new Date(attrs.datetime);
 
-            status: {
-                type: 'string',
-                enum: ['canceled', 'pending', 'submitted', 'denied', 'accepted', 'delivered']
-            }
-        }
+        return new Order({
+            ...attrs,
+            created_at,
+            restaurant,
+            user,
+            datetime
+        });
     }
 
-    defaults() {
-        return {
-            type: 'delivery',
-            status: 'pending'
-        };
-    }
+    constructor(attrs) {
+        const {
+            id = null,
+            created_at = null,
+            user = null,
+            restaurant = null,
+            street = null,
+            city = null,
+            state = null,
+            zip = null,
+            phone = null,
+            notes = null,
+            datetime = null,
+            timezone = null,
+            guests = null,
+            review_token = null,
+            tip = null,
+            name = null,
+            street2 = null,
+            delivery_instructions = null,
+            tip_percent = null,
+            status = null,
+            cut = null,
+            payment_status = null,
+            uuid = null,
+            edit_token = null,
+            type = null,
+            sub_total = null,
+            sales_tax = null,
+            total = null,
+            delivery_fee = null
+        } = attrs;
 
-    validate(attrs) {
-        if (!this.validator.validate(attrs, Order.schema)) {
-            return this.validator.getLastError();
-        }
-    }
-
-    urlRoot = url.resolve(API_PREFIX, 'orders');
-
-    parse(attrs) {
-        return {
-            id: attrs.id,
-            restaurant_id: attrs.restaurant_id,
-            user_id: attrs.user_id,
-            street: attrs.street,
-            city: attrs.city,
-            state: attrs.state,
-            zip: attrs.zip,
-            phones: attrs.phones,
-            notes: attrs.notes,
-            datetime: attrs.datetime,
-            timezone: attrs.timezone,
-            guests: attrs.guests,
-            review_token: attrs.review_token,
-            tip: attrs.tip,
-            name: attrs.name,
-            delivery_instructions: attrs.delivery_instructions,
-            status: attrs.status,
-            total: attrs.total,
-            type: attrs.type
-        };
+        this.id = id;
+        this.created_at = created_at;
+        this.user = user;
+        this.restaurant = restaurant;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phone = phone;
+        this.notes = notes;
+        this.datetime = datetime;
+        this.timezone = timezone;
+        this.guests = guests;
+        this.review_token = review_token;
+        this.tip = tip;
+        this.name = name;
+        this.street2 = street2;
+        this.delivery_instructions = delivery_instructions;
+        this.tip_percent = tip_percent;
+        this.status = status;
+        this.cut = cut;
+        this.payment_status = payment_status;
+        this.uuid = uuid;
+        this.edit_token = edit_token;
+        this.type = type;
+        this.sub_total = sub_total;
+        this.sales_tax = sales_tax;
+        this.total = total;
+        this.delivery_fee = delivery_fee;
     }
 
     displayAddress() {
-        const {street, city, state, zip} = this.attributes;
+        const {street, city, state, zip} = this;
 
         if (street == null || city == null || state == null) {
             return `${zip}`;
         } else {
             return `${street}, ${city}, ${state}, ${zip}`;
         }
-    }
-
-    getDatetimeMoment() {
-        const {datetime, timezone} = this.attributes;
-
-        return moment.tz(datetime, timezone);
-    }
-}
-
-export class OrderCollection {}
-
-OrderCollection.prototype.model = Order;
-
-export class OrderResolver {
-    static parse(order) {
-        return new Order(order, {parse: true});
-    }
-
-    constructor() {
-        const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
-
-        return order.fetch().then(() => order);
     }
 }

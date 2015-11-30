@@ -2,14 +2,12 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {Order} from '../models/order';
+import {OrderService} from '../services/order';
 
-@dependencies()
+@dependencies(OrderService)
 class OrderResolver {
-    constructor() {
-        const order = new Order({id: process.env.GOODYBAG_ORDER_ID});
-
-        return order.fetch().then(() => order);
+    constructor(orderService) {
+        return orderService.fetchById(process.env.GOODYBAG_ORDER_ID);
     }
 }
 
@@ -19,7 +17,6 @@ export class OrderStore extends Store {
         super(dispatcher);
 
         this.order = order;
-        this.order.on('change', () => this.emit('change'));
     }
 
     getOrder() {

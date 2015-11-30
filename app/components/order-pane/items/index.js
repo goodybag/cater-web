@@ -17,7 +17,7 @@ export class OrderPaneItemsComponent extends Component {
 
     render() {
         const {order, orderItems} = this.props;
-        const {total} = order.attributes;
+        const {total} = order;
 
         return (
             <div className="gb-order-pane-items">

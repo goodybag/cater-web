@@ -36,6 +36,7 @@
     "source-map-support": "^0.3.2",
     "superagent": "^1.4.0",
     "tokyo": "^1.1.0",
+    "validator": "^4.3.0",
     "yokohama": "^1.1.0",
     "z-schema": "^3.12.1"
   },
