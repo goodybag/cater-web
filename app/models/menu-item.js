@@ -1,3 +1,5 @@
+import fuzzy from 'fuzzysearch';
+
 import {Restaurant} from './restaurant';
 
 export class MenuItem {
@@ -45,5 +47,13 @@ export class MenuItem {
         this.hide_pricing = hide_pricing;
         this.photo_url = photo_url;
         this.tags = tags;
+    }
+
+    matchSearchTerm(term) {
+        var {name, description} = this;
+        name = (name || '').toLowerCase();
+        description = (description || '').toLowerCase();
+
+        return fuzzy(term, name) || fuzzy(term, description);
     }
 }

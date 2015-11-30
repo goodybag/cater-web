@@ -3,43 +3,36 @@ import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {RouteParams} from '../lib/route';
-import {UpdateMenuSearchAction} from '../actions/menu';
-import {Menu} from '../models/category';
+import {MenuService} from '../services/menu';
 
-@dependencies(RouteParams)
-export class MenuResolver {
-    constructor(params) {
-        const menu = new Menu(null, {
-            restaurant_id: params.restaurant_id
-        });
-
-        return menu.fetch().then(() => menu);
+@dependencies(RouteParams, MenuService)
+export class MenuItemsResolver {
+    constructor(params, menuService) {
+        return menuService.fetchMenuItemsByRestaurantId(params.restaurant_id);
     }
 }
 
-@dependencies(Dispatcher, MenuResolver)
+@dependencies(RouteParams, MenuService)
+export class CategoriesResolver {
+    constructor(params, menuService) {
+        return menuService.fetchCategoriesByRestaurantId(params.restaurant_id);
+    }
+}
+
+@dependencies(Dispatcher, MenuItemsResolver, CategoriesResolver)
 export class MenuStore extends Store {
-    constructor(dispatcher, menu) {
+    constructor(dispatcher, menuItems, categories) {
         super(dispatcher);
 
-        this.queryText = '';
-
-        this.menu = menu;
-        this.menu.on('change', () => this.emit('change'));
-
-        this.bind(UpdateMenuSearchAction, this.updateMenuSearch);
+        this.menuItems = menuItems;
+        this.categories = categories;
     }
 
-    updateMenuSearch({queryText}) {
-        this.queryText = queryText.toLowerCase();
-        this.emit('change');
+    getMenuItems() {
+        return this.menuItems;
     }
 
-    getQueryText() {
-        return this.queryText;
-    }
-
-    getMenu() {
-        return this.menu;
+    getCategories() {
+        return this.categories;
     }
 }
