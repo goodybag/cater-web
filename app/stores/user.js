@@ -2,18 +2,13 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {CurrentUser} from '../models/user';
+import {User} from '../models/user';
+import {UserService} from '../services/user';
 
-@dependencies()
+@dependencies(UserService)
 export class CurrentUserResolver {
-    static parse(user) {
-        return new CurrentUser(user, {parse: true});
-    }
-
-    constructor() {
-        const user = new CurrentUser();
-
-        return user.fetch().then(() => user);
+    constructor(userService) {
+        return userService.fetchCurrent();
     }
 }
 
@@ -23,7 +18,6 @@ export class CurrentUserStore extends Store {
         super(dispatcher);
 
         this.user = user;
-        this.user.on('change', () => this.emit('change'));
     }
 
     getUser() {

@@ -6,7 +6,7 @@ import cx from 'classnames';
 import {urlForAsset} from '../../asset';
 
 import {CurrentUserStore} from '../../stores/user';
-import {CurrentUser} from '../../models/user';
+import {User} from '../../models/user';
 
 import {NavbarRegionMenuComponent} from './menus/region';
 import {NavbarOrderMenuComponent} from './menus/order';
@@ -28,7 +28,7 @@ import {NavbarAccountMenuComponent} from './menus/account';
 })
 export class NavbarComponent extends Component {
     static propTypes = {
-        user: PropTypes.instanceOf(CurrentUser)
+        user: PropTypes.instanceOf(User)
     }
 
     state = {
@@ -47,7 +47,7 @@ export class NavbarComponent extends Component {
 
     render() {
         const {user} = this.props;
-        const {points, name, region: {name: regionName}} = user.attributes;
+        const {points, name, region: {name: regionName}} = user;
         const {activeItemName} = this.state;
 
         const items = {

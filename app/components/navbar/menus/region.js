@@ -21,7 +21,7 @@ export class NavbarRegionMenuComponent extends Component {
 
     render() {
         const {user} = this.props;
-        const {region: {name: regionName}} = user.attributes;
+        const {region: {name: regionName}} = user;
         const cityNames = ["Austin, TX", "Houston, TX", "Nashville, TN", "Seattle, WA", "None"];
 
         // TODO: Render these from a regions list
