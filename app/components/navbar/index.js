@@ -75,38 +75,29 @@ export class NavbarComponent extends Component {
                                 <div className="gb-navbar-points-text">{points} points</div>
                             </div>
 
-                            <div className="gb-navbar-button">
-                                <NavbarItemComponent
-                                    title={regionName}
-                                    name="region"
-                                    active={activeItemName === 'region'}
-                                    onClick={this.handleItemClick}
-                                />
+                            <NavbarItemComponent
+                                title={regionName}
+                                name="region"
+                                active={activeItemName === 'region'}
+                                onClick={this.handleItemClick}
+                                items={transition(activeItemName === 'region' && items.region)}
+                            />
 
-                                {transition(activeItemName === 'region' && items.region)}
-                            </div>
+                            <NavbarItemComponent
+                                title="My Orders"
+                                name="orders"
+                                active={activeItemName === 'orders'}
+                                onClick={this.handleItemClick}
+                                items={transition(activeItemName === 'orders' && items.orders)}
+                            />
 
-                            <div className="gb-navbar-button">
-                                <NavbarItemComponent
-                                    title="My Orders"
-                                    name="orders"
-                                    active={activeItemName === 'orders'}
-                                    onClick={this.handleItemClick}
-                                />
-
-                                {transition(activeItemName === 'orders' && items.orders)}
-                            </div>
-
-                            <div className="gb-navbar-button">
-                                <NavbarItemComponent
-                                    title={`Hi, ${name}`}
-                                    name="account"
-                                    active={activeItemName === 'account'}
-                                    onClick={this.handleItemClick}
-                                />
-
-                                {transition(activeItemName === 'account' && items.account)}
-                            </div>
+                            <NavbarItemComponent
+                                title={`Hi, ${name}`}
+                                name="account"
+                                active={activeItemName === 'account'}
+                                onClick={this.handleItemClick}
+                                items={transition(activeItemName === 'account' && items.account)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -133,7 +124,8 @@ class NavbarItemComponent extends Component {
         title: PropTypes.node.isRequired,
         name: PropTypes.string.isRequired,
         active: PropTypes.bool.isRequired,
-        onClick: PropTypes.func.isRequired
+        onClick: PropTypes.func.isRequired,
+        items: PropTypes.node.isRequired
     }
 
     handleClick = () => {
@@ -143,17 +135,21 @@ class NavbarItemComponent extends Component {
     }
 
     render() {
-        const {title, name, active} = this.props;
+        const {title, name, active, items} = this.props;
 
         const set = cx(`gb-navbar-item-${name}`, {active});
 
         return (
-            <div className={set} onClick={this.handleClick}>
-                {title}
+            <div className="gb-navbar-button" onClick={this.handleClick}>
+                <div className={set}>
+                    {title}
 
-                <div className="gb-navbar-item-arrow">
-                    <div className={active ? 'gb-arrow-down' : 'gb-arrow-right'}/>
+                    <div className="gb-navbar-item-arrow">
+                        <div className={active ? 'gb-arrow-down' : 'gb-arrow-right'}/>
+                    </div>
                 </div>
+
+                {items}
             </div>
         );
     }
