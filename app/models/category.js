@@ -38,6 +38,6 @@ export class Category {
 
     // these are horrible names
     hasMenu(menuName) {
-        return this.get('menus').indexOf(menuName) !== -1;
+        return this.menus.indexOf(menuName) !== -1;
     }
 }

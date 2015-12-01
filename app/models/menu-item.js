@@ -1,6 +1,7 @@
 import fuzzy from 'fuzzysearch';
 
 import {Restaurant} from './restaurant';
+import {Category} from './category';
 
 export class MenuItem {
     static parse(attrs) {
@@ -10,13 +11,18 @@ export class MenuItem {
             ? Restaurant.parse(attrs.restaurant)
             : new Restaurant({id: attrs.restaurant_id});
 
-        return new MenuItem({...attrs, created_at, restaurant});
+        const category = attrs.category
+            ? Category.parse(attrs.category)
+            : new Category({id: attrs.category_id});
+
+        return new MenuItem({...attrs, created_at, restaurant, category});
     }
 
     constructor(attrs) {
         const {
             id = null,
             created_at = null,
+            category = null,
             restaurant = null,
             order = null,
             name = null,
@@ -34,6 +40,7 @@ export class MenuItem {
 
         this.id = id;
         this.created_at = created_at;
+        this.category = category;
         this.restaurant = restaurant;
         this.order = order;
         this.name = name;
@@ -50,6 +57,10 @@ export class MenuItem {
     }
 
     matchSearchTerm(term) {
+        if (!term) {
+            return true;
+        }
+
         var {name, description} = this;
         name = (name || '').toLowerCase();
         description = (description || '').toLowerCase();

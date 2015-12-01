@@ -21,15 +21,15 @@ export class CategoriesResolver {
 
 @dependencies(Dispatcher, MenuItemsResolver, CategoriesResolver)
 export class MenuStore extends Store {
-    constructor(dispatcher, menuItems, categories) {
+    constructor(dispatcher, items, categories) {
         super(dispatcher);
 
-        this.menuItems = menuItems;
+        this.items = items;
         this.categories = categories;
     }
 
-    getMenuItems() {
-        return this.menuItems;
+    getItems() {
+        return this.items;
     }
 
     getCategories() {
