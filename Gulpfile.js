@@ -14,8 +14,10 @@ gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
 gulp.task('build', function() {
     // Requiring inline saves startup time for other builds
     var babel = require('gulp-babel');
+    var newer = require('gulp-newer');
 
     return gulp.src('app/**/*.js')
+        .pipe(newer('dist/src'))
         .pipe(smaps.init())
         .pipe(babel())
         .pipe(smaps.write('.'))
@@ -45,7 +47,11 @@ gulp.task('compile', function() {
 // This moves all the files from public/ to
 // dist/build
 gulp.task('migrate', function() {
-    return gulp.src('public/**/*').pipe(gulp.dest('dist/build'));
+    var newer = require('gulp-newer');
+
+    return gulp.src('public/**/*')
+        .pipe(newer('dist/build'))
+        .pipe(gulp.dest('dist/build'));
 });
 
 gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
