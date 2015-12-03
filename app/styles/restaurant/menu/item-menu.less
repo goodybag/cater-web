@@ -40,19 +40,34 @@
 
 .gb-restaurant-menu-item-menu-buttons {
     & > * {
-        margin-left: 5px;
-        margin-right: 5px;
+        @media screen and (max-width: @gb-breakpoint-mobile) {
+            margin-top: 5px;
+            margin-bottom: 5px;
 
-        &:first-child {
-            margin-left: 0;
+            &:first-child {
+                margin-top: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
 
-        &:last-child {
-            margin-right: 0;
+        @media screen and (min-width: @gb-breakpoint-mobile) {
+            margin-left: 5px;
+            margin-right: 5px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
+            }
         }
     }
 
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: @gb-breakpoint-mobile) {
         position: absolute;
         bottom: 0;
         right: 0;
@@ -85,6 +100,10 @@
 
         width: 82px;
     }
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        margin-bottom: 10px;
+    }
 }
 
 .gb-restaurant-menu-item-menu-notes {
@@ -105,11 +124,20 @@
 
     padding-left: 20px;
     padding-right: 20px;
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        width: 100%;
+    }
 }
 
 .gb-restaurant-menu-item-menu-addtoorder {
     .gb-button-red;
     .gb-restaurant-menu-item-menu-bottom;
 
-    width: 175px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        width: 100%;
+    }
 }
