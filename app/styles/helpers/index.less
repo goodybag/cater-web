@@ -33,8 +33,27 @@
     }
 }
 
-.gb-red-button {
+.gb-button {
     .gb-box;
+
+    align-items: flex-start;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 0.875em;
+    font-weight: 600;
+    text-align: center;
+}
+
+.gb-button-white {
+    .gb-button;
+
+    background: @gb-white;
+    border: 1px solid @gb-shadow-tide;
+}
+
+.gb-button-red {
+    .gb-button;
+
     text-align: center;
     background-color: @gb-pink;
     border: 1px solid darken(@gb-pink, 10%);

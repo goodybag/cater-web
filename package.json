@@ -30,6 +30,7 @@
     "polyfill-service": "^2.2.0",
     "react": "^0.14.0-rc1",
     "react-addons-css-transition-group": "^0.14.0-rc1",
+    "react-addons-transition-group": "^0.14.2",
     "react-dom": "^0.14.0-rc1",
     "react-intl": "^2.0.0-pr-3",
     "source-map-support": "^0.3.2",

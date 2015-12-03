@@ -1,0 +1,30 @@
+.gb-button {
+    align-items: flex-start;
+    font-size: 14px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-weight: 600;
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 2px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.gb-button-white {
+    .gb-button;
+
+    background: @gb-white;
+    border: 1px solid @gb-subtle;
+}
+
+.gb-button-red {
+    .gb-button;
+
+    background: @gb-red;
+    color: @gb-white;
+    border-bottom: 2px solid darken(@gb-red, 20%);
+}

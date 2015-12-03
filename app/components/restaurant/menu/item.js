@@ -1,14 +1,33 @@
 import React, {Component, PropTypes} from 'react';
+import {bind} from 'lodash-decorators';
+import TransitionGroup from 'react-addons-transition-group';
+import cx from 'classnames';
 import {FormattedNumber} from 'react-intl';
 
 import {MenuItem} from '../../../models/menu-item';
+import {RestaurantMenuItemMenuWrapperComponent} from './item-menu';
 
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired
     }
 
+    state = {
+        open: false
+    }
+
+    @bind()
+    handleOpen() {
+        this.setState({open: true});
+    }
+
+    @bind()
+    handleClose() {
+        this.setState({open: false});
+    }
+
     render() {
+        const {open} = this.state;
         const {item} = this.props;
         const {
             name,
@@ -18,8 +37,19 @@ export class RestaurantMenuItemComponent extends Component {
             description
         } = item.attributes;
 
+        const itemMenu = (
+            <RestaurantMenuItemMenuWrapperComponent
+                item={item}
+                onClose={this.handleClose}
+            />
+        );
+
+        const cname = cx('gb-restaurant-menu-item', {
+            'gb-restaurant-menu-item-open': open
+        });
+
         return (
-            <div className="gb-restaurant-menu-item" onClick={this.handleClick}>
+            <div className={cname} onClick={!open && this.handleOpen}>
                 <div className="gb-restaurant-menu-item-title">
                     <div className="gb-restaurant-menu-item-title-content">
                         {name}
@@ -48,6 +78,8 @@ export class RestaurantMenuItemComponent extends Component {
                         {description}
                     </div>
                 </div>
+
+                <TransitionGroup>{open && itemMenu}</TransitionGroup>
             </div>
         );
 

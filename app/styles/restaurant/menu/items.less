@@ -1,0 +1,99 @@
+.gb-restaurant-menu-items {
+    padding: 18px 0;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.gb-restaurant-menu-item {
+    position: relative;
+    padding: 15px 10px;
+    font-size: 14px;
+    border-radius: @gb-border-radius;
+
+    &.gb-restaurant-menu-item-open {
+        background: @gb-bright;
+    }
+
+    &:not(.gb-restaurant-menu-item-open):hover {
+        background: @gb-bright;
+        cursor: pointer;
+    }
+}
+
+.gb-restaurant-menu-item-title {
+    display: inline-block;
+    font-weight: 600;
+    max-width: 320px;
+    width: 100%;
+}
+
+.gb-restaurant-menu-item-tags {
+    display: none; // TODO
+}
+
+.gb-restaurant-menu-item-field {
+    display: inline-block;
+    max-width: 125px;
+    width: 100%;
+
+    @media screen and (max-width: 480px) {
+        max-width: 50%;
+    }
+}
+
+.gb-restaurant-menu-item-quantity {
+    .gb-restaurant-menu-item-field;
+}
+
+.gb-restaurant-menu-item-price {
+    .gb-restaurant-menu-item-field;
+}
+
+.gb-restaurant-menu-item-desc {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+@media screen and (min-width: 1140px) {
+    @transition-duration: 100ms;
+    @transition-delay: 500ms;
+
+    .gb-restaurant-menu-item-desc {
+        pointer-events: none;
+        background: @gb-dark;
+        border-radius: @gb-border-radius;
+        box-sizing: border-box;
+        color: @gb-white;
+        max-width: 400px;
+        opacity: 0;
+        padding: 15px 20px;
+        position: absolute;
+        top: 25px;
+        transition: visibility 0s linear (@transition-duration + @transition-delay),
+                    opacity @transition-duration linear;
+        visibility: hidden;
+        z-index: 5;
+
+        &:before {
+            .gb-small-arrow;
+
+            top: -10px;
+            left: 20px;
+            position: absolute;
+            border-bottom-color: @gb-dark;
+            content: ' ';
+        }
+
+        .gb-restaurant-menu-item-text {
+            font-weight: 600;
+        }
+    }
+
+    .gb-restaurant-menu-item:not(.gb-restaurant-menu-item-open):hover {
+        .gb-restaurant-menu-item-desc {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s linear,
+                        opacity @transition-duration @transition-delay linear;
+        }
+    }
+}
