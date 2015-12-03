@@ -30,7 +30,9 @@ export class RestaurantReviewsComponent extends Component {
         return (
             <div className="gb-restaurant-reviews">
                 <div className="gb-restaurant-reviews-count">
-                    <span>{yelp_data.review_count} Reviews</span>
+                    <div className="gb-restaurant-reviews-ncount">
+                        {yelp_data.review_count} Reviews
+                    </div>
 
                     <StarsComponent rating={yelp_data.rating}/>
                 </div>

@@ -143,24 +143,19 @@ export class RestaurantOrdersComponent extends Component {
                             signalAlertClose={signalAlertClose}
                         /> : ""
                 }
-                <table className="gb-restaurant-orders-table">
-                    <thead className="gb-restaurant-orders-thead">
-                        <tr>
-                            <th>STATUS</th>
-                            <th>DELIVERY DATE</th>
-                            <th>DELIVERY TIME</th>
-                            <th>TOTAL</th>
-                            <th>{/* Expired */}</th>
-                            <th>{/* Resume */}</th>
-                            <th>{/* View */}</th>
-                            <th>{/* Duplicate */}</th>
-                            <th>{/* Cancel */}</th>
-                        </tr>
-                    </thead>
-                    <tbody className="gb-restaurant-orders-tbody">
+                <div className="gb-restaurant-orders-table">
+                    <div className="gb-restaurant-orders-row-head">
+                        <div className="gb-restaurant-orders-row-group-first">
+                            <div className="gb-restaurant-orders-col-status">Status</div>
+                            <div className="gb-restaurant-orders-col-date">Delivery Date</div>
+                            <div className="gb-restaurant-orders-col-time">Delivery Time</div>
+                            <div className="gb-restaurant-orders-col-total">Total</div>
+                        </div>
+                    </div>
+                    <div className="gb-restaurant-orders-table-body">
                         {pastOrders.map(renderPastOrderItem)}
-                    </tbody>
-                </table>
+                    </div>
+                </div>
             </div>
         );
 

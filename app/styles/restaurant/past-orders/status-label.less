@@ -1,0 +1,54 @@
+.gb-restaurant-orders-status-label {
+    width: 100%;
+}
+
+.gb-status-label {
+    width: 100%;
+    color: @gb-background;
+    font-weight: 600;
+    font-size: 0.85em;
+    border-radius: 2px;
+    padding: 1px 6px;
+    text-align: center;
+    width: 73px;
+
+    @media screen and (min-width: @gb-breakpoint-tablet) {
+        width: 60px;
+    }
+}
+
+.gb-restaurant-orders-status-label-draft {
+    .gb-status-label;
+    background: @gb-yellow;
+
+    &:before {
+        content: "";
+        position: absolute;
+        top: 7px;
+        left: -14px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: @gb-red;
+
+        @media screen and (max-width: @gb-breakpoint-mobile) {
+            top: 8px;
+            left: 7px;
+        }
+    }
+}
+
+.gb-restaurant-orders-status-label-submitted {
+    .gb-status-label;
+    background: @gb-skyblue;
+}
+
+.gb-restaurant-orders-status-label-accepted {
+    .gb-status-label;
+    background: @gb-teal;
+}
+
+.gb-restaurant-orders-status-label-canceled {
+    .gb-status-label;
+    background: @gb-shadow-cadet-blue;
+}

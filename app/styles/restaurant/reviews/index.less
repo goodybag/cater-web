@@ -1,0 +1,104 @@
+.gb-restaurant-reviews {
+    .gb-restaurant-content;
+    .gb-restaurant-content-border;
+    text-align: center;
+}
+
+// Single Column Layout
+
+.gb-restaurant-reviews-count {
+    margin-bottom: 45px;
+}
+
+.gb-restaurant-review {
+    margin-bottom: 25px;
+}
+
+.gb-restaurant-reviews-bottom {
+    margin-top: 58px;
+}
+
+.gb-restaurant-reviews-count {
+    font-size: 1.11em;
+
+    .gb-restaurant-reviews-ncount,
+    .gb-stars {
+        display: inline-block;
+    }
+
+    .gb-restaurant-reviews-ncount {
+        margin-right: 5px;
+        font-weight: 600;
+    }
+}
+
+.gb-restaurant-review-user-pic {
+    img {
+        border-radius: 50%;
+    }
+}
+
+.gb-restaurant-review-user-name {
+    color: @gb-shadow-raven;
+    margin-bottom: 3px;
+}
+
+.gb-restaurant-review-content {
+    .gb-stars {
+        margin-bottom: 3px;
+    }
+
+    .gb-restaurant-review-excerpt {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 12px;
+        max-width: 400px;
+    }
+
+    .gb-restaurant-review-readmore {
+        .gb-link;
+    }
+}
+
+.gb-restaurant-reviews-seeall {
+    .gb-red-button;
+    color: @gb-white;
+    font-weight: 900;
+    max-width: 145px;
+}
+
+// Double Column Layout
+
+.gb-restaurant-reviews-dbl-col {
+    .gb-restaurant-reviews {
+        text-align: left;
+    }
+
+    .gb-restaurant-review {
+        overflow: auto;
+    }
+
+    .gb-restaurant-review-user {
+        .gb-float(left, 15%);
+        margin-top: 22px;
+        text-align: center;
+    }
+
+    .gb-restaurant-review-content {
+        .gb-float(right, 80%);
+
+        .gb-restaurant-review-excerpt {
+            margin-left: 0;
+        }
+    }
+}
+
+// Two-Column Breakpoints
+
+@media screen and (min-width: @gb-breakpoint-mid-tablet) and (max-width: @gb-breakpoint-tablet) {
+    .gb-restaurant-reviews-dbl-col;
+}
+
+@media screen and (min-width: @gb-breakpoint-mid-laptop) and (max-width: @gb-breakpoint-laptop) {
+    .gb-restaurant-reviews-dbl-col;
+}

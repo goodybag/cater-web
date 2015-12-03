@@ -14,15 +14,16 @@ export class RestaurantMenuItemComponent extends Component {
         return (
             <div className="gb-restaurant-menu-item">
                 <div className="gb-restaurant-menu-item-title">
-                    {name}
-                </div>
-
-                <div className="gb-restaurant-menu-item-tags">
-                    {tags.map(renderTag)}
+                    <div className="gb-restaurant-menu-item-title-content">
+                        {name}
+                    </div>
+                    <div className="gb-restaurant-menu-item-tags">
+                        {tags.map(renderTag)}
+                    </div>
                 </div>
 
                 <div className="gb-restaurant-menu-item-quantity">
-                    Min 10.
+                    Min. 10
                 </div>
 
                 <div className="gb-restaurant-menu-item-price">

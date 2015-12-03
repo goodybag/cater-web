@@ -1,0 +1,64 @@
+.gb-restaurant-menu-tabs {
+    @media screen and (max-width: @gb-breakpoint-tablet - 1px) {
+        text-align: center;
+    }
+}
+
+.gb-restaurant-menu-tab-title-catering,
+.gb-restaurant-menu-tab-title-individual {
+    display: inline-block;
+    position: relative;
+    background: @gb-background;
+    height: 52px;
+    border: 1px solid @gb-shadow-mischka;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    box-sizing: border-box;
+
+    &.active {
+        border-bottom: none;
+        z-index: 100;
+    }
+
+    @media screen and (max-width: @gb-breakpoint-tablet) {
+        width: 49%;
+    }
+    @media screen and (min-width: @gb-breakpoint-tablet) {
+        width: 26%;
+        max-width: 186px;
+    }
+}
+
+.gb-menu-tab-top-color(@color) {
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        height: 3px;
+        width: 100%;
+        background-color: @color;
+    }
+}
+
+.gb-restaurant-menu-tab-title-catering {
+    .gb-menu-tab-top-color(@gb-blue);
+    margin-right: 2px;
+}
+
+.gb-restaurant-menu-tab-title-individual {
+    .gb-menu-tab-top-color(@gb-teal);
+    margin-left: 2px;
+}
+
+.gb-restaurant-menu-tab-title-content {
+    width: 96%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    text-align: center;
+    color: @gb-shadow-shuttle-gray;
+    font-size: 0.89em;
+    font-weight: 600;
+}

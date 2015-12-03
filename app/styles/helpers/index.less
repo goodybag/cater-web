@@ -1,0 +1,53 @@
+@import "arrow";
+@import "popover";
+
+.gb-link {
+    color: @gb-blue;
+
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
+
+.gb-box {
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding: 7px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.gb-input-box {
+    .gb-box;
+    font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+
+    &:hover {
+        cursor: text;
+    }
+}
+
+.gb-red-button {
+    .gb-box;
+    text-align: center;
+    background-color: @gb-pink;
+    border: 1px solid darken(@gb-pink, 10%);
+    border-bottom: 2px solid darken(@gb-pink, 10%);
+    border-top: none;
+    transition: background-color 200ms;
+
+    &:hover {
+        background-color: lighten(@gb-red, 5%);
+    }
+}
+
+.gb-float(@direction, @width) {
+    float: @direction;
+    width: @width;
+}

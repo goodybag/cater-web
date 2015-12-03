@@ -1,18 +1,36 @@
-@gb-foreground: #424a54;
+@gb-foreground: #434a54;
 @gb-background: #ffffff;
 @gb-white: #ffffff;
 @gb-black: #000000;
-@gb-bright: #e6e9ed;
-@gb-dark: #383d46;
-@gb-darker: #2c3239;
-@gb-shadow: rgba(0, 0, 0, 0.1);
-@gb-shadow-light: #494E55;
-@gb-shadow-dark: #242832;
-@gb-bold: #3B3F47;
-@gb-soft: #ccd1d9;
-@gb-subtle: #aab2bd;
-@gb-gray: #7B828D;
+@gb-box-shadow-light-1: rgba(255, 255, 255, 0.1);
+@gb-box-shadow-1: rgba(0, 0, 0, 0.1);
+@gb-box-shadow-2: rgba(0, 0, 0, 0.2);
+@gb-box-shadow-3: rgba(0, 0, 0, 0.3);
+@gb-shadow-tide: #b7b6ad;          // (gray/yellow)
+@gb-shadow-athens-gray: #e6e9ed;   // (lighter gray)
+@gb-shadow-cadet-blue: #aab2bd;    // (light blue/gray)
+@gb-shadow-mystic: #d9e0ea;        // (lighter blue/gray)
+@gb-shadow-mischka: #d3d8de;       // (lighter blue/gray)
+@gb-shadow-raven: #7b828d;         // (medium blue/gray)
+@gb-shadow-mako: #434a54;          // (dark blue/gray)
+@gb-shadow-charade: #242832;       // (darker blue/gray)
+@gb-shadow-shuttle-gray: #616974;  // (medium gray)
+@gb-shadow-mirage: #393E46;        // (dark gray)
+@gb-shadow-blue-charcoal: #272C33; // (darker gray)
+
+
+// @gb-bright: #e6e9ed;
+// @gb-dark: #383d46;
+// @gb-darker: #2c3239;
+// @gb-shadow: rgba(0, 0, 0, 0.1);
+// @gb-shadow-light: #494E55;
+// @gb-shadow-dark: #242832;
+// @gb-bold: #3B3F47;
+// @gb-soft: #ccd1d9;
+// @gb-gray: #7B828D;
+
 @gb-red: #ff3333; // web-safe version of #ed4242
+@gb-pink: #ED4242;
 @gb-yellow: #F4BB41;
 @gb-pale-yellow: #F9EBCB;
 @gb-blue: #4A89DC;
@@ -20,7 +38,14 @@
 @gb-teal: #41CEAB;
 @gb-green: #8CC155;
 
-@gb-border-radius: 4px;
+@gb-breakpoint-mobile: 480px;
+@gb-breakpoint-mid-tablet: 642px;
+@gb-breakpoint-tablet: 769px;
+@gb-breakpoint-mid-laptop: 910px;
+@gb-breakpoint-laptop: 1680px;
+
+@gb-body-padding-large: 17px;
+@gb-body-padding-small: 0px;
 
 html {
     -webkit-font-smoothing: antialiased;
@@ -28,6 +53,15 @@ html {
     background-color: @gb-background;
     color: @gb-foreground;
     font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        font-size: 1.05em;
+    }
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+        font-size: 0.998em;
+    }
+    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
+        font-size: 0.924em;
+    }
     &, & a {     // minute font smoothing for smaller screens
         text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
     }
@@ -36,6 +70,7 @@ html {
 body {
     margin: 0;
     padding: 0;
+    cursor: default;
 }
 
 input, textarea {
@@ -54,72 +89,81 @@ table {
 .gb-body {
     margin-left: auto;
     margin-right: auto;
+    padding: 0 @gb-body-padding-large;
+    box-sizing: border-box;
     width: 100%;
-    max-width: 1140px;
-}
 
-.gb-small-arrow {
-    border-color: transparent;
-    border-style: solid;
-    border-top: 0;
-    border-width: 10px;
-    height: 0;
-    width: 0;
-}
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        padding: 0 @gb-body-padding-small;
+    }
 
-.gb-link {
-    color: @gb-blue;
-
-    &:hover {
-        text-decoration: underline;
+    @media screen and (max-width: @gb-breakpoint-laptop) {
+        max-width: 1111px + (@gb-body-padding-large * 2);
     }
 }
 
-// * TWO-COLUMN LAYOUT STYLES
-//////////////////////////////
-.col {
-    float: left;
-    width: 50%;
-}
-
-.fix-collapse { // keeps parent div from collapsing
-                // when children are floating
-    overflow: auto;
-}
-
-// * BUTTON STYLES
-///////////////////
-input[type="button"],
-.btn {
-    display: block;
-    color: @gb-background;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 20px;
-}
-
-.action-btn {
-    background: @gb-red;
-    border: 1px solid darken(@gb-red, 20%);
-    border-top: none;
-    border-bottom: 2px solid darken(@gb-red, 20%);
-    border-radius: @gb-border-radius / 2px;
-
-    &:hover {
-        cursor: pointer;
-        background-color: lighten(@gb-red, 3%);
-    }
-}
-
-.gb-price {
-    display: inline;
-}
-
-.gb-price-fill {
-    display: inline;
-}
-
-.gb-price-empty {
-    display: inline;
-    color: @gb-subtle;
-}
+// .gb-small-arrow {
+//     border-color: transparent;
+//     border-style: solid;
+//     border-top: 0;
+//     border-width: 10px;
+//     height: 0;
+//     width: 0;
+// }
+//
+// .gb-link {
+//     color: @gb-blue;
+//
+//     &:hover {
+//         text-decoration: underline;
+//     }
+// }
+//
+// // * TWO-COLUMN LAYOUT STYLES
+// //////////////////////////////
+// .col {
+//     float: left;
+//     width: 50%;
+// }
+//
+// .fix-collapse { // keeps parent div from collapsing
+//                 // when children are floating
+//     overflow: auto;
+// }
+//
+// // * BUTTON STYLES
+// ///////////////////
+// input[type="button"],
+// .btn {
+//     display: block;
+//     color: @gb-background;
+//     font-weight: 600;
+//     font-size: 14px;
+//     padding: 8px 20px;
+// }
+//
+// .action-btn {
+//     background: @gb-red;
+//     border: 1px solid darken(@gb-red, 20%);
+//     border-top: none;
+//     border-bottom: 2px solid darken(@gb-red, 20%);
+//     border-radius: @gb-border-radius / 2px;
+//
+//     &:hover {
+//         cursor: pointer;
+//         background-color: lighten(@gb-red, 3%);
+//     }
+// }
+//
+// .gb-price {
+//     display: inline;
+// }
+//
+// .gb-price-fill {
+//     display: inline;
+// }
+//
+// .gb-price-empty {
+//     display: inline;
+//     color: @gb-subtle;
+// }

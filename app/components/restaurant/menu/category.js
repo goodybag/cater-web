@@ -15,7 +15,9 @@ export class RestaurantMenuCategoryComponent extends Component {
         return (
             <div className="gb-restaurant-menu-category">
                 <div className="gb-restaurant-menu-category-title">
-                    {name}
+                    <div className="gb-restaurant-menu-category-title-content">
+                        {name}
+                    </div>
                 </div>
 
                 <div className="gb-restaurant-menu-items">

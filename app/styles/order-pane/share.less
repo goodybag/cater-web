@@ -1,53 +1,46 @@
 .gb-order-pane-share {
     .gb-order-pane-section;
+}
 
-    border-top: 1px solid @gb-shadow-light;
-    border-bottom: 1px solid @gb-shadow-dark;
-    font-size: 14px;
-    font-weight: 600;
+.gb-order-pane-share-icon {
+    color: @gb-red;
+    font-size: 1.27em;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.gb-order-pane-share-desc {
+    font-size: 1.11em;
 }
 
 .gb-order-pane-share-box {
-    padding-top: 15px;
+    margin-top: 17px;
+
+    i[class^="icon"] {
+        .gb-order-pane-share-icon;
+    }
 }
 
 .gb-order-pane-share-head {
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 4px;
+    position: relative;
+    margin-bottom: 3px;
 
-    i[class^="icon-"] {
-        font-size: 15px;
-        color: @gb-red;
-        margin-right: 10px;
+    & > span {
+        margin-left: 21px;
     }
 }
 
 .gb-order-pane-share-linkbox {
-    .gb-order-pane-box;
-
-    background: @gb-white;
-    color: @gb-foreground;
-    font-size: 12px;
-    font-weight: normal;
-    padding-left: 10px;
-
-    &:hover {
-        cursor: text;
-    }
+    .gb-input-box;
+    color: @gb-shadow-mako;
+    font-size: 1em;
+    font-weight: 500;
 }
 
 .gb-order-pane-share-email {
-    display: block;
-    width: 100%;
+    .gb-box;
+    border: 1px solid @gb-shadow-athens-gray;
+    font-size: 1.11em;
     text-align: center;
-    border: 1px solid @gb-white;
-    border-radius: 3px;
-    padding: 7px 0;
-    transition: background 0.2s;
-
-    &:hover {
-        background: @gb-bright;
-        color: @gb-dark;
-    }
 }

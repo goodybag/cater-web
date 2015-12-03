@@ -1,0 +1,39 @@
+.gb-popover-wrapper {
+    position: relative;
+}
+
+.gb-popover-modal {
+    position: absolute;
+    z-index: 1000;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    border: 1px solid @gb-shadow-cadet-blue;
+    border-radius: 4px;
+    background-color: @gb-white;
+    width: 100%;
+
+    &::before {
+        content: "";
+        .gb-arrow-up(8px, @gb-shadow-cadet-blue, -8px, auto, auto, 23px);
+    }
+
+    &::after {
+        content: "";
+        .gb-arrow-up(7px, @gb-white, -7px, auto, auto, 23px);
+    }
+}
+
+.gb-popover-modal-body {
+    padding: 4px 0;
+    max-height: 300px;
+    overflow: scroll;
+}
+
+.gb-popover-modal-item {
+    display: block;
+    text-align: left;
+    padding: 12px;
+
+    &:hover {
+        background: @gb-shadow-athens-gray;
+    }
+}

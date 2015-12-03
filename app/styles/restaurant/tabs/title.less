@@ -1,69 +1,45 @@
-.gb-restaurant-tabs-tab-title {
-    @media screen and (max-width: 370px) {
-        padding: 12px;
-    }
-}
-
 .gb-restaurant-tab-title {
-    position: relative; // for the arrows
-    display: inline-block;
-    padding: 15px 20px;
-    font-size: 14px;
+    position: relative;
+    line-height: @gb-restaurant-tab-height;
     text-align: center;
+    font-size: 1em;
 
-    &:hover {
-        cursor: pointer;
+    @media screen and (min-width: @gb-breakpoint-mobile) {
+        display: inline-block;
+        padding-left: 22px;
+        padding-right: 22px;
     }
 
     &.active {
-        color: @gb-bold;
         font-weight: 600;
+        @media screen and (max-width: @gb-breakpoint-mobile) {
+            .gb-restaurant-tab-title-content {
+                background: @gb-shadow-athens-gray;
+            }
+        }
     }
+}
 
-    @media screen and (max-width: 480px) {
-        padding: 10px;
+.gb-restaurant-tab-title-content {
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        &:active {
+            background: @gb-shadow-athens-gray;
+        }
     }
-}
-
-.gb-restaurant-tab-arrow-container {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.gb-restaurant-tab-arrow {
-    .gb-small-arrow;
-
-    border-bottom-width: 10px;
-    left: 50%;
-    margin-left: -10px;
-    position: absolute;
-}
-
-.gb-restaurant-tab-arrow-stroke {
-    .gb-restaurant-tab-arrow;
-
-    border-bottom-color: @gb-soft;
-    bottom: 0;
-}
-
-.gb-restaurant-tab-arrow-fill {
-    .gb-restaurant-tab-arrow;
-
-    border-bottom-color: @gb-background;
-    bottom: -2px;
 }
 
 .gb-restaurant-tab-ncount {
-    background: @gb-red;
-    border-radius: @gb-border-radius;
-    color: @gb-white;
+    box-sizing: border-box;
     display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    margin-left: 8px;
-    padding: 0 5px;
-    text-align: center;
+    line-height: 14px;
+    height: 15px;
+    margin-top: -3px;
+    margin-left: 5px;
+    padding: 1px 4px;
+    vertical-align: middle;
+    background: @gb-red;
+    border-radius: 4px;
+    color: @gb-white;
+    font-size: 0.745em;
+    font-weight: 900;
 }

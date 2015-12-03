@@ -1,14 +1,21 @@
 .gb-order-pane-info {
     .gb-order-pane-section;
-
-    border-top: 1px solid @gb-shadow-light;
-    border-bottom: 1px solid @gb-shadow-dark;
+    font-size: 0.965em;
 }
 
 .gb-order-pane-info-line {
-    font-size: 14px;
+    position: relative;
     font-weight: 500;
-    padding: 2px 0;
+    margin-left: 18px;
+    line-height: 1.8;
+}
+
+.gb-order-pane-info-icon {
+    position: absolute;
+    left: -22px;
+    top: 2px;
+    color: @gb-shadow-raven;
+    font-size: 1.24em;
 }
 
 .gb-order-pane-info-location,
@@ -18,23 +25,14 @@
     .gb-order-pane-info-line;
 
     i[class^="icon-"] {
-        color: @gb-gray;
-        font-size: 16px;
-        margin-right: 10px;
+        .gb-order-pane-info-icon;
     }
 }
 
 .gb-order-pane-info-editbutton {
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 600;
+    .gb-link;
     position: absolute;
-    bottom: 15px;
-    right: 25px;
-    color: @gb-blue;
-
-    &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-    }
+    bottom: 0;
+    right: 0;
+    padding: 17px 25px;
 }

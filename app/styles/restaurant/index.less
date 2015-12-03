@@ -1,53 +1,103 @@
+@import "cover";
 @import "tabs/index";
-@import "info";
-@import "reviews";
-@import "past-orders";
-@import "menu";
+@import "menu/index";
+@import "info/index";
+@import "reviews/index";
+@import "past-orders/index";
 
 .gb-restaurant {
     .gb-body;
+
+    @media screen and (max-width: @gb-breakpoint-laptop) {
+        margin-top: @gb-navbar-height-small;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-laptop) {
+        margin-top: @gb-navbar-height-large;
+    }
 }
 
 .gb-restaurant-content {
-    padding: 25px;
     box-sizing: border-box;
-
-    @media screen and (min-width: 1180px) {
-        max-width: 717px;
-        margin: 45px 45px 0 0;
-        border: 1px solid @gb-soft;
-        border-radius: @gb-border-radius;
-    }
-
-    @media screen and (max-width: 1180px) {
-        padding: 40px 30px;
-        font-size: 1em;
-    }
-}
-
-.gb-restaurant-cover {
-    box-sizing: border-box;
-    background-image: url(coverphoto-temp.jpg); // TODO
-    background-size: cover;
-    background-position: center;
-    height: 250px; // TODO
-    padding: 15px 25px;
-    width: 100%;
-    max-width: 1140px;
-
-    &::before { // TL;DR: magic for bottom alignment
-        display: inline-block;
-        content: '';
-        height: 100%;
-        vertical-align: bottom;
-    }
-}
-
-.gb-restaurant-cover-text {
-    color: @gb-white;
-    display: inline-block;
-    font-size: 36px;
+    position: relative;
     font-weight: 500;
-    line-height: 36px;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    @media screen and (max-width: @gb-breakpoint-mobile) {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-laptop) {
+        margin-top: 42px;
+        margin-bottom: 42px;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
+        width: 65%;
+        max-width: 696px;
+    }
 }
+
+.gb-restaurant-content-border {
+    padding: 26px;
+
+    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-laptop) {
+        border: 1px solid @gb-shadow-mischka;
+        border-radius: 4px;
+        box-shadow: 1px 1px 1px @gb-box-shadow-1;
+    }
+}
+
+// @import "tabs/index";
+// @import "info";
+// @import "reviews";
+// @import "past-orders";
+// @import "menu";
+//
+// .gb-restaurant {
+//     .gb-body;
+// }
+//
+// .gb-restaurant-content {
+//     padding: 25px;
+//     box-sizing: border-box;
+//
+//     @media screen and (min-width: 1180px) {
+//         max-width: 717px;
+//         margin: 45px 45px 0 0;
+//         border: 1px solid @gb-soft;
+//         border-radius: @gb-border-radius;
+//     }
+//
+//     @media screen and (max-width: 1180px) {
+//         padding: 40px 30px;
+//         font-size: 1em;
+//     }
+// }
+//
+// .gb-restaurant-cover {
+//     box-sizing: border-box;
+//     background-image: url(/coverphoto-temp.jpg); // TODO
+//     background-size: cover;
+//     background-position: center;
+//     height: 250px; // TODO
+//     padding: 15px 25px;
+//     width: 100%;
+//     max-width: 1140px;
+//
+//     &::before { // TL;DR: magic for bottom alignment
+//         display: inline-block;
+//         content: '';
+//         height: 100%;
+//         vertical-align: bottom;
+//     }
+// }
+//
+// .gb-restaurant-cover-text {
+//     color: @gb-white;
+//     display: inline-block;
+//     font-size: 36px;
+//     font-weight: 500;
+//     line-height: 36px;
+//     text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+// }
