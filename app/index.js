@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
             uaString: userAgent,
             minify: true,
             features: {
-                'Intl.~locale.en': {flags: ['gated']},
+                'Intl.~locale.en': {flags: []},
                 'atob': {flags: ['gated']}
             }
         }).then(polyfills => {
@@ -67,8 +67,8 @@ function renderPage(data, polyfills) {
             <body>
                 <div id="gb-body"/>
 
-                <script dangerouslySetInnerHTML={{__html: script}}/>
                 <script dangerouslySetInnerHTML={{__html: polyfills}}/>
+                <script dangerouslySetInnerHTML={{__html: script}}/>
                 <script src={urlForAsset('bundle.js')}/>
             </body>
         </html>

@@ -1,5 +1,6 @@
 import {Restaurant} from './restaurant';
 import {User} from './user';
+import moment from 'moment-timezone';
 
 export class Order {
     static parse(attrs) {
@@ -13,7 +14,7 @@ export class Order {
             ? new User(attrs.user, {parse: true}) // TODO
             : new User({id: attrs.user_id});
 
-        const datetime = new Date(attrs.datetime);
+        const datetime = new Date(moment.tz(attrs.datetime, attrs.timezone));
 
         return new Order({
             ...attrs,
