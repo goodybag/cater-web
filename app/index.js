@@ -1,67 +1,50 @@
-import React from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
-import {getPolyfillString} from 'polyfill-service';
+import 'intl';
 
-import {urlForAsset} from './asset';
-import * as config from './config';
+import {Config} from './lib/config';
+import {loadPage} from './lib/sroute';
+import {Route} from 'hiroshima';
 import router from './router';
 
-export const app = express();
+Intl.NumberFormat = IntlPolyfill.NumberFormat;
 
-if (config.DEV_MODE) {
+export function makeHandler(options) {
+    const config = new Config(options);
+
+    const app = express();
+
+    // TODO: make this only happen in dev env
     app.use('/assets', express.static(`${__dirname}/../build`));
-}
 
-app.use(function(req, res, next) {
-    const {components} = router.match(req.path, {
-        method: req.method,
-        query: req.query
+    app.use(function(req, res, next) {
+        const {components, params} = router.match(req.path, {
+            method: req.method,
+            query: req.query
+        });
+
+        const route = new Route({
+            href: req.url,
+            path: req.path,
+            params,
+            query: req.query
+        });
+
+        if (components.length === 0) {
+            next();
+        } else {
+            loadPage({
+                req,
+                res,
+                route,
+                config,
+                components
+            }).then(page => {
+                res.send(`<!doctype html>${page.html}`);
+            }).catch(err => {
+                next(err);
+            });
+        }
     });
 
-    if (components.length === 0) {
-        next();
-    } else {
-        const userAgent = req.headers['user-agent'];
-
-        getPolyfillString({
-            uaString: userAgent,
-            minify: true,
-            features: {
-                'Intl.~locale.en': {flags: []},
-                'atob': {flags: ['gated']}
-            }
-        }).then(polyfills => {
-            const markup = renderPage({config}, polyfills);
-
-            res.send(`<!doctype html>${markup}`);
-        }).catch(err => next(err));
-    }
-});
-
-function renderPage(data, polyfills) {
-    const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
-    const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
-
-    const doc = (
-        <html>
-            <head>
-                <title>Goodybag</title>
-                <meta charSet="utf-8"/>
-                <meta httpEquiv="X-UA-Compatible" content="IE=edge, chrome=1"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
-                <link rel="stylesheet" href={urlForAsset('main.css')}/>
-            </head>
-
-            <body>
-                <div id="gb-body"/>
-
-                <script dangerouslySetInnerHTML={{__html: polyfills}}/>
-                <script dangerouslySetInnerHTML={{__html: script}}/>
-                <script src={urlForAsset('bundle.js')}/>
-            </body>
-        </html>
-    );
-
-    return renderToStaticMarkup(doc);
+    return app;
 }

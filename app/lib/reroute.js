@@ -6,11 +6,12 @@ import {render} from 'react-dom';
 import isEqual from 'lodash/lang/isEqual';
 
 import router from '../router';
+import {mocks} from './cmocks';
 import {RouteParams} from './route';
 import {preventDefault, stopPropogation} from './dom';
 import {MainContainerComponent} from '../components/main';
 
-export const sharedInjector = new Injector();
+export const sharedInjector = new Injector(mocks);
 
 export function getContextFromURL(href, currentContext = {}) {
     const {

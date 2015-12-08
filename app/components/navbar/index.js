@@ -3,8 +3,8 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import cx from 'classnames';
-import {urlForAsset} from '../../asset';
 
+import {Config} from '../../lib/config';
 import {CurrentUserStore} from '../../stores/user';
 import {User} from '../../models/user';
 
@@ -13,7 +13,8 @@ import {NavbarOrderMenuComponent} from './menus/order';
 import {NavbarAccountMenuComponent} from './menus/account';
 
 @inject({
-    currentUserStore: CurrentUserStore
+    currentUserStore: CurrentUserStore,
+    config: Config
 }, [
     NavbarRegionMenuComponent,
     NavbarOrderMenuComponent,
@@ -28,7 +29,8 @@ import {NavbarAccountMenuComponent} from './menus/account';
 })
 export class NavbarComponent extends Component {
     static propTypes = {
-        user: PropTypes.instanceOf(User)
+        user: PropTypes.instanceOf(User),
+        config: PropTypes.instanceOf(Config)
     }
 
     state = {
@@ -46,7 +48,7 @@ export class NavbarComponent extends Component {
     }
 
     render() {
-        const {user} = this.props;
+        const {user, config} = this.props;
         const {points, name, region: {name: regionName}} = user;
         const {activeItemName} = this.state;
 
@@ -64,9 +66,9 @@ export class NavbarComponent extends Component {
                     <div className="gb-navbar">
                         <div className="gb-navbar-left">
                             <div className="gb-navbar-logo">
-                                <img className="gb-navbar-logo-large" width={155} height={30} src={urlForAsset('logo-large.svg')}/>
+                                <img className="gb-navbar-logo-large" width={155} height={30} src={config.resolveAssetURL('logo-large.svg')}/>
 
-                                <img className="gb-navbar-logo-small" height={40} src={urlForAsset('logo-small.svg')}/>
+                                <img className="gb-navbar-logo-small" height={40} src={config.resolveAssetURL('logo-small.svg')}/>
                             </div>
                         </div>
 

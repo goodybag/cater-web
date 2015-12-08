@@ -7,6 +7,8 @@ import {UserService} from '../services/user';
 
 @dependencies(UserService)
 export class CurrentUserResolver {
+    static uuid = '629dce40-9dee-11e5-9900-d332f6d2eb61';
+
     constructor(userService) {
         return userService.fetchCurrent();
     }
