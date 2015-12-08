@@ -1,5 +1,6 @@
 import {Model, Collection} from 'backbone';
 import url from 'url';
+import fuzzy from 'fuzzysearch';
 
 import {API_PREFIX} from '../config';
 import {MenuItemCollection} from './menu-item';
@@ -51,6 +52,22 @@ export class Category extends Model {
     hasMenu(menuName) {
         return this.get('menus').indexOf(menuName) !== -1;
     }
+
+    applySearch(text) {
+        const revised = this.clone();
+
+        const revisedItems = revised.get('items').filter(item => {
+            var {name, description} = item.attributes;
+            name = (name || '').toLowerCase();
+            description = (description || '').toLowerCase();
+
+            return fuzzy(text, name || '') || fuzzy(text, description || '');
+        });
+
+        revised.set({items: new MenuItemCollection(revisedItems)});
+
+        return revised;
+    }
 }
 
 export class Menu extends Collection {
@@ -65,7 +82,13 @@ export class Menu extends Collection {
     }
 
     forMenu(menuName) {
-        return this.filter(category => category.hasMenu(menuName));
+        return new Menu(this.filter(category => category.hasMenu(menuName)));
+    }
+
+    applySearch(text) {
+        return this.models
+            .map(category => category.applySearch(text))
+            .filter(category => !category.get('items').isEmpty());
     }
 }
 

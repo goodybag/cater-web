@@ -1,13 +1,13 @@
 import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Route} from 'hiroshima';
 import {Dispatcher} from 'flux';
 
+import {RouteParams} from '../lib/route';
 import {Restaurant} from '../models/restaurant';
 
-@dependencies(Route)
+@dependencies(RouteParams)
 export class RestaurantResolver {
-    constructor({params}) {
+    constructor(params) {
         const restaurant = new Restaurant({id: params.restaurant_id});
 
         return restaurant.fetch().then(() => restaurant);

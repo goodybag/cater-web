@@ -38,21 +38,33 @@
     box-sizing: border-box;
     display: table;
     width: 100%;
-    padding: 17px 13px;
+    padding: 17px 0;
     font-size: 0.95em;
 }
 
 .gb-restaurant-menu-item {
-    display: table-row;
+    padding: 14px 13px;
+    position: relative;
+    border-radius: 4px;
 
-    & > div {
-        padding: 14px 2px;
-        display: table-cell;
-        vertical-align: middle;
+    &.gb-restaurant-menu-item-open {
+        background: @gb-shadow-athens-gray;
+    }
+
+    &:not(.gb-restaurant-menu-item-open):hover {
+        background: @gb-shadow-athens-gray;
+        cursor: pointer;
     }
 }
 
+.gb-restaurant-menu-item-column {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .gb-restaurant-menu-item-title {
+    .gb-restaurant-menu-item-column;
+
     @media screen and (max-width: @gb-breakpoint-mobile) {
         width: 40%;
     }
@@ -73,6 +85,8 @@
 }
 
 .gb-restaurant-menu-item-quantity {
+    .gb-restaurant-menu-item-column;
+
     font-weight: 500;
 
     @media screen and (max-width: @gb-breakpoint-mobile) {
@@ -91,6 +105,8 @@
 }
 
 .gb-restaurant-menu-item-price {
+    .gb-restaurant-menu-item-column;
+
     font-weight: 500;
 
     @media screen and (max-width: @gb-breakpoint-mobile) {
@@ -111,4 +127,52 @@
 .gb-restaurant-menu-item-tags {
     display: inline-block;
     display: none; // until 'Diet Tags' gets implemented
+}
+
+// Item descriptions
+
+.gb-restaurant-menu-item-desc {
+    margin-top: 20px;
+}
+
+@media screen and (min-width: @gb-breakpoint-tablet) {
+    @transition-duration: 100ms;
+    @transition-delay: 500ms;
+
+    .gb-restaurant-menu-item-desc {
+        pointer-events: none;
+        background: @gb-shadow-mirage;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: @gb-white;
+        max-width: 400px;
+        opacity: 0;
+        padding: 15px 20px;
+        position: absolute;
+        top: 25px;
+        transition: visibility 0s linear (@transition-duration + @transition-delay),
+                    opacity @transition-duration linear;
+        visibility: hidden;
+        z-index: 5;
+
+        &:before {
+            // fffffffuuuuuuuuuuuu
+            .gb-arrow-up(10px, @gb-shadow-mirage, -10px, auto, auto, 20px);
+
+            content: ' ';
+        }
+
+        .gb-restaurant-menu-item-text {
+            font-weight: 600;
+        }
+    }
+
+    .gb-restaurant-menu-item:not(.gb-restaurant-menu-item-open):hover {
+        .gb-restaurant-menu-item-desc {
+            visibility: visible;
+            opacity: 1;
+            transition: visibility 0s linear,
+                        opacity @transition-duration @transition-delay linear;
+        }
+    }
 }

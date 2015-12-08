@@ -7,7 +7,8 @@ import {getContextFromURL, renderPage, handleReroute} from './reroute';
 export function load(element) {
     const href = window.location.href;
 
-    const {route, injector, tokens, components} = getContextFromURL(href);
+    const context = getContextFromURL(href);
+    const {route, injector, tokens, components} = context;
 
     injector.get(tokens).then(values => {
         const dependencyCache = injector.dump();
@@ -19,7 +20,7 @@ export function load(element) {
         // don't handle routing client-side for IE 7/8/9
         if ([7, 8, 9].indexOf(document.documentMode) === -1) {
             link(function(event) {
-                handleReroute(event, element);
+                handleReroute(event, element, context);
             });
         }
     }).catch(handleError);

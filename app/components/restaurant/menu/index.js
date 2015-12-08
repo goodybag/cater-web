@@ -13,18 +13,19 @@ import {RestaurantMenuSearchboxComponent} from './searchbox';
     menuStore: MenuStore
 })
 @listeningTo([MenuStore], ({menuStore}) => {
-    return {
-        menu: menuStore.getMenu()
-    };
+    const menu = menuStore.getMenu();
+    const queryText = menuStore.getQueryText();
+    const categories = menu.forMenu('group').applySearch(queryText);
+
+    return {categories};
 })
 class RestaurantMenuCateringComponent extends Component {
     static propTypes = {
-        menu: PropTypes.instanceOf(Menu)
+        categories: PropTypes.array.isRequired
     }
 
     render() {
-        const {menu} = this.props;
-        const categories = menu.forMenu('group');
+        const {categories} = this.props;
 
         return (
             <div className="gb-restaurant-menu-catering">
@@ -47,19 +48,20 @@ class RestaurantMenuCateringComponent extends Component {
     menuStore: MenuStore
 })
 @listeningTo([MenuStore], ({menuStore}) => {
-    return {
-        menu: menuStore.getMenu()
-    };
+    const menu = menuStore.getMenu();
+    const queryText = menuStore.getQueryText();
+    const categories = menu.forMenu('individual').applySearch(queryText);
+
+    return {categories};
 })
 class RestaurantMenuIndividualComponent extends Component {
     static propTypes = {
-        menu: PropTypes.instanceOf(Menu)
+        categories: PropTypes.array.isRequired
     }
 
 
     render() {
-        const {menu} = this.props;
-        const categories = menu.forMenu('individual');
+        const {categories} = this.props;
 
         return (
             <div className="gb-restaurant-menu-individual">
@@ -83,7 +85,8 @@ class RestaurantMenuIndividualComponent extends Component {
 }, [
     RestaurantMenuCateringComponent,
     RestaurantMenuSearchboxComponent,
-    RestaurantMenuTabComponent
+    RestaurantMenuTabComponent,
+    RestaurantMenuCategoryComponent
 ])
 class RestaurantMenuTabsComponent extends Component {
     static propTypes = {

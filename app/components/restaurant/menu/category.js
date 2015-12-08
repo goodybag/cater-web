@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
+import {inject} from 'yokohama';
 
 import {Category} from '../../../models/category';
 import {RestaurantMenuItemComponent} from './item';
 
+@inject({}, [RestaurantMenuItemComponent])
 export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired

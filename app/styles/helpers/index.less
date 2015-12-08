@@ -12,9 +12,6 @@
 
 .gb-box {
     display: block;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
     box-sizing: border-box;
     border-radius: 2px;
     padding: 7px;
@@ -33,14 +30,34 @@
     }
 }
 
-.gb-red-button {
+.gb-button {
     .gb-box;
+
+    align-items: flex-start;
+    border-radius: 2px;
+    display: inline-block;
+    font-size: 0.875em;
+    font-weight: 600;
+    text-align: center;
+}
+
+.gb-button-white {
+    .gb-button;
+
+    background: @gb-white;
+    border: 1px solid @gb-shadow-tide;
+}
+
+.gb-button-red {
+    .gb-button;
+
     text-align: center;
     background-color: @gb-pink;
     border: 1px solid darken(@gb-pink, 10%);
     border-bottom: 2px solid darken(@gb-pink, 10%);
     border-top: none;
     transition: background-color 200ms;
+    color: @gb-white;
 
     &:hover {
         background-color: lighten(@gb-red, 5%);
