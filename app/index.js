@@ -1,14 +1,3 @@
-/**
- * This is only a temporarily hacked-together web
- * server to demonstrate server-side rendering
- * capabilities. This should not be used in the
- * long-term and eventually should become replaced
- * with a more stream-lined routing and
- * target-fetching system.
- */
-
-import './setup';
-
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
