@@ -1,10 +1,12 @@
 import React from 'react';
+import Promise from 'bluebird';
 import url from 'url';
 import {Injector, provide} from 'yokohama';
 import {Route} from 'hiroshima';
 import {render} from 'react-dom';
 import isEqual from 'lodash/lang/isEqual';
 
+import {handleError} from './error';
 import router from '../router';
 import {mocks} from './cmocks';
 import {RouteParams} from './route';
@@ -74,21 +76,31 @@ export function renderPage({route, components, dependencyCache}, element, cb) {
 }
 
 export function handleReroute(event, element, currentContext) {
-    const {href} = event.delegateTarget;
-    const {route, tokens, components, injector} = getContextFromURL(href, currentContext);
+    return Promise.try(() => {
+        const {href} = event.delegateTarget;
+        const {route, tokens, components, injector} = getContextFromURL(href, currentContext);
 
-    // Only handle reroute if the route matches
-    // TODO: check domains in addition to doing this
-    if (components.length !== 0) {
+        // Only handle reroute if the route matches
+        // TODO: check domains in addition to doing this
+        if (components.length !== 0) {
+            preventDefault(event);
+            stopPropogation(event);
+
+            window.history.pushState({}, '', href);
+
+            return injector.get(tokens).then(values => {
+                const dependencyCache = injector.dump();
+
+                return Promise.fromNode(cb => {
+                    renderPage({route, components, dependencyCache}, element, cb);
+                });
+            });
+
+        }
+    }).catch(err => {
+        handleError(err, element);
+    }).finally(() => {
         preventDefault(event);
         stopPropogation(event);
-
-        window.history.pushState({}, '', href);
-
-        injector.get(tokens).then(values => {
-            const dependencyCache = injector.dump();
-
-            renderPage({route, components, dependencyCache}, element);
-        });
-    }
+    });
 }

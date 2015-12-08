@@ -1,6 +1,9 @@
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
 import 'intl';
 
+import {ErrorComponent} from './components/error';
 import {Config} from './lib/config';
 import {loadPage} from './lib/sroute';
 import {Route} from 'hiroshima';
@@ -40,6 +43,12 @@ export function makeHandler(options) {
                 components
             }).then(page => {
                 res.send(`<!doctype html>${page.html}`);
+            }).catch(err => {
+                const markup = renderToStaticMarkup(
+                    <ErrorComponent error={err}/>
+                );
+
+                res.status(500).send(`<!doctype html>${markup}`);
             }).catch(err => {
                 next(err);
             });
