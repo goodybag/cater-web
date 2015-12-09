@@ -5,8 +5,8 @@ import {IncomingMessage} from 'http';
 import {resolve as resolveURL} from 'url';
 import signature from 'cookie-signature';
 
-import {Config} from '../lib/config';
-import {ApiService} from '../lib/api';
+import {Config} from '../config';
+import {ApiService} from '../api';
 
 @provide(ApiService)
 @dependencies(Config, IncomingMessage)

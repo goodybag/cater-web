@@ -2,14 +2,7 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {OrderItemService} from '../services/order-item';
-
-@dependencies(OrderItemService)
-class OrderItemsResolver {
-    constructor(orderItemService) {
-        return orderItemService.fetchAllByOrderId(process.env.GOODYBAG_ORDER_ID);
-    }
-}
+import {OrderItemsResolver} from '../resolvers/order-item';
 
 @dependencies(Dispatcher, OrderItemsResolver)
 export class OrderItemStore extends Store {

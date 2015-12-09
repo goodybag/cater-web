@@ -1,5 +1,5 @@
 import {ParseConfig} from './config';
-import {ClientCurrentUserResolver} from '../mocks/client-user';
+import {ClientCurrentUserResolver} from '../resolvers/mocks/client-user';
 
 export const mocks = [
     ParseConfig,

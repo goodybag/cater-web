@@ -1,9 +1,9 @@
 /** Server-side mocks */
 
-import {ServerUserService} from '../mocks/server-user-service';
-import {ServerApiService} from '../mocks/server-api';
+import {ServerUserResolver} from '../resolvers/mocks/server-user';
+import {ServerApiService} from './mocks/server-api';
 
 export const mocks = [
-    ServerUserService,
+    ServerUserResolver,
     ServerApiService
 ];
