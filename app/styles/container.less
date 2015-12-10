@@ -1,0 +1,22 @@
+#components { #gb-container {
+  .init(
+    @width: 1200px,
+    @horizontal-padding: 12px
+  ){
+    .gb-container {
+      box-sizing: border-box;
+      display: table;
+      width: @width;
+      margin: 0 auto;
+
+      padding-left: @horizontal-padding;
+      padding-right: @horizontal-padding;
+
+      @media screen and ( max-width: @width ){
+        & {
+          width: 100%;
+        }
+      }
+    }
+  }
+}}

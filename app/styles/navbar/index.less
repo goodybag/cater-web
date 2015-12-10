@@ -1,52 +1,175 @@
-@gb-navbar-height-small: 55px;
-@gb-navbar-height-large: 58px;
+@import "./mobile";
 
-@import "logo";
-@import "items";
-@import "menu";
 
-.gb-navbar-height {
-    @media screen and (max-width: @gb-breakpoint-laptop) {
-        min-height: @gb-navbar-height-small;
+//TODO
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  > li {
+    display: inline-block;
+  }
+}
+
+#components { #gb-navbar {
+  .init(
+    @height: 58px,
+    @z-index: 10000,
+    @mobile-factor: 0.75,
+    @background: #fff,
+    @color: initial,
+    @accent-color: rgba( 0, 0, 0, 0.3 ),
+    @breakpoint: 700px,
+    @balancing-offset: 1px,
+    @gb-container-selector: gb-container
+  ){
+    @gb-navbar-height-small: floor( @height * @mobile-factor );
+
+    // Export this mixin allow setting `margin-top` on an
+    // element, so that the navbar isn't on top of content
+    .gb-navbar-provide-offset-margin(){
+      margin-top: @height;
+
+      @media screen and (max-width: @breakpoint) {
+        margin-top: @gb-navbar-height-small;
+      }
     }
 
-    @media screen and (min-width: @gb-breakpoint-laptop) {
-        min-height: @gb-navbar-height-large;
+    .gb-navbar {
+      position: relative;
+      display: table;
+      width: 100%;
+      box-sizing: border-box;
+      color: @color;
+      background: @background;
+      box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.3 )
     }
-}
 
-.gb-navbar-container {
-    .gb-navbar-height;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: @gb-white;
-    z-index: 999; // <-- only 'modal' can top this
-    box-shadow: 0 0 2px @gb-box-shadow-3;
-    border-bottom: solid 1px @gb-shadow-tide;
-}
-
-.gb-navbar {
-    .gb-body;
-    .gb-navbar-height;
-    display: table;
-}
-
-.gb-navbar-left,
-.gb-navbar-right {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.gb-navbar-left {
-    width: 25%;
-}
-
-.gb-navbar-right {
-    width: 75%;
-    text-align: right;
-
-    @media screen and (max-width: @gb-breakpoint-mobile) {
-        display: none;
+    .gb-navbar-collapsed {
+      &:extend(.gb-navbar);
     }
-}
+
+    .gb-navbar-fixed {
+      z-index: @z-index;
+      position: fixed;
+      top: 0;
+      left: 0;
+
+      // Otherwise chrome leaves trails
+      -webkit-backface-visibility: hidden;
+    }
+
+    .gb-navbar-impersonate {
+      &:extend(.gb-navbar);
+      border-top: 5px solid @accent-color;
+    }
+
+    // For now, this isn't working as expected
+    // .gb-navbar-container {
+    //   &:extend( .@{gb-container-selector} );
+    // }
+
+    .gb-navbar-component {
+      box-sizing: border-box;
+      display: table-cell;
+      vertical-align: middle;
+      height: @height;
+    }
+
+    .gb-navbar-logo-component {
+      &:extend(.gb-navbar-component);
+      width: 1%;
+      padding-right: 16px;
+      // Make logo feel more balanced
+      padding-top: 5px;
+    }
+
+    .gb-navbar-log,
+    .gb-navbar-logo-mobile {
+      vertical-align: middle;
+    }
+
+    .gb-navbar-logo-mobile {
+      display: none;
+    }
+
+    .gb-navbar-caption-component {
+      &:extend(.gb-navbar-component);
+
+      font-size: 13px !important;
+
+      .gb-navbar-caption-number {
+        display: inline-block;
+        margin-left: 4px;
+        color: @accent-color;
+      }
+    }
+
+    .gb-navbar-toggle-component {
+      &:extend(.gb-navbar-component);
+      display: none;
+      .gb-navbar-toggle {
+        &:extend(.gb-button-white);
+        &:extend(.gb-button-small);
+      }
+    }
+
+    // TODO: Cleanup this abstraction
+    // Right now, the only thing using it is .nav a
+    // And it's very similar to how components work at
+    // the mobile breakpoint
+    .gb-navbar-sub-component {
+      box-sizing: border-box;
+      display: inline-block;
+      vertical-align: middle;
+      height: @height;
+      line-height: @height;
+      padding: @balancing-offset 16px 0;
+    }
+
+    .gb-navbar-sub-component-wrapper {
+      display: inline-block;
+      margin-top: @balancing-offset;
+      line-height: 0;
+      vertical-align: middle;
+    }
+
+    .gb-navbar-nav-component {
+      &:extend(.gb-navbar-component);
+      text-align: right;
+
+      .nav {
+        display: inline-block;
+      }
+
+      a {
+        &:extend(.gb-navbar-sub-component);
+        text-decoration: none;
+        color: @color;
+        font-size: 14px;
+
+        &:hover {
+          background: fade( @color, 10% );
+        }
+      }
+    }
+
+    .gb-navbar-login-component {
+      &:extend(.gb-navbar-sub-component-wrapper);
+    }
+
+    .gb-navbar-points-component {
+      &:extend(.gb-navbar-component);
+      margin-right: 12px;
+      padding-top: 2px;
+      font-size: 15px !important;
+      color: @accent-color;
+      text-decoration: none;
+    }
+
+    #components > #gb-navbar > .mobile(
+      @breakpoint: @breakpoint
+    , @height: @gb-navbar-height-small
+    );
+  }
+}}

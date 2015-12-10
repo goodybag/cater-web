@@ -3,18 +3,17 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import cx from 'classnames';
+import {urlForAsset} from '../../asset';
 
-import {Config} from '../../lib/config';
 import {CurrentUserStore} from '../../stores/user';
-import {User} from '../../models/user';
+import {CurrentUser} from '../../models/user';
 
 import {NavbarRegionMenuComponent} from './menus/region';
 import {NavbarOrderMenuComponent} from './menus/order';
 import {NavbarAccountMenuComponent} from './menus/account';
 
 @inject({
-    currentUserStore: CurrentUserStore,
-    config: Config
+    currentUserStore: CurrentUserStore
 }, [
     NavbarRegionMenuComponent,
     NavbarOrderMenuComponent,
@@ -29,13 +28,13 @@ import {NavbarAccountMenuComponent} from './menus/account';
 })
 export class NavbarComponent extends Component {
     static propTypes = {
-        user: PropTypes.instanceOf(User),
-        config: PropTypes.instanceOf(Config)
-    };
+        user: PropTypes.instanceOf(CurrentUser)
+    }
 
     state = {
-        activeItemName: null
-    };
+        activeItemName: null,
+        isExpanded: false
+    }
 
     handleItemClick = itemName => {
         const {activeItemName} = this.state;
@@ -45,11 +44,11 @@ export class NavbarComponent extends Component {
         } else {
             this.setState({activeItemName: itemName});
         }
-    };
+    }
 
     render() {
-        const {user, config} = this.props;
-        const {points, name, region: {name: regionName}} = user;
+        const {user} = this.props;
+        const {points, name, region: {name: regionName}} = user.attributes;
         const {activeItemName} = this.state;
 
         const items = {
@@ -61,14 +60,81 @@ export class NavbarComponent extends Component {
         // TODO: make this into an iterating array thingy
 
         return (
+            <div className={cx({
+                'gb-navbar': this.state.isExpanded,
+                'gb-navbar-collapsed': !this.state.isExpanded,
+                'gb-navbar-fixed': true
+            })}>
+                <div className="gb-container">
+                    <div className="gb-navbar-logo-component">
+                        <img
+                            className="gb-navbar-logo-mobile"
+                            src="http://storage.j0.hn/gb-logo-small.svg" />
+                        <img
+                            className="gb-navbar-logo"
+                            src="https://d3bqck8kwfkhx5.cloudfront.net/img/logo.png" />
+                    </div>
+                    <div className="gb-navbar-caption-component">
+                        <span className="gb-navbar-caption-assist"><strong>Let us help you with your order!</strong></span>
+                        <span className="gb-navbar-caption-number">(512) 677-4224</span>
+                    </div>
+                    
+                    <div className="gb-navbar-toggle-component">
+                        <button
+                            className="gb-navbar-toggle"
+                            onClick={this.onToggleClick.bind(this)}
+                        >
+                            <i className="icon-menu" />
+                        </button>
+                    </div>
+
+                    <a className="gb-navbar-points-component" href="/users/me/rewards">1432</a>
+                    <div className="gb-navbar-nav-component">
+                        <ul className="nav">
+                            <li>
+                                <NavbarItemComponent
+                                    title={regionName}
+                                    name="region"
+                                    active={activeItemName === 'region'}
+                                    onClick={this.handleItemClick}
+                                    items={transition(activeItemName === 'region' && items.region)}
+                                />
+                            </li>
+
+                            <li>
+                                <NavbarItemComponent
+                                    title="My Orders"
+                                    name="orders"
+                                    active={activeItemName === 'orders'}
+                                    onClick={this.handleItemClick}
+                                    items={transition(activeItemName === 'orders' && items.orders)}
+                                />
+                            </li>
+
+                            <li>
+                                <NavbarItemComponent
+                                    title={`Hi, ${name}`}
+                                    name="account"
+                                    active={activeItemName === 'account'}
+                                    onClick={this.handleItemClick}
+                                    items={transition(activeItemName === 'account' && items.account)}
+                                />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        );
+
+        return (
             <span>
                 <div className="gb-navbar-container">
                     <div className="gb-navbar">
                         <div className="gb-navbar-left">
                             <div className="gb-navbar-logo">
-                                <img className="gb-navbar-logo-large" width={155} height={30} src={config.resolveAssetURL('logo-large.svg')}/>
+                                <img className="gb-navbar-logo-large" width={155} height={30} src={urlForAsset('logo-large.svg')}/>
 
-                                <img className="gb-navbar-logo-small" height={40} src={config.resolveAssetURL('logo-small.svg')}/>
+                                <img className="gb-navbar-logo-small" height={40} src={urlForAsset('logo-small.svg')}/>
                             </div>
                         </div>
 
@@ -119,6 +185,12 @@ export class NavbarComponent extends Component {
             );
         }
     }
+
+    onToggleClick(e) {
+        this.setState({
+            isExpanded: !this.state.isExpanded
+        });
+    }
 }
 
 class NavbarItemComponent extends Component {
@@ -128,13 +200,13 @@ class NavbarItemComponent extends Component {
         active: PropTypes.bool.isRequired,
         onClick: PropTypes.func.isRequired,
         items: PropTypes.node.isRequired
-    };
+    }
 
     handleClick = () => {
         const {name, onClick} = this.props;
 
         onClick(name);
-    };
+    }
 
     render() {
         const {title, name, active, items} = this.props;
