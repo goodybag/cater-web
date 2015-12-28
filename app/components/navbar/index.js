@@ -51,14 +51,6 @@ export class NavbarComponent extends Component {
         const {points, name, region: {name: regionName}} = user.attributes;
         const {activeItemName} = this.state;
 
-        const items = {
-            region: <NavbarRegionMenuComponent key="region"/>,
-            orders: <NavbarOrderMenuComponent key="orders"/>,
-            account: <NavbarAccountMenuComponent key="account"/>
-        };
-
-        // TODO: make this into an iterating array thingy
-
         return (
             <div className={cx({
                 'gb-navbar': this.state.isExpanded,
@@ -97,8 +89,13 @@ export class NavbarComponent extends Component {
                                     name="region"
                                     active={activeItemName === 'region'}
                                     onClick={this.handleItemClick}
-                                    items={transition(activeItemName === 'region' && items.region)}
-                                />
+                                    staysCollapsed={true}
+                                >
+                                    <NavbarRegionMenuComponent
+                                        key="region"
+                                        active={activeItemName === 'region'}
+                                    />
+                                </NavbarItemComponent>
                             </li>
 
                             <li>
@@ -107,8 +104,12 @@ export class NavbarComponent extends Component {
                                     name="orders"
                                     active={activeItemName === 'orders'}
                                     onClick={this.handleItemClick}
-                                    items={transition(activeItemName === 'orders' && items.orders)}
-                                />
+                                >
+                                    <NavbarOrderMenuComponent
+                                        key="orders"
+                                        active={activeItemName === 'orders'}
+                                    />
+                                </NavbarItemComponent>
                             </li>
 
                             <li>
@@ -117,73 +118,18 @@ export class NavbarComponent extends Component {
                                     name="account"
                                     active={activeItemName === 'account'}
                                     onClick={this.handleItemClick}
-                                    items={transition(activeItemName === 'account' && items.account)}
-                                />
+                                >
+                                    <NavbarAccountMenuComponent
+                                        key="account"
+                                        active={activeItemName === 'account'}
+                                    />
+                                </NavbarItemComponent>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         );
-
-        return (
-            <span>
-                <div className="gb-navbar-container">
-                    <div className="gb-navbar">
-                        <div className="gb-navbar-left">
-                            <div className="gb-navbar-logo">
-                                <img className="gb-navbar-logo-large" width={155} height={30} src={urlForAsset('logo-large.svg')}/>
-
-                                <img className="gb-navbar-logo-small" height={40} src={urlForAsset('logo-small.svg')}/>
-                            </div>
-                        </div>
-
-                        <div className="gb-navbar-right">
-                            <div className="gb-navbar-points">
-                                <div className="gb-navbar-points-text">{points} points</div>
-                            </div>
-
-                            <NavbarItemComponent
-                                title={regionName}
-                                name="region"
-                                active={activeItemName === 'region'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'region' && items.region)}
-                            />
-
-                            <NavbarItemComponent
-                                title="My Orders"
-                                name="orders"
-                                active={activeItemName === 'orders'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'orders' && items.orders)}
-                            />
-
-                            <NavbarItemComponent
-                                title={`Hi, ${name}`}
-                                name="account"
-                                active={activeItemName === 'account'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'account' && items.account)}
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                {transition(items[activeItemName])}
-            </span>
-        );
-
-        function transition(el) {
-            return (
-                <CSSTransitionGroup
-                    transitionName="gb-navbar-menu"
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}>
-                    {el}
-                </CSSTransitionGroup>
-            );
-        }
     }
 
     onToggleClick(e) {
@@ -198,8 +144,7 @@ class NavbarItemComponent extends Component {
         title: PropTypes.node.isRequired,
         name: PropTypes.string.isRequired,
         active: PropTypes.bool.isRequired,
-        onClick: PropTypes.func.isRequired,
-        items: PropTypes.node.isRequired
+        onClick: PropTypes.func.isRequired
     }
 
     handleClick = () => {
@@ -209,13 +154,15 @@ class NavbarItemComponent extends Component {
     }
 
     render() {
-        const {title, name, active, items} = this.props;
-
-        const set = cx(`gb-navbar-item-${name}`, {active});
+        const {title, name, active } = this.props;
 
         return (
-            <div className="gb-navbar-button" onClick={this.handleClick}>
-                <div className={set}>
+            <div className={(cx({
+                'gb-navbar-button': true,
+                'gb-navbar-button-stay-collapsed': this.props.staysCollapsed,
+                'active': active
+            }))} onClick={this.handleClick}>
+                <div className="gb-navbar-item">
                     {title}
 
                     <div className="gb-navbar-item-arrow">
@@ -223,7 +170,7 @@ class NavbarItemComponent extends Component {
                     </div>
                 </div>
 
-                {items}
+                {this.props.children}
             </div>
         );
     }

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import cx from 'classnames';
 
 export class NavbarMenuComponent extends Component {
     static propTypes = {
@@ -28,7 +29,12 @@ export class NavbarMenuLinkComponent extends Component {
         const {href, children} = this.props;
 
         return (
-            <a className="gb-navbar-menu-link" href={href}>
+            <a
+                className={cx({
+                    'gb-navbar-menu-link': true,
+                    'gb-navbar-menu-link-active': this.props.active
+                })}
+                href={href}>
                 {children}
             </a>
         );
