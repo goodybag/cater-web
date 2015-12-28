@@ -78,8 +78,54 @@
           &, & > li, & > li > a {
             display: block;
           }
+
+          > li {
+            margin-top: 12px;
+          }
+
+          .gb-navbar-button {
+            display: block;
+            margin-left: 0;
+            padding: 0;
+            border: none;
+            font-size: 14px;
+          }
+        }
+
+        // Make the button text headers in the mobile menu
+        .gb-navbar-item {
+          border-bottom: solid 1px rgba(0,0,0,0.2);
+          line-height: 22px;
+        }
+
+        .gb-navbar-item-arrow {
+          display: none;
+        }
+
+        .gb-navbar-menu-container {
+          position: static;
+          width: 100%;
+          box-shadow: none;
+          border: none;
+          text-align: right;
+          &:before, &:after {
+            display: none;
+          }
         }
       }
+
+      .gb-navbar-menu {
+        max-height: auto;
+        overflow: auto;
+        padding: 4px 0;
+      }
+
+      .gb-navbar-menu-link {
+        font-size: 12px;
+        text-align: right;
+        padding: 6px 2px;
+        line-height: 20px;
+      }
     }
-  }  
+  }
 }}
