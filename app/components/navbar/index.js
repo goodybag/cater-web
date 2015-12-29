@@ -73,10 +73,9 @@ export class NavbarComponent extends Component {
                     
                     <div className="gb-navbar-toggle-component">
                         <button
-                            className="gb-navbar-toggle"
+                            className="gb-navbar-toggle gb-icon-hamburger"
                             onClick={this.onToggleClick.bind(this)}
                         >
-                            <i className="icon-menu" />
                         </button>
                     </div>
 
