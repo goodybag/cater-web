@@ -26,17 +26,17 @@ export class NavbarRegionMenuComponent extends Component {
 
         // TODO: Render these from a regions list
         return (
-            <NavbarMenuComponent>
-                <NavbarMenuLinkComponent href="/">Austin, TX</NavbarMenuLinkComponent>
+            <select>
+                <option>Austin, TX</option>
 
-                <NavbarMenuLinkComponent href="/">Houston, TX</NavbarMenuLinkComponent>
+                <option>Houston, TX</option>
 
-                <NavbarMenuLinkComponent href="/">Nashville, TN</NavbarMenuLinkComponent>
+                <option>Nashville, TN</option>
 
-                <NavbarMenuLinkComponent href="/">Seattle, WA</NavbarMenuLinkComponent>
+                <option>Seattle, WA</option>
 
-                <NavbarMenuLinkComponent href="/">None</NavbarMenuLinkComponent>
-            </NavbarMenuComponent>
+                <option>None</option>
+            </select>
         );
     }
 }

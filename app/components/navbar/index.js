@@ -83,18 +83,7 @@ export class NavbarComponent extends Component {
                     <div className="gb-navbar-nav-component">
                         <ul className="nav">
                             <li>
-                                <NavbarItemComponent
-                                    title={regionName}
-                                    name="region"
-                                    active={activeItemName === 'region'}
-                                    onClick={this.handleItemClick}
-                                    staysCollapsed={true}
-                                >
-                                    <NavbarRegionMenuComponent
-                                        key="region"
-                                        active={activeItemName === 'region'}
-                                    />
-                                </NavbarItemComponent>
+                                <NavbarRegionMenuComponent />
                             </li>
 
                             <li>
