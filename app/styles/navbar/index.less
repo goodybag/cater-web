@@ -7,6 +7,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+
   > li {
     display: inline-block;
   }
@@ -21,7 +22,6 @@
     @accent-color: rgba( 0, 0, 0, 0.3 ),
     @breakpoint: 700px,
     @balancing-offset: 1px,
-    @gb-container-selector: gb-container
   ){
     @gb-navbar-height-small: floor( @height * @mobile-factor );
     
@@ -63,11 +63,6 @@
       &:extend(.gb-navbar);
       border-top: 5px solid @accent-color;
     }
-    
-    // For now, this isn't working as expected
-    // .gb-navbar-container {
-    //   &:extend( .@{gb-container-selector} );
-    // }
 
     .gb-navbar-component {
       box-sizing: border-box;
@@ -168,7 +163,7 @@
 
     .gb-navbar-points-component {
       &:extend(.gb-navbar-component);
-      margin-right: 12px;
+      padding-right: 12px;
       padding-top: 2px;
       font-size: 15px !important;
       color: @accent-color;
