@@ -61,10 +61,10 @@ export class NavbarComponent extends Component {
                     <div className="gb-navbar-logo-component">
                         <img
                             className="gb-navbar-logo-mobile"
-                            src="http://storage.j0.hn/gb-logo-small.svg" />
+                            src={urlForAsset('logo-small.svg')} />
                         <img
                             className="gb-navbar-logo"
-                            src="https://d3bqck8kwfkhx5.cloudfront.net/img/logo.png" />
+                            src={urlForAsset('logo-large.svg')} />
                     </div>
                     <div className="gb-navbar-caption-component">
                         <span className="gb-navbar-caption-assist"><strong>Let us help you with your order!</strong></span>
@@ -82,9 +82,11 @@ export class NavbarComponent extends Component {
                     <a className="gb-navbar-points-component" href="/users/me/rewards">1432</a>
                     <div className="gb-navbar-nav-component">
                         <ul className="nav">
-                            <li>
-                                <NavbarRegionMenuComponent />
-                            </li>
+                            {user.isAdmin() ? (
+                                <li>
+                                    <NavbarRegionMenuComponent />
+                                </li>
+                            ) : null}
 
                             <li>
                                 <NavbarItemComponent
