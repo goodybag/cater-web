@@ -1,6 +1,11 @@
 export class UpdateUserAction {
-    constructor({user, changes}) {
-        this.user = user;
+    constructor({changes}) {
         this.changes = changes;
+    }
+}
+
+export class UpdateUserRegionAction {
+    constructor(region) {
+        Object.assign(this, region);
     }
 }
