@@ -15,7 +15,7 @@ import {OrderPaneTimeLeftComponent} from './timeleft';
 @inject({
     orderStore: OrderStore,
     orderItemStore: OrderItemStore
-}, [OrderPaneInfoComponent])
+}, [OrderPaneInfoComponent, OrderPaneItemsComponent])
 @listeningTo([OrderStore, OrderItemStore], props => {
     const {orderStore, orderItemStore} = props;
 
@@ -53,10 +53,7 @@ export class OrderPaneComponent extends Component {
 
                 <div className="gb-order-pane-tablet-right">
                     <OrderPaneHeaderComponent title="Order Items">
-                        <OrderPaneItemsComponent
-                            order={order}
-                            orderItems={orderItems}
-                        />
+                        <OrderPaneItemsComponent />
                     </OrderPaneHeaderComponent>
                 </div>
 
