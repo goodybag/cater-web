@@ -1,5 +1,11 @@
 import {chain} from 'lodash';
 
+/**
+ * Helper/logic class for the algorithm behind
+ * searching menu items. It currently uses
+ * `Item#matchSearchTerm` which matches by
+ * fuzzysearch.
+ */
 export class MenuSearchTerm {
     constructor(searchTermText) {
         this.searchTermText = searchTermText;

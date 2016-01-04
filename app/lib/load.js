@@ -4,6 +4,12 @@ import Promise from 'bluebird';
 import {handleError} from './error';
 import {getContextFromURL, renderPage, handleReroute} from './reroute';
 
+/**
+ * The entry point for the client-side application.
+ * This just sets up the inital page (by delegating
+ * to the reroute module) and assigns listeners for
+ * link events.
+ */
 export function load(element) {
     return Promise.try(() => {
         const href = window.location.href;

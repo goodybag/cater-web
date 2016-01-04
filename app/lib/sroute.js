@@ -9,6 +9,11 @@ import {Config} from './config';
 import {Polyfills} from './polyfills';
 import {mocks} from './smocks';
 
+/**
+ * Given appropriate application context,
+ * it mocks the associated dependencies and
+ * loads the entry point for the render.
+ */
 export function loadPage({req, res, config, components, route}) {
     const tokens = components.map(component => component.Dependency);
 
@@ -106,6 +111,10 @@ export function loadPage({req, res, config, components, route}) {
     });
 }
 
+/**
+ * Collects and serializes all serializable
+ * dependencies in the given cache.
+ */
 function serializable(cache) {
     const data = {};
 
@@ -115,6 +124,5 @@ function serializable(cache) {
         }
     });
 
-    debugger;
     return data;
 }
