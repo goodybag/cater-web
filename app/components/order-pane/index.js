@@ -6,7 +6,7 @@ import cxnames from 'classnames';
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
 import {Order} from '../../models/order';
-import {OrderItemCollection} from '../../models/order-item';
+import {OrderItem} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
@@ -27,20 +27,19 @@ import {OrderPaneTimeLeftComponent} from './timeleft';
 export class OrderPaneComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
-        orderItems: PropTypes.instanceOf(OrderItemCollection).isRequired
+        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     }
 
     render() {
         const {order, orderItems} = this.props;
-        const {datetime, timezone} = order.attributes;
-        const infoTitle = order.isNew() ? 'Order Info' : `Order - #${order.id}`;
+        const {datetime, timezone} = order;
 
         return (
             <div className="gb-order-pane">
                 <OrderPaneTimeLeftComponent order={order}/>
 
                 <div className="gb-order-pane-tablet-left">
-                    <OrderPaneHeaderComponent title={infoTitle}>
+                    <OrderPaneHeaderComponent title={`Order - #${order.id}`}>
                         <OrderPaneInfoComponent/>
                     </OrderPaneHeaderComponent>
 

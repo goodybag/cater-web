@@ -4,7 +4,7 @@ import {listeningTo} from 'tokyo';
 
 import {OrderItemStore} from '../../../stores/order-item';
 import {OrderStore} from '../../../stores/order';
-import {OrderItemCollection} from '../../../models/order-item';
+import {OrderItem} from '../../../models/order-item';
 import {Order} from '../../../models/order';
 import {OrderPaneItemComponent} from './item';
 import {OrderPaneCheckoutComponent} from './checkout';
@@ -12,12 +12,12 @@ import {OrderPaneCheckoutComponent} from './checkout';
 export class OrderPaneItemsComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
-        orderItems: PropTypes.instanceOf(OrderItemCollection).isRequired
+        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     }
 
     render() {
         const {order, orderItems} = this.props;
-        const {total} = order.attributes;
+        const {total} = order;
 
         return (
             <div className="gb-order-pane-items">

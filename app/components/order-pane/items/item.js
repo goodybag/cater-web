@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
 
 import {OrderItem} from '../../../models/order-item';
 
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
-        orderItem: OrderItem.propType.isRequired
+        orderItem: PropTypes.instanceOf(OrderItem).isRequired
     }
 
     render() {
         const {orderItem} = this.props;
-        const {name, quantity, price} = orderItem.attributes;
+        const {name, quantity, price} = orderItem;
 
         return (
             <div className="gb-order-pane-item">

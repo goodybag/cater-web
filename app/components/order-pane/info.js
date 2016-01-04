@@ -79,8 +79,7 @@ export class OrderPaneInfoShowComponent extends Component {
 
     render() {
         const {order, onStartEditing: startEditing} = this.props;
-        const {guests} = order.attributes;
-        const datetime = order.getDatetimeMoment();
+        const {guests, datetime} = order;
         const address = order.displayAddress();
 
         return (

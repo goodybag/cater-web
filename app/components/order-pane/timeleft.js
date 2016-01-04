@@ -13,9 +13,9 @@ export class OrderPaneTimeLeftComponent extends Component {
 
     render() {
         const {order} = this.props;
-        const {timezone, datetime} = order.attributes;
+        const {timezone, datetime} = order;
         const now = moment().tz(timezone);
-        const then = order.getDatetimeMoment();
+        const then = moment(datetime).tz(timezone);
         const time = moment.duration(now - then);
 
         const set = cx('gb-order-pane-timeleft', {

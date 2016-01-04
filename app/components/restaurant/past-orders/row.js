@@ -48,7 +48,7 @@ export class RestaurantOrdersRowComponent extends Component {
                         3/12/15
                     </div>
                     <div className="gb-restaurant-orders-col-time">
-                        <FormattedTime value={tzdatetime} format="hhmma"/>
+                        <FormattedTime value={datetime} format="hhmma"/>
                     </div>
                     <div className="gb-restaurant-orders-col-total">
                         <FormattedNumber

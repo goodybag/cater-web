@@ -10,13 +10,13 @@ export class OrderPaneInfoEditComponent extends Component {
 
     componentWillMount() {
         const {order} = this.props;
-        const {guests, datetime} = order.attributes;
+        const {guests, datetime} = order;
         const address = order.displayAddress();
 
         this.setState({changes: {address, guests, datetime}});
     }
 
-    saveInfo = () => {
+    handleSaveInfo = () => {
         const {onSaveInfo: saveInfo} = this.props;
         const {address, guests, datetime} = this.state;
 
@@ -106,7 +106,7 @@ export class OrderPaneInfoEditComponent extends Component {
                     </div>
                 </div>
 
-                <div className="gb-order-pane-info-edit-save" onClick={this.saveInfo}>
+                <div className="gb-order-pane-info-edit-save" onClick={this.handleSaveInfo}>
                     Save Order Info
                 </div>
             </div>

@@ -22,7 +22,7 @@ export class RestaurantCoverComponent extends Component {
 
     render() {
         const {restaurant} = this.props;
-        const {name} = restaurant.attributes;
+        const {name} = restaurant;
 
         return (
             <div className="gb-restaurant-cover">

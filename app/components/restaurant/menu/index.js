@@ -1,10 +1,13 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component, PropTypes, cloneElement} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {router, Route} from 'hiroshima';
+import {bind} from 'lodash-decorators';
+import {MenuSearchTerm} from '../../../lib/menu-search';
 
 import {MenuStore} from '../../../stores/menu';
-import {Menu} from '../../../models/category';
+import {Category} from '../../../models/category';
+import {MenuItem} from '../../../models/menu-item';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
 import {RestaurantMenuSearchboxComponent} from './searchbox';
@@ -12,31 +15,33 @@ import {RestaurantMenuSearchboxComponent} from './searchbox';
 @inject({
     menuStore: MenuStore
 })
-@listeningTo([MenuStore], ({menuStore}) => {
-    const menu = menuStore.getMenu();
-    const queryText = menuStore.getQueryText();
-    const categories = menu.forMenu('group').applySearch(queryText);
+@listeningTo([MenuStore], ({menuStore, searchTerm}) => {
+    const categories = menuStore.getCategories();
+    const items = menuStore.getItems();
 
-    return {categories};
+    return {
+        menu: searchTerm.groupMenu(categories, items, 'group')
+    };
 })
 class RestaurantMenuCateringComponent extends Component {
     static propTypes = {
-        categories: PropTypes.array.isRequired
+        menu: PropTypes.array.isRequired
     }
 
     render() {
-        const {categories} = this.props;
+        const {menu} = this.props;
 
         return (
             <div className="gb-restaurant-menu-catering">
-                {categories.map(renderCategory)}
+                {menu.map(renderSection)}
             </div>
         );
 
-        function renderCategory(category) {
+        function renderSection({category, items}) {
             return (
                 <RestaurantMenuCategoryComponent
                     category={category}
+                    items={items}
                     key={category.id}
                 />
             );
@@ -47,32 +52,33 @@ class RestaurantMenuCateringComponent extends Component {
 @inject({
     menuStore: MenuStore
 })
-@listeningTo([MenuStore], ({menuStore}) => {
-    const menu = menuStore.getMenu();
-    const queryText = menuStore.getQueryText();
-    const categories = menu.forMenu('individual').applySearch(queryText);
+@listeningTo([MenuStore], ({menuStore, searchTerm}) => {
+    const categories = menuStore.getCategories();
+    const items = menuStore.getItems();
 
-    return {categories};
+    return {
+        menu: searchTerm.groupMenu(categories, items, 'individual')
+    };
 })
 class RestaurantMenuIndividualComponent extends Component {
     static propTypes = {
-        categories: PropTypes.array.isRequired
+        menu: PropTypes.array.isRequired
     }
 
-
     render() {
-        const {categories} = this.props;
+        const {menu} = this.props;
 
         return (
             <div className="gb-restaurant-menu-individual">
-                {categories.map(renderCategory)}
+                {menu.map(renderSection)}
             </div>
         );
 
-        function renderCategory(category) {
+        function renderSection({category, items}) {
             return (
                 <RestaurantMenuCategoryComponent
                     category={category}
+                    items={items}
                     key={category.id}
                 />
             );
@@ -126,19 +132,34 @@ class RestaurantMenuTabsComponent extends Component {
 ])
 export class RestaurantMenuComponent extends Component {
     static propTypes = {
-        children: PropTypes.node.isRequired
+        children: PropTypes.element.isRequired
+    }
+
+    state = {searchTerm: new MenuSearchTerm('')}
+
+    @bind()
+    handleSearchTermChange(text) {
+        this.setState({
+            searchTerm: new MenuSearchTerm(text)
+        });
     }
 
     render() {
         const {children} = this.props;
+        const {searchTerm} = this.state;
+
+        const child = cloneElement(children, {searchTerm});
 
         return (
             <div className="gb-restaurant-menu">
-                <RestaurantMenuSearchboxComponent/>
+                <RestaurantMenuSearchboxComponent
+                    searchTerm={searchTerm}
+                    onSearchTermChange={this.handleSearchTermChange}
+                />
 
                 <RestaurantMenuTabsComponent/>
 
-                {children}
+                {child}
             </div>
         );
     }

@@ -1,58 +1,45 @@
-import PropTypes from 'react/lib/ReactPropTypes';
-import {Model} from 'backbone';
-import url from 'url';
+import {Region} from './region';
 
-import {API_PREFIX} from '../config';
+export class User {
+    static parse(attrs) {
+        const created_at = new Date(attrs.created_at);
 
-export class User extends Model {
-    static schema = {
-        type: 'object',
-        required: ['email', 'name', 'groups', 'points'],
-        properties: {
-            id: {
-                type: 'integer',
-                minimum: 1
-            },
+        const region = attrs.region
+            ? Region.parse(attrs.region)
+            : new Region({id: attrs.region_id});
 
-            email: {
-                type: 'string',
-                maxLength: 250
-            },
-
-            name: {
-                type: 'string'
-            },
-
-            points: {
-                type: 'integer',
-                minimum: 0
-            },
-
-            groups: {
-                type: 'array'
-            }
-        }
-    }
-
-    static propType = PropTypes.instanceOf(User)
-
-    validate(attrs) {
-        if (!this.validator.validate(attrs, User.schema)) {
-            return this.validator.getLastError();
-        }
-    }
-
-    isAdmin() {
-        return this.get('groups').some(function(groupObj) {
-            return groupObj.group === 'admin';
+        return new User({
+            ...attrs,
+            created_at,
+            region
         });
     }
 
-    urlRoot = url.resolve(API_PREFIX, 'users');
-}
+    constructor(attrs) {
+        const {
+            id = null,
+            created_at = null,
+            email = null,
+            organization = null,
+            name = null,
+            points = null,
+            region = null,
+            groups = null
+        } = attrs;
 
-export class CurrentUser extends User {
-    url() {
-        return `${this.urlRoot}/me`;
+        this.id = id;
+        this.created_at = created_at;
+        this.email = email;
+        this.organization = organization;
+        this.name = name;
+        this.points = points;
+        this.region = region;
+        this.groups = groups;
+    }
+
+    isAdmin() {
+        return this.groups.some(function(groupObj) {
+            return groupObj.group === 'admin';
+        });
     }
 }

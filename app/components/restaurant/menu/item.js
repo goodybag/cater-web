@@ -40,7 +40,7 @@ export class RestaurantMenuItemComponent extends Component {
             min_qty,
             price,
             description
-        } = item.attributes;
+        } = item;
 
         const itemMenu = (
             <RestaurantMenuItemMenuWrapperComponent
@@ -99,7 +99,7 @@ export class RestaurantMenuItemComponent extends Component {
 
     renderQuantity() {
         const {item} = this.props;
-        const {min_qty, feeds_min, feeds_max} = item.attributes;
+        const {min_qty, feeds_min, feeds_max} = item;
 
         if (min_qty !== 0) {
             return `Min. ${min_qty}`;

@@ -2,44 +2,22 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {RouteParams} from '../lib/route';
-import {UpdateMenuSearchAction} from '../actions/menu';
-import {Menu} from '../models/category';
+import {MenuItemsResolver, CategoriesResolver} from '../resolvers/menu';
 
-@dependencies(RouteParams)
-export class MenuResolver {
-    constructor(params) {
-        const menu = new Menu(null, {
-            restaurant_id: params.restaurant_id
-        });
-
-        return menu.fetch().then(() => menu);
-    }
-}
-
-@dependencies(Dispatcher, MenuResolver)
+@dependencies(Dispatcher, MenuItemsResolver, CategoriesResolver)
 export class MenuStore extends Store {
-    constructor(dispatcher, menu) {
+    constructor(dispatcher, items, categories) {
         super(dispatcher);
 
-        this.queryText = '';
-
-        this.menu = menu;
-        this.menu.on('change', () => this.emit('change'));
-
-        this.bind(UpdateMenuSearchAction, this.updateMenuSearch);
+        this.items = items;
+        this.categories = categories;
     }
 
-    updateMenuSearch({queryText}) {
-        this.queryText = queryText.toLowerCase();
-        this.emit('change');
+    getItems() {
+        return this.items;
     }
 
-    getQueryText() {
-        return this.queryText;
-    }
-
-    getMenu() {
-        return this.menu;
+    getCategories() {
+        return this.categories;
     }
 }

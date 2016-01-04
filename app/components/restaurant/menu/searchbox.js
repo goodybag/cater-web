@@ -1,45 +1,30 @@
 import React, {Component, PropTypes} from 'react';
-import {inject} from 'yokohama';
 import {bind, debounce} from 'lodash-decorators';
-import {listeningTo} from 'tokyo';
-import {dependencies} from 'yokohama';
-import {Dispatcher} from 'flux';
 
-import {UpdateMenuSearchAction} from '../../../actions/menu';
+import {MenuSearchTerm} from '../../../lib/menu-search';
 
-@inject({
-    dispatcher: Dispatcher
-})
 export class RestaurantMenuSearchboxComponent extends Component {
     static propTypes = {
-        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired
-    }
-
-    state = {queryText: ''}
-
-    @debounce(1000)
-    runSearch(text) {
-        const {dispatcher} = this.props;
-
-        dispatcher.dispatch(new UpdateMenuSearchAction(text));
+        searchTerm: PropTypes.instanceOf(MenuSearchTerm).isRequired,
+        onSearchTermChange: PropTypes.func.isRequired
     }
 
     @bind()
     handleChange(event) {
-        const {value: queryText} = event.target;
+        const {onSearchTermChange} = this.props;
+        const {value: text} = event.target;
 
-        this.setState({queryText});
-
-        this.runSearch(queryText);
+        onSearchTermChange(text);
     }
 
     render() {
-        const {queryText} = this.state;
+        const {searchTerm} = this.props;
+        const {searchTermText} = searchTerm;
 
         return (
             <div className="gb-restaurant-menu-searchbox">
                 <input
-                    value={queryText}
+                    value={searchTermText}
                     placeholder="Search menu"
                     type="text"
                     onChange={this.handleChange}

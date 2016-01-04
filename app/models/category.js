@@ -1,96 +1,43 @@
-import {Model, Collection} from 'backbone';
-import url from 'url';
-import fuzzy from 'fuzzysearch';
+import {MenuItem} from './menu-item';
+import {Restaurant} from './restaurant';
 
-import {API_PREFIX} from '../config';
-import {MenuItemCollection} from './menu-item';
+export class Category {
+    static parse(attrs) {
+        const created_at = new Date(attrs.created_at);
 
-export class Category extends Model {
-    static schema = {
-        type: 'object',
-        required: ['order', 'name', 'menus'],
-        properties: {
-            order: {
-                type: 'string',
-                minimum: 0
-            },
+        const restaurant = attrs.restaurant
+            ? Restaurant.parse(attrs.restaurant)
+            : new Restaurant({id: attrs.restaurant_id});
 
-            name: {
-                type: 'string'
-            },
-
-            description: {
-                type: ['string', null]
-            },
-
-            menus: { // meaning what 'menus' the category belongs in
-                type: 'array',
-                uniqueItems: true,
-                maxLength: 2,
-                minLength: 1,
-                items: {
-                    type: 'string',
-                    pattern: /^(?:group|individual)$/i
-                }
-            }
-        }
+        return new Category({
+            ...attrs,
+            created_at,
+            restaurant
+        });
     }
 
-    parse(attrs) {
-        attrs.items = new MenuItemCollection(attrs.items, {parse: true});
+    constructor(attrs) {
+        const {
+            id = null,
+            created_at = null,
+            restaurant = null,
+            name = null,
+            description = null,
+            order = null,
+            menus = null
+        } = attrs;
 
-        return attrs;
-    }
-
-    validate(attrs) {
-        if (!this.validator.validate(attrs, Category.schema)) {
-            return this.validator.getLastError();
-        }
+        this.id = id;
+        this.created_at = created_at;
+        this.restaurant = restaurant;
+        this.name = name;
+        this.description = description;
+        this.order = order;
+        this.menus = menus;
     }
 
     // these are horrible names
     hasMenu(menuName) {
-        return this.get('menus').indexOf(menuName) !== -1;
-    }
-
-    applySearch(text) {
-        const revised = this.clone();
-
-        const revisedItems = revised.get('items').filter(item => {
-            var {name, description} = item.attributes;
-            name = (name || '').toLowerCase();
-            description = (description || '').toLowerCase();
-
-            return fuzzy(text, name || '') || fuzzy(text, description || '');
-        });
-
-        revised.set({items: new MenuItemCollection(revisedItems)});
-
-        return revised;
+        return this.menus.indexOf(menuName) !== -1;
     }
 }
-
-export class Menu extends Collection {
-    constructor(models, options) {
-        super(models, options);
-
-        this.restaurant_id = options && options.restaurant_id;
-    }
-
-    url() {
-        return url.resolve(API_PREFIX, `restaurants/${this.restaurant_id}/menu`);
-    }
-
-    forMenu(menuName) {
-        return new Menu(this.filter(category => category.hasMenu(menuName)));
-    }
-
-    applySearch(text) {
-        return this.models
-            .map(category => category.applySearch(text))
-            .filter(category => !category.get('items').isEmpty());
-    }
-}
-
-Menu.prototype.model = Category;
-Menu.prototype.comparator = 'order';
