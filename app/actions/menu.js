@@ -5,4 +5,9 @@ export class UpdateMenuSearchAction {
 }
 
 // This will eventually include all those options and stuffs
-export class AddItemToOrderAction {}
+export class AddItemToOrderAction {
+  constructor({order, orderItemData}) {
+    this.order = order;
+    this.orderItemData = orderItemData;
+  }
+}
