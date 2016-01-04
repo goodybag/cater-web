@@ -37,4 +37,16 @@ export class ApiService {
                 .withCredentials();
         }).then(res => res.body);
     }
+
+    update(path, data) {
+        const url = this.config.resolveResourceURL(path);
+
+        return Promise.try(() => {
+            return request
+                .put(url)
+                .send(data)
+                .accept('json')
+                .withCredentials();
+        }).then(res => res.body);
+    }
 }
