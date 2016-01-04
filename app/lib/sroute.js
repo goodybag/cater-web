@@ -5,9 +5,10 @@ import {Injector, dependencies, provide} from 'yokohama';
 import {IncomingMessage, ServerResponse} from 'http';
 
 import {MainContainerComponent} from '../components/main';
+import {DependencySerializer} from './serializer';
 import {Config} from './config';
 import {Polyfills} from './polyfills';
-import {mocks} from './smocks';
+import {mocks} from '../smocks';
 
 /**
  * Given appropriate application context,
@@ -45,30 +46,38 @@ export function loadPage({req, res, config, components, route}) {
         }
     }
 
+    @dependencies(Config, Injector)
+    class ComponentDependencies {
+        constructor(config, injector) {
+            if (config.serverRendering) {
+                return injector.get(tokens);
+            }
+        }
+    }
+
     @dependencies({
         injector: Injector,
-        polyfills: Polyfills
-    }, tokens)
+        polyfills: Polyfills,
+        serializer: DependencySerializer,
+        config: Config
+    }, ComponentDependencies)
     class EntryPoint {
-        constructor({injector, polyfills}) {
+        constructor({injector, polyfills, serializer, config}) {
             this.injector = injector;
             this.polyfills = polyfills;
+            this.serializer = serializer;
+            this.config = config;
         }
 
         render() {
             const cache = this.injector.dump();
 
-            const markup = renderToString(
-                <MainContainerComponent
-                    components={components}
-                    dependencyCache={cache}
-                />
-            );
-
-            const data = serializable(cache);
+            const data = this.serializer.serializeCache(cache);
 
             const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
             const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
+
+            const markup = this.getMainMarkup(cache);
 
             const doc = (
                 <html>
@@ -96,6 +105,19 @@ export function loadPage({req, res, config, components, route}) {
                 html: renderToStaticMarkup(doc)
             };
         }
+
+        getMainMarkup(cache) {
+            if (this.config.serverRendering) {
+                return renderToString(
+                    <MainContainerComponent
+                        components={components}
+                        dependencyCache={cache}
+                    />
+                );
+            } else {
+                return '';
+            }
+        }
     }
 
     const injector = new Injector([
@@ -106,23 +128,5 @@ export function loadPage({req, res, config, components, route}) {
         ...mocks
     ]);
 
-    return injector.get(EntryPoint).then(entry => {
-        return entry.render();
-    });
-}
-
-/**
- * Collects and serializes all serializable
- * dependencies in the given cache.
- */
-function serializable(cache) {
-    const data = {};
-
-    cache.forEach((inst, token) => {
-        if (inst && inst.constructor && typeof inst.constructor.parse === 'function') {
-            data[token.uuid || token.name] = inst;
-        }
-    });
-
-    return data;
+    return injector.get(EntryPoint).then(entry => entry.render());
 }

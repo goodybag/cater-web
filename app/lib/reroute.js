@@ -6,6 +6,7 @@ import {Route} from 'hiroshima';
 import {render} from 'react-dom';
 import isEqual from 'lodash/lang/isEqual';
 
+import {generateParsingMocks} from './parser';
 import {handleError} from './error';
 import router from '../router';
 import {mocks} from '../cmocks';
@@ -13,7 +14,7 @@ import {RouteParams} from './route';
 import {preventDefault, stopPropogation} from './dom';
 import {MainContainerComponent} from '../components/main';
 
-export const sharedInjector = new Injector(mocks);
+export const sharedInjector = generateInitialInjector();
 
 /**
  * @typedef {} AppContext
@@ -135,4 +136,11 @@ export function handleReroute(event, element, currentContext) {
         preventDefault(event);
         stopPropogation(event);
     });
+}
+
+function generateInitialInjector() {
+    return new Injector([
+        ...mocks,
+        ...generateParsingMocks(__GBDATA__.config)
+    ]);
 }
