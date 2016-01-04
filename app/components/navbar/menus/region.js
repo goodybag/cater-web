@@ -4,7 +4,7 @@ import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {User} from '../../../models/user';
-import {UpdateUserAction} from '../../../actions/user';
+import {UpdateUserRegionAction} from '../../../actions/user';
 import {CurrentUserStore} from '../../../stores/user';
 import {NavbarMenuComponent, NavbarMenuLinkComponent} from '../menu';
 
@@ -14,7 +14,7 @@ const regions = [
     { id: 3, name: 'Houston, TX' },
     { id: 4, name: 'Seattle, WA' },
     { id: 5, name: 'Nashville, TN' }
-]
+];
 
 @inject({
     dispatcher: Dispatcher,
@@ -33,14 +33,11 @@ export class NavbarRegionMenuComponent extends Component {
 
     render() {
         const {user} = this.props;
-        const {region: {name: regionName}} = user;
-        const cityNames = ["Austin, TX", "Houston, TX", "Nashville, TN", "Seattle, WA", "None"];
 
         // TODO: Render these from a regions list
         return (
             <select
-                value={user.get('region_id')}
-                defaultValue={1}
+                value={user.region.id}
                 onChange={this.onRegionChange.bind(this)}
             >
                 {regions.map((region) => {
@@ -56,6 +53,10 @@ export class NavbarRegionMenuComponent extends Component {
     }
 
     onRegionChange(e) {
-        this.dispatcher.dispatch
+        var action = new UpdateUserRegionAction(
+            regions.filter(region => region.id == e.target.value)[0]
+        );
+
+        this.props.dispatcher.dispatch(action);
     }
 }
