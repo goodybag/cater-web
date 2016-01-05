@@ -1,10 +1,12 @@
 import {dependencies} from 'yokohama';
 
-import {OrderService} from '../services/order';
+import {OrderService} from '../services/order'
+import {RouteParams} from '../lib/route';
+import {Order} from '../models/order';
 
-@dependencies(OrderService)
+@dependencies(OrderService, RouteParams)
 export class OrderResolver {
-    constructor(orderService) {
-        return orderService.fetchById(process.env.GOODYBAG_ORDER_ID);
+    constructor(orderService, params) {
+        return orderService.fetchCurrentByRestaurantId(params.restaurant_id);
     }
 }

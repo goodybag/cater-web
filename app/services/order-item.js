@@ -13,4 +13,10 @@ export class OrderItemService {
         return this.apiService.fetchEndpoint(`orders/${id}/items`)
             .then(items => items.map(OrderItem.parse));
     }
+
+    fetchAllForCurrentOrderByRestaurantId(restaurantId) {
+        return this.apiService.fetchEndpoint(`restaurants/${restaurantId}/orders/current/items`)
+            .then(items => items.map(OrderItem.parse))
+            .catch(err => console.log(err));
+    }
 }
