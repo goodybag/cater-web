@@ -2,7 +2,6 @@ import React, {Component, PropTypes, cloneElement} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {router, Route} from 'hiroshima';
-import {bind} from 'lodash-decorators';
 import {MenuSearchTerm} from '../../../lib/menu-search';
 
 import {MenuStore} from '../../../stores/menu';
@@ -137,8 +136,7 @@ export class RestaurantMenuComponent extends Component {
 
     state = {searchTerm: new MenuSearchTerm('')};
 
-    @bind()
-    handleSearchTermChange(text) {
+    handleSearchTermChange = (text) => {
         this.setState({
             searchTerm: new MenuSearchTerm(text)
         });

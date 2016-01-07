@@ -1,5 +1,4 @@
 import {provide} from 'yokohama';
-import {memoize} from 'lodash-decorators';
 import {resolve as resolveURL} from 'url';
 
 /**
@@ -27,13 +26,11 @@ export class Config {
         this.serverRendering = serverRendering;
     }
 
-    @memoize()
     resolveAssetURL(assetName) {
         return resolveURL(this.cdnPrefix,
                           this.manifest[assetName] || assetName);
     }
 
-    @memoize()
     resolveResourceURL(resourcePath) {
         return resolveURL(this.apiPrefix, resourcePath);
     }

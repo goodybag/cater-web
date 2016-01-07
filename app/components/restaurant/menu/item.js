@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {bind} from 'lodash-decorators';
 import TransitionGroup from 'react-addons-transition-group';
 import cx from 'classnames';
 import {inject} from 'yokohama';
@@ -21,13 +20,11 @@ export class RestaurantMenuItemComponent extends Component {
         open: false
     };
 
-    @bind()
-    handleOpen() {
+    handleOpen = () => {
         this.setState({open: true});
     }
 
-    @bind()
-    handleClose() {
+    handleClose = () => {
         this.setState({open: false});
     }
 

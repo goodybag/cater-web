@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
-import {bind} from 'lodash-decorators';
 import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {listeningTo} from 'tokyo';
@@ -18,8 +17,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
         onClose: PropTypes.func.isRequired
     };
 
-    @bind()
-    handleAddClick() {
+    handleAddClick = () => {
         const {dispatcher, item} = this.props;
 
         dispatcher.dispatch(new AddItemToOrderAction(item));
