@@ -5,7 +5,6 @@
 @import "items";
 
 .gb-order-pane {
-
     @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
         position: relative;
         z-index: 400;
@@ -13,6 +12,10 @@
         width: 33%;
         max-width: 370px;
         margin-top: @gb-restaurant-tab-height;
+    }
+
+    @media screen and (min-width: @gb-breakpoint-laptop) {
+        height: 100vh;
     }
 }
 

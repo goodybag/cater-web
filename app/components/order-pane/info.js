@@ -45,7 +45,8 @@ export class OrderPaneInfoComponent extends Component {
         const {order} = this.props;
         const {editing} = this.state;
 
-        if (editing) {
+        // if id is null, then order hasn't been saved
+        if (editing || order.id == null) {
             return (
                 <OrderPaneInfoEditComponent
                     order={order}
