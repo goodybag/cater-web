@@ -7,7 +7,7 @@ export class RestaurantMenuSearchboxComponent extends Component {
     static propTypes = {
         searchTerm: PropTypes.instanceOf(MenuSearchTerm).isRequired,
         onSearchTermChange: PropTypes.func.isRequired
-    }
+    };
 
     @bind()
     handleChange(event) {

@@ -16,7 +16,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
         item: PropTypes.instanceOf(MenuItem).isRequired,
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
         onClose: PropTypes.func.isRequired
-    }
+    };
 
     @bind()
     handleAddClick() {

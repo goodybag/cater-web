@@ -5,18 +5,18 @@ export class RestaurantOrdersAlertComponent extends Component {
         message: React.PropTypes.string.isRequired,
         initAlertState: React.PropTypes.bool.isRequired,
         signalAlertClose: React.PropTypes.func.isRequired
-    }
+    };
 
     state = {
         alertOpen: this.props.initAlertState
-    }
+    };
 
     onLinkClicked = () => {
         this.setState({
             alertOpen: false
         });
         this.props.signalAlertClose();
-    }
+    };
 
     render() {
         const {message} = this.props;

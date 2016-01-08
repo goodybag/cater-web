@@ -6,7 +6,7 @@ export class OrderPaneInfoEditComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
         onSaveInfo: PropTypes.func.isRequired
-    }
+    };
 
     componentWillMount() {
         const {order} = this.props;
@@ -21,25 +21,25 @@ export class OrderPaneInfoEditComponent extends Component {
         const {address, guests, datetime} = this.state;
 
         saveInfo({address, guests, datetime});
-    }
+    };
 
     handleAddressChange = (event) => {
         const {target: {value}} = event;
 
         this.setState({address: value});
-    }
+    };
 
     handleTimeChange = (event) => {
         const {target: {value}} = event;
 
         this.setState({datetime: value});
-    }
+    };
 
     handleGuestsChange = (event) => {
         const {target: {value}} = event;
 
         this.setState({guests: value});
-    }
+    };
 
     render() {
         const {address, guests, datetime} = this.state;

@@ -21,7 +21,7 @@ import {RestaurantReviewComponent} from './review';
 export class RestaurantReviewsComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant)
-    }
+    };
 
     render() {
         const {restaurant} = this.props;

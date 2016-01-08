@@ -13,18 +13,18 @@ export class RestaurantOrdersRowComponent extends Component {
         total: React.PropTypes.number.isRequired,
         initAlertState: React.PropTypes.bool.isRequired,
         signalAlertOpen: React.PropTypes.func.isRequired
-    }
+    };
 
     state = {
         alertOpen: this.props.initAlertState
-    }
+    };
 
     onLinkClicked = (action) => {
         this.setState({
             alertOpen: true
         });
         this.props.signalAlertOpen(action);
-    }
+    };
 
     render() {
         const {status, datetime, timezone, total} = this.props;

@@ -10,7 +10,7 @@ export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired,
         items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired
-    }
+    };
 
     render() {
         const {category, items} = this.props;

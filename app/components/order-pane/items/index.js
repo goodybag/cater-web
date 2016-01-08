@@ -13,7 +13,7 @@ export class OrderPaneItemsComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
-    }
+    };
 
     render() {
         const {order, orderItems} = this.props;

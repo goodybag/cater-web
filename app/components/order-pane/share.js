@@ -7,7 +7,7 @@ import {Order} from '../../models/order';
 export class OrderPaneShareComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired
-    }
+    };
 
     handleClick = () => {
         const {gbOrderPaneShareLinkbox} = this.refs;
@@ -16,7 +16,7 @@ export class OrderPaneShareComponent extends Component {
         // TODO: look into this
         node.focus();
         node.setSelectionRange(0, node.value.length);
-    }
+    };
 
     render() {
         const token = '14e4eeba-4509-11e5-ae0b-a8a54c5cf93c';

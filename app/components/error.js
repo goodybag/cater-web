@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react';
 export class ErrorComponent extends Component {
     static propTypes = {
         error: PropTypes.object
-    }
+    };
 
     render() {
         const {error} = this.props;

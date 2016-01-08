@@ -15,11 +15,11 @@ import {
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired
-    }
+    };
 
     state = {
         open: false
-    }
+    };
 
     @bind()
     handleOpen() {

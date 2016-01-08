@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export class PriceComponent extends Component {
     static propTypes = {
         price: React.PropTypes.number.isRequired
-    }
+    };
 
     render() {
         const {price} = this.props;

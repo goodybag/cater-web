@@ -31,11 +31,11 @@ export class NavbarComponent extends Component {
     static propTypes = {
         user: PropTypes.instanceOf(User),
         config: PropTypes.instanceOf(Config)
-    }
+    };
 
     state = {
         activeItemName: null
-    }
+    };
 
     handleItemClick = itemName => {
         const {activeItemName} = this.state;
@@ -45,7 +45,7 @@ export class NavbarComponent extends Component {
         } else {
             this.setState({activeItemName: itemName});
         }
-    }
+    };
 
     render() {
         const {user, config} = this.props;
@@ -128,13 +128,13 @@ class NavbarItemComponent extends Component {
         active: PropTypes.bool.isRequired,
         onClick: PropTypes.func.isRequired,
         items: PropTypes.node.isRequired
-    }
+    };
 
     handleClick = () => {
         const {name, onClick} = this.props;
 
         onClick(name);
-    }
+    };
 
     render() {
         const {title, name, active, items} = this.props;

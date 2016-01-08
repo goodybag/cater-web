@@ -17,7 +17,7 @@ import {NavbarMenuComponent, NavbarMenuLinkComponent} from '../menu';
 export class NavbarRegionMenuComponent extends Component {
     static propTypes = {
         user: PropTypes.instanceOf(User).isRequired
-    }
+    };
 
     render() {
         const {user} = this.props;

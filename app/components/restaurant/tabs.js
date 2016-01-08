@@ -11,7 +11,7 @@ import url from 'url';
 export class RestaurantTabsComponent extends Component {
     static propTypes = {
         route: PropTypes.instanceOf(Route).isRequired
-    }
+    };
 
     render() {
         const {route} = this.props;
@@ -46,7 +46,7 @@ class RestaurantTabComponent extends Component {
         href: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired,
         route: PropTypes.instanceOf(Route).isRequired
-    }
+    };
 
     render() {
         const {href, children, route} = this.props;
