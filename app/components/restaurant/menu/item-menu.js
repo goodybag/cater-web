@@ -21,7 +21,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
         const {dispatcher, item} = this.props;
 
         dispatcher.dispatch(new AddItemToOrderAction(item));
-    }
+    };
 
     render() {
         const {item, onClose: close} = this.props;
