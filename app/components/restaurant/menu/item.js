@@ -20,12 +20,9 @@ export class RestaurantMenuItemComponent extends Component {
         open: false
     };
 
-    handleOpen = () => {
-        this.setState({open: true});
-    }
-
-    handleClose = () => {
-        this.setState({open: false});
+    @bind()
+    toggleOpen() {
+      this.setState({ open: !this.state.open });
     }
 
     render() {
@@ -51,8 +48,8 @@ export class RestaurantMenuItemComponent extends Component {
         });
 
         return (
-            <div className={cname} onClick={!open && this.handleOpen}>
-                <div className="gb-restaurant-menu-item-title">
+            <div className={cname}>
+                <div className="gb-restaurant-menu-item-title" onClick={this.toggleOpen}>
                     <div className="gb-restaurant-menu-item-title-content">
                         {name}
                     </div>
