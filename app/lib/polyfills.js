@@ -20,7 +20,8 @@ export class Polyfills {
             minify: true,
             features: {
                 'Intl.~locale.en': {flags: []},
-                'atob': {flags: ['gated']}
+                'atob': {flags: ['gated']},
+                'WeakMap': { flags: []}
             }
         }).then(polyfillScript => {
             return {script: polyfillScript};
