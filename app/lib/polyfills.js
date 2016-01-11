@@ -15,7 +15,7 @@ export class Polyfills {
     constructor(req) {
         const userAgent = req.headers['user-agent'];
 
-        getPolyfillString({
+        return getPolyfillString({
             uaString: userAgent,
             minify: true,
             features: {
