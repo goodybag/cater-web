@@ -1,5 +1,4 @@
 import React, {Component, PropTypes} from 'react';
-import {bind, debounce} from 'lodash-decorators';
 
 import {MenuSearchTerm} from '../../../lib/menu-search';
 
@@ -9,8 +8,7 @@ export class RestaurantMenuSearchboxComponent extends Component {
         onSearchTermChange: PropTypes.func.isRequired
     };
 
-    @bind()
-    handleChange(event) {
+    handleChange = (event) => {
         const {onSearchTermChange} = this.props;
         const {value: text} = event.target;
 

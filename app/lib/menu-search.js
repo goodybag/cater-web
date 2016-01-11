@@ -1,4 +1,4 @@
-import {chain} from 'lodash';
+import {chain, find} from 'lodash';
 
 /**
  * Helper/logic class for the algorithm behind
@@ -35,7 +35,7 @@ export class MenuSearchTerm {
         }
 
         function toSection(items, categoryId) {
-            const category = categories.find(c => c.id === +categoryId);
+            const category = find(categories, c => c.id === +categoryId);
 
             if (category) {
                 return {category, items};

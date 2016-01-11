@@ -15,12 +15,13 @@ export class Polyfills {
     constructor(req) {
         const userAgent = req.headers['user-agent'];
 
-        getPolyfillString({
+        return getPolyfillString({
             uaString: userAgent,
             minify: true,
             features: {
                 'Intl.~locale.en': {flags: []},
-                'atob': {flags: ['gated']}
+                'atob': {flags: ['gated']},
+                'WeakMap': { flags: []}
             }
         }).then(polyfillScript => {
             return {script: polyfillScript};

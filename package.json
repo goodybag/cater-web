@@ -25,7 +25,6 @@
     "intl": "^1.0.1",
     "link-delegate": "0.0.1",
     "lodash": "^3.10.1",
-    "lodash-decorators": "^1.0.6",
     "moment-timezone": "^0.4.0",
     "polyfill-service": "^2.2.0",
     "react": "^0.14.0-rc1",
