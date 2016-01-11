@@ -14,7 +14,7 @@ export class RestaurantMenuTabComponent extends Component {
         type: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired
-    }
+    };
 
     render() {
         const {href, children, type, route} = this.props;

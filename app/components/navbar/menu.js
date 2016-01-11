@@ -3,7 +3,7 @@ import React, {Component, PropTypes} from 'react';
 export class NavbarMenuComponent extends Component {
     static propTypes = {
         children: PropTypes.node.isRequired
-    }
+    };
 
     render() {
         const {children} = this.props;
@@ -22,7 +22,7 @@ export class NavbarMenuLinkComponent extends Component {
     static propTypes = {
         href: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired
-    }
+    };
 
     render() {
         const {href, children} = this.props;

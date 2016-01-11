@@ -9,7 +9,7 @@ import {Order} from '../../models/order';
 export class OrderPaneTimeLeftComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired
-    }
+    };
 
     render() {
         const {order} = this.props;
@@ -39,7 +39,7 @@ export class OrderPaneTimeLeftComponent extends Component {
 export class OrderPaneTimeLeftMetricComponent extends Component {
     static propTypes = {
         time: PropTypes.instanceOf(moment.duration.fn.constructor).isRequired
-    }
+    };
 
     render() {
         const {time} = this.props;

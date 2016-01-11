@@ -23,7 +23,7 @@ import {RestaurantInfoHeaderComponent} from './header';
 export class RestaurantInfoComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant)
-    }
+    };
 
     render() {
         const {restaurant} = this.props;

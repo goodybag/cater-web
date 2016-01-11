@@ -26,7 +26,7 @@ import {RestaurantMenuSearchboxComponent} from './searchbox';
 class RestaurantMenuCateringComponent extends Component {
     static propTypes = {
         menu: PropTypes.array.isRequired
-    }
+    };
 
     render() {
         const {menu} = this.props;
@@ -63,7 +63,7 @@ class RestaurantMenuCateringComponent extends Component {
 class RestaurantMenuIndividualComponent extends Component {
     static propTypes = {
         menu: PropTypes.array.isRequired
-    }
+    };
 
     render() {
         const {menu} = this.props;
@@ -97,7 +97,7 @@ class RestaurantMenuIndividualComponent extends Component {
 class RestaurantMenuTabsComponent extends Component {
     static propTypes = {
         route: PropTypes.instanceOf(Route).isRequired
-    }
+    };
 
     render() {
         const {route} = this.props;
@@ -133,9 +133,9 @@ class RestaurantMenuTabsComponent extends Component {
 export class RestaurantMenuComponent extends Component {
     static propTypes = {
         children: PropTypes.element.isRequired
-    }
+    };
 
-    state = {searchTerm: new MenuSearchTerm('')}
+    state = {searchTerm: new MenuSearchTerm('')};
 
     @bind()
     handleSearchTermChange(text) {

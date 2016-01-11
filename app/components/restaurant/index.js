@@ -26,7 +26,7 @@ import {RestaurantOrdersComponent} from './past-orders';
 export class RestaurantComponent extends Component {
     static propTypes = {
         children: React.PropTypes.node
-    }
+    };
 
     render() {
         const {children} = this.props;

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export class StarsComponent extends Component {
     static propTypes = {
         rating: React.PropTypes.number.isRequired
-    }
+    };
 
     render() {
         const {rating} = this.props;

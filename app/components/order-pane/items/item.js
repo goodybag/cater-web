@@ -6,7 +6,7 @@ import {OrderItem} from '../../../models/order-item';
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
         orderItem: PropTypes.instanceOf(OrderItem).isRequired
-    }
+    };
 
     render() {
         const {orderItem} = this.props;

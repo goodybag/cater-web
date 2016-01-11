@@ -6,7 +6,7 @@ export class RestaurantReviewComponent extends Component {
     static propTypes = {
         data: React.PropTypes.object.isRequired,
         review: React.PropTypes.object.isRequired
-    }
+    };
 
     render() {
         const {review, data} = this.props;

@@ -21,12 +21,12 @@ import {RestaurantOrdersAlertComponent} from './alert';
 export class RestaurantOrdersComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant)
-    }
+    };
 
     state = {
         alertOpen: false,
         message: ""
-    }
+    };
 
     signalAlertOpen = (action) => {
         this.setState({
@@ -62,13 +62,13 @@ export class RestaurantOrdersComponent extends Component {
                 message: "This order has been canceled."
             });
         }
-    }
+    };
 
     signalAlertClose = () => {
         this.setState({
             alertOpen: false
         });
-    }
+    };
 
 
     render() {

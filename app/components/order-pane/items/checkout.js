@@ -4,7 +4,7 @@ import {FormattedNumber} from 'react-intl';
 export class OrderPaneCheckoutComponent extends Component {
     static propTypes = {
         total: PropTypes.number.isRequired
-    }
+    };
 
     render() {
         const {total} = this.props;

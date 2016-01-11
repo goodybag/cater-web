@@ -20,27 +20,79 @@ gulp.task('build', function() {
         .pipe(newer('dist/src'))
         .pipe(smaps.init())
         .pipe(babel())
-        .pipe(smaps.write('.'))
+        .on('error', err => {
+            gutil.log(err.toString());
+        })
+        .pipe(smaps.write('.', {sourceRoot: '/source/app/'}))
         .pipe(gulp.dest('dist/src'));
 });
 
 // This will bundle the ES5 modules in dist/src
 // into a single bundle (and source map) for
 // dist/build
-gulp.task('bundle', function(cb) {
-    getWebpack().run(handleWebpackErrors(cb));
+gulp.task('bundle', ['build'], bundle);
+
+gulp.task('watch-bundle', function() {
+    var watchify = require('watchify');
+    var browserify = require('browserify');
+    var babelify = require('babelify');
+
+    watchify(getBundler(), {
+        ignoreWatch: [] // we want to watch node_modules
+                        // because we do a lot of linking
+    }).on('update', () => {
+        gulp.start('bundle');
+    });
+
+    return gulp.start('bundle');
 });
+
+var bundler;
+
+function bundle() {
+    var source = require('vinyl-source-stream');
+    var buffer = require('vinyl-buffer');
+
+    return getBundler().bundle()
+        .on('error', err => {
+            gutil.log(new gutil.PluginError('browserify', err).toString());
+        })
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        .pipe(smaps.init({loadMaps: true}))
+        .pipe(smaps.write('.'))
+        .pipe(gulp.dest('dist/build'));
+}
+
+function getBundler() {
+    var browserify = require('browserify');
+    var sourceify = require('sourceify');
+
+    if (!bundler) {
+        bundler = browserify('dist/src/main.js', {
+            cache: {},
+            packageCache: {},
+            debug: true
+        });
+
+        bundler.transform(sourceify, {global: true});
+    }
+
+    return bundler;
+}
 
 // This compiles all LESS files from app/styles
 // into a single CSS bundle (and source map) in
 // dist/build
 gulp.task('compile', function() {
     var less = require('gulp-less');
+    var NpmImportPlugin = require('less-plugin-npm-import');
+    var npmImports = new NpmImportPlugin({prefix: '~'});
 
     return gulp.src('./app/styles/main.less')
         .pipe(smaps.init())
-        .pipe(less())
-        .pipe(smaps.write('.'))
+        .pipe(less({plugins: [npmImports]}))
+        .pipe(smaps.write('.', {sourceRoot: '/source/app/styles'}))
         .pipe(gulp.dest('dist/build'));
 });
 
@@ -57,7 +109,7 @@ gulp.task('migrate', function() {
 gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
     var RevAll = require('gulp-rev-all');
     var uglify = require('gulp-uglify');
-    var cssmin = require('gulp-minify-css');
+    var cssnano = require('gulp-cssnano');
 
     var onlyJs = filter('*.js', {restore: true});
     var onlyCss = filter('*.css', {restore: true});
@@ -67,7 +119,7 @@ gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
 
     return gulp.src('dist/build/**/!(*.map)')
         .pipe(onlyJs).pipe(uglify()).pipe(onlyJs.restore)
-        .pipe(onlyCss).pipe(cssmin()).pipe(onlyCss.restore)
+        .pipe(onlyCss).pipe(cssnano()).pipe(onlyCss.restore)
         .pipe(revAll.revision())
         .pipe(gulp.dest('dist/final'))
         .pipe(revAll.manifestFile())
@@ -81,11 +133,6 @@ gulp.task('compress', ['final'], function() {
         .pipe(gzip())
         .pipe(gulp.dest('dist/final'));
 });
-
-gulp.task('watch-bundle', function() {
-    getWebpack().watch({}, handleWebpackErrors(logWebpackErrors));
-});
-
 // This watchs all the files
 gulp.task('watch', ['build', 'watch-bundle', 'compile', 'migrate'], function() {
     gulp.watch('app/**/*.js', ['build']);
@@ -118,40 +165,3 @@ gulp.task('upload', function() {
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
 });
-
-// You can safely disregard the unfortune that is below.
-
-function handleWebpackErrors(cb) {
-    return function(err, stats) {
-        if (err) return cb(new gutil.PluginError('webpack', err));
-
-        var statData = stats.toJson();
-
-        if (stats.hasErrors()) {
-            return cb(new gutil.PluginError('webpack', statData.errors[0]));
-        }
-
-        if (stats.hasWarnings()) {
-            return cb(new gutil.PluginError('webpack', statData.warnings[0]));
-        }
-
-        cb(null, stats);
-    };
-}
-
-function getWebpack() {
-    var webpack = require('webpack');
-
-    return webpack(require('./webpack.config'));
-}
-
-function logWebpackErrors(err, stats) {
-    if (err) {
-        gutil.log(err.toString().replace(new RegExp(__dirname, 'g'), '.'));
-    } else {
-        gutil.log(stats.toString({
-            chunks: false,
-            chunkModules: false
-        }));
-    }
-}

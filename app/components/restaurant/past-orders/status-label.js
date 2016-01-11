@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export class RestaurantOrdersStatusLabelComponent extends Component {
     static propTypes = {
         status: React.PropTypes.string.isRequired
-    }
+    };
 
     displayStatus = (status) => {
         if(status==="pending") {
@@ -22,7 +22,7 @@ export class RestaurantOrdersStatusLabelComponent extends Component {
                 </div>
             );
         }
-    }
+    };
 
     render() {
         const {status} = this.props;

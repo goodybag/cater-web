@@ -22,15 +22,15 @@ export class OrderPaneInfoComponent extends Component {
     static propTypes = {
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
         order: PropTypes.instanceOf(Order).isRequired
-    }
+    };
 
     state = {
         editing: false
-    }
+    };
 
     startEditing = () => {
         this.setState({editing: true});
-    }
+    };
 
     // popsolopsopacalous
 
@@ -39,7 +39,7 @@ export class OrderPaneInfoComponent extends Component {
 
         dispatcher.dispatch(new UpdateOrderAction({order, changes}));
         this.setState({editing: false});
-    }
+    };
 
     renderBody() {
         const {order} = this.props;
@@ -75,7 +75,7 @@ export class OrderPaneInfoShowComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
         onStartEditing: PropTypes.func.isRequired
-    }
+    };
 
     render() {
         const {order, onStartEditing: startEditing} = this.props;

@@ -13,12 +13,12 @@ import {Restaurant} from '../../models/restaurant';
 
     return {
         restaurant: restaurantStore.getRestaurant()
-    }
+    };
 })
 export class RestaurantCoverComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant)
-    }
+    };
 
     render() {
         const {restaurant} = this.props;

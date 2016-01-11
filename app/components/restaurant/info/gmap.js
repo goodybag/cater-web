@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export class RestaurantGmapComponent extends Component {
     static propTypes = {
 
-    }
+    };
 
     render() {
         return (

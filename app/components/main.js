@@ -14,7 +14,7 @@ import {RestaurantComponent} from './restaurant';
 export class MainComponent extends Component {
     static propTypes = {
         children: PropTypes.node
-    }
+    };
 
     render() {
         const {children} = this.props;
@@ -32,12 +32,12 @@ export class MainComponent extends Component {
 export class MainContainerComponent extends React.Component {
     static childContextTypes = {
         dependencyCache: PropTypes.instanceOf(Map)
-    }
+    };
 
     static propTypes = {
         dependencyCache: PropTypes.instanceOf(Map).isRequired,
         components: PropTypes.arrayOf(React.PropTypes.func).isRequired
-    }
+    };
 
     getChildContext() {
         const {dependencyCache} = this.props;

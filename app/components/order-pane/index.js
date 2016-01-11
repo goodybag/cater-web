@@ -28,7 +28,7 @@ export class OrderPaneComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
-    }
+    };
 
     render() {
         const {order, orderItems} = this.props;
@@ -71,11 +71,11 @@ class OrderPaneHeaderComponent extends Component {
         title: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired,
         initiallyClosed: PropTypes.bool
-    }
+    };
 
     state = {
         open: !this.props.initiallyClosed
-    }
+    };
 
     handleClick = () => {
         this.setState(({open}) => {
@@ -83,7 +83,7 @@ class OrderPaneHeaderComponent extends Component {
                 open: !open
             };
         });
-    }
+    };
 
     render() {
         const {open} = this.state;
