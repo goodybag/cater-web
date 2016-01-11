@@ -23,14 +23,14 @@ gulp.task('build', function() {
         .on('error', err => {
             gutil.log(err.toString());
         })
-        .pipe(smaps.write('.'))
+        .pipe(smaps.write('.', {sourceRoot: '/source/app/'}))
         .pipe(gulp.dest('dist/src'));
 });
 
 // This will bundle the ES5 modules in dist/src
 // into a single bundle (and source map) for
 // dist/build
-gulp.task('bundle', bundle);
+gulp.task('bundle', ['build'], bundle);
 
 gulp.task('watch-bundle', function() {
     var watchify = require('watchify');
@@ -38,8 +38,8 @@ gulp.task('watch-bundle', function() {
     var babelify = require('babelify');
 
     watchify(getBundler(), {
-        ignoreWatch: ['**/dist/**'] // we want to watch node_modules
-                                    // because we do a lot of linking
+        ignoreWatch: [] // we want to watch node_modules
+                        // because we do a lot of linking
     }).on('update', () => {
         gulp.start('bundle');
     });
@@ -66,15 +66,16 @@ function bundle() {
 
 function getBundler() {
     var browserify = require('browserify');
-    var babelify = require('babelify');
+    var sourceify = require('sourceify');
 
     if (!bundler) {
-        bundler = browserify('app/main.js', {
+        bundler = browserify('dist/src/main.js', {
             cache: {},
             packageCache: {},
-            debug: true,
-            transform: [babelify.configure({sourceMap: true})]
+            debug: true
         });
+
+        bundler.transform(sourceify, {global: true});
     }
 
     return bundler;
