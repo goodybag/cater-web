@@ -108,7 +108,7 @@ gulp.task('migrate', function() {
 gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
     var RevAll = require('gulp-rev-all');
     var uglify = require('gulp-uglify');
-    var cssmin = require('gulp-minify-css');
+    var cssnano = require('gulp-cssnano');
 
     var onlyJs = filter('*.js', {restore: true});
     var onlyCss = filter('*.css', {restore: true});
@@ -118,7 +118,7 @@ gulp.task('final', ['build', 'bundle', 'compile', 'migrate'], function() {
 
     return gulp.src('dist/build/**/!(*.map)')
         .pipe(onlyJs).pipe(uglify()).pipe(onlyJs.restore)
-        .pipe(onlyCss).pipe(cssmin()).pipe(onlyCss.restore)
+        .pipe(onlyCss).pipe(cssnano()).pipe(onlyCss.restore)
         .pipe(revAll.revision())
         .pipe(gulp.dest('dist/final'))
         .pipe(revAll.manifestFile())
