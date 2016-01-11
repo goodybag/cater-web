@@ -37,13 +37,11 @@
     "superagent": "^1.4.0",
     "tokyo": "^1.1.0",
     "validator": "^4.3.0",
-    "yokohama": "^1.1.0",
-    "z-schema": "^3.12.1"
+    "yokohama": "^1.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.21",
     "babel-eslint": "^4.1.6",
-    "babel-loader": "^6.2.0",
     "babel-plugin-transform-class-properties": "^6.3.13",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.3.13",
