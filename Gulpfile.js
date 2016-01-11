@@ -85,10 +85,12 @@ function getBundler() {
 // dist/build
 gulp.task('compile', function() {
     var less = require('gulp-less');
+    var NpmImportPlugin = require('less-plugin-npm-import');
+    var npmImports = new NpmImportPlugin({prefix: '~'});
 
     return gulp.src('./app/styles/main.less')
         .pipe(smaps.init())
-        .pipe(less())
+        .pipe(less({plugins: [npmImports]}))
         .pipe(smaps.write('.', {sourceRoot: '/source/app/styles'}))
         .pipe(gulp.dest('dist/build'));
 });
