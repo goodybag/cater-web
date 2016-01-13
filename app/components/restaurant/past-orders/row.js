@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
+import {Dispatcher} from 'flux';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
+import {DisplayOrderAction} from '../../../actions/past-orders';
 
 import moment from 'moment-timezone';
 
@@ -12,47 +14,39 @@ export class RestaurantOrdersRowComponent extends Component {
         timezone: React.PropTypes.string.isRequired,
         total: React.PropTypes.number.isRequired,
         initAlertState: React.PropTypes.bool.isRequired,
-        signalAlertOpen: React.PropTypes.func.isRequired
+        signalAlertOpen: React.PropTypes.func.isRequired,
+        order: React.PropTypes.object.isRequired,
+        dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
 
-    state = {
-        alertOpen: this.props.initAlertState
-    };
+    handleViewClick = () => {
+        const {order, dispatcher} = this.props;
 
-    onLinkClicked = (action) => {
-        this.setState({
-            alertOpen: true
-        });
-        this.props.signalAlertOpen(action);
+        const action = new DisplayOrderAction({order});
+
+        dispatcher.dispatch(action);
     };
 
     render() {
-        const {status, datetime, timezone, total} = this.props;
-        const {displayStatus} = this;
-        const tzdatetime = moment.tz(datetime, timezone);
-
-        const {onLinkClicked} = this;
+        const {order} = this.props;
 
         return (
             <div className="gb-restaurant-orders-row">
                 <div className="gb-restaurant-orders-row-group-first">
                     <div className="gb-restaurant-orders-col-status">
                         <RestaurantOrdersStatusLabelComponent
-                            status={status}
+                            status={order.status}
                         />
                     </div>
                     <div className="gb-restaurant-orders-col-date">
-                        {/* TODO: Change mm/dd/yyyy to mm/dd/yy format
-                            <FormattedDate value={tzdatetime}/>
-                         */}
-                        3/12/15
+                        <FormattedDate value={order.datetime} day="numeric" month="numeric" year="numeric"/>
                     </div>
                     <div className="gb-restaurant-orders-col-time">
-                        <FormattedTime value={datetime} format="hhmma"/>
+                        <FormattedTime value={order.datetime} format="hhmma"/>
                     </div>
                     <div className="gb-restaurant-orders-col-total">
                         <FormattedNumber
-                            value={total / 100}
+                            value={order.total / 100}
                             style="currency"
                             currency="USD"
                         />
@@ -60,34 +54,36 @@ export class RestaurantOrdersRowComponent extends Component {
                 </div>
                 <div className="gb-restaurant-orders-row-group-second">
                     <div className="gb-restaurant-orders-col-expired">
-                        {/*TODO: Expired*/
-                            status==="pending" ? "Expired" : ""
-                        }
+                        {/* TODO: Expired */}
+                        {status === 'pending' && 'Expired'}
                     </div>
+
                     <div className="gb-restaurant-orders-col-resume">
                         {
-                            status==="pending" ?
-                                <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "resume")}>
+                            order.status==="pending" ?
+                                <a href="/restaurants/111/orders">
                                     Resume
                                 </a> :
-                            status==="canceled" ?
-                                <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "uncancel")}>
+                            order.status==="canceled" ?
+                                <a href="/restaurants/111/orders">
                                     Uncancel
-                                </a> : ""
+                                </a> : null
                         }
                     </div>
                     <div className="gb-restaurant-orders-col-view">
-                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "view")}>
+                        <a
+                            href="/restaurants/111/orders"
+                            onClick={this.handleViewClick}>
                             View
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-duplicate">
-                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "duplicate")}>
+                        <a href="/restaurants/111/orders">
                             Duplicate
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-cancel">
-                        <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this, "cancel")}>
+                        <a href="/restaurants/111/orders">
                             {
                                 status === "canceled" ? "" :
                                 "Cancel"
