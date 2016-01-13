@@ -13,7 +13,7 @@ export class RestaurantMenuSearchboxComponent extends Component {
         const {value: text} = event.target;
 
         onSearchTermChange(text);
-    }
+    };
 
     render() {
         const {searchTerm} = this.props;

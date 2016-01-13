@@ -22,11 +22,11 @@ export class RestaurantMenuItemComponent extends Component {
 
     handleOpen = () => {
         this.setState({open: true});
-    }
+    };
 
     handleClose = () => {
         this.setState({open: false});
-    }
+    };
 
     render() {
         const {open} = this.state;

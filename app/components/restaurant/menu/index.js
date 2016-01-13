@@ -140,7 +140,7 @@ export class RestaurantMenuComponent extends Component {
         this.setState({
             searchTerm: new MenuSearchTerm(text)
         });
-    }
+    };
 
     render() {
         const {children} = this.props;
