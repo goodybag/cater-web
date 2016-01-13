@@ -85,10 +85,13 @@ export class RestaurantMenuItemComponent extends Component {
             </div>
         );
 
-        function renderTag(tagName, index) {
+        function renderTag(tagObj, index) {
+            const {tag} = tagObj;
             return (
                 <div className="gb-restaurant-menu-item-tag" key={index}>
-                    {tagName}
+                    <DietTagComponent
+                        tag={tag}
+                    />
                 </div>
             );
         }
@@ -105,5 +108,31 @@ export class RestaurantMenuItemComponent extends Component {
         } else {
             return `Feeds ${feeds_min}`;
         }
+    }
+}
+
+const dietTags = {
+    glutenFree: "gluten-free",
+    vegan: "vegan",
+    vegetarian: "vegetarian",
+    kosher: "kosher",
+    halal: "halal",
+    dairyFree: "dairy-free",
+    nuts: "nuts",
+    spicy: "spicy"
+};
+
+export class DietTagComponent extends Component {
+    static propTypes = {
+        tag: PropTypes.string.isRequired
+    };
+
+    render() {
+        const {tag} = this.props;
+        const cname = 'diet-tag diet-tag-' + dietTags[tag];
+
+        return (
+            <span className={cname}></span>
+        );
     }
 }
