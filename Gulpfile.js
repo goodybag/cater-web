@@ -101,7 +101,7 @@ gulp.task('compile', function() {
 gulp.task('migrate', function() {
     var newer = require('gulp-newer');
 
-    return gulp.src('public/**/*')
+    return gulp.src(['public/**/*', 'node_modules/diet-tags/img/**/*'])
         .pipe(newer('dist/build'))
         .pipe(gulp.dest('dist/build'));
 });
