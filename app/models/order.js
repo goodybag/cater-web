@@ -14,7 +14,13 @@ export class Order {
             ? new User(attrs.user, {parse: true}) // TODO
             : new User({id: attrs.user_id});
 
-        const datetime = new Date(moment.tz(attrs.datetime, attrs.timezone));
+        let tempDateTime = new Date(moment.tz(attrs.datetime, attrs.timezone));
+
+        if(isNaN(tempDateTime.getTime())) {
+            tempDateTime = new Date();
+        }
+
+        const datetime = tempDateTime;
 
         return new Order({
             ...attrs,
