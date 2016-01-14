@@ -1,0 +1,21 @@
+.gb-restaurant-menu-bar-container {
+    height: 57px;
+}
+
+.gb-restaurant-menu-bar {
+    &.gb-restaurant-menu-bar-affix {
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: @gb-white;
+        border-bottom: 1px solid @gb-shadow-tide;
+
+        .gb-restaurant-menu-bar-content {
+            .gb-body;
+
+            position: relative;
+        }
+    }
+}
