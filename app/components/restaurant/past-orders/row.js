@@ -3,7 +3,7 @@ import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'flux';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
-import {DisplayOrderAction} from '../../../actions/past-orders';
+import {DisplayOrderAction, DuplicateOrderAction} from '../../../actions/past-orders';
 
 import moment from 'moment-timezone';
 
@@ -23,6 +23,14 @@ export class RestaurantOrdersRowComponent extends Component {
         const {order, dispatcher} = this.props;
 
         const action = new DisplayOrderAction({order});
+
+        dispatcher.dispatch(action);
+    };
+
+    handleDuplicateClick = () => {
+        const {order, dispatcher} = this.props;
+
+        const action = new DuplicateOrderAction(order.id);
 
         dispatcher.dispatch(action);
     };
@@ -78,7 +86,9 @@ export class RestaurantOrdersRowComponent extends Component {
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-duplicate">
-                        <a href="/restaurants/111/orders">
+                        <a
+                            href="/restaurants/111/orders"
+                            onClick={this.handleDuplicateClick} >
                             Duplicate
                         </a>
                     </div>
