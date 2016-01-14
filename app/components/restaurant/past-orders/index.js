@@ -1,148 +1,46 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
+import {Dispatcher} from 'flux';
 
 import {RestaurantStore} from '../../../stores/restaurant';
 import {Restaurant} from '../../../models/restaurant';
+import {PastOrdersStore} from '../../../stores/past-orders';
+import {Order} from '../../../models/order';
 import {RestaurantOrdersRowComponent} from './row';
-import {RestaurantOrdersAlertComponent} from './alert';
+import {RestaurantPastOrdersModalComponent} from './modal';
 
 @inject({
-    restaurantStore: RestaurantStore
-})
-@listeningTo([RestaurantStore], props => {
-    const {restaurantStore} = props;
+    restaurantStore: RestaurantStore,
+    pastOrdersStore: PastOrdersStore,
+    dispatcher: Dispatcher
+}, [RestaurantPastOrdersModalComponent])
+@listeningTo([RestaurantStore, PastOrdersStore], props => {
+    const {pastOrdersStore, restaurantStore} = props;
 
     return {
-        restaurant: restaurantStore.getRestaurant()
+        restaurant: restaurantStore.getRestaurant(),
+        orders: pastOrdersStore.getPastOrders()
     };
 })
-
 export class RestaurantOrdersComponent extends Component {
     static propTypes = {
-        restaurant: PropTypes.instanceOf(Restaurant)
+        dispatcher: PropTypes.instanceOf(Dispatcher),
+        restaurant: PropTypes.instanceOf(Restaurant),
+        orders: PropTypes.arrayOf(PropTypes.instanceOf(Order))
     };
-
-    state = {
-        alertOpen: false,
-        message: ""
-    };
-
-    signalAlertOpen = (action) => {
-        this.setState({
-            alertOpen: true
-        });
-
-        if(action==="resume") {
-            this.setState({
-                message: "This order has been resumed."
-            });
-        }
-
-        if(action==="uncancel") {
-            this.setState({
-                message: "This order has been restored to a Draft."
-            });
-        }
-
-        if(action==="view") {
-            this.setState({
-                message: "This order is currently being viewed."
-            });
-        }
-
-        if(action==="duplicate") {
-            this.setState({
-                message: "This order has been duplicated."
-            });
-        }
-
-        if(action==="cancel") {
-            this.setState({
-                message: "This order has been canceled."
-            });
-        }
-    };
-
-    signalAlertClose = () => {
-        this.setState({
-            alertOpen: false
-        });
-    };
-
 
     render() {
-        const {restaurant} = this.props;
-        const {signalAlertOpen, signalAlertClose} = this;
-        let {alertOpen, message} = this.state
-
-        // TODO: replace with model data
-        var restaurantName = "Austin Daily Press";
-        const pastOrders = [
-            {
-                id: 7630,
-                status: "canceled",
-                datetime: "2015-03-27 11:15:00",
-                timezone: "America/Chicago",
-                total: 15073
-            },
-            {
-                id: 800,
-                status: "accepted",
-                datetime: "2014-03-05 11:30:00",
-                timezone: "America/Chicago",
-                total: 16259
-            },
-            {
-                id: 10089,
-                status: "pending",
-                datetime: "2015-06-09 12:30:00",
-                timezone: "America/Chicago",
-                total: 7900
-            },
-            {
-                id: 864,
-                status: "accepted",
-                datetime: "2014-03-09 11:30:00",
-                timezone: "America/Chicago",
-                total: 28406
-            },
-            {
-                id: 11801,
-                status: "canceled",
-                datetime: "2015-07-29 11:30:00",
-                timezone: "America/Chicago",
-                total: 1999
-            },
-            {
-                id: 11235,
-                status: "pending",
-                datetime: "2015-07-29 11:15:00",
-                timezone: "America/Chicago",
-                total: 27063
-            },
-            {
-                id: 9209,
-                status: "submitted",
-                datetime: "2015-05-14 12:00:00",
-                timezone: "America/Chicago",
-                total: 11691
-            }
-        ];
+        const {restaurant, orders, dispatcher} = this.props;
 
         return (
             <div className="gb-restaurant-orders">
                 <div className="gb-restaurant-orders-title">
-                    Past Orders at {restaurantName}
+                    Past Orders at {restaurant.name}
                 </div>
-                {
-                    alertOpen ?
-                        <RestaurantOrdersAlertComponent
-                            message={message}
-                            initAlertState={alertOpen}
-                            signalAlertClose={signalAlertClose}
-                        /> : ""
-                }
+
+                <RestaurantPastOrdersModalComponent />
+
                 <div className="gb-restaurant-orders-table">
                     <div className="gb-restaurant-orders-row-head">
                         <div className="gb-restaurant-orders-row-group-first">
@@ -152,8 +50,9 @@ export class RestaurantOrdersComponent extends Component {
                             <div className="gb-restaurant-orders-col-total">Total</div>
                         </div>
                     </div>
+
                     <div className="gb-restaurant-orders-table-body">
-                        {pastOrders.map(renderPastOrderItem)}
+                        {orders.map(renderPastOrderItem)}
                     </div>
                 </div>
             </div>
@@ -163,12 +62,8 @@ export class RestaurantOrdersComponent extends Component {
             return (
                 <RestaurantOrdersRowComponent
                     key={order.id}
-                    status={order.status}
-                    datetime={order.datetime}
-                    timezone={order.timezone}
-                    total={order.total}
-                    initAlertState={alertOpen}
-                    signalAlertOpen={signalAlertOpen}
+                    order={order}
+                    dispatcher={dispatcher}
                 />
             );
         }

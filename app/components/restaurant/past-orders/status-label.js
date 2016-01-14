@@ -14,11 +14,8 @@ export class RestaurantOrdersStatusLabelComponent extends Component {
             );
         } else {
             return (
-                <div className={"gb-restaurant-orders-status-label-" + status}>
-                    {
-                        /* change first letter to upper case */
-                        [status.slice(0,1).toUpperCase(), status.slice(1)].join('')
-                    }
+                <div className={`gb-restaurant-orders-status-label-${status}`}>
+                    {status}
                 </div>
             );
         }

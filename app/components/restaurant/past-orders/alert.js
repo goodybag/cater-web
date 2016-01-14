@@ -7,17 +7,6 @@ export class RestaurantOrdersAlertComponent extends Component {
         signalAlertClose: React.PropTypes.func.isRequired
     };
 
-    state = {
-        alertOpen: this.props.initAlertState
-    };
-
-    onLinkClicked = () => {
-        this.setState({
-            alertOpen: false
-        });
-        this.props.signalAlertClose();
-    };
-
     render() {
         const {message} = this.props;
         const {onLinkClicked} = this;
@@ -25,7 +14,8 @@ export class RestaurantOrdersAlertComponent extends Component {
         return (
             <div className="gb-restaurant-orders-alert">
                 {message}
-                <a href="/restaurants/111/orders" onClick={onLinkClicked.bind(this)}>
+
+                <a href="/restaurants/111/orders">
                     Undo
                 </a>
             </div>

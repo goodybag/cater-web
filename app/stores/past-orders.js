@@ -1,34 +1,54 @@
 import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
-import url from 'url';
 
-import {RouteParams} from '../lib/route';
-import {OrderCollection} from '../models/order';
-import {API_PREFIX} from '../config';
+import {PastOrdersResolver} from '../resolvers/past-orders';
+import {OrderItemService} from '../services/order-item';
+import {DisplayOrderAction, StopDisplayingOrderAction} from '../actions/past-orders';
 
-@dependencies(RouteParams)
-class OrdersResolver {
-    constructor(params) {
-        const orders = new OrderCollection([], {
-            url: url.resolve(API_PREFIX,
-                             `restaurants/${params.restaurant_id}/orders`)
-        });
-
-        return orders.fetch().then(() => orders);
-    }
-}
-
-@dependencies(Dispatcher, OrdersResolver)
+@dependencies(Dispatcher, PastOrdersResolver, OrderItemService)
 export class PastOrdersStore extends Store {
-    constructor(dispatcher, orders) {
+    constructor(dispatcher, pastOrders, orderItemService) {
         super(dispatcher);
 
-        this.orders = orders;
-        this.orders.on('change', () => this.emit('change'));
+        this.pastOrders = pastOrders;
+        this.orderItemService = orderItemService;
+        this.currentOrder = null;
+        this.currentOrderItems = [];
+
+        this.bind(DisplayOrderAction, this.onDisplayOrder);
+        this.bind(StopDisplayingOrderAction, this.onStopDisplayingOrder);
     }
 
-    getOrders() {
-        return this.orders;
+    getPastOrders() {
+        return this.pastOrders;
+    }
+
+    getCurrentOrder() {
+        return this.currentOrder;
+    }
+
+    getCurrentOrderItems() {
+        return this.currentOrderItems;
+    }
+
+    setOrderAndItems(order, orderItems) {
+        this.currentOrder = order;
+        this.currentOrderItems = orderItems;
+        this.emit('change');
+    }
+
+    onDisplayOrder({order}) {
+        this.currentOrder = 'loading';
+        this.emit('change');
+
+        this.orderItemService.fetchAllByOrderId(order.id)
+            .then(orderItems => {
+                this.setOrderAndItems(order, orderItems);
+            });
+    }
+
+    onStopDisplayingOrder() {
+        this.setOrderAndItems(null, []);
     }
 }
