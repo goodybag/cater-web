@@ -14,4 +14,10 @@ export class PastOrdersService {
             .then(orders => orders.map(Order.parse))
             .catch(err => console.log(err));
     }
+
+    duplicateOrderByOrderId(id) {
+        return this.apiService.create(`orders/${id}/duplicates`)
+            .then(Order.parse)
+            .catch(err => console.log(err));
+    }
 }

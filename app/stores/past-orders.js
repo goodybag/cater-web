@@ -4,20 +4,23 @@ import {Dispatcher} from 'flux';
 
 import {PastOrdersResolver} from '../resolvers/past-orders';
 import {OrderItemService} from '../services/order-item';
-import {DisplayOrderAction, StopDisplayingOrderAction} from '../actions/past-orders';
+import {PastOrdersService} from '../services/past-orders';
+import {DisplayOrderAction, StopDisplayingOrderAction, DuplicateOrderAction} from '../actions/past-orders';
 
-@dependencies(Dispatcher, PastOrdersResolver, OrderItemService)
+@dependencies(Dispatcher, PastOrdersResolver, OrderItemService, PastOrdersService)
 export class PastOrdersStore extends Store {
-    constructor(dispatcher, pastOrders, orderItemService) {
+    constructor(dispatcher, pastOrders, orderItemService, pastOrdersService) {
         super(dispatcher);
 
         this.pastOrders = pastOrders;
         this.orderItemService = orderItemService;
+        this.pastOrdersService = pastOrdersService;
         this.currentOrder = null;
         this.currentOrderItems = [];
 
         this.bind(DisplayOrderAction, this.onDisplayOrder);
         this.bind(StopDisplayingOrderAction, this.onStopDisplayingOrder);
+        this.bind(DuplicateOrderAction, this.onDuplicateOrder);
     }
 
     getPastOrders() {
@@ -50,5 +53,13 @@ export class PastOrdersStore extends Store {
 
     onStopDisplayingOrder() {
         this.setOrderAndItems(null, []);
+    }
+
+    onDuplicateOrder({orderId}) {
+        this.pastOrdersService.duplicateOrderByOrderId(orderId)
+            .then(order => {
+                this.pastOrders.unshift(order);
+                this.emit('change');
+            });
     }
 }

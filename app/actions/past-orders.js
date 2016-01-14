@@ -5,3 +5,9 @@ export class DisplayOrderAction {
 }
 
 export class StopDisplayingOrderAction {}
+
+export class DuplicateOrderAction {
+    constructor(orderId) {
+        this.orderId = orderId;
+    }
+}
