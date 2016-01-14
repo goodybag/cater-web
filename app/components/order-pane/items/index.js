@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {inject} from 'yokohama';
+import {inject, dependencies} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
 import {OrderItemStore} from '../../../stores/order-item';
@@ -9,6 +9,16 @@ import {Order} from '../../../models/order';
 import {OrderPaneItemComponent} from './item';
 import {OrderPaneCheckoutComponent} from './checkout';
 
+@inject({
+    orderItemStore: OrderItemStore,
+    orderStore: OrderStore
+})
+@listeningTo([OrderItemStore, OrderStore], ({orderItemStore, orderStore}) => {
+    return {
+        orderItems: orderItemStore.getOrderItems(),
+        order: orderStore.getOrder()
+    };
+})
 export class OrderPaneItemsComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,

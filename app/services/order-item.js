@@ -19,4 +19,9 @@ export class OrderItemService {
             .then(items => items.map(OrderItem.parse))
             .catch(err => console.log(err));
     }
+
+    createOrderItem(orderId, data) {
+        return this.apiService.create(`orders/${orderId}/items`, data)
+            .then(OrderItem.parse);
+    }
 }

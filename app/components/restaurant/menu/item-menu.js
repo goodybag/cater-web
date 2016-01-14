@@ -6,9 +6,16 @@ import {listeningTo} from 'tokyo';
 
 import {MenuItem} from '../../../models/menu-item';
 import {AddItemToOrderAction} from '../../../actions/menu';
+import {OrderStore} from '../../../stores/order';
 
 @inject({
-    dispatcher: Dispatcher
+    dispatcher: Dispatcher,
+    orderStore: OrderStore
+})
+@listeningTo([OrderStore], ({orderStore}) => {
+    return {
+        order: orderStore.getOrder()
+    };
 })
 export class RestaurantMenuItemMenuComponent extends Component {
     static propTypes = {
@@ -17,15 +24,45 @@ export class RestaurantMenuItemMenuComponent extends Component {
         onClose: PropTypes.func.isRequired
     };
 
-    handleAddClick = () => {
-        const {dispatcher, item} = this.props;
+    state = {
+        quantity: this.props.item.min_qty || 1,
+        notes: ''
+    };
 
-        dispatcher.dispatch(new AddItemToOrderAction(item));
+    handleAddClick = () => {
+        const {dispatcher, item, order} = this.props;
+        const {quantity, notes} = this.state;
+
+        dispatcher.dispatch(new AddItemToOrderAction({
+            order,
+            orderItemData: {
+                item_id: item.id,
+                order_id: order.id,
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                feeds_min: item.feeds_min,
+                feeds_max: item.feeds_min,
+                options_sets: item.options_sets,
+                recipient: item.recipient,
+                quantity,
+                notes
+            }
+        }));
+    };
+
+    handleQuantityChange = (event) => {
+        this.setState({quantity: event.target.value});
+    };
+
+    handleNotesChange = (event) => {
+        this.setState({notes: event.target.value});
     };
 
     render() {
         const {item, onClose: close} = this.props;
         const {description, min_qty} = item;
+        const {notes, quantity} = this.state;
 
         return (
             <div className="gb-restaurant-menu-item-menu">
@@ -40,6 +77,8 @@ export class RestaurantMenuItemMenuComponent extends Component {
 
                     <textarea
                         className="gb-restaurant-menu-item-menu-box-field"
+                        onChange={this.handleNotesChange}
+                        value={notes}
                     />
                 </div>
 
@@ -52,7 +91,8 @@ export class RestaurantMenuItemMenuComponent extends Component {
                         <input
                             className="gb-restaurant-menu-item-menu-box-field"
                             type="number"
-                            defaultValue={min_qty || 1}
+                            onChange={this.handleQuantityChange}
+                            value={quantity}
                         />
                     </div>
 
