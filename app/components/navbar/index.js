@@ -158,7 +158,7 @@ class NavbarItemComponent extends Component {
                     {title}
 
                     <div className="gb-navbar-item-arrow">
-                        <div className={active ? 'gb-arrow-down' : 'gb-arrow-right'}/>
+                        <div className="gb-arrow-right"/>
                     </div>
                 </div>
 
