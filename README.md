@@ -25,63 +25,6 @@ To watch for changes:
 gulp watch
 ```
 
-Strong Recommendations
-----------------------
-
-### Components
-
-- Postfix component class names with `Component` such as `NavbarComponent` and
-  `RestaurantTabsComponent`.
-- Before commits try to make your code abide by ESLint rules.
-- Include `propTypes` and `contextTypes` declarations for all components.
-- Group import statements into relative and non-relative blocks.
-- Use ES7 class properties to create automatically-bound methods for event
-  handling. See [this blog post](http://facebook.github.io/react/blog/2015/01/27/react-v0.13.0-beta-1.html#es6-classes)
-  for more information.
-
-### Styling
-
-Most of these are derived from [SMACSS](https://smacss.com/book). Read it if
-you have the time. If you have any questions about them ask Tenor.
-
-- Prefix all CSS classes with `gb-{module}` such as `gb-navbar` for all navbar
-  classes.
-- Only use `div`s when possible. (exceptions being special elements like `input`, `img`, etc.)
-- Use one, case-specific, class for each element. For example instead of
-  writing:
-
-  ```
-  <div className="gb-navbar-item gb-navbar-points">...</div>
-  ```
-
-  do:
-    
-  ```
-  <div className="gb-navbar-points">...</div>
-  // in css:
-  .gb-navbar-points {
-    .gb-navbar-item;
-
-    // ...
-  }
-  ```
-- Avoid hard-coding magic numbers, especially colors. Create an entry in
-  `base.less` for colors, or include a variable declaration at the top of the
-  module for things magic measurements. 
-- Avoid resorting to absolute positioning in order to align elements. Try to
-  leverage padding/margin tricks or inline elements and floats.
-- Avoid using flex boxes and other expiremental/unsupported features when
-  possible.
-
-package.json
-------------
-
-Make sure to distinguish between devDependencies and normal dependencies when
-you add entries to the package. If the dependency is only needed for the
-build-step, be sure to include it as a "devDependency." (`npm i -D ...`). If
-the dependency is needed at runtime (included in the dev bundle) then include
-it as a hard dependency. (`npm i -S ...`)
-
 Gulp tasks
 ----------
 
@@ -102,3 +45,8 @@ Mocha tests
 Running `npm test` or simply `mocha` will run the test suite. If you want to
 have a tigher TDD-loop, or you just want your tests to run more rapidly, then
 start mocha in watch-mode with `mocha -w`. Try out the `-R min` reporter.
+
+Best practices
+--------------
+
+See our [best practices page](https://github.com/goodybag/cater-web/wiki/Best-practices) on the wiki.
