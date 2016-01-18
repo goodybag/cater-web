@@ -1,0 +1,136 @@
+#components { #gb-navbar {
+  .mobile( @breakpoint, @height ){
+    @media screen and ( max-width: @breakpoint ){
+      .gb-navbar,
+      .gb-navbar-container {
+        min-height: @height;
+      }
+
+      .gb-navbar-component {
+        display: inline-block;
+        height: @height;
+        line-height: @height;
+        padding-top: 0;
+        font-size: 0;
+      }
+
+      .gb-navbar-sub-component {
+        height: @height;
+        line-height: @height;
+      }
+
+      .gb-navbar-caption-assist {
+        display: none;
+      }
+
+      .gb-navbar-logo-component {
+        width: auto;
+      }
+
+      .gb-navbar-logo-mobile {
+        display: inline-block;
+
+        + .gb-navbar-logo {
+          display: none;
+        }
+      }
+
+      .gb-navbar-points-component {
+        float: right;
+        margin-right: 12px;
+      }
+
+      .gb-navbar-toggle-component {
+        float: right;
+        > .gb-navbar-toggle {
+          vertical-align: middle;
+
+          // Make the hamburger icon look nice
+          padding: 4px 12px;
+          font-size: 24px;
+          font-weight: 100;
+        }
+      }
+
+      .gb-navbar-collapsed {
+        .gb-navbar-nav-component {
+          display: none;
+        }
+
+        &:before {
+          display: none;
+        }
+      }
+
+      // The border between non-collapsed navbar and nav
+      .gb-navbar:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        left: 0;
+        top: @height;
+        background: rgba( 0, 0, 0, 0.1 );
+      }
+
+      .gb-navbar-nav-component {
+        display: block;
+        height: auto;
+        margin-top: 7px;
+        padding-bottom: 12px;
+
+        .nav {
+          &, & > li, & > li > a {
+            display: block;
+          }
+
+          > li {
+            margin-top: 12px;
+          }
+
+          .gb-navbar-button {
+            display: block;
+            margin-left: 0;
+            padding: 0;
+            border: none;
+            font-size: 14px;
+          }
+        }
+
+        // Make the button text headers in the mobile menu
+        .gb-navbar-item {
+          border-bottom: solid 1px rgba(0,0,0,0.2);
+          line-height: 22px;
+        }
+
+        .gb-navbar-item-arrow {
+          display: none;
+        }
+
+        .gb-navbar-menu-container {
+          position: static;
+          width: 100%;
+          box-shadow: none;
+          border: none;
+          text-align: right;
+          &:before, &:after {
+            display: none;
+          }
+        }
+      }
+
+      .gb-navbar-menu {
+        max-height: auto;
+        overflow: auto;
+        padding: 4px 0;
+      }
+
+      .gb-navbar-menu-link {
+        font-size: 12px;
+        text-align: right;
+        padding: 6px 2px;
+        line-height: 20px;
+      }
+    }
+  }
+}}

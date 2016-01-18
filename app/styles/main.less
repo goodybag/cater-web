@@ -1,7 +1,26 @@
 @import "base";
 @import "icons";
+@import "container";
 @import "helpers/index";
 @import "navbar/index";
 @import "restaurant/index";
 @import "order-pane/index";
 @import "modal/index";
+
+#components > #gb-container > .init(
+  @width: 1145px,
+  @horizontal-padding: @gb-body-padding-large
+);
+
+#components > #gb-navbar .init(
+  @color: @gb-foreground,
+  @accent-color: @gb-red
+);
+
+.gb-restaurant {
+  // Exported from gb-navbar .init()
+  ///////////////////////////////////
+  // Apply margin-top to .gb-restaurant so navbar does not
+  // sit on top of content
+  .gb-navbar-provide-offset-margin();
+}

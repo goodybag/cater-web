@@ -34,7 +34,8 @@ export class NavbarComponent extends Component {
     };
 
     state = {
-        activeItemName: null
+        activeItemName: null,
+        isExpanded: false
     };
 
     handleItemClick = itemName => {
@@ -52,72 +53,81 @@ export class NavbarComponent extends Component {
         const {points, name, region: {name: regionName}} = user;
         const {activeItemName} = this.state;
 
-        const items = {
-            region: <NavbarRegionMenuComponent key="region"/>,
-            orders: <NavbarOrderMenuComponent key="orders"/>,
-            account: <NavbarAccountMenuComponent key="account"/>
-        };
-
-        // TODO: make this into an iterating array thingy
-
         return (
-            <span>
-                <div className="gb-navbar-container">
-                    <div className="gb-navbar">
-                        <div className="gb-navbar-left">
-                            <div className="gb-navbar-logo">
-                                <img className="gb-navbar-logo-large" width={155} height={30} src={config.resolveAssetURL('logo-large.svg')}/>
+            <div className={cx({
+                'gb-navbar': this.state.isExpanded,
+                'gb-navbar-collapsed': !this.state.isExpanded,
+                'gb-navbar-fixed': true
+            })}>
+                <div className="gb-container">
+                    <div className="gb-navbar-logo-component">
+                        <img
+                            className="gb-navbar-logo-mobile"
+                            src={config.resolveAssetURL('logo-small.svg')} />
+                        <img
+                            className="gb-navbar-logo"
+                            src={config.resolveAssetURL('logo-large.svg')} />
+                    </div>
+                    <div className="gb-navbar-caption-component">
+                        <span className="gb-navbar-caption-assist"><strong>Let us help you with your order!</strong></span>
+                        <span className="gb-navbar-caption-number">(512) 677-4224</span>
+                    </div>
 
-                                <img className="gb-navbar-logo-small" height={40} src={config.resolveAssetURL('logo-small.svg')}/>
-                            </div>
-                        </div>
+                    <div className="gb-navbar-toggle-component">
+                        <button
+                            className="gb-navbar-toggle gb-icon-hamburger"
+                            onClick={this.onToggleClick.bind(this)}
+                        >
+                        </button>
+                    </div>
 
-                        <div className="gb-navbar-right">
-                            <div className="gb-navbar-points">
-                                <div className="gb-navbar-points-text">{points} points</div>
-                            </div>
+                    <a className="gb-navbar-points-component" href="/users/me/rewards">1432</a>
+                    <div className="gb-navbar-nav-component">
+                        <ul className="nav">
+                            {user.isAdmin() ? (
+                                <li>
+                                    <NavbarRegionMenuComponent />
+                                </li>
+                            ) : null}
 
-                            <NavbarItemComponent
-                                title={regionName}
-                                name="region"
-                                active={activeItemName === 'region'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'region' && items.region)}
-                            />
+                            <li>
+                                <NavbarItemComponent
+                                    title="My Orders"
+                                    name="orders"
+                                    active={activeItemName === 'orders'}
+                                    onClick={this.handleItemClick}
+                                >
+                                    <NavbarOrderMenuComponent
+                                        key="orders"
+                                        active={activeItemName === 'orders'}
+                                    />
+                                </NavbarItemComponent>
+                            </li>
 
-                            <NavbarItemComponent
-                                title="My Orders"
-                                name="orders"
-                                active={activeItemName === 'orders'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'orders' && items.orders)}
-                            />
-
-                            <NavbarItemComponent
-                                title={`Hi, ${name}`}
-                                name="account"
-                                active={activeItemName === 'account'}
-                                onClick={this.handleItemClick}
-                                items={transition(activeItemName === 'account' && items.account)}
-                            />
-                        </div>
+                            <li>
+                                <NavbarItemComponent
+                                    title={`Hi, ${name}`}
+                                    name="account"
+                                    active={activeItemName === 'account'}
+                                    onClick={this.handleItemClick}
+                                >
+                                    <NavbarAccountMenuComponent
+                                        key="account"
+                                        active={activeItemName === 'account'}
+                                    />
+                                </NavbarItemComponent>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                {transition(items[activeItemName])}
-            </span>
+            </div>
         );
+    }
 
-        function transition(el) {
-            return (
-                <CSSTransitionGroup
-                    transitionName="gb-navbar-menu"
-                    transitionEnterTimeout={200}
-                    transitionLeaveTimeout={200}>
-                    {el}
-                </CSSTransitionGroup>
-            );
-        }
+    onToggleClick(e) {
+        this.setState({
+            isExpanded: !this.state.isExpanded
+        });
     }
 }
 
@@ -126,8 +136,7 @@ class NavbarItemComponent extends Component {
         title: PropTypes.node.isRequired,
         name: PropTypes.string.isRequired,
         active: PropTypes.bool.isRequired,
-        onClick: PropTypes.func.isRequired,
-        items: PropTypes.node.isRequired
+        onClick: PropTypes.func.isRequired
     };
 
     handleClick = () => {
@@ -137,13 +146,15 @@ class NavbarItemComponent extends Component {
     };
 
     render() {
-        const {title, name, active, items} = this.props;
-
-        const set = cx(`gb-navbar-item-${name}`, {active});
+        const {title, name, active } = this.props;
 
         return (
-            <div className="gb-navbar-button" onClick={this.handleClick}>
-                <div className={set}>
+            <div className={(cx({
+                'gb-navbar-button': true,
+                'gb-navbar-button-stay-collapsed': this.props.staysCollapsed,
+                'active': active
+            }))} onClick={this.handleClick}>
+                <div className="gb-navbar-item">
                     {title}
 
                     <div className="gb-navbar-item-arrow">
@@ -151,7 +162,7 @@ class NavbarItemComponent extends Component {
                     </div>
                 </div>
 
-                {items}
+                {this.props.children}
             </div>
         );
     }
