@@ -155,7 +155,9 @@ class NavbarItemComponent extends Component {
                 'active': active
             }))} onClick={this.handleClick}>
                 <div className="gb-navbar-item">
-                    {title}
+                    <div className="gb-navbar-item-text">
+                        {title}
+                    </div>
 
                     <div className="gb-navbar-item-arrow">
                         <div className="gb-arrow-right"/>
