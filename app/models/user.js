@@ -38,8 +38,6 @@ export class User {
     }
 
     isAdmin() {
-        return this.groups.some(function(groupObj) {
-            return groupObj.group === 'admin';
-        });
+        return this.groups.some(group => group === 'admin');
     }
 }
