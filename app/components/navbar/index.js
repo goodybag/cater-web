@@ -2,21 +2,22 @@ import React, {Component, PropTypes, cloneElement} from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
+import {Dispatcher} from 'flux';
 import cx from 'classnames';
 
 import {Config} from '../../lib/config';
 import {CurrentUserStore} from '../../stores/user';
 import {User} from '../../models/user';
 
-import {NavbarRegionMenuComponent} from './menus/region';
+import {RegionSelectorComponent} from '../region-selector';
 import {NavbarOrderMenuComponent} from './menus/order';
 import {NavbarAccountMenuComponent} from './menus/account';
 
 @inject({
     currentUserStore: CurrentUserStore,
-    config: Config
+    config: Config,
+    dispatcher: Dispatcher
 }, [
-    NavbarRegionMenuComponent,
     NavbarOrderMenuComponent,
     NavbarAccountMenuComponent
 ])
@@ -30,7 +31,8 @@ import {NavbarAccountMenuComponent} from './menus/account';
 export class NavbarComponent extends Component {
     static propTypes = {
         user: PropTypes.instanceOf(User),
-        config: PropTypes.instanceOf(Config)
+        config: PropTypes.instanceOf(Config),
+        dispatcher: PropTypes.instanceOf(Dispatcher)
     };
 
     state = {
@@ -49,7 +51,7 @@ export class NavbarComponent extends Component {
     };
 
     render() {
-        const {user, config} = this.props;
+        const {user, config, dispatcher} = this.props;
         const {points, name, region: {name: regionName}} = user;
         const {activeItemName} = this.state;
 
@@ -86,7 +88,10 @@ export class NavbarComponent extends Component {
                         <ul className="nav">
                             {user.isAdmin() ? (
                                 <li>
-                                    <NavbarRegionMenuComponent />
+                                    <RegionSelectorComponent
+                                        value={user.region.id}
+                                        dispatcher={dispatcher}
+                                    />
                                 </li>
                             ) : null}
 
