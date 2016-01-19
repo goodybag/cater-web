@@ -21,7 +21,7 @@ import {NavbarAccountMenuComponent} from './menus/account';
     NavbarOrderMenuComponent,
     NavbarAccountMenuComponent
 ])
-@listeningTo([CurrentUserStore], props => {
+@listeningTo(['currentUserStore'], props => {
     const {currentUserStore} = props;
 
     return {

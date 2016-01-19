@@ -12,7 +12,7 @@ import {OrderStore} from '../../../stores/order';
     dispatcher: Dispatcher,
     orderStore: OrderStore
 })
-@listeningTo([OrderStore], ({orderStore}) => {
+@listeningTo(['orderStore'], ({orderStore}) => {
     return {
         order: orderStore.getOrder()
     };

@@ -13,7 +13,7 @@ import {OrderPaneCheckoutComponent} from './checkout';
     orderItemStore: OrderItemStore,
     orderStore: OrderStore
 })
-@listeningTo([OrderItemStore, OrderStore], ({orderItemStore, orderStore}) => {
+@listeningTo(['orderItemStore', 'orderStore'], ({orderItemStore, orderStore}) => {
     return {
         orderItems: orderItemStore.getOrderItems(),
         order: orderStore.getOrder()
