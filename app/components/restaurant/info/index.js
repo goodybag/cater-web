@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 
+import {Config} from '../../../lib/config';
 import {PriceComponent} from '../../price';
 import {RestaurantStore} from '../../../stores/restaurant';
 import {Restaurant} from '../../../models/restaurant';
@@ -10,7 +11,8 @@ import {RestaurantInfoSectionComponent} from './section';
 import {RestaurantInfoHeaderComponent} from './header';
 
 @inject({
-    restaurantStore: RestaurantStore
+    restaurantStore: RestaurantStore,
+    config: Config
 })
 @listeningTo(['restaurantStore'], props => {
     const {restaurantStore} = props;
@@ -22,11 +24,12 @@ import {RestaurantInfoHeaderComponent} from './header';
 
 export class RestaurantInfoComponent extends Component {
     static propTypes = {
-        restaurant: PropTypes.instanceOf(Restaurant)
+        restaurant: PropTypes.instanceOf(Restaurant).isRequired,
+        config: PropTypes.instanceOf(Config).isRequired
     };
 
     render() {
-        const {restaurant} = this.props;
+        const {restaurant, config} = this.props;
 
         const {
             cuisine,
@@ -106,7 +109,13 @@ export class RestaurantInfoComponent extends Component {
 
                 <div className="gb-restaurant-info-right">
                     <RestaurantInfoSectionComponent>
-                        <RestaurantGmapComponent />
+                        <RestaurantGmapComponent
+                            street={street}
+                            city={city}
+                            state={state}
+                            zip={zip}
+                            gmapsKey={config.gmapsKey}
+                        />
                     </RestaurantInfoSectionComponent>
 
                     <RestaurantInfoSectionComponent>

@@ -16,7 +16,8 @@ export class Config {
             manifest = {},
             cdnPrefix = '/assets/',
             apiPrefix = '/api/',
-            serverRendering = true
+            serverRendering = true,
+            gmapsKey = 'AIzaSyBbsgtm6Tqdh3ZyWfRj2Mg_eSZDW8ajLss'
         } = options;
 
         this.env = env;
@@ -24,6 +25,7 @@ export class Config {
         this.cdnPrefix = cdnPrefix;
         this.apiPrefix = apiPrefix;
         this.serverRendering = serverRendering;
+        this.gmapsKey = gmapsKey;
     }
 
     resolveAssetURL(assetName) {
