@@ -1,27 +1,36 @@
 @import "~@goodybag/react-pickadate/styles/main";
 
-.gb-order-pane-info-edit {
+@error-transition-duration: 100ms;
+@error-transition-delay: 100ms;
+
+.gb-order-pane-edit {
+    .gb-order-pane-section;
     font-size: 0.9em;
 
     i[class^="icon-"] {
-        .gb-order-pane-info-edit-icon;
+        .gb-order-pane-edit-icon;
     }
 }
 
-.gb-order-pane-info-edit-location,
-.gb-order-pane-info-edit-date,
-.gb-order-pane-info-edit-time,
-.gb-order-pane-info-edit-guests {
+.gb-order-pane-edit-location,
+.gb-order-pane-edit-date,
+.gb-order-pane-edit-time,
+.gb-order-pane-edit-guests {
     position: relative;
     margin-bottom: 9px;
 }
 
-.gb-order-pane-info-edit-date {
+.gb-order-pane-edit-date {
     #components > #datepicker > .init();
     text-shadow: none;
 }
 
-.gb-order-pane-info-edit-icon {
+.gb-order-pane-edit-time {
+    #components > #timepicker > .init();
+    text-shadow: none;
+}
+
+.gb-order-pane-edit-icon {
     color: @gb-shadow-cadet-blue;
     position: absolute;
     bottom: 7px;
@@ -30,15 +39,95 @@
     text-shadow: none;
 }
 
-.gb-order-pane-info-edit-box {
-    .gb-input-box;
+.gb-order-pane-edit-checkmark {
+    .gb-order-pane-edit-icon;
+    .gb-icon-checkmark;
 
-    width: 100%;
-    padding-left: 29px;
-    font-size: 1.11em;
+    display: none;
+    color: @gb-green;
+    left: auto;
+    right: 8px;
 }
 
-.gb-order-pane-info-edit-save {
+.gb-order-pane-edit-crossmark {
+    .gb-order-pane-edit-icon;
+    .gb-icon-x;
+
+    display: none;
+    color: @gb-red;
+    left: auto;
+    right: 8px;
+}
+
+.gb-order-pane-edit-error-tooltip {
+    background: @gb-shadow-blue-charcoal;
+    border-radius: 4px;
+    bottom: 34px;
+    box-sizing: border-box;
+    color: @gb-white;
+    max-width: 400px;
+    opacity: 0;
+    padding: 15px 20px;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    transition: visibility 0s linear (@error-transition-duration + @error-transition-delay),
+                opacity @error-transition-duration linear;
+    visibility: hidden;
+    z-index: 5;
+
+    &:before {
+        .gb-arrow-down(10px, @gb-shadow-blue-charcoal, auto, 8px, -10px, auto);
+
+        content: ' ';
+    }
+}
+
+.gb-order-pane-edit-box {
+    .gb-input-box;
+
+    height: 34px;
+    width: 100%;
+    padding-left: 29px;
+    padding-right: 29px;
+    font-size: 1.11em;
+    border: 1px solid transparent;
+
+    &[disabled] {
+        background: @gb-shadow-athens-gray;
+    }
+
+    &:not([disabled]):not(:focus):not(.picker__input--active) {
+        &.gb-order-pane-edit-box-valid {
+            background: @gb-evergreen;
+            border-color: @gb-green;
+        }
+
+        &.gb-order-pane-edit-box-invalid {
+            background: lighten(@gb-red, 30%);
+            border-color: @gb-red;
+        }
+    }
+}
+
+.gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-valid ~ .gb-order-pane-edit-checkmark {
+    display: block;
+}
+
+.gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-invalid ~ .gb-order-pane-edit-crossmark {
+    display: block;
+}
+
+.gb-order-pane-edit-crossmark:hover, .gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-invalid-show ~ .gb-order-pane-edit-crossmark {
+    & + .gb-order-pane-edit-error-tooltip {
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s linear,
+                    opacity @error-transition-duration @error-transition-delay linear;
+    }
+}
+
+.gb-order-pane-edit-save {
     .gb-button-red;
 
     display: block;
@@ -47,4 +136,26 @@
     margin-top: 15px;
     text-shadow: none;
     width: 100%;
+    height: 34px;
+    overflow: hidden;
+
+    &.gb-order-pane-edit-save-loading {
+        .gb-order-pane-edit-save-spinner {
+            margin-top: 0;
+            animation: rotation 1s infinite linear;
+        }
+    }
+}
+
+.gb-order-pane-edit-save-spinner {
+    box-sizing: border-box;
+    transition: margin 200ms ease;
+    margin: -27px auto 7px auto;
+    height: 20px;
+    width: 20px;
+    border-left: 2px solid rgba(255, 255, 255, 0.5);
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    border-top: 2px solid @gb-white;
+    border-radius: 100%;
 }

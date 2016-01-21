@@ -53,10 +53,25 @@
     .gb-order-pane-header-arrow {
         float: right;
         font-size: 0.78em;
+
+        & > * {
+            display: inline-block;
+            transition: transform 100ms linear;
+        }
     }
 
     &:hover {
         cursor: pointer;
+    }
+
+    &.gb-order-pane-header-closed {
+        .gb-order-pane-header-arrow > * {
+            transform: rotate(-90deg);
+        }
+
+        & + * {
+            display: none;
+        }
     }
 }
 
