@@ -4,3 +4,10 @@ export class UpdateOrderAction {
         this.changes = changes;
     }
 }
+
+export class RemoveOrderItemAction {
+    constructor({orderItem, order}) {
+        this.orderItem = orderItem;
+        this.order = order;
+    }
+}

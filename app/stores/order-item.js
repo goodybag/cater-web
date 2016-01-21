@@ -4,6 +4,7 @@ import {Dispatcher} from 'flux';
 
 import {OrderItemsResolver} from '../resolvers/order-item';
 import {AddItemToOrderAction} from '../actions/menu';
+import {RemoveOrderItemAction} from '../actions/order';
 import {OrderItemService} from '../services/order-item'
 
 @dependencies(Dispatcher, OrderItemsResolver, OrderItemService)
@@ -15,6 +16,7 @@ export class OrderItemStore extends Store {
         this.orderItemService = orderItemService;
 
         this.bind(AddItemToOrderAction, this.onAddItem);
+        this.bind(RemoveOrderItemAction, this.onRemoveItem);
     }
 
     getOrderItems() {
@@ -25,6 +27,17 @@ export class OrderItemStore extends Store {
         this.orderItemService.createOrderItem(order.id, orderItemData)
             .then(item => {
                 this.orderItems.push(item);
+                this.emit('change');
+            });
+    }
+
+    onRemoveItem({orderItem, order}) {
+        this.orderItemService.removeOrderItem(orderItem.id, order.id)
+            .then(item => {
+                this.orderItems = this.orderItems.filter(i => {
+                    return i.id !== item[0].id;
+                });
+
                 this.emit('change');
             });
     }

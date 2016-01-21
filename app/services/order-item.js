@@ -24,4 +24,9 @@ export class OrderItemService {
         return this.apiService.create(`orders/${orderId}/items`, data)
             .then(OrderItem.parse);
     }
+
+    removeOrderItem(id, orderId) {
+        return this.apiService.delete(`orders/${orderId}/items/${id}`)
+            .catch(err => console.log(err));
+    }
 }
