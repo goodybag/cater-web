@@ -26,6 +26,10 @@ export class ApiService {
         }).then(res => res.body);
     }
 
+    fetch(path) {
+        return this.fetchEndpoint(path);
+    }
+
     create(path, data) {
         const url = this.config.resolveResourceURL(path);
 
