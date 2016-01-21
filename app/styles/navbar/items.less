@@ -19,12 +19,27 @@
     @media screen and (max-width: @gb-breakpoint-laptop) {
         padding: 10px 18px;
     }
+
+    &.active {
+        .gb-navbar-item-arrow {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+.gb-navbar-item-text {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .gb-navbar-item-arrow {
-    display: inline;
+    display: inline-block;
+    vertical-align: middle;
     font-size: 0.875em;
     margin-left: 12px;
+    transition: transform 100ms ease;
+    width: 12px;
+    height: 12px;
 }
 
 .gb-navbar-points {

@@ -16,7 +16,7 @@ import {OrderPaneTimeLeftComponent} from './timeleft';
     orderStore: OrderStore,
     orderItemStore: OrderItemStore
 }, [OrderPaneInfoComponent, OrderPaneItemsComponent])
-@listeningTo([OrderStore, OrderItemStore], props => {
+@listeningTo(['orderStore', 'orderItemStore'], props => {
     const {orderStore, orderItemStore} = props;
 
     return {

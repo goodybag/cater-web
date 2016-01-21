@@ -12,7 +12,7 @@ import {RestaurantInfoHeaderComponent} from './header';
 @inject({
     restaurantStore: RestaurantStore
 })
-@listeningTo([RestaurantStore], props => {
+@listeningTo(['restaurantStore'], props => {
     const {restaurantStore} = props;
 
     return {

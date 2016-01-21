@@ -14,7 +14,7 @@ import {StopDisplayingOrderAction} from '../../../actions/past-orders';
     pastOrdersStore: PastOrdersStore,
     dispatcher: Dispatcher
 })
-@listeningTo([PastOrdersStore], ({pastOrdersStore}) => {
+@listeningTo(['pastOrdersStore'], ({pastOrdersStore}) => {
     return {
         order: pastOrdersStore.getCurrentOrder(),
         orderItems: pastOrdersStore.getCurrentOrderItems()

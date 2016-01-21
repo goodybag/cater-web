@@ -13,7 +13,7 @@ import {OrderPaneInfoEditComponent} from './edit';
     dispatcher: Dispatcher,
     orderStore: OrderStore
 })
-@listeningTo([OrderStore], ({orderStore}) => {
+@listeningTo(['orderStore'], ({orderStore}) => {
     return {
         order: orderStore.getOrder()
     };

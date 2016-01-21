@@ -10,7 +10,7 @@ import {RestaurantReviewComponent} from './review';
 @inject({
     restaurantStore: RestaurantStore
 })
-@listeningTo([RestaurantStore], props => {
+@listeningTo(['restaurantStore'], props => {
     const {restaurantStore} = props;
 
     return {

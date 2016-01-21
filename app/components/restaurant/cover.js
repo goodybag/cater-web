@@ -8,7 +8,7 @@ import {Restaurant} from '../../models/restaurant';
 @inject({
     restaurantStore: RestaurantStore
 })
-@listeningTo([RestaurantStore], props => {
+@listeningTo(['restaurantStore'], props => {
     const {restaurantStore} = props;
 
     return {

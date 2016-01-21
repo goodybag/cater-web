@@ -15,7 +15,7 @@ import {RestaurantPastOrdersModalComponent} from './modal';
     pastOrdersStore: PastOrdersStore,
     dispatcher: Dispatcher
 }, [RestaurantPastOrdersModalComponent])
-@listeningTo([RestaurantStore, PastOrdersStore], props => {
+@listeningTo(['restaurantStore', 'pastOrdersStore'], props => {
     const {pastOrdersStore, restaurantStore} = props;
 
     return {
