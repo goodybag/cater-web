@@ -7,7 +7,7 @@ import {OrderResolver} from './order';
 @dependencies(OrderItemService, OrderResolver)
 export class OrderItemsResolver {
     constructor(orderItemService, order) {
-        if (order == null) {
+        if (order != null) {
             return orderItemService.fetchAllByOrderId(order.id);
         } else {
             return [];
