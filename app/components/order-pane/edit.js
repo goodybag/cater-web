@@ -1,10 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import {DatePickerComponent} from '@goodybag/react-pickadate';
 
 import {Order} from '../../models/order';
+import {Restaurant} from '../../models/restaurant';
 
 export class OrderPaneInfoEditComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order).isRequired,
+        restaurant: PropTypes.instanceOf(Restaurant).isRequired,
         onSaveInfo: PropTypes.func.isRequired
     };
 
@@ -29,6 +32,12 @@ export class OrderPaneInfoEditComponent extends Component {
         this.setState({address: value});
     };
 
+    handleDateChange = (date) => {
+        this.setState(({datetime}) => {
+            return {};
+        });
+    };
+
     handleTimeChange = (event) => {
         const {target: {value}} = event;
 
@@ -43,6 +52,7 @@ export class OrderPaneInfoEditComponent extends Component {
 
     render() {
         const {address, guests, datetime} = this.state;
+        const {restaurant} = this.props;
 
         return (
             <div className="gb-order-pane-info-edit">
@@ -67,10 +77,10 @@ export class OrderPaneInfoEditComponent extends Component {
                     </div>
                     <div className="gb-order-pane-info-edit-input">
                         <i className="icon-calendar"></i>
-                        <input
-                            type="datetime"
-                            value={datetime}
-                            onChange={this.handleTimeChange}
+
+                        <DatePickerComponent
+                            onSelect={this.handleDateChange}
+                            date={datetime || new Date()}
                             className="gb-order-pane-info-edit-box"
                         />
                     </div>
