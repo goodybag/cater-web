@@ -98,10 +98,6 @@ export class Order {
     displayAddress() {
         const {street, city, state, zip} = this;
 
-        if (street == null || city == null || state == null) {
-            return `${zip}`;
-        } else {
-            return `${street}, ${city}, ${state}, ${zip}`;
-        }
+        return `${street}, ${city}, ${state}, ${zip}`;
     }
 }

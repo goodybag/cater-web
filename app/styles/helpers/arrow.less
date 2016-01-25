@@ -21,3 +21,19 @@
     border-width: @size;
     border-bottom-color: @color;
 }
+
+.gb-arrow-down(@size, @color, @offset-top, @offset-right, @offset-bottom, @offset-left) {
+    position: absolute;
+    top: @offset-top;
+    right: @offset-right;
+    bottom: @offset-bottom;
+    left: @offset-left;
+    width: 0;
+    height: 0;
+    margin-left: -@size;
+    border-color: transparent;
+    border-style: solid;
+    border-bottom: 0;
+    border-width: @size;
+    border-top-color: @color;
+}

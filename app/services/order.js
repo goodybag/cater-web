@@ -18,8 +18,7 @@ export class OrderService {
         return this.apiService.fetchEndpoint(`restaurants/${restaurantId}/orders/current`)
             .then(Order.parse).catch(err => {
                 if (err.status === 404) {
-                    // TODO: Make this not work so poorly
-                    return new Order({});
+                    return null;
                 } else {
                     throw err;
                 }

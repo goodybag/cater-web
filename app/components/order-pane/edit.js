@@ -1,125 +1,272 @@
 import React, {Component, PropTypes} from 'react';
-import {DatePickerComponent} from '@goodybag/react-pickadate';
+import {DatePickerComponent, TimePickerComponent} from '@goodybag/react-pickadate';
+import cx from 'classnames';
+import moment from 'moment-timezone';
+import {ValidationError} from 'nagoya';
+import {chain} from 'lodash';
+import {listeningTo} from 'tokyo';
 
 import {Order} from '../../models/order';
-import {Restaurant} from '../../models/restaurant';
+import {validate} from '../../validators/order-info';
 
-export class OrderPaneInfoEditComponent extends Component {
+@listeningTo(['orderStore'], {
+    error: (props, error, component) => {
+        if (error instanceof ValidationError) {
+            component.setState({columnErrors: error.columns});
+        }
+    }
+})
+export class OrderPaneEditComponent extends Component {
     static propTypes = {
-        order: PropTypes.instanceOf(Order).isRequired,
-        restaurant: PropTypes.instanceOf(Restaurant).isRequired,
+        order: PropTypes.instanceOf(Order),
+        saving: PropTypes.bool.isRequired,
         onSaveInfo: PropTypes.func.isRequired
     };
 
-    componentWillMount() {
-        const {order} = this.props;
-        const {guests, datetime} = order;
-        const address = order.displayAddress();
+    static defaultProps = {
+        saving: false
+    };
 
-        this.setState({changes: {address, guests, datetime}});
+    constructor(props) {
+        super(props);
+
+        const {
+            order = null
+        } = this.props;
+
+        if (order == null) {
+            this.state = {
+                columnErrors: {},
+                address: null,
+                guests: null,
+                date: null,
+                time: null
+            };
+        } else {
+            const datetime = moment(order.datetime).toDate();
+
+            this.state = {
+                columnErrors: {},
+                address: order.displayAddress(),
+                guests: order.guests,
+                date: moment(datetime).format('YYYY-MM-DD'),
+                time: moment(datetime).format('HH:mm:ss')
+            };
+        }
+
+        this.handleSaveInfo = this.handleSaveInfo.bind(this);
+        this.handleAddressChange = this.handleAddressChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleTimeChange = this.handleTimeChange.bind(this);
+        this.handleGuestsChange = this.handleGuestsChange.bind(this);
+        this.validateFields = this.validateFields.bind(this);
     }
 
-    handleSaveInfo = () => {
+    handleSaveInfo() {
         const {onSaveInfo: saveInfo} = this.props;
-        const {address, guests, datetime} = this.state;
+        const {address, guests, date, time} = this.state;
 
-        saveInfo({address, guests, datetime});
-    };
+        saveInfo({address, guests, date, time});
+    }
 
-    handleAddressChange = (event) => {
+    handleAddressChange(event) {
         const {target: {value}} = event;
 
-        this.setState({address: value});
-    };
+        this.setState({address: value || null});
+        this.validateFields();
+    }
 
-    handleDateChange = (date) => {
-        this.setState(({datetime}) => {
-            return {};
+    handleDateChange(date) {
+        this.setState({date});
+        this.validateFields();
+    }
+
+    handleTimeChange(time) {
+        this.setState({time});
+        this.validateFields();
+    }
+
+    handleGuestsChange(event) {
+        const {target: {value}} = event;
+
+        this.setState({guests: +value});
+        this.validateFields();
+    }
+
+    inputBoxClassNameByValidity(state, show = false) {
+        return cx('gb-order-pane-edit-box', {
+            'gb-order-pane-edit-box-valid': state === 'valid',
+            'gb-order-pane-edit-box-invalid': state === 'invalid',
+            'gb-order-pane-edit-box-invalid-show': show
         });
-    };
+    }
 
-    handleTimeChange = (event) => {
-        const {target: {value}} = event;
+    classNameForColumn(columnName, value) {
+        const {columnErrors} = this.state;
 
-        this.setState({datetime: value});
-    };
+        if (columnErrors[columnName]) {
+            return this.inputBoxClassNameByValidity('invalid',
+                                                    this.shouldShowColumn(columnName));
+        } else if (value == null) {
+            return this.inputBoxClassNameByValidity();
+        } else {
+            return this.inputBoxClassNameByValidity('valid');
+        }
+    }
 
-    handleGuestsChange = (event) => {
-        const {target: {value}} = event;
+    shouldShowColumn(columnName) {
+        const {columnErrors} = this.state;
 
-        this.setState({guests: value});
-    };
+        const errors = [
+            {name: 'address', value: columnErrors.address},
+            {name: 'date', value: columnErrors.date},
+            {name: 'time', value: columnErrors.time},
+            {name: 'guests', value: columnErrors.guests},
+        ];
+
+        const result = chain(errors)
+            .filter('value')
+            .pluck('name')
+            .head()
+            .value();
+
+        return result === columnName;
+    }
+
+    validateFields() {
+        const {address, date, time, guests} = this.state;
+
+        let columnErrors = {};
+
+        try {
+            validate({address, date, time, guests});
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                columnErrors = err.columns;
+            } else {
+                throw err;
+            }
+        }
+
+        this.setState({columnErrors});
+    }
 
     render() {
-        const {address, guests, datetime} = this.state;
-        const {restaurant} = this.props;
+        const {saving} = this.props;
+        const {address, guests, date, time} = this.state;
+
+        const saveOrderInfoSet = cx('gb-order-pane-edit-save', {
+            'gb-order-pane-edit-save-loading': saving
+        });
 
         return (
-            <div className="gb-order-pane-info-edit">
-                <div className="gb-order-pane-info-edit-location">
-                    <div className="gb-order-pane-info-edit-text">
+            <div className="gb-order-pane-edit">
+                <div className="gb-order-pane-edit-location">
+                    <div className="gb-order-pane-edit-text">
                         Full address (street, city, state, zip)
                     </div>
-                    <div className="gb-order-pane-info-edit-input">
+
+                    <div className="gb-order-pane-edit-input">
                         <i className="icon-locationpin"></i>
+
                         <input
+                            disabled={saving}
                             type="text"
                             value={address}
                             onChange={this.handleAddressChange}
-                            className="gb-order-pane-info-edit-box"
+                            className={this.classNameForColumn('address', address)}
                         />
+
+                        <div className="gb-order-pane-edit-checkmark"/>
+                        <div className="gb-order-pane-edit-crossmark"/>
+                        {this.renderErrorMessageForColumn('address')}
                     </div>
                 </div>
 
-                <div className="gb-order-pane-info-edit-date">
-                    <div className="gb-order-pane-info-edit-text">
+                <div className="gb-order-pane-edit-date">
+                    <div className="gb-order-pane-edit-text">
                         Delivery date
                     </div>
-                    <div className="gb-order-pane-info-edit-input">
+                    <div className="gb-order-pane-edit-input">
                         <i className="icon-calendar"></i>
 
                         <DatePickerComponent
-                            onSelect={this.handleDateChange}
-                            date={datetime || new Date()}
-                            className="gb-order-pane-info-edit-box"
+                            disabled={saving}
+                            onChange={this.handleDateChange}
+                            date={date}
+                            className={this.classNameForColumn('date', date)}
                         />
+
+                        <div className="gb-order-pane-edit-checkmark"/>
+                        <div className="gb-order-pane-edit-crossmark"/>
+                        {this.renderErrorMessageForColumn('date')}
                     </div>
                 </div>
 
-                <div className="gb-order-pane-info-edit-time">
-                    <div className="gb-order-pane-info-edit-text">
+                <div className="gb-order-pane-edit-time">
+                    <div className="gb-order-pane-edit-text">
                         Delivery time
                     </div>
-                    <div className="gb-order-pane-info-edit-input">
+                    <div className="gb-order-pane-edit-input">
                         <i className="icon-clock"></i>
-                        <input
-                            type="datetime"
-                            value={datetime}
+
+                        <TimePickerComponent
+                            disabled={saving}
                             onChange={this.handleTimeChange}
-                            className="gb-order-pane-info-edit-box"
+                            time={time}
+                            className={this.classNameForColumn('time', time)}
                         />
+
+                        <div className="gb-order-pane-edit-checkmark"/>
+                        <div className="gb-order-pane-edit-crossmark"/>
+                        {this.renderErrorMessageForColumn('date')}
                     </div>
                 </div>
 
-                <div className="gb-order-pane-info-edit-guests">
-                    <div className="gb-order-pane-info-edit-text">
+                <div className="gb-order-pane-edit-guests">
+                    <div className="gb-order-pane-edit-text">
                         Guests
                     </div>
-                    <div className="gb-order-pane-info-edit-input">
+                    <div className="gb-order-pane-edit-input">
                         <i className="icon-profile"></i>
                         <input
+                            disabled={saving}
                             type="number"
                             value={guests}
                             onChange={this.handleGuestsChange}
-                            className="gb-order-pane-info-edit-box"
+                            className={this.classNameForColumn('guests', guests)}
                         />
+
+                        <div className="gb-order-pane-edit-checkmark"/>
+                        <div className="gb-order-pane-edit-crossmark"/>
+                        {this.renderErrorMessageForColumn('date')}
                     </div>
                 </div>
 
-                <div className="gb-order-pane-info-edit-save" onClick={this.handleSaveInfo}>
-                    Save Order Info
+                <div className={saveOrderInfoSet} onClick={this.handleSaveInfo}>
+                    <div className="gb-order-pane-edit-save-spinner"/>
+
+                    <div className="gb-order-pane-edit-save-text">
+                        Save Order Info
+                    </div>
                 </div>
             </div>
         );
+    }
+
+    renderErrorMessageForColumn(columnName) {
+        const {columnErrors} = this.state;
+
+        const error = columnErrors[columnName];
+
+        if (error) {
+            return (
+                <div className="gb-order-pane-edit-error-tooltip">
+                    <div className="gb-prder-pane-edit-error-message">
+                        {error.message}
+                    </div>
+                </div>
+            );
+        }
     }
 }

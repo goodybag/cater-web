@@ -1,38 +1,108 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
-import cxnames from 'classnames';
+import {Dispatcher} from 'flux';
+import cx from 'classnames';
 
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
 import {Order} from '../../models/order';
 import {OrderItem} from '../../models/order-item';
 import {OrderPaneInfoComponent} from './info';
+import {OrderPaneEditComponent} from './edit';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
 import {OrderPaneTimeLeftComponent} from './timeleft';
+import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../../actions/order';
 
 @inject({
     orderStore: OrderStore,
-    orderItemStore: OrderItemStore
+    orderItemStore: OrderItemStore,
+    dispatcher: Dispatcher
 }, [OrderPaneInfoComponent, OrderPaneItemsComponent])
 @listeningTo(['orderStore', 'orderItemStore'], props => {
     const {orderStore, orderItemStore} = props;
 
     return {
         order: orderStore.getOrder(),
+        savingOrder: orderStore.isSaving(),
         orderItems: orderItemStore.getOrderItems()
     };
 })
 export class OrderPaneComponent extends Component {
     static propTypes = {
-        order: PropTypes.instanceOf(Order).isRequired,
-        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
+        order: PropTypes.instanceOf(Order),
+        orderStore: PropTypes.instanceOf(OrderStore).isRequired,
+        savingOrder: PropTypes.bool.isRequired,
+        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem)),
+        dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            editing: false
+        };
+
+        this.handleStartEditing = this.handleStartEditing.bind(this);
+        this.handleSaveOrderInfo = this.handleSaveOrderInfo.bind(this);
+        this.handleOrderSubmission = this.handleOrderSubmission.bind(this);
+    }
+
+    handleStartEditing() {
+        this.setState({editing: true});
+    }
+
+    handleSaveOrderInfo(changes) {
+        const {dispatcher} = this.props;
+
+        this.setState({editing: false});
+        dispatcher.dispatch(new UpdateOrderInfoAction({changes}));
+    }
+
+    handleOrderSubmission(info) {
+        const {dispatcher} = this.props;
+
+        dispatcher.dispatch(new SubmitOrderInfoAction({info}));
+    }
 
     render() {
         const {order, orderItems} = this.props;
-        const {datetime, timezone} = order;
+
+        if (order == null) {
+            return this.renderEmpty();
+        } else {
+            return this.renderOrder();
+        }
+    }
+
+    renderOrderInfo() {
+        const {order, savingOrder, orderStore} = this.props;
+        const {editing} = this.state;
+
+        if (savingOrder || editing) {
+            return (
+                <OrderPaneEditComponent
+                    order={order}
+                    orderStore={orderStore}
+                    saving={savingOrder}
+                    onSaveInfo={this.handleSaveOrderInfo}
+                />
+            );
+        } else {
+            return (
+                <OrderPaneInfoComponent
+                    order={order}
+                    onStartEditing={this.handleStartEditing}
+                />
+            );
+        }
+    }
+
+    renderOrder() {
+        const {order, orderItems} = this.props;
+        const {editing} = this.state;
 
         return (
             <div className="gb-order-pane">
@@ -40,21 +110,55 @@ export class OrderPaneComponent extends Component {
 
                 <div className="gb-order-pane-tablet-left">
                     <OrderPaneHeaderComponent title={`Order - #${order.id}`}>
-                        <OrderPaneInfoComponent/>
+                        {this.renderOrderInfo()}
+                    </OrderPaneHeaderComponent>
+
+                    <OrderPaneHeaderComponent
+                        title="Share Order (Optional)"
+                        defaultClosed>
+
+                        <OrderPaneShareComponent order={order}/>
+                    </OrderPaneHeaderComponent>
+                </div>
+
+                <div className="gb-order-pane-tablet-right">
+                    <OrderPaneHeaderComponent title="Order Items">
+                        <OrderPaneItemsComponent
+                            order={order}
+                            orderItems={orderItems}
+                        />
+                    </OrderPaneHeaderComponent>
+                </div>
+
+                <div className="gb-order-pane-endcap"/>
+            </div>
+        );
+    }
+
+    renderEmpty() {
+        const {orderStore, savingOrder} = this.props;
+
+        return (
+            <div className="gb-order-pane">
+                <div className="gb-order-pane-tablet-left">
+                    <OrderPaneHeaderComponent title="Order Info">
+                        <OrderPaneEditComponent
+                            orderStore={orderStore}
+                            saving={savingOrder}
+                            onSaveInfo={this.handleOrderSubmission}
+                        />
                     </OrderPaneHeaderComponent>
 
                     <OrderPaneHeaderComponent
                         title="Share Order (Optional)"
                         initiallyClosed>
 
-                        <OrderPaneShareComponent order={order}/>
+                        <OrderPaneShareComponent disabled/>
                     </OrderPaneHeaderComponent>
                </div>
 
                 <div className="gb-order-pane-tablet-right">
-                    <OrderPaneHeaderComponent title="Order Items">
-                        <OrderPaneItemsComponent />
-                    </OrderPaneHeaderComponent>
+                    <OrderPaneHeaderComponent title="Order Items"/>
                 </div>
 
                 <div className="gb-order-pane-endcap"/>
@@ -66,19 +170,27 @@ export class OrderPaneComponent extends Component {
 class OrderPaneHeaderComponent extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
-        children: PropTypes.node.isRequired,
-        initiallyClosed: PropTypes.bool
+        children: PropTypes.node,
+        defaultClosed: PropTypes.bool.isRequired
     };
 
-    state = {
-        open: !this.props.initiallyClosed
+    static defaultProps = {
+        defaultClosed: false
     };
+
+    constructor(props) {
+        super(props);
+
+        const {defaultClosed} = this.props;
+
+        this.state = {
+            open: !defaultClosed
+        };
+    }
 
     handleClick = () => {
         this.setState(({open}) => {
-            return {
-                open: !open
-            };
+            return {open: !open};
         });
     };
 
@@ -86,21 +198,23 @@ class OrderPaneHeaderComponent extends Component {
         const {open} = this.state;
         const {title, children} = this.props;
 
-        const iconx = open ? 'gb-arrow-down' : 'gb-arrow-right';
+        const set = cx('gb-order-pane-header', {
+            'gb-order-pane-header-closed': !open
+        });
 
         return (
             <div className="gb-order-pane-block">
-                <div className="gb-order-pane-header" onClick={this.handleClick}>
+                <div className={set} onClick={this.handleClick}>
                     <div className="gb-order-pane-header-text">
                         {title}
                     </div>
 
                     <div className="gb-order-pane-header-arrow">
-                        <div className={iconx}/>
+                        <div className="gb-arrow-down"/>
                     </div>
                 </div>
 
-                {open && children}
+                {children}
             </div>
         );
     }
