@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
+import {find} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher} from 'flux';
 import {listeningTo} from 'tokyo';
@@ -7,6 +8,8 @@ import {listeningTo} from 'tokyo';
 import {MenuItem} from '../../../models/menu-item';
 import {AddItemToOrderAction} from '../../../actions/menu';
 import {OrderStore} from '../../../stores/order';
+
+import {ItemOptions} from './item-options';
 
 @inject({
     dispatcher: Dispatcher,
@@ -25,13 +28,15 @@ export class RestaurantMenuItemMenuComponent extends Component {
     };
 
     state = {
-        quantity: this.props.item.min_qty || 1,
-        notes: ''
+        quantity: this.props.item.min_qty,
+        notes: '',
+        name: '',
+        optionChoices: this.props.item.defaultOptionChoices()
     };
 
     handleAddClick = () => {
         const {dispatcher, item, order} = this.props;
-        const {quantity, notes} = this.state;
+        const {quantity, notes, optionChoices} = this.state;
 
         dispatcher.dispatch(new AddItemToOrderAction({
             order,
@@ -45,29 +50,49 @@ export class RestaurantMenuItemMenuComponent extends Component {
                 feeds_max: item.feeds_min,
                 options_sets: item.options_sets,
                 recipient: item.recipient,
+                options_sets: optionChoices,
                 quantity,
                 notes
             }
         }));
+
+        this.props.onClose();
     };
 
     handleQuantityChange = (event) => {
         this.setState({quantity: event.target.value});
     };
 
-    handleNotesChange = (event) => {
-        this.setState({notes: event.target.value});
+    handleOptionChoiceChange = (event) => {
+        const id = event.target.name;
+        let isChecked = event.target.checked;
+
+        // update the item options state
+        this.setState(state => {
+            state.optionChoices.forEach((choice, i) => {
+                let j = choice.options.indexOf(find(choice.options, { id }))
+                state.optionChoices[i].options[j].state = !!isChecked;
+            });
+        });
     };
 
     render() {
         const {item, onClose: close} = this.props;
-        const {description, min_qty} = item;
-        const {notes, quantity} = this.state;
+        const {description, min_qty, options_sets} = item;
+        const {notes, quantity, optionChoices} = this.state;
 
         return (
             <div className="gb-restaurant-menu-item-menu">
                 <div className="gb-restaurant-menu-item-menu-desc">
                     {description}
+                </div>
+
+                <div className="gb-restaurant-menu-item-menu-options">
+                    <ItemOptions
+                        optionsSets={options_sets || []}
+                        optionChoices={optionChoices}
+                        onChange={this.handleOptionChoiceChange}
+                    />
                 </div>
 
                 <div className="gb-restaurant-menu-item-menu-notes">

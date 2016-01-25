@@ -16,7 +16,13 @@ export class OrderPaneItemComponent extends Component {
 
     render() {
         const {orderItem} = this.props;
-        const {name, quantity, price} = orderItem;
+        const {name, quantity, price, options_sets} = orderItem;
+
+        const choices = (options_sets || []).map(set => {
+            return (set.options || [])
+                .filter(option => option.state)
+                .map(option => option.name);
+        }).join(', ');
 
         return (
             <div className="gb-order-pane-item">
@@ -41,6 +47,10 @@ export class OrderPaneItemComponent extends Component {
                         </tr>
                     </tbody>
                 </table>
+
+                <div className="gb-order-pane-item-options">
+                    {choices}
+                </div>
 
                 <div className="gb-order-pane-item-links">
                     <a href="/" className="gb-order-pane-item-edit">

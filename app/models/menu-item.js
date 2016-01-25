@@ -67,4 +67,23 @@ export class MenuItem {
 
         return fuzzy(term, name) || fuzzy(term, description);
     }
+
+    defaultOptionChoices() {
+        if (this.options_sets == null) {
+            return [];
+        } else {
+            return this.options_sets.map(set => {
+                const {id, name, type, options} = set;
+
+                return {
+                    id, name, type,
+                    options: options.map(toChoice)
+                };
+            });
+        }
+
+        function toChoice({id, name, description, price, default_state: state}) {
+            return {id, name, description, price, state};
+        }
+    }
 }

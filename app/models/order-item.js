@@ -14,14 +14,14 @@ export class OrderItem {
             ? Order.parse(attrs.order)
             : new Order({id: attrs.order_id});
 
-        const option_sets = (attrs.option_sets || []).map(ItemOption.parse);
+        const options_sets = (attrs.options_sets || []).map(ItemOption.parse);
 
         return new OrderItem({
             ...attrs,
             created_at,
             item,
             order,
-            option_sets
+            options_sets
         });
     }
 
@@ -38,7 +38,7 @@ export class OrderItem {
             feeds_min = null,
             feeds_max = null,
             notes = null,
-            option_sets = null,
+            options_sets = null,
             recipient = null,
             sub_total = null,
             min_qty = null
@@ -55,7 +55,7 @@ export class OrderItem {
         this.feeds_min = feeds_min;
         this.feeds_max = feeds_max;
         this.notes = notes;
-        this.option_sets = option_sets;
+        this.options_sets = options_sets;
         this.recipient = recipient;
         this.sub_total = sub_total;
         this.min_qty = min_qty;
