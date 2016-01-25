@@ -49,4 +49,16 @@ export class ApiService {
                 .withCredentials();
         }).then(res => res.body);
     }
+
+    delete(path, data) {
+        const url = this.config.resolveResourceURL(path);
+
+        return Promise.try(() => {
+            return request
+                .delete(url)
+                .send(data || {})
+                .accept('json')
+                .withCredentials();
+        }).then(res => res.body);
+    }
 }

@@ -5,7 +5,13 @@ import {OrderItem} from '../../../models/order-item';
 
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
-        orderItem: PropTypes.instanceOf(OrderItem).isRequired
+        orderItem: PropTypes.instanceOf(OrderItem).isRequired,
+        onRemoveItem: PropTypes.func.isRequired
+    };
+
+    handleRemoveItem = () => {
+        const {removeItem, orderItem} = this.props;
+        removeItem({orderItem});
     };
 
     render() {
@@ -45,7 +51,7 @@ export class OrderPaneItemComponent extends Component {
                         |
                     </span>
 
-                    <a href="/" className="gb-order-pane-item-remove">
+                    <a href="/" className="gb-order-pane-item-remove" onClick={this.handleRemoveItem}>
                         Remove
                     </a>
                 </div>
