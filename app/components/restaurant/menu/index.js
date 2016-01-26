@@ -51,7 +51,7 @@ class RestaurantMenuCateringComponent extends Component {
 @inject({
     menuStore: MenuStore
 })
-@listeningTo([MenuStore], ({menuStore, searchTerm}) => {
+@listeningTo(['menuStore'], ({menuStore, searchTerm}) => {
     const categories = menuStore.getCategories();
     const items = menuStore.getItems();
 
