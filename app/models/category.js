@@ -41,3 +41,13 @@ export class Category {
         return this.menus.indexOf(menuName) !== -1;
     }
 }
+
+export class MenuCategories {
+    static parse(cats) {
+        return cats.map(Category.parse);
+    }
+
+    constructor(cats) {
+        return cats;
+    }
+}

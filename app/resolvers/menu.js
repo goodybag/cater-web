@@ -10,10 +10,3 @@ export class MenuItemsResolver {
         return menuItems;
     }
 }
-
-@dependencies(RouteParams, MenuService)
-export class CategoriesResolver {
-    constructor(params, menuService) {
-        return menuService.fetchCategoriesByRestaurantId(params.restaurant_id);
-    }
-}
