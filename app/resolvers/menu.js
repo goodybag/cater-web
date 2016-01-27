@@ -2,11 +2,12 @@ import {dependencies} from 'yokohama';
 
 import {RouteParams} from '../lib/route';
 import {MenuService} from '../services/menu';
+import {RestaurantPayload} from '../payloads/restaurant';
 
-@dependencies(RouteParams, MenuService)
+@dependencies(RouteParams, RestaurantPayload)
 export class MenuItemsResolver {
-    constructor(params, menuService) {
-        return menuService.fetchMenuItemsByRestaurantId(params.restaurant_id);
+    constructor(params, {menuItems}) {
+        return menuItems;
     }
 }
 
