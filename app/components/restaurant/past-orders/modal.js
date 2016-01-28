@@ -224,7 +224,7 @@ export class ModalOrderComponent extends Component {
                 <OrderPaneItemComponent
                     key={orderItem.id}
                     orderItem={orderItem}
-                    includeLinks={false}
+                    showLinks={false}
                 />
             );
         }

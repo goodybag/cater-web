@@ -6,8 +6,13 @@ import {OrderItem} from '../../../models/order-item';
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
         orderItem: PropTypes.instanceOf(OrderItem).isRequired,
-        onRemoveItem: PropTypes.func.isRequired
+        onRemoveItem: PropTypes.func.isRequired,
+        showLinks: PropTypes.bool
     };
+
+    static defaultProps = {
+        showLinks: true
+    }
 
     handleRemoveItem = () => {
         const {removeItem, orderItem} = this.props;
@@ -15,7 +20,7 @@ export class OrderPaneItemComponent extends Component {
     };
 
     render() {
-        const {orderItem} = this.props;
+        const {orderItem, showLinks} = this.props;
         const {name, quantity, price, options_sets} = orderItem;
 
         const choices = (options_sets || []).map(set => {
@@ -52,19 +57,22 @@ export class OrderPaneItemComponent extends Component {
                     {choices}
                 </div>
 
-                <div className="gb-order-pane-item-links">
-                    <a href="/" className="gb-order-pane-item-edit">
-                        Edit
-                    </a>
+                {
+                    showLinks ?
+                        <div className="gb-order-pane-item-links">
+                            <a href="/" className="gb-order-pane-item-edit">
+                                Edit
+                            </a>
 
-                    <span className="gb-order-pane-item-links-del">
-                        |
-                    </span>
+                            <span className="gb-order-pane-item-links-del">
+                                |
+                            </span>
 
-                    <a href="/" className="gb-order-pane-item-remove" onClick={this.handleRemoveItem}>
-                        Remove
-                    </a>
-                </div>
+                            <a href="/" className="gb-order-pane-item-remove" onClick={this.handleRemoveItem}>
+                                Remove
+                            </a>
+                        </div> : null
+                }
             </div>
         );
     }
