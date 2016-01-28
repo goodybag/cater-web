@@ -22,12 +22,15 @@ export class Order {
 
         const datetime = tempDateTime;
 
+        const deadline = new Date(moment.tz(attrs.deadline, attrs.timezone));
+
         return new Order({
             ...attrs,
             created_at,
             restaurant,
             user,
-            datetime
+            datetime,
+            deadline
         });
     }
 
@@ -61,7 +64,8 @@ export class Order {
             sub_total = null,
             sales_tax = null,
             total = null,
-            delivery_fee = null
+            delivery_fee = null,
+            deadline = null
         } = attrs;
 
         this.id = id;
@@ -93,6 +97,7 @@ export class Order {
         this.sales_tax = sales_tax;
         this.total = total;
         this.delivery_fee = delivery_fee;
+        this.deadline = deadline;
     }
 
     displayAddress() {
