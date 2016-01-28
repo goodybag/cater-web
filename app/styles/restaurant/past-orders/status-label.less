@@ -11,6 +11,7 @@
     padding: 1px 6px;
     text-align: center;
     width: 73px;
+    text-transform: capitalize;
 
     @media screen and (min-width: @gb-breakpoint-tablet) {
         width: 60px;
@@ -19,8 +20,7 @@
 
 .gb-restaurant-orders-status-label-draft {
     .gb-status-label;
-    background: @gb-yellow;
-    text-transform: capitalize;
+    background: @gb-status-draft;
 
     &:before {
         content: "";
@@ -41,15 +41,20 @@
 
 .gb-restaurant-orders-status-label-submitted {
     .gb-status-label;
-    background: @gb-skyblue;
+    background: @gb-status-submitted;
 }
 
 .gb-restaurant-orders-status-label-accepted {
     .gb-status-label;
-    background: @gb-teal;
+    background: @gb-status-accepted;
 }
 
 .gb-restaurant-orders-status-label-canceled {
     .gb-status-label;
-    background: @gb-shadow-cadet-blue;
+    background: @gb-status-canceled;
+}
+
+.gb-restaurant-orders-status-label-denied {
+    .gb-status-label;
+    background: @gb-status-denied;
 }
