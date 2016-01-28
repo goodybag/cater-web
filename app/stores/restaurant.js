@@ -2,9 +2,9 @@ import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
-import {RestaurantResolver} from '../resolvers/restaurant';
+import {Restaurant} from '../models/restaurant';
 
-@dependencies(Dispatcher, RestaurantResolver)
+@dependencies(Dispatcher, Restaurant)
 export class RestaurantStore extends Store {
     constructor(dispatcher, restaurant) {
         super(dispatcher);

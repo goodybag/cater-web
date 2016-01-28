@@ -1,7 +1,6 @@
-import {MenuItem} from './menu-item';
 import {Restaurant} from './restaurant';
 
-export class Category {
+export class RestaurantHour {
     static parse(attrs) {
         const created_at = new Date(attrs.created_at);
 
@@ -9,7 +8,7 @@ export class Category {
             ? Restaurant.parse(attrs.restaurant)
             : new Restaurant({id: attrs.restaurant_id});
 
-        return new Category({
+        return new RestaurantHour({
             ...attrs,
             created_at,
             restaurant
@@ -21,33 +20,22 @@ export class Category {
             id = null,
             created_at = null,
             restaurant = null,
-            name = null,
-            description = null,
-            order = null,
-            menus = null
+            day = null,
+            start_time = null,
+            end_time = null
         } = attrs;
 
         this.id = id;
         this.created_at = created_at;
         this.restaurant = restaurant;
-        this.name = name;
-        this.description = description;
-        this.order = order;
-        this.menus = menus;
-    }
-
-    // these are horrible names
-    hasMenu(menuName) {
-        return this.menus.indexOf(menuName) !== -1;
+        this.day = day;
+        this.start_time = start_time;
+        this.end_time = end_time;
     }
 }
 
-export class MenuCategories {
-    static parse(cats) {
-        return cats.map(Category.parse);
-    }
-
-    constructor(cats) {
-        return cats;
+export class RestaurantHours {
+    constructor(hours) {
+        return hours;
     }
 }

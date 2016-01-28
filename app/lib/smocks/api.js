@@ -29,4 +29,8 @@ export class ServerApiService {
                 .set({Cookie: `connect.sid=s:${cookie}`});
         }).then(res => res.body);
     }
+
+    fetch(path) {
+        return this.fetchEndpoint(path);
+    }
 }

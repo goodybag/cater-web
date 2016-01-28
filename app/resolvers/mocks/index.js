@@ -1,1 +1,5 @@
-export const mocks = [];
+import {MenuCategoriesResolver} from './menu';
+
+export const mocks = [
+    MenuCategoriesResolver
+];
