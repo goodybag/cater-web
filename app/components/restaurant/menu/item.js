@@ -46,6 +46,14 @@ export class RestaurantMenuItemComponent extends Component {
             />
         );
 
+        const descEl = (
+            <div className="gb-restaurant-menu-item-desc">
+                <div className="gb-restaurant-menu-item-desc-text">
+                    {description}
+                </div>
+            </div>
+        );
+
         const cname = cx('gb-restaurant-menu-item', {
             'gb-restaurant-menu-item-open': open
         });
@@ -75,11 +83,7 @@ export class RestaurantMenuItemComponent extends Component {
                     {min_qty ? ' per person' : null}
                 </div>
 
-                <div className="gb-restaurant-menu-item-desc">
-                    <div className="gb-restaurant-menu-item-desc-text">
-                        {description}
-                    </div>
-                </div>
+                {description && descEl}
 
                 <TransitionGroup>{open && itemMenu}</TransitionGroup>
             </div>

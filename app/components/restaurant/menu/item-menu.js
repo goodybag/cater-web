@@ -81,19 +81,26 @@ export class RestaurantMenuItemMenuComponent extends Component {
         const {description, min_qty, options_sets} = item;
         const {notes, quantity, optionChoices} = this.state;
 
+        const descEl = (
+            <div className="gb-restaurant-menu-item-menu-desc">
+                {description}
+            </div>
+        );
+
+        const optionsEl = (
+            <div className="gb-restaurant-menu-item-menu-options">
+                <ItemOptions
+                    optionsSets={options_sets || []}
+                    optionChoices={optionChoices}
+                    onChange={this.handleOptionChoiceChange}
+                />
+            </div>
+        );
+
         return (
             <div className="gb-restaurant-menu-item-menu">
-                <div className="gb-restaurant-menu-item-menu-desc">
-                    {description}
-                </div>
-
-                <div className="gb-restaurant-menu-item-menu-options">
-                    <ItemOptions
-                        optionsSets={options_sets || []}
-                        optionChoices={optionChoices}
-                        onChange={this.handleOptionChoiceChange}
-                    />
-                </div>
+                {description && descEl}
+                {options_sets && optionsEl}
 
                 <div className="gb-restaurant-menu-item-menu-notes">
                     <div className="gb-restaurant-menu-item-menu-box-title">
