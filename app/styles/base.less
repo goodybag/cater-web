@@ -18,19 +18,12 @@
 @gb-shadow-mirage: #393E46;        // (dark gray)
 @gb-shadow-blue-charcoal: #272C33; // (darker gray)
 @gb-modal-background: rgba(10, 20, 30, 0.65);
+@gb-status-denied: #ed5565;
 
-
-// @gb-bright: #e6e9ed;
-// @gb-dark: #383d46;
-// @gb-darker: #2c3239;
-// @gb-shadow: rgba(0, 0, 0, 0.1);
-// @gb-shadow-light: #494E55;
-// @gb-shadow-dark: #242832;
-// @gb-bold: #3B3F47;
-// @gb-soft: #ccd1d9;
-// @gb-gray: #7B828D;
+// GB Color Palette
 
 @gb-red: #ff3333; // web-safe version of #ed4242
+@gb-pale-red: #ed5565;
 @gb-pink: #ED4242;
 @gb-yellow: #F4BB41;
 @gb-pale-yellow: #F9EBCB;
@@ -39,6 +32,14 @@
 @gb-teal: #41CEAB;
 @gb-green: #8CC155;
 @gb-evergreen: #e7fce0;
+
+// GB Statuses
+@gb-status-draft: @gb-yellow;
+@gb-status-submitted: @gb-skyblue;
+@gb-status-accepted: @gb-teal;
+@gb-status-canceled: @gb-shadow-cadet-blue;
+@gb-status-denied: @gb-pale-red;
+
 
 @gb-breakpoint-mobile: 480px;
 @gb-breakpoint-mid-tablet: 642px;
@@ -103,69 +104,3 @@ table {
         max-width: 1111px + (@gb-body-padding-large * 2);
     }
 }
-
-// .gb-small-arrow {
-//     border-color: transparent;
-//     border-style: solid;
-//     border-top: 0;
-//     border-width: 10px;
-//     height: 0;
-//     width: 0;
-// }
-//
-// .gb-link {
-//     color: @gb-blue;
-//
-//     &:hover {
-//         text-decoration: underline;
-//     }
-// }
-//
-// // * TWO-COLUMN LAYOUT STYLES
-// //////////////////////////////
-// .col {
-//     float: left;
-//     width: 50%;
-// }
-//
-// .fix-collapse { // keeps parent div from collapsing
-//                 // when children are floating
-//     overflow: auto;
-// }
-//
-// // * BUTTON STYLES
-// ///////////////////
-// input[type="button"],
-// .btn {
-//     display: block;
-//     color: @gb-background;
-//     font-weight: 600;
-//     font-size: 14px;
-//     padding: 8px 20px;
-// }
-//
-// .action-btn {
-//     background: @gb-red;
-//     border: 1px solid darken(@gb-red, 20%);
-//     border-top: none;
-//     border-bottom: 2px solid darken(@gb-red, 20%);
-//     border-radius: @gb-border-radius / 2px;
-//
-//     &:hover {
-//         cursor: pointer;
-//         background-color: lighten(@gb-red, 3%);
-//     }
-// }
-//
-// .gb-price {
-//     display: inline;
-// }
-//
-// .gb-price-fill {
-//     display: inline;
-// }
-//
-// .gb-price-empty {
-//     display: inline;
-//     color: @gb-subtle;
-// }
