@@ -36,7 +36,7 @@ export class ApiService {
         return Promise.try(() => {
             return request
                 .post(url)
-                .send(data)
+                .send(data || {})
                 .accept('json')
                 .withCredentials();
         }).then(res => res.body);

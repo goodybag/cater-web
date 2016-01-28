@@ -11,3 +11,15 @@ export class DuplicateOrderAction {
         this.orderId = orderId;
     }
 }
+
+export class CancelOrderAction {
+    constructor(orderId) {
+        this.orderId = orderId;
+    }
+}
+
+export class UncancelOrderAction {
+    constructor(orderId) {
+        this.orderId = orderId;
+    }
+}
