@@ -83,5 +83,6 @@
     "server.js",
     "index.js",
     "dist"
-  ]
+  ],
+  "license": "UNLICENSED"
 }
