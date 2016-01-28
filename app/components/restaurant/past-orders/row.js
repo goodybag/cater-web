@@ -9,12 +9,6 @@ import moment from 'moment-timezone';
 
 export class RestaurantOrdersRowComponent extends Component {
     static propTypes = {
-        status: React.PropTypes.string.isRequired,
-        datetime: React.PropTypes.string.isRequired,
-        timezone: React.PropTypes.string.isRequired,
-        total: React.PropTypes.number.isRequired,
-        initAlertState: React.PropTypes.bool.isRequired,
-        signalAlertOpen: React.PropTypes.func.isRequired,
         order: React.PropTypes.object.isRequired,
         dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
@@ -62,8 +56,7 @@ export class RestaurantOrdersRowComponent extends Component {
                 </div>
                 <div className="gb-restaurant-orders-row-group-second">
                     <div className="gb-restaurant-orders-col-expired">
-                        {/* TODO: Expired */}
-                        {status === 'pending' && 'Expired'}
+                        { order.deadline < Date.now() ? "Expired" : ""}
                     </div>
 
                     <div className="gb-restaurant-orders-col-resume">
