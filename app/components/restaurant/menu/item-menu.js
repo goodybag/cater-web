@@ -28,7 +28,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
     };
 
     state = {
-        quantity: this.props.item.min_qty,
+        quantity: this.props.item.min_qty || 1,
         notes: '',
         name: '',
         optionChoices: this.props.item.defaultOptionChoices()
