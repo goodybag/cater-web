@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var smaps = require('gulp-sourcemaps');
 var filter = require('gulp-filter');
+var gulpIf = require('gulp-if');
 var url = require('url');
 
 gulp.task('default', ['build', 'bundle', 'compile', 'migrate']);
@@ -59,23 +60,25 @@ function bundle() {
         })
         .pipe(source('bundle.js'))
         .pipe(buffer())
-        .pipe(smaps.init({loadMaps: true}))
-        .pipe(smaps.write('.'))
+        .pipe(gulpIf(process.env.DEBUG_MODE,
+                     smaps.init({loadMaps: true}),
+                     smaps.write('.')))
         .pipe(gulp.dest('dist/build'));
 }
 
 function getBundler() {
     var browserify = require('browserify');
-    var sourceify = require('sourceify');
 
     if (!bundler) {
         bundler = browserify('dist/src/main.js', {
             cache: {},
             packageCache: {},
-            debug: true
+            debug: process.env.DEBUG_MODE
         });
 
-        bundler.transform(sourceify, {global: true});
+        if (process.env.DEBUG_MODE) {
+            bundler.transform(require('sourceify'), {global: true});
+        }
     }
 
     return bundler;

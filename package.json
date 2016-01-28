@@ -2,7 +2,7 @@
   "name": "@goodybag/cater-web",
   "version": "0.1.0",
   "scripts": {
-    "prepublish": "NODE_ENV=production rm -rf dist && gulp final",
+    "prepublish": "rm -rf dist && NODE_ENV=production DEBUG_MODE=yes gulp final",
     "test": "eslint app && NODE_ENV=test mocha"
   },
   "repository": {
@@ -64,6 +64,7 @@
     "gulp-cssnano": "^2.1.0",
     "gulp-filter": "^3.0.1",
     "gulp-gzip": "^1.2.0",
+    "gulp-if": "^2.0.0",
     "gulp-less": "^3.0.3",
     "gulp-newer": "^1.0.0",
     "gulp-rename": "^1.2.2",
@@ -74,7 +75,7 @@
     "json-loader": "^0.5.2",
     "less-plugin-npm-import": "^2.1.0",
     "mocha": "^2.2.5",
-    "sourceify": "0.0.0",
+    "sourceify": "0.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
