@@ -10,11 +10,11 @@ import {getContextFromURL, renderPage, handleReroute} from './reroute';
  * to the reroute module) and assigns listeners for
  * link events.
  */
-export function load(element) {
+export function load(element, currentContext = {}) {
     return Promise.try(() => {
         const href = window.location.href;
 
-        const context = getContextFromURL(href);
+        const context = getContextFromURL(href, currentContext);
         const {route, injector, tokens, components} = context;
 
         return injector.get(tokens).then(values => {
@@ -28,6 +28,10 @@ export function load(element) {
             if ([7, 8, 9].indexOf(document.documentMode) === -1) {
                 link(function(event) {
                     handleReroute(event, element, context);
+                });
+
+                window.addEventListener('popstate', () => {
+                    load(element, context);
                 });
             }
         });
