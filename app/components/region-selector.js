@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Dispatcher} from 'flux';
-import find from 'lodash/collection/find';
+import {find} from 'lodash';
 
 import {UpdateUserRegionAction} from '../actions/user';
 import {Region} from '../models/region';

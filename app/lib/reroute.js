@@ -4,7 +4,7 @@ import url from 'url';
 import {Injector, provide} from 'yokohama';
 import {Route} from 'hiroshima';
 import {render} from 'react-dom';
-import isEqual from 'lodash/lang/isEqual';
+import {isEqual} from 'lodash';
 
 import {generateParsingMocks} from './parser';
 import {handleError} from './error';

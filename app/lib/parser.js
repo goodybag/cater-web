@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import each from 'lodash/collection/each';
+import each from 'lodash';
 import {dependencies, provide} from 'yokohama';
 
 import {CacheDump} from './config';
