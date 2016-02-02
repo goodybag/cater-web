@@ -36,6 +36,14 @@ export class Config {
     resolveResourceURL(resourcePath) {
         return resolveURL(this.apiPrefix, resourcePath);
     }
+
+    getBundleNames() {
+        if (this.env === 'production') {
+            return ['runtime.js'];
+        } else {
+            return ['common.js', 'bundle.js'];
+        }
+    }
 }
 
 /**
