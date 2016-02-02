@@ -15,7 +15,7 @@
 #components { #gb-navbar {
   .init(
     @height: 58px,
-    @z-index: 10000,
+    @z-index: 999,
     @mobile-factor: 0.75,
     @background: #fff,
     @color: initial,
@@ -24,7 +24,7 @@
     @balancing-offset: 1px,
   ){
     @gb-navbar-height-small: floor( @height * @mobile-factor );
-    
+
     // Export this mixin allow setting `margin-top` on an
     // element, so that the navbar isn't on top of content
     .gb-navbar-provide-offset-margin(){
@@ -70,7 +70,7 @@
       vertical-align: middle;
       height: @height;
     }
-    
+
     .gb-navbar-logo-component {
       &:extend(.gb-navbar-component);
       width: 1%;
@@ -91,7 +91,7 @@
     .gb-navbar-logo-mobile {
       display: none;
     }
-    
+
     .gb-navbar-caption-component {
       &:extend(.gb-navbar-component);
 
@@ -153,14 +153,14 @@
           text-decoration: none;
           color: @color;
           font-size: 14px;
-          
+
           &:hover {
             background: fade( @color, 10% );
           }
         }
       }
     }
-    
+
     .gb-navbar-login-component {
       &:extend(.gb-navbar-sub-component-wrapper);
     }
