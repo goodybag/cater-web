@@ -3,7 +3,7 @@ import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'flux';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
-import {DisplayOrderAction, DuplicateOrderAction} from '../../../actions/past-orders';
+import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';
 
 import moment from 'moment-timezone';
 
@@ -28,6 +28,22 @@ export class RestaurantOrdersRowComponent extends Component {
 
         dispatcher.dispatch(action);
     };
+
+    handleCancelClick = () => {
+        const {order, dispatcher} = this.props;
+
+        const action = new CancelOrderAction(order.id);
+
+        dispatcher.dispatch(action);
+    }
+
+    handleUncancelClick = () => {
+        const {order, dispatcher} = this.props;
+
+        const action = new UncancelOrderAction(order.id);
+
+        dispatcher.dispatch(action);
+    }
 
     render() {
         const {order} = this.props;
@@ -66,7 +82,7 @@ export class RestaurantOrdersRowComponent extends Component {
                                     Resume
                                 </a> :
                             order.status==="canceled" ?
-                                <a href="/restaurants/111/orders">
+                                <a href="/restaurants/111/orders" onClick={this.handleUncancelClick}>
                                     Uncancel
                                 </a> : null
                         }
@@ -86,13 +102,12 @@ export class RestaurantOrdersRowComponent extends Component {
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-cancel">
-                        <a href="/restaurants/111/orders">
-                            {
-                                status === "canceled" ? "" :
-                                "Cancel"
-                                /* TODO: add logic if too close to delivery time */
-                            }
-                        </a>
+                        {
+                            order.status === 'canceled' ? null :
+                                <a href="/restaurants/111/orders" onClick={this.handleCancelClick}>
+                                    Cancel
+                                </a>
+                        }
                     </div>
                 </div>
             </div>

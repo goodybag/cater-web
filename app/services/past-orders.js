@@ -20,4 +20,10 @@ export class PastOrdersService {
             .then(Order.parse)
             .catch(err => console.log(err));
     }
+
+    updateOrderStatusByOrderId(id, newStatus) {
+        return this.apiService.update(`orders/silent/${id}`, { status: newStatus })
+            .then(Order.parse)
+            .catch(err => console.log(err));
+    }
 }

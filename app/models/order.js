@@ -105,4 +105,8 @@ export class Order {
 
         return `${street}, ${city}, ${state}, ${zip}`;
     }
+
+    updateStatus(status) {
+        this.status = status;
+    }
 }

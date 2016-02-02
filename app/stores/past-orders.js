@@ -5,7 +5,11 @@ import {Dispatcher} from 'flux';
 import {PastOrdersResolver} from '../resolvers/past-orders';
 import {OrderItemService} from '../services/order-item';
 import {PastOrdersService} from '../services/past-orders';
-import {DisplayOrderAction, StopDisplayingOrderAction, DuplicateOrderAction} from '../actions/past-orders';
+import {DisplayOrderAction,
+    StopDisplayingOrderAction,
+    DuplicateOrderAction,
+    CancelOrderAction,
+    UncancelOrderAction} from '../actions/past-orders';
 
 @dependencies(Dispatcher, PastOrdersResolver, OrderItemService, PastOrdersService)
 export class PastOrdersStore extends Store {
@@ -21,6 +25,8 @@ export class PastOrdersStore extends Store {
         this.bind(DisplayOrderAction, this.onDisplayOrder);
         this.bind(StopDisplayingOrderAction, this.onStopDisplayingOrder);
         this.bind(DuplicateOrderAction, this.onDuplicateOrder);
+        this.bind(CancelOrderAction, this.onCancelOrder);
+        this.bind(UncancelOrderAction, this.onUncancelOrder);
     }
 
     getPastOrders() {
@@ -59,6 +65,30 @@ export class PastOrdersStore extends Store {
         this.pastOrdersService.duplicateOrderByOrderId(orderId)
             .then(order => {
                 this.pastOrders.unshift(order);
+                this.emit('change');
+            });
+    }
+
+    onCancelOrder({orderId}) {
+        this.pastOrdersService.updateOrderStatusByOrderId(orderId, "canceled")
+            .then(order => {
+                this.pastOrders.map(function(pastOrder) {
+                    if(pastOrder.id === order.id) {
+                        pastOrder.updateStatus(order.status);
+                    }
+                });
+                this.emit('change');
+            });
+    }
+
+    onUncancelOrder({orderId}) {
+        this.pastOrdersService.updateOrderStatusByOrderId(orderId, "pending")
+            .then(order => {
+                this.pastOrders.map(function(pastOrder) {
+                    if(pastOrder.id === order.id) {
+                        pastOrder.updateStatus(order.status);
+                    }
+                });
                 this.emit('change');
             });
     }
