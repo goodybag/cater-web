@@ -63,6 +63,10 @@ export class RestaurantMenuItemMenuComponent extends Component {
         this.setState({quantity: event.target.value});
     };
 
+    handleNotesChange = (event) => {
+        this.setState({ notes: event.target.value });
+    };
+
     handleOptionChoiceChange = (event) => {
         const id = event.target.name;
         let isChecked = event.target.checked;
