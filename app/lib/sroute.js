@@ -79,6 +79,10 @@ export function loadPage({req, res, config, components, route}) {
 
             const markup = this.getMainMarkup(cache);
 
+            const bundles = config.getBundleNames().map(bundleName => {
+                return <script src={config.resolveAssetURL(bundleName)}/>;
+            });
+
             const doc = (
                 <html>
                     <head>
@@ -96,7 +100,7 @@ export function loadPage({req, res, config, components, route}) {
 
                         <script dangerouslySetInnerHTML={{__html: this.polyfills.script}}/>
                         <script dangerouslySetInnerHTML={{__html: script}}/>
-                        <script src={config.resolveAssetURL('bundle.js')}/>
+                        {bundles}
                     </body>
                 </html>
             );

@@ -21,7 +21,8 @@ export class Polyfills {
             features: {
                 'Intl.~locale.en': {flags: []},
                 'atob': {flags: ['gated']},
-                'WeakMap': { flags: []}
+                'WeakMap': {flags: []},
+                'setImmediate': {flags: []}
             }
         }).then(polyfillScript => {
             return {script: polyfillScript};
