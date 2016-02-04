@@ -51,18 +51,18 @@ export class PastOrdersStore extends Store {
         this.currentOrder = 'loading';
         this.emit('change');
 
-        this.orderItemService.fetchAllByOrderId(order.id)
+        return this.orderItemService.fetchAllByOrderId(order.id)
             .then(orderItems => {
                 this.setOrderAndItems(order, orderItems);
             });
     }
 
     onStopDisplayingOrder() {
-        this.setOrderAndItems(null, []);
+        return this.setOrderAndItems(null, []);
     }
 
     onDuplicateOrder({orderId}) {
-        this.pastOrdersService.duplicateOrderByOrderId(orderId)
+        return this.pastOrdersService.duplicateOrderByOrderId(orderId)
             .then(order => {
                 this.pastOrders.unshift(order);
                 this.emit('change');
@@ -70,7 +70,7 @@ export class PastOrdersStore extends Store {
     }
 
     onCancelOrder({orderId}) {
-        this.pastOrdersService.updateOrderStatusByOrderId(orderId, "canceled")
+        return this.pastOrdersService.updateOrderStatusByOrderId(orderId, "canceled")
             .then(order => {
                 this.pastOrders.map(function(pastOrder) {
                     if(pastOrder.id === order.id) {
@@ -82,7 +82,7 @@ export class PastOrdersStore extends Store {
     }
 
     onUncancelOrder({orderId}) {
-        this.pastOrdersService.updateOrderStatusByOrderId(orderId, "pending")
+        return this.pastOrdersService.updateOrderStatusByOrderId(orderId, "pending")
             .then(order => {
                 this.pastOrders.map(function(pastOrder) {
                     if(pastOrder.id === order.id) {
