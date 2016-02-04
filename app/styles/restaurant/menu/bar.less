@@ -11,11 +11,30 @@
         right: 0;
         background: @gb-white;
         border-bottom: 1px solid @gb-shadow-tide;
+        height: 52px;
 
         .gb-restaurant-menu-bar-content {
             .gb-body;
 
             position: relative;
+        }
+
+        .gb-restaurant-menu-tab-title-catering,
+        .gb-restaurant-menu-tab-title-individual {
+            border-top-radius: none;
+            border: 0;
+
+            &:before {
+                display: none;
+            }
+
+            &.active .gb-restaurant-menu-tab-title-content:after {
+                display: block;
+            }
+        }
+
+        .gb-restaurant-menu-searchbox {
+            display: none;
         }
     }
 }

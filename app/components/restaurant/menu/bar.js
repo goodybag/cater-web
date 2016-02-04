@@ -62,10 +62,12 @@ export class RestaurantMenuBarWrapperComponent extends Component {
         };
 
         window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.handleScroll);
    }
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleScroll);
     }
 
     render() {
