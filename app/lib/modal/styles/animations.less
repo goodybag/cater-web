@@ -1,0 +1,49 @@
+//////////////////////
+// Modal Animations //
+//////////////////////
+
+#modal {
+  .init-animations(
+    @animation: ease-out 300ms
+  ){
+    .modal-overlay {
+        transition: opacity @animation;
+
+        &.modal-enter {
+            opacity: 0;
+        }
+
+        &.modal-enter-active {
+            opacity: 1;
+        }
+
+        &.modal-leave {
+            opacity: 1;
+        }
+
+        &.modal-leave-active {
+            opacity: 0;
+        }
+    }
+
+    .modal {
+        transition: transform @animation;
+
+        &.modal-enter {
+            transform: translate3d( 0, -200px, 0 );
+        }
+
+        &.modal-enter-active {
+            transform: translate3d( 0, 0, 0 );
+        }
+
+        &.modal-leave {
+            transform: translate3d( 0, 0, 0 );
+        }
+
+        &.modal-leave.modal-leave-active {
+            transform: translate3d( 0, -200px, 0 );
+        }
+    }
+  }
+}
