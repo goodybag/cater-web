@@ -80,7 +80,7 @@
     "gulp-util": "^3.0.6",
     "json-loader": "^0.5.2",
     "less-plugin-npm-import": "^2.1.0",
-    "less_watch": "^1.7.4",
+    "nodemon": "^1.8.1",
     "mocha": "^2.2.5",
     "sourceify": "0.1.0",
     "vinyl-buffer": "^1.0.0",

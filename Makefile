@@ -1,4 +1,5 @@
-export PATH := node_modules/.bin:$(PATH)
+export PATH := ./node_modules/.bin:$(PATH)
+export SHELL := /usr/bin/env bash
 
 define \n
 
@@ -16,8 +17,9 @@ BUILD_DIR=$(OUTPUT_DIR)/src
 FINAL_DIR=$(OUTPUT_DIR)/final
 SOURCE_ENTRY=$(SOURCE_DIR)/main.js
 STYLES_ENTRY=$(STYLES_DIR)/main.less
-SOURCE_FILES=$(wildcard $(SOURCE_DIR)/**/*.js $(SOURCE_DIR)/*.js)
-STATIC_FILES=$(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(foreach PUBLIC_FILE,$(wildcard $(PUBLIC_DIR)/**/* $(PUBLIC_DIR)/*),$(PUBLIC_FILE:$(PUBLIC_DIR)/%=$(ASSETS_DIR)/%)))
+STYLES_FILES=$(shell find $(STYLES_DIR) -name \*.less)
+SOURCE_FILES=$(shell find $(SOURCE_DIR) -name \*.js)
+STATIC_FILES=$(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(foreach PUBLIC_FILE,$(shell find $(PUBLIC_DIR)),$(PUBLIC_FILE:$(PUBLIC_DIR)/%=$(ASSETS_DIR)/%)))
 BUILD_FILES=$(SOURCE_FILES:$(SOURCE_DIR)%=$(BUILD_DIR)%)
 
 ASSET_FILES=$(ASSETS_DIR)/bundle.js \
@@ -35,12 +37,13 @@ static: $(STATIC_FILES)
 assets: $(ASSET_FILES)
 build: $(BUILD_FILES)
 final: assets build $(FINAL_FILES) $(FINAL_FILES:%=%.gz)
+styles: $(ASSETS_DIR)/main.css
 
 watch: watch-bundle watch-source watch-styles
 
 watch-styles:
 	@mkdir -p $(ASSETS_DIR)
-	@less_watch --npm-import="prefix=~" $(STYLES_ENTRY) $(ASSETS_DIR)/main.css
+	@nodemon -w $(STYLES_DIR) -e less --exec "make styles"
 
 watch-source:
 	babel -w $(SOURCE_DIR) -d $(BUILD_DIR)
@@ -80,7 +83,7 @@ $(ASSETS_DIR)/runtime.js: $(SOURCE_FILES) node_modules
 
 $(ASSETS_DIR)/main.css: $(STYLES_FILES) node_modules
 	@mkdir -p "$(@D)"
-	lessc --npm-import="prefix=~" $(STYLES_ENTRY) $@
+	lessc --source-map-less-inline --source-map-map-inline --npm-import="prefix=~" $(STYLES_ENTRY) $@
 
 .SECONDEXPANSION:
 $(ASSETS_DIR)/%: $(wildcard $(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(PUBLIC_DIR)/$$*))
