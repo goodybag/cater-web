@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {IntlProvider} from 'react-intl';
 import {router} from 'hiroshima';
 import {inject} from 'yokohama';
+import {ModalContainer, ModalState} from '../lib/modal';
 
 import * as formats from '../formats';
 import {NavbarComponent} from './navbar';
@@ -10,10 +11,13 @@ import {RestaurantComponent} from './restaurant';
 @router(route => {
     route.use(RestaurantComponent);
 })
-@inject({}, [NavbarComponent])
+@inject({
+    modalState: ModalState
+}, [NavbarComponent])
 export class MainComponent extends Component {
     static propTypes = {
-        children: PropTypes.node
+        children: PropTypes.node,
+        modalState: PropTypes.instanceOf(ModalState)
     };
 
     render() {
@@ -21,8 +25,8 @@ export class MainComponent extends Component {
 
         return (
             <div className="gb-main" ref="gbMain">
+                <ModalContainer modalState={this.props.modalState} />
                 <NavbarComponent/>
-
                 {children}
             </div>
         );

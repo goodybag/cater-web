@@ -6,6 +6,7 @@
 @import "restaurant/index";
 @import "order-pane/index";
 @import "modal/index";
+@import "../lib/modal/styles/index";
 
 #components > #gb-container > .init(
   @width: 1145px,
@@ -15,6 +16,11 @@
 #components > #gb-navbar .init(
   @color: @gb-foreground,
   @accent-color: @gb-red
+);
+
+#modal > .init(
+    @width: 562px,
+    @offset-top: 64px
 );
 
 .gb-restaurant {

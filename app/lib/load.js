@@ -3,6 +3,7 @@ import Promise from 'bluebird';
 
 import {handleError} from './error';
 import {getContextFromURL, renderPage, handleReroute} from './reroute';
+import {ModalState} from './modal';
 
 /**
  * The entry point for the client-side application.
@@ -19,6 +20,12 @@ export function load(element, currentContext = {}) {
 
         return injector.get(tokens).then(values => {
             const dependencyCache = injector.dump();
+
+            // Listen to change events to update the body
+            if (dependencyCache.has(ModalState)) {
+                let modalState = dependencyCache.get(ModalState);
+                modalState.registerToBody(document.body);
+            }
 
             return Promise.fromNode(cb => {
                 renderPage({route, components, dependencyCache}, element, cb);
