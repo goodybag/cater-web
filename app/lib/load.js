@@ -23,8 +23,8 @@ export function load(element, currentContext = {}) {
 
             // Listen to change events to update the body
             if (dependencyCache.has(ModalState)) {
-                let modalState = dependencyCache.get(ModalState);
-                modalState.registerToBody(document.body);
+                let modals = dependencyCache.get(ModalState);
+                modals.registerToBody(document.body);
             }
 
             return Promise.fromNode(cb => {

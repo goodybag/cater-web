@@ -1,10 +1,16 @@
 import React, {Component, PropTypes} from 'react';
+import {inject} from 'yokohama';
 import cx from 'classnames';
 import {findDOMNode} from 'react-dom';
 
 import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
+import {ShareOrderModal} from '../share-order-modal';
+import {ModalState} from '../../lib/modal';
 
+@inject({
+    modals: ModalState
+})
 export class OrderPaneShareComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order),
@@ -14,6 +20,12 @@ export class OrderPaneShareComponent extends Component {
     static defaultProps = {
         disabled: false
     };
+
+    constructor(props, context) {
+        super(props, context);
+
+        this.onShareOrderClick = this.onShareOrderClick.bind(this);
+    }
 
     handleClick = () => {
         const {gbOrderPaneShareLinkbox} = this.refs;
@@ -59,11 +71,19 @@ export class OrderPaneShareComponent extends Component {
                         Or invite by email:
                     </div>
 
-                    <a href="/" className="gb-order-pane-share-email">
+                    <div
+                        href="/"
+                        className="gb-order-pane-share-email"
+                        onClick={this.onShareOrderClick}
+                    >
                         Share order by email
-                    </a>
+                    </div>
                 </div>
             </div>
         );
+    }
+
+    onShareOrderClick() {
+        this.props.modals.open(ShareOrderModal);
     }
 }

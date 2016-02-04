@@ -12,12 +12,12 @@ import {RestaurantComponent} from './restaurant';
     route.use(RestaurantComponent);
 })
 @inject({
-    modalState: ModalState
+    modals: ModalState
 }, [NavbarComponent])
 export class MainComponent extends Component {
     static propTypes = {
         children: PropTypes.node,
-        modalState: PropTypes.instanceOf(ModalState)
+        modals: PropTypes.instanceOf(ModalState)
     };
 
     render() {
@@ -25,7 +25,7 @@ export class MainComponent extends Component {
 
         return (
             <div className="gb-main" ref="gbMain">
-                <ModalContainer modalState={this.props.modalState} />
+                <ModalContainer modalState={this.props.modals} />
                 <NavbarComponent/>
                 {children}
             </div>
