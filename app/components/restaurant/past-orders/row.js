@@ -35,7 +35,7 @@ export class RestaurantOrdersRowComponent extends Component {
         const action = new CancelOrderAction(order.id);
 
         dispatcher.dispatch(action);
-    }
+    };
 
     handleUncancelClick = () => {
         const {order, dispatcher} = this.props;
@@ -43,7 +43,7 @@ export class RestaurantOrdersRowComponent extends Component {
         const action = new UncancelOrderAction(order.id);
 
         dispatcher.dispatch(action);
-    }
+    };
 
     render() {
         const {order} = this.props;

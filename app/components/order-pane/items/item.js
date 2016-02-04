@@ -12,7 +12,7 @@ export class OrderPaneItemComponent extends Component {
 
     static defaultProps = {
         showLinks: true
-    }
+    };
 
     handleRemoveItem = () => {
         const {removeItem, orderItem} = this.props;
