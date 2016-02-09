@@ -19,7 +19,7 @@ import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../../actions/order'
     orderStore: OrderStore,
     orderItemStore: OrderItemStore,
     dispatcher: Dispatcher
-}, [OrderPaneInfoComponent, OrderPaneItemsComponent])
+}, [OrderPaneInfoComponent, OrderPaneItemsComponent, OrderPaneShareComponent])
 @listeningTo(['orderStore', 'orderItemStore'], props => {
     const {orderStore, orderItemStore} = props;
 
