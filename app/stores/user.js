@@ -24,7 +24,7 @@ export class CurrentUserStore extends Store {
     }
 
     onUpdateUserAction(payload) {
-        this.userService
+        return this.userService
             .update(this.user.id, payload.changes)
             .then(user => {
                 this.user = user || this.user;
@@ -38,7 +38,7 @@ export class CurrentUserStore extends Store {
         this.user.region = new Region(payload);
         this.emit('change');
 
-        this.userService
+        return this.userService
             .update(this.user.id, { region_id: payload.id })
             .then(user => {
                 this.user = user || this.user;
@@ -47,7 +47,8 @@ export class CurrentUserStore extends Store {
             .catch(error => {
                 this.user.region = oldRegion;
                 this.emit('change');
-                alert('Error updating region');
+
+                throw error;
             });
     }
 }

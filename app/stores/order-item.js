@@ -24,7 +24,7 @@ export class OrderItemStore extends Store {
     }
 
     onAddItem({order, orderItemData}) {
-        this.orderItemService.createOrderItem(order.id, orderItemData)
+        return this.orderItemService.createOrderItem(order.id, orderItemData)
             .then(item => {
                 this.orderItems.push(item);
                 this.emit('change');
@@ -32,7 +32,7 @@ export class OrderItemStore extends Store {
     }
 
     onRemoveItem({orderItem, order}) {
-        this.orderItemService.removeOrderItem(orderItem.id, order.id)
+        return this.orderItemService.removeOrderItem(orderItem.id, order.id)
             .then(item => {
                 this.orderItems = this.orderItems.filter(i => {
                     return i.id !== item[0].id;
