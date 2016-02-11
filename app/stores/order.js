@@ -7,12 +7,14 @@ import {OrderResolver} from '../resolvers/order';
 import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../actions/order';
 import {Order} from '../models/order';
 import {validate} from '../validators/order-info';
+import {OrderService} from '../services/order';
 
-@dependencies(Dispatcher, OrderResolver)
+@dependencies(Dispatcher, OrderResolver, OrderService)
 export class OrderStore extends Store {
-    constructor(dispatcher, order) {
+    constructor(dispatcher, order, orderService) {
         super(dispatcher);
 
+        this.orderService = orderService;
         this.order = order;
         this.saving = false;
 
@@ -61,9 +63,20 @@ export class OrderStore extends Store {
         this.emit('change');
 
         return Promise.try(() => {
-            return delay(500);
-        }).then(() => {
             validate(changes, {nullableColumns: false});
+
+            const [street, city, state, zip] = changes.address.split(/,\s+/g);
+
+            const body = {
+                street, city, state, zip,
+                datetime: `${changes.date} ${changes.time}`,
+                guests: changes.guests
+            };
+
+            return this.orderService.updateById(this.order.id, body);
+        }).then(order => {
+            this.order = order;
+            this.emit('change');
         }).finally(() => {
             this.saving = false;
             this.emit('change');
