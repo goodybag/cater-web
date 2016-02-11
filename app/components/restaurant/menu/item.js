@@ -2,15 +2,24 @@ import React, {Component, PropTypes} from 'react';
 import TransitionGroup from 'react-addons-transition-group';
 import cx from 'classnames';
 import {inject} from 'yokohama';
+import {listeningTo} from 'tokyo';
 import {FormattedNumber} from 'react-intl';
 
+import {OrderStore} from '../../../stores/order';
 import {MenuItem} from '../../../models/menu-item';
 import {
     RestaurantMenuItemMenuWrapperComponent,
     RestaurantMenuItemMenuComponent
 } from './item-menu';
 
-@inject({}, [RestaurantMenuItemMenuComponent])
+@inject({
+    orderStore: OrderStore
+}, [RestaurantMenuItemMenuComponent])
+@listeningTo(['orderStore'], ({orderStore}) => {
+    return {
+        order: orderStore.getOrder()
+    };
+})
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired
@@ -30,7 +39,7 @@ export class RestaurantMenuItemComponent extends Component {
 
     render() {
         const {open} = this.state;
-        const {item} = this.props;
+        const {item, order} = this.props;
         const {
             name,
             tags,
@@ -41,6 +50,7 @@ export class RestaurantMenuItemComponent extends Component {
 
         const itemMenu = (
             <RestaurantMenuItemMenuWrapperComponent
+                showNoOrderMessage={!order || !order.id}
                 item={item}
                 onClose={this.handleClose}
             />
