@@ -1,8 +1,7 @@
 import React, {Component, PropTypes, cloneElement} from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {inject} from 'yokohama';
-import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
+import {Dispatcher, listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {Config} from '../../lib/config';

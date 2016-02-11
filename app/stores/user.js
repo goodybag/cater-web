@@ -1,6 +1,5 @@
-import {Store} from 'tokyo';
+import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Dispatcher} from 'flux';
 
 import {CurrentUserResolver} from '../resolvers/user';
 import {UpdateUserAction, UpdateUserRegionAction} from '../actions/user';

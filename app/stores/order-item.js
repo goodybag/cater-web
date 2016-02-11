@@ -1,6 +1,5 @@
-import {Store} from 'tokyo';
+import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Dispatcher} from 'flux';
 
 import {OrderItemsResolver} from '../resolvers/order-item';
 import {AddItemToOrderAction} from '../actions/menu';

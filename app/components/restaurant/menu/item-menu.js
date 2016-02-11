@@ -2,8 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import {find} from 'lodash';
 import {inject} from 'yokohama';
-import {Dispatcher} from 'flux';
-import {listeningTo} from 'tokyo';
+import {Dispatcher, listeningTo} from 'tokyo';
 
 import {MenuItem} from '../../../models/menu-item';
 import {AddItemToOrderAction} from '../../../actions/menu';

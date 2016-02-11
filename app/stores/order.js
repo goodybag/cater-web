@@ -1,7 +1,6 @@
 import Promise from 'bluebird';
-import {Store} from 'tokyo';
+import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Dispatcher} from 'flux';
 import delay from 'core-js/library/fn/delay';
 
 import {OrderResolver} from '../resolvers/order';

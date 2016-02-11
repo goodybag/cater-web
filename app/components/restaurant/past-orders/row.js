@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
-import {Dispatcher} from 'flux';
+import {Dispatcher} from 'tokyo';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';

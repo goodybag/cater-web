@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Dispatcher} from 'flux';
+import {Dispatcher} from 'tokyo';
 import {find} from 'lodash';
 
 import {UpdateUserRegionAction} from '../actions/user';

@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
-import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
+import {Dispatcher, listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {OrderStore} from '../../stores/order';

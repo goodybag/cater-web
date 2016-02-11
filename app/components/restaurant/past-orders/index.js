@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
-import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
+import {Dispatcher, listeningTo} from 'tokyo';
 
 import {RestaurantStore} from '../../../stores/restaurant';
 import {Restaurant} from '../../../models/restaurant';
