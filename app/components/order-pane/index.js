@@ -61,8 +61,9 @@ export class OrderPaneComponent extends Component {
     handleSaveOrderInfo(changes) {
         const {dispatcher} = this.props;
 
-        this.setState({editing: false});
-        dispatcher.dispatch(new UpdateOrderInfoAction({changes}));
+        dispatcher.dispatch(new UpdateOrderInfoAction({changes})).then(() => {
+            this.stopEditing();
+        });
     }
 
     handleOrderSubmission(info) {
