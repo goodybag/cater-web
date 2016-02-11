@@ -70,27 +70,29 @@ export class RestaurantMenuItemComponent extends Component {
 
         return (
             <div className={cname} onClick={!open && this.handleOpen}>
-                <div className="gb-restaurant-menu-item-title">
-                    <div className="gb-restaurant-menu-item-title-content">
-                        {name}
+                <div className="gb-restaurant-menu-item-heading" onClick={this.handleClose}>
+                    <div className="gb-restaurant-menu-item-title">
+                        <div className="gb-restaurant-menu-item-title-content">
+                            {name}
+                        </div>
+                        <div className="gb-restaurant-menu-item-tags">
+                            {tags.map(renderTag)}
+                        </div>
                     </div>
-                    <div className="gb-restaurant-menu-item-tags">
-                        {tags.map(renderTag)}
+
+                    <div className="gb-restaurant-menu-item-quantity">
+                        {this.renderQuantity()}
                     </div>
-                </div>
 
-                <div className="gb-restaurant-menu-item-quantity">
-                    {this.renderQuantity()}
-                </div>
+                    <div className="gb-restaurant-menu-item-price">
+                        <FormattedNumber
+                            value={price / 100}
+                            style="currency"
+                            currency="USD"
+                        />
 
-                <div className="gb-restaurant-menu-item-price">
-                    <FormattedNumber
-                        value={price / 100}
-                        style="currency"
-                        currency="USD"
-                    />
-
-                    {min_qty ? ' per person' : null}
+                        {min_qty ? ' per person' : null}
+                    </div>
                 </div>
 
                 {description && descEl}
