@@ -5,21 +5,26 @@ import {Dispatcher} from 'flux';
 
 import {OrderItemStore} from '../../../stores/order-item';
 import {OrderStore} from '../../../stores/order';
+import {EditItemStore} from '../../../stores/edit-item';
 import {OrderItem} from '../../../models/order-item';
 import {Order} from '../../../models/order';
 import {OrderPaneItemComponent} from './item';
 import {OrderPaneCheckoutComponent} from './checkout';
-import {RemoveOrderItemAction} from '../../../actions/order';
+import {RemoveOrderItemAction} from '../../../actions/order-item';
+import {ModalEditOrderItemComponent} from './item-edit';
 
 @inject({
     dispatcher: Dispatcher,
     orderItemStore: OrderItemStore,
-    orderStore: OrderStore
-})
-@listeningTo(['orderItemStore', 'orderStore'], ({orderItemStore, orderStore}) => {
+    orderStore: OrderStore,
+    editItemStore: EditItemStore
+}, [OrderPaneItemComponent, ModalEditOrderItemComponent])
+@listeningTo(['orderItemStore', 'orderStore', 'editItemStore'], ({orderItemStore, orderStore, editItemStore}) => {
     return {
         orderItems: orderItemStore.getOrderItems(),
-        order: orderStore.getOrder()
+        order: orderStore.getOrder(),
+        editOrderItemModalOpen: editItemStore.modalOpen,
+        editOrderItem: editItemStore.orderItem
     };
 })
 export class OrderPaneItemsComponent extends Component {
@@ -37,15 +42,22 @@ export class OrderPaneItemsComponent extends Component {
     };
 
     render() {
-        const {order, orderItems} = this.props;
+        const {order, orderItems, editOrderItemModalOpen, editOrderItem} = this.props;
         const {handleRemoveItem} = this;
-        const {total} = order;
+        const {sub_total} = order;
 
         return (
             <div className="gb-order-pane-items">
                 {orderItems.map(renderOrderItem)}
 
-                <OrderPaneCheckoutComponent total={total}/>
+                <OrderPaneCheckoutComponent subtotal={sub_total}/>
+
+                {
+                    editOrderItemModalOpen ?
+                        <ModalEditOrderItemComponent
+                            orderItem={editOrderItem}
+                        /> : null
+                }
             </div>
         );
 
