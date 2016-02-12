@@ -3,11 +3,11 @@ import {FormattedNumber} from 'react-intl';
 
 export class OrderPaneCheckoutComponent extends Component {
     static propTypes = {
-        total: PropTypes.number.isRequired
+        subtotal: PropTypes.number.isRequired
     };
 
     render() {
-        const {total} = this.props;
+        const {subtotal} = this.props;
 
         return (
             <div className="gb-order-pane-checkout">
@@ -20,7 +20,7 @@ export class OrderPaneCheckoutComponent extends Component {
 
                             <td className="gb-order-pane-checkout-subtotal-price">
                                 <FormattedNumber
-                                    value={total / 100}
+                                    value={subtotal / 100}
                                     style="currency"
                                     currency="USD"
                                 />
