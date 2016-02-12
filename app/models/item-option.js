@@ -30,7 +30,7 @@ export class ItemOption {
     }
 }
 
-class Option {
+export class Option {
     static parse(attrs) {
         return new Option(attrs);
     }
