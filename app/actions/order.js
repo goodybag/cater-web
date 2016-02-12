@@ -5,13 +5,6 @@ export class UpdateOrderInfoAction {
     }
 }
 
-export class RemoveOrderItemAction {
-    constructor({orderItem, order}) {
-        this.orderItem = orderItem;
-        this.order = order;
-    }
-}
-
 export class SubmitOrderInfoAction {
     constructor({info}) {
         this.info = info;
