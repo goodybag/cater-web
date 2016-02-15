@@ -22,10 +22,10 @@ export class RestaurantCoverComponent extends Component {
 
     render() {
         const {restaurant} = this.props;
-        const {name} = restaurant;
+        const {name, cover_photo_url} = restaurant;
 
         return (
-            <div className="gb-restaurant-cover">
+            <div className="gb-restaurant-cover" style={{backgroundImage: 'url(' + cover_photo_url + ')'}}>
                 <div className="gb-restaurant-cover-text">{name}</div>
             </div>
         );

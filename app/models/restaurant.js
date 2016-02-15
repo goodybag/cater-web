@@ -48,7 +48,8 @@ export class Restaurant {
             emails = [],
             gb_fee = null,
             region_id = null,
-            region = null
+            region = null,
+            cover_photo_url = null
         } = attrs;
 
         this.id = id;
@@ -75,5 +76,6 @@ export class Restaurant {
         this.emails = emails;
         this.gb_fee = gb_fee;
         this.region = region;
+        this.cover_photo_url = cover_photo_url;
     }
 }
