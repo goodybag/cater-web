@@ -7,7 +7,8 @@ export class ReceiveEditOrderItemAction {
 export class CloseEditOrderItemAction {}
 
 export class AddOrderItemAction {
-    constructor({orderItem}) {
+    constructor({orderId, orderItem}) {
+        this.orderId = orderId;
         this.orderItem = orderItem;
     }
 }
