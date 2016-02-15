@@ -2,7 +2,7 @@ import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
 import {OrderItemsResolver} from '../resolvers/order-item';
-import {EditOrderItemAction, RemoveOrderItemAction, AddItemToOrderAction} from '../actions/order-item';
+import {EditOrderItemAction, RemoveOrderItemAction, AddOrderItemAction} from '../actions/order-item';
 import {OrderItemService} from '../services/order-item';
 
 @dependencies(Dispatcher, OrderItemsResolver, OrderItemService)
@@ -13,7 +13,7 @@ export class OrderItemStore extends Store {
         this.orderItems = orderItems;
         this.orderItemService = orderItemService;
 
-        this.bind(AddItemToOrderAction, this.onAddItem);
+        this.bind(AddOrderItemAction, this.onAddItem);
         this.bind(EditOrderItemAction, this.onEditOrderItem);
         this.bind(RemoveOrderItemAction, this.onRemoveOrderItem);
     }
@@ -23,11 +23,13 @@ export class OrderItemStore extends Store {
     }
 
     onAddItem({orderId, orderItem}) {
-        this.orderItemService.createOrderItem(orderId, orderItem)
-            .then(item => {
-                this.orderItems.push(item);
-                this.emit('change');
-            });
+        console.log("order id:", orderId);
+        console.log("orderItem: ", orderItem);
+        // this.orderItemService.createOrderItem(orderId, orderItem)
+        //     .then(item => {
+        //         this.orderItems.push(item);
+        //         this.emit('change');
+        //     });
     }
 
     onEditOrderItem({orderItem}) {
