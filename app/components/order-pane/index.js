@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
-import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
+import {Dispatcher, listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {OrderStore} from '../../stores/order';
@@ -45,20 +44,26 @@ export class OrderPaneComponent extends Component {
             editing: false
         };
 
-        this.handleStartEditing = this.handleStartEditing.bind(this);
+        this.startEditing = this.startEditing.bind(this);
+        this.stopEditing = this.stopEditing.bind(this);
         this.handleSaveOrderInfo = this.handleSaveOrderInfo.bind(this);
         this.handleOrderSubmission = this.handleOrderSubmission.bind(this);
     }
 
-    handleStartEditing() {
+    startEditing() {
         this.setState({editing: true});
+    }
+
+    stopEditing() {
+        this.setState({editing: false});
     }
 
     handleSaveOrderInfo(changes) {
         const {dispatcher} = this.props;
 
-        this.setState({editing: false});
-        dispatcher.dispatch(new UpdateOrderInfoAction({changes}));
+        dispatcher.dispatch(new UpdateOrderInfoAction({changes})).then(() => {
+            this.stopEditing();
+        });
     }
 
     handleOrderSubmission(info) {
@@ -88,13 +93,14 @@ export class OrderPaneComponent extends Component {
                     orderStore={orderStore}
                     saving={savingOrder}
                     onSaveInfo={this.handleSaveOrderInfo}
+                    onCancel={this.stopEditing}
                 />
             );
         } else {
             return (
                 <OrderPaneInfoComponent
                     order={order}
-                    onStartEditing={this.handleStartEditing}
+                    onStartEditing={this.startEditing}
                 />
             );
         }

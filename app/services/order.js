@@ -24,4 +24,9 @@ export class OrderService {
                 }
             });
     }
+
+    updateById(id, body) {
+        return this.apiService.update(`orders/${id}`, body)
+            .then(Order.parse);
+    }
 }

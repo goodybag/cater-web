@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedDate, FormattedTime, FormattedNumber} from 'react-intl';
 import {inject} from 'yokohama';
-import {listeningTo} from 'tokyo';
-import {Dispatcher} from 'flux';
+import {Dispatcher, listeningTo} from 'tokyo';
 
 import {Order} from '../../../models/order';
 import {RestaurantOrdersStatusLabelComponent} from './status-label';

@@ -20,7 +20,8 @@ export class OrderPaneEditComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order),
         saving: PropTypes.bool.isRequired,
-        onSaveInfo: PropTypes.func.isRequired
+        onSaveInfo: PropTypes.func.isRequired,
+        onCancel: PropTypes.func
     };
 
     static defaultProps = {
@@ -54,12 +55,25 @@ export class OrderPaneEditComponent extends Component {
             };
         }
 
+        this.handleCancel = this.handleCancel.bind(this);
         this.handleSaveInfo = this.handleSaveInfo.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleGuestsChange = this.handleGuestsChange.bind(this);
         this.validateFields = this.validateFields.bind(this);
+    }
+
+    isCancellable() {
+        const {onCancel} = this.props;
+
+        return onCancel != null;
+    }
+
+    handleCancel() {
+        const {onCancel} = this.props;
+
+        onCancel();
     }
 
     handleSaveInfo() {
@@ -155,6 +169,13 @@ export class OrderPaneEditComponent extends Component {
         const {saving} = this.props;
         const {address, guests, date, time} = this.state;
 
+        const cancelButton = (
+            <div className="gb-order-pane-edit-cancel"
+                onClick={this.handleCancel}
+                children="Cancel"
+            />
+        );
+
         const saveOrderInfoSet = cx('gb-order-pane-edit-save', {
             'gb-order-pane-edit-save-loading': saving
         });
@@ -242,6 +263,8 @@ export class OrderPaneEditComponent extends Component {
                         {this.renderErrorMessageForColumn('date')}
                     </div>
                 </div>
+
+                {this.isCancellable() && cancelButton}
 
                 <div className={saveOrderInfoSet} onClick={this.handleSaveInfo}>
                     <div className="gb-order-pane-edit-save-spinner"/>

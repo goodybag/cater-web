@@ -37,7 +37,7 @@
     "react-intl": "^2.0.0-pr-3",
     "source-map-support": "^0.3.2",
     "superagent": "^1.4.0",
-    "tokyo": "^2.0.5",
+    "tokyo": "^2.1.0",
     "validator": "^4.3.0",
     "yokohama": "^1.4.0"
   },
