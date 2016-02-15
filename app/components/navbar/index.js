@@ -1,4 +1,5 @@
 import React, {Component, PropTypes, cloneElement} from 'react';
+import {findDOMNode} from 'react-dom';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
@@ -11,6 +12,20 @@ import {User} from '../../models/user';
 import {RegionSelectorComponent} from '../region-selector';
 import {NavbarOrderMenuComponent} from './menus/order';
 import {NavbarAccountMenuComponent} from './menus/account';
+
+function isOutsideOf(target, container) {
+    return isOutside(target);
+
+    function isOutside(el) {
+        if (el === container) {
+            return false;
+        } else if (el == null) {
+            return true;
+        } else {
+            return isOutside(el.parentElement);
+        }
+    }
+}
 
 @inject({
     currentUserStore: CurrentUserStore,
@@ -34,20 +49,46 @@ export class NavbarComponent extends Component {
         dispatcher: PropTypes.instanceOf(Dispatcher)
     };
 
+    constructor(props) {
+        super(props);
+
+        this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    }
+
     state = {
         activeItemName: null,
         isExpanded: false
     };
 
     handleItemClick = itemName => {
-        const {activeItemName} = this.state;
-
-        if (itemName === activeItemName) {
-            this.setState({activeItemName: null});
-        } else {
-            this.setState({activeItemName: itemName});
-        }
+        this.setState(({activeItemName}) => {
+            if (activeItemName === itemName) {
+                return {activeItemName: null};
+            } else {
+                return {activeItemName: itemName};
+            }
+        });
     };
+
+    handleDocumentClick(event) {
+        this.setState(({activeItemName}) => {
+            if (activeItemName != null) {
+                const node = findDOMNode(this.refs[activeItemName]);
+
+                if (isOutsideOf(event.target, node)) {
+                    return {activeItemName: null};
+                }
+            }
+        });
+    }
+
+    componentDidMount() {
+        document.addEventListener('click', this.handleDocumentClick);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.handleDocumentClick);
+    }
 
     render() {
         const {user, config, dispatcher} = this.props;
@@ -98,6 +139,7 @@ export class NavbarComponent extends Component {
                                 <NavbarItemComponent
                                     title="My Orders"
                                     name="orders"
+                                    ref="orders"
                                     active={activeItemName === 'orders'}
                                     onClick={this.handleItemClick}
                                 >
@@ -112,6 +154,7 @@ export class NavbarComponent extends Component {
                                 <NavbarItemComponent
                                     title={`Hi, ${name}`}
                                     name="account"
+                                    ref="account"
                                     active={activeItemName === 'account'}
                                     onClick={this.handleItemClick}
                                 >
