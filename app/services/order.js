@@ -16,13 +16,19 @@ export class OrderService {
 
     fetchCurrentByRestaurantId(restaurantId) {
         return this.apiService.fetchEndpoint(`restaurants/${restaurantId}/orders/current`)
-            .then(Order.parse).catch(err => {
-                if (err.status === 404) {
-                    return null;
-                } else {
-                    throw err;
-                }
-            });
+        .then(body => {
+            if (body != null) {
+                return Order.parse(body);
+            } else {
+                return null;
+            }
+        }).catch(err => {
+            if (err.status === 404) {
+                return null;
+            } else {
+                throw err;
+            }
+        });
     }
 
     updateById(id, body) {

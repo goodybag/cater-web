@@ -165,7 +165,22 @@ export class RestaurantMenuItemMenuWrapperComponent extends Component {
     render() {
         return (
             <div className="gb-restaurant-menu-item-menu-wrapper" ref="wrapper">
+                {this.props.showNoOrderMessage
+                    ? <RestaurantMenuItemMenuWrapperComponent.NoOrderMessage />
+                    : null
+                }
                 <RestaurantMenuItemMenuComponent ref="child" {...this.props}/>
+            </div>
+        );
+    }
+
+    static NoOrderMessage(props) {
+        return (
+            <div className="gb-restaurant-menu-item-no-order-message">
+                <div className="gb-restaurant-menu-item-no-order-message-wrapper">
+                    <p><strong>Want to order this item?</strong> Just enter your order info first.</p>
+                    <p>That way you can make sure the restuarant will be able to make your food!</p>
+                </div>
             </div>
         );
     }

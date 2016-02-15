@@ -2,15 +2,24 @@ import React, {Component, PropTypes} from 'react';
 import TransitionGroup from 'react-addons-transition-group';
 import cx from 'classnames';
 import {inject} from 'yokohama';
+import {listeningTo} from 'tokyo';
 import {FormattedNumber} from 'react-intl';
 
+import {OrderStore} from '../../../stores/order';
 import {MenuItem} from '../../../models/menu-item';
 import {
     RestaurantMenuItemMenuWrapperComponent,
     RestaurantMenuItemMenuComponent
 } from './item-menu';
 
-@inject({}, [RestaurantMenuItemMenuComponent])
+@inject({
+    orderStore: OrderStore
+}, [RestaurantMenuItemMenuComponent])
+@listeningTo(['orderStore'], ({orderStore}) => {
+    return {
+        order: orderStore.getOrder()
+    };
+})
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired
@@ -30,7 +39,7 @@ export class RestaurantMenuItemComponent extends Component {
 
     render() {
         const {open} = this.state;
-        const {item} = this.props;
+        const {item, order} = this.props;
         const {
             name,
             tags,
@@ -41,6 +50,7 @@ export class RestaurantMenuItemComponent extends Component {
 
         const itemMenu = (
             <RestaurantMenuItemMenuWrapperComponent
+                showNoOrderMessage={!order || !order.id}
                 item={item}
                 onClose={this.handleClose}
             />
@@ -60,27 +70,29 @@ export class RestaurantMenuItemComponent extends Component {
 
         return (
             <div className={cname} onClick={!open && this.handleOpen}>
-                <div className="gb-restaurant-menu-item-title">
-                    <div className="gb-restaurant-menu-item-title-content">
-                        {name}
+                <div className="gb-restaurant-menu-item-heading" onClick={this.handleClose}>
+                    <div className="gb-restaurant-menu-item-title">
+                        <div className="gb-restaurant-menu-item-title-content">
+                            {name}
+                        </div>
+                        <div className="gb-restaurant-menu-item-tags">
+                            {tags.map(renderTag)}
+                        </div>
                     </div>
-                    <div className="gb-restaurant-menu-item-tags">
-                        {tags.map(renderTag)}
+
+                    <div className="gb-restaurant-menu-item-quantity">
+                        {this.renderQuantity()}
                     </div>
-                </div>
 
-                <div className="gb-restaurant-menu-item-quantity">
-                    {this.renderQuantity()}
-                </div>
+                    <div className="gb-restaurant-menu-item-price">
+                        <FormattedNumber
+                            value={price / 100}
+                            style="currency"
+                            currency="USD"
+                        />
 
-                <div className="gb-restaurant-menu-item-price">
-                    <FormattedNumber
-                        value={price / 100}
-                        style="currency"
-                        currency="USD"
-                    />
-
-                    {min_qty ? ' per person' : null}
+                        {min_qty ? ' per person' : null}
+                    </div>
                 </div>
 
                 {description && descEl}
