@@ -1,33 +1,45 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
+import {Dispatcher} from 'flux';
+import {inject} from 'yokohama';
+import _ from 'lodash';
 
 import {OrderItem} from '../../../models/order-item';
+import {ReceiveEditOrderItemAction, RemoveOrderItemAction} from '../../../actions/order-item';
 
+@inject({
+    dispatcher: Dispatcher,
+})
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
-        orderItem: PropTypes.instanceOf(OrderItem).isRequired,
-        onRemoveItem: PropTypes.func.isRequired,
-        showLinks: PropTypes.bool
+        orderItem: PropTypes.instanceOf(OrderItem).isRequired
     };
 
-    static defaultProps = {
-        showLinks: true
+    onEditItemClick = (e) => {
+        const {orderItem, dispatcher} = this.props;
+
+        e.preventDefault();
+        var action = new ReceiveEditOrderItemAction({orderItem});
+        dispatcher.dispatch(action);
     };
 
-    handleRemoveItem = () => {
-        const {removeItem, orderItem} = this.props;
-        removeItem({orderItem});
+    onRemoveItemClick = (e) => {
+        const {orderItem, dispatcher} = this.props;
+
+        e.preventDefault();
+        var action = new RemoveOrderItemAction({orderItem});
+        dispatcher.dispatch(action);
+    };
+
+    onRemoveItem = () => {
+        const {orderItem, dispatcher} = this.props;
+        var action = new RemoveOrderItemAction({orderItem});
+        dispatcher.dispatch(action);
     };
 
     render() {
-        const {orderItem, showLinks} = this.props;
-        const {name, quantity, price, options_sets} = orderItem;
-
-        const choices = (options_sets || []).map(set => {
-            return (set.options || [])
-                .filter(option => option.state)
-                .map(option => option.name);
-        }).join(', ');
+        const {orderItem} = this.props;
+        const {name, quantity, sub_total, options_sets} = orderItem;
 
         return (
             <div className="gb-order-pane-item">
@@ -38,13 +50,16 @@ export class OrderPaneItemComponent extends Component {
                                 {name}
                             </td>
 
-                            <td className="gb-order-pane-item-info-quantity">
-                                x{quantity}
-                            </td>
+                            {
+                                quantity > 0 ?
+                                    <td className="gb-order-pane-item-info-quantity">
+                                        x{quantity}
+                                    </td> : <td>{this.onRemoveItem()}</td>
+                            }
 
                             <td className="gb-order-pane-item-info-price">
                                 <FormattedNumber
-                                    value={price / 100}
+                                    value={(sub_total / 100)}
                                     style="currency"
                                     currency="USD"
                                 />
@@ -54,26 +69,44 @@ export class OrderPaneItemComponent extends Component {
                 </table>
 
                 <div className="gb-order-pane-item-options">
-                    {choices}
+                    {displayOptions()}
                 </div>
 
-                {
-                    showLinks ?
-                        <div className="gb-order-pane-item-links">
-                            <a href="/" className="gb-order-pane-item-edit">
-                                Edit
-                            </a>
+                <div className="gb-order-pane-item-links">
+                    <a className="gb-order-pane-item-edit" onClick={this.onEditItemClick}>
+                        Edit
+                    </a>
 
-                            <span className="gb-order-pane-item-links-del">
-                                |
-                            </span>
+                    <span className="gb-order-pane-item-links-del">
+                        |
+                    </span>
 
-                            <a href="/" className="gb-order-pane-item-remove" onClick={this.handleRemoveItem}>
-                                Remove
-                            </a>
-                        </div> : null
-                }
+                    <a className="gb-order-pane-item-remove" onClick={this.onRemoveItemClick}>
+                        Remove
+                    </a>
+                </div>
             </div>
         );
+
+        function displayOptions() {
+            const optionsSets = _.clone(options_sets, true);
+
+            return (optionsSets || [])
+                .filter(itemOption => {
+                    itemOption.options = itemOption.options.filter(option => option.state);
+                    return itemOption.options.length > 0;
+                })
+                .map((itemOption, i) => {
+                    return (
+                        <div key={i}>&bull; {itemOption.name}: {displayOption(itemOption.options)}</div>
+                    );
+                });
+
+            function displayOption(options) {
+                return options
+                    .map(option => option.name)
+                    .join(', ');
+            }
+        }
     }
 }
