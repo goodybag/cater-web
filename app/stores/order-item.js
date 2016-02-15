@@ -4,8 +4,8 @@ import {Dispatcher} from 'flux';
 
 import {OrderItemsResolver} from '../resolvers/order-item';
 import {AddItemToOrderAction} from '../actions/menu';
-import {RemoveOrderItemAction} from '../actions/order';
-import {OrderItemService} from '../services/order-item'
+import {EditOrderItemAction, RemoveOrderItemAction} from '../actions/order-item';
+import {OrderItemService} from '../services/order-item';
 
 @dependencies(Dispatcher, OrderItemsResolver, OrderItemService)
 export class OrderItemStore extends Store {
@@ -16,7 +16,8 @@ export class OrderItemStore extends Store {
         this.orderItemService = orderItemService;
 
         this.bind(AddItemToOrderAction, this.onAddItem);
-        this.bind(RemoveOrderItemAction, this.onRemoveItem);
+        this.bind(EditOrderItemAction, this.onEditOrderItem);
+        this.bind(RemoveOrderItemAction, this.onRemoveOrderItem);
     }
 
     getOrderItems() {
@@ -31,11 +32,27 @@ export class OrderItemStore extends Store {
             });
     }
 
-    onRemoveItem({orderItem, order}) {
-        return this.orderItemService.removeOrderItem(orderItem.id, order.id)
+    onEditOrderItem({orderItem}) {
+        this.orderItemService.updateOrderItem(orderItem.id, orderItem.order.id, orderItem)
             .then(item => {
-                this.orderItems = this.orderItems.filter(i => {
-                    return i.id !== item[0].id;
+                let index = null;
+
+                this.orderItems.forEach(function(orderItem, i) {
+                    if(orderItem.id === item.id) {
+                        index = i;
+                    }
+                });
+
+                this.orderItems[index] = item;
+                this.emit('change');
+            });
+    }
+
+    onRemoveOrderItem({orderItem}) {
+        this.orderItemService.removeOrderItem(orderItem.id, orderItem.order.id)
+            .then(() => {
+                this.orderItems = this.orderItems.filter(item => {
+                    return item.id !== orderItem.id;
                 });
 
                 this.emit('change');
