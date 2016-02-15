@@ -2,14 +2,9 @@ import * as nagoya from 'nagoya';
 
 export const schema = {
     address(address) {
-        const segments = address.split(/,\s*/);
-        nagoya.assert(segments.length === 4,
-                      'must have a street, city, state and zip code');
-
-        const [street, city, state, zip] = segments;
-
-        nagoya.matches(state, /^[a-z]{2}$/i, 'state must be a two character code');
-        nagoya.matches(zip, /^\d+$/i, 'zip must be a number');
+        if (this.addressData) {
+            nagoya.assert(this.addressData.valid, 'failed to geocode address');
+        }
 
         // from here we can supply context and match the zip
         // code against the restaurant zips collection.

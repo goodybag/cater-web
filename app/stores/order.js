@@ -63,17 +63,30 @@ export class OrderStore extends Store {
         this.emit('change');
 
         return Promise.try(() => {
-            validate(changes, {nullableColumns: false});
+            return this.orderService.geocodeAddress(changes.address);
+        }).then(body => {
+            validate(changes, {
+                nullableColumns: false,
+                context: {
+                    addressData: body
+                    // add restaurant delivery times/zips here
+                }
+            });
 
-            const [street, city, state, zip] = changes.address.split(/,\s+/g);
+            if (!body.valid) {
+                throw new TypeError('Failed to invalidate empty geocode body');
+            }
 
-            const body = {
-                street, city, state, zip,
+            return {
+                street: body.address.street,
+                city: body.address.city,
+                state: body.address.state,
+                zip: body.address.zip,
                 datetime: `${changes.date} ${changes.time}`,
                 guests: changes.guests
             };
-
-            return this.orderService.updateById(this.order.id, body);
+        }).then(data => {
+            return this.orderService.updateById(this.order.id, data);
         }).then(order => {
             this.order = order;
             this.emit('change');
