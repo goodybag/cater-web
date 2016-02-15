@@ -8,7 +8,7 @@ import cx from 'classnames';
 import {OrderItem} from '../../../models/order-item';
 import {MenuItem} from '../../../models/menu-item';
 import {ItemOption, Option} from '../../../models/item-option';
-import {CloseEditOrderItemAction, EditOrderItemAction} from '../../../actions/order-item';
+import {CloseEditOrderItemAction, EditOrderItemAction, AddOrderItemAction} from '../../../actions/order-item';
 
 @inject({
     dispatcher: Dispatcher
@@ -55,6 +55,7 @@ export class ModalEditOrderItemComponent extends Component {
 
 export class OrderItemComponent extends Component {
     static propTypes = {
+        orderId: PropTypes.number,
         orderItem: PropTypes.oneOfType([
             PropTypes.instanceOf(OrderItem),
             PropTypes.instanceOf(MenuItem)
@@ -105,8 +106,8 @@ export class OrderItemComponent extends Component {
         this.state.unsavedChanges.updatedQuantity = e.target.value;
     };
 
-    onSaveChangesClick = () => {
-        const {dispatcher, orderItem, onClose} = this.props;
+    getUnsavedOrderItem = () => {
+        const {orderItem} = this.props;
         const {unsavedChanges} = this.state;
         let unsavedOrderItem = _.clone(orderItem, true);
 
@@ -124,13 +125,32 @@ export class OrderItemComponent extends Component {
                             }
                         });
                     }
-                })
+                });
             });
         }
+
+        return unsavedOrderItem;
+    };
+
+    onSaveChangesClick = () => {
+        const {dispatcher, onClose} = this.props;
+        const {unsavedChanges} = this.state;
+        let unsavedOrderItem = this.getUnsavedOrderItem();
 
         const action = new EditOrderItemAction(unsavedOrderItem);
         dispatcher.dispatch(action);
         onClose();
+    };
+
+    onAddToOrderClick = () => {
+        var {dispatcher, orderId} = this.props;
+        let unsavedOrderItem = this.getUnsavedOrderItem();
+
+        orderId = orderId || unsavedOrderItem.order_id;
+
+        const action = new AddOrderItemAction({orderId, orderItem: unsavedOrderItem});
+        dispatcher.dispatch(action);
+        console.log(unsavedOrderItem);
     };
 
     render() {
@@ -178,7 +198,10 @@ export class OrderItemComponent extends Component {
                     <div className="gb-order-item-contents-description">
                         {orderItem.description}
                     </div>
-                    {orderItem.options_sets.map(this.renderItemOptionSet)}
+                    {
+                        orderItem.options_sets ?
+                            orderItem.options_sets.map(this.renderItemOptionSet) : null
+                    }
                     <div className="gb-order-item-notes">
                         <div className="item-notes-title">
                             Comments or Instructions
@@ -219,7 +242,7 @@ export class OrderItemComponent extends Component {
                         <div className="item-cancel-btn" onClick={onClose}>Cancel</div>
                         {
                             menuView ?
-                                <div className="item-add-btn">Add to order</div> :
+                                <div className="item-add-btn" onClick={this.onAddToOrderClick}>Add to order</div> :
                                     <div className="item-save-btn" onClick={this.onSaveChangesClick}>Save changes</div>
                         }
                     </div>
@@ -269,7 +292,10 @@ export class OrderItemOptionSetComponent extends Component {
                             <span>Maximum: {optionSet.selected_max}</span> : null
                     }
                 </div>
-                {optionSet.options.map(this.renderItemOption)}
+                {
+                    optionSet.options ?
+                        optionSet.options.map(this.renderItemOption) : null
+                }
             </div>
         );
     };

@@ -3,8 +3,7 @@ import {dependencies} from 'yokohama';
 import {Dispatcher} from 'flux';
 
 import {OrderItemsResolver} from '../resolvers/order-item';
-import {AddItemToOrderAction} from '../actions/menu';
-import {EditOrderItemAction, RemoveOrderItemAction} from '../actions/order-item';
+import {EditOrderItemAction, RemoveOrderItemAction, AddItemToOrderAction} from '../actions/order-item';
 import {OrderItemService} from '../services/order-item';
 
 @dependencies(Dispatcher, OrderItemsResolver, OrderItemService)
@@ -24,8 +23,8 @@ export class OrderItemStore extends Store {
         return this.orderItems;
     }
 
-    onAddItem({order, orderItemData}) {
-        return this.orderItemService.createOrderItem(order.id, orderItemData)
+    onAddItem({orderId, orderItem}) {
+        this.orderItemService.createOrderItem(orderId, orderItem)
             .then(item => {
                 this.orderItems.push(item);
                 this.emit('change');

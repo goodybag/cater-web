@@ -27,10 +27,11 @@ export class RestaurantMenuItemMenuComponent extends Component {
     };
 
     render() {
-        const {item, onClose, dispatcher} = this.props;
+        const {item, onClose, dispatcher, order} = this.props;
 
         return (
             <OrderItemComponent
+                orderId={order.id}
                 orderItem={item}
                 dispatcher={dispatcher}
                 onClose={onClose}
