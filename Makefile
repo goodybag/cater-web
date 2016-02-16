@@ -92,7 +92,7 @@ $(ASSETS_DIR)/%: $(wildcard $(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(PUBLIC_DIR)/$$
 
 $(FINAL_DIR)/%.js: $(ASSETS_DIR)/%.js node_modules
 	@mkdir -p "$(@D)"
-	uglifyjs -m -c warnings=false < $^ > $@
+	uglifyjs -m -c warnings=false < $< > $@
 
 $(FINAL_DIR)/%.css: $(ASSETS_DIR)/%.css node_modules
 	@mkdir -p "$(@D)"
