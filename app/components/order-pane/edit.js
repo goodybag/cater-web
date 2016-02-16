@@ -84,31 +84,37 @@ export class OrderPaneEditComponent extends Component {
         const {onSaveInfo: saveInfo} = this.props;
         const {address, guests, date, time} = this.state;
 
-        saveInfo({address, guests, date, time});
+        this.setState({unhandledError: null}, () => {
+            saveInfo({address, guests, date, time});
+        });
     }
 
     handleAddressChange(event) {
         const {target: {value}} = event;
 
-        this.setState({address: value || null});
-        this.validateFields();
+        this.setState({address: value || null}, () => {
+            this.validateFields();
+        });
     }
 
     handleDateChange(date) {
-        this.setState({date});
-        this.validateFields();
+        this.setState({date}, () => {
+            this.validateFields();
+        });
     }
 
     handleTimeChange(time) {
-        this.setState({time});
-        this.validateFields();
+        this.setState({time}, () => {
+            this.validateFields();
+        });
     }
 
     handleGuestsChange(event) {
         const {target: {value}} = event;
 
-        this.setState({guests: +value});
-        this.validateFields();
+        this.setState({guests: +value}, () => {
+            this.validateFields();
+        });
     }
 
     inputBoxClassNameByValidity(state, show = false) {
