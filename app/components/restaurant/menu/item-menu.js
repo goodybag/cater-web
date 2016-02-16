@@ -1,13 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
-import {find} from 'lodash';
+import {find, cloneDeep} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
 
 import {MenuItem} from '../../../models/menu-item';
-import {AddItemToOrderAction} from '../../../actions/menu';
+import {AddOrderItemAction} from '../../../actions/order-item';
 import {OrderStore} from '../../../stores/order';
 import {OrderItemComponent} from '../../order-pane/items/item-edit';
+import {OrderItemFormComponent} from '../../order-pane/items/item-form';
 
 @inject({
     dispatcher: Dispatcher,
@@ -19,26 +20,111 @@ import {OrderItemComponent} from '../../order-pane/items/item-edit';
     };
 })
 export class RestaurantMenuItemMenuComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        const clonedMenuItem = cloneDeep(props.item);
+
+        this.state = {
+            options_sets: clonedMenuItem.options_sets || [ ],
+            notes: "",
+            recipient: "",
+            quantity: clonedMenuItem.min_qty
+        };
+    };
+
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired,
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
         onClose: PropTypes.func.isRequired
     };
 
-    render() {
-        const {item, onClose, dispatcher, order} = this.props;
+    onSubmit = () => {
+        const {dispatcher, item, order} = this.props;
 
+        const orderItemData = {
+            item_id: item.id,
+            order_id: order.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            feeds_min: item.feeds_min,
+            feeds_max: item.feeds_max,
+            options_sets: this.state.options_sets,
+            recipient: this.state.recipient,
+            quantity: this.state.quantity,
+            notes: this.state.notes
+        };
+
+        const action = new AddOrderItemAction({orderId: order.id, orderItemData});
+        dispatcher.dispatch(action);
+    };
+
+    onChange = (data, e) => {
+        e = e || data; // <-- if no data is passed
+
+        switch(e.target.type) {
+            case "checkbox":
+                this.updateOptionState(data);
+                break;
+            case "textarea":
+                this.updateNotes(e.target.value);
+                break;
+            case "text":
+                this.updateRecipient(e.target.value);
+                break;
+            case "number":
+                this.updateQuantity(e.target.value);
+                break;
+            default:
+                return;
+        }
+    };
+
+    updateOptionState = (data) => {
+        let {options_sets} = this.state;
+        const {optionGroupI, optionI} = data;
+
+        options_sets[optionGroupI].options[optionI].state = !options_sets[optionGroupI].options[optionI].state;
+
+        this.setState({
+            options_sets
+        });
+
+    };
+
+    updateNotes = (value) => {
+        this.setState({
+            notes: value
+        });
+    };
+
+    updateRecipient = (value) => {
+        this.setState({
+            recipient: value
+        });
+    };
+
+    updateQuantity = (value) => {
+        this.setState({
+            quantity: value
+        });
+    };
+
+    render() {
         return (
-            <OrderItemComponent
-                orderId={order.id}
-                orderItem={item}
-                dispatcher={dispatcher}
-                onClose={onClose}
-                menuView={true}
+            <OrderItemFormComponent
+                item={this.props.item}
+                itemState={this.state}
+                onChange={this.onChange}
+                onCancel={this.props.onClose}
+                saveButton={
+                    <div className="item-add-btn" onClick={this.onSubmit}>Add to order</div>
+                }
             />
         );
-    }
-}
+    };
+};
 
 export class RestaurantMenuItemMenuWrapperComponent extends Component {
     componentWillEnter(done) {

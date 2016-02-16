@@ -10,14 +10,14 @@ import {Order} from '../../../models/order';
 import {OrderPaneItemComponent} from './item';
 import {OrderPaneCheckoutComponent} from './checkout';
 import {RemoveOrderItemAction} from '../../../actions/order-item';
-import {ModalEditOrderItemComponent} from './item-edit';
+import {OrderItemEditorComponent} from './item-editor';
 
 @inject({
     dispatcher: Dispatcher,
     orderItemStore: OrderItemStore,
     orderStore: OrderStore,
     editItemStore: EditItemStore
-}, [OrderPaneItemComponent, ModalEditOrderItemComponent])
+}, [OrderPaneItemComponent, OrderItemEditorComponent])
 @listeningTo(['orderItemStore', 'orderStore', 'editItemStore'], ({orderItemStore, orderStore, editItemStore}) => {
     return {
         orderItems: orderItemStore.getOrderItems(),
@@ -53,7 +53,7 @@ export class OrderPaneItemsComponent extends Component {
 
                 {
                     editOrderItemModalOpen ?
-                        <ModalEditOrderItemComponent
+                        <OrderItemEditorComponent
                             orderItem={editOrderItem}
                         /> : null
                 }
