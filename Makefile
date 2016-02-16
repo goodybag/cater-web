@@ -1,7 +1,7 @@
 export PATH := ./node_modules/.bin:$(PATH)
 export SHELL := /usr/bin/env bash
 
-COMMON_MODULES=react react-dom lodash react-intl jquery bluebird react-addons-css-transition-group react-addons-transition-group superagent classnames moment-timezone @goodybag/react-pickadate nagoya hiroshima tokyo yokohama link-delegate flux
+COMMON_MODULES=react react-dom lodash react-intl bluebird react-addons-css-transition-group react-addons-transition-group superagent classnames moment-timezone @goodybag/react-pickadate nagoya hiroshima tokyo yokohama link-delegate flux
 
 OUTPUT_DIR=dist
 ASSETS_DIR=$(OUTPUT_DIR)/build
