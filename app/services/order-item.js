@@ -30,11 +30,6 @@ export class OrderItemService {
             .then(OrderItem.parse);
     }
 
-    updateOrderItem(id, orderId, data) {
-        return this.apiService.update(`orders/${orderId}/items/${id}`, data)
-            .then(OrderItem.parse);
-    }
-
     removeOrderItem(id, orderId) {
         return this.apiService.delete(`orders/${orderId}/items/${id}`)
             .catch(err => console.log(err));
