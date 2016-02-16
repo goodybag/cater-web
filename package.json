@@ -42,7 +42,6 @@
     "yokohama": "^1.4.0"
   },
   "devDependencies": {
-    "babel": "^6.5.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.3.21",
     "babel-eslint": "^4.1.6",
