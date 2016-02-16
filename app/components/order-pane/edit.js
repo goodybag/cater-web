@@ -13,6 +13,8 @@ import {validate} from '../../validators/order-info';
     error: (props, error, component) => {
         if (error instanceof ValidationError) {
             component.setState({columnErrors: error.columns});
+        } else {
+            component.setState({unhandledError: error});
         }
     }
 })
@@ -38,6 +40,7 @@ export class OrderPaneEditComponent extends Component {
         if (order == null) {
             this.state = {
                 columnErrors: {},
+                unhandledError: null,
                 address: null,
                 guests: null,
                 date: null,
@@ -48,6 +51,7 @@ export class OrderPaneEditComponent extends Component {
 
             this.state = {
                 columnErrors: {},
+                unhandledError: null,
                 address: order.displayAddress(),
                 guests: order.guests,
                 date: moment(datetime).format('YYYY-MM-DD'),
@@ -167,7 +171,13 @@ export class OrderPaneEditComponent extends Component {
 
     render() {
         const {saving} = this.props;
-        const {address, guests, date, time} = this.state;
+        const {unhandledError, address, guests, date, time} = this.state;
+
+        const errorEl = unhandledError && (
+            <div className="gb-order-pane-edit-exception">
+                An unknown error occured
+            </div>
+        );
 
         const cancelButton = (
             <div className="gb-order-pane-edit-cancel"
@@ -182,6 +192,8 @@ export class OrderPaneEditComponent extends Component {
 
         return (
             <div className="gb-order-pane-edit">
+                {errorEl}
+
                 <div className="gb-order-pane-edit-location">
                     <div className="gb-order-pane-edit-text">
                         Full address (street, city, state, zip)
