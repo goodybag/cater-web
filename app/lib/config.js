@@ -41,7 +41,7 @@ export class Config {
         if (this.env === 'production') {
             return ['runtime.js'];
         } else {
-            return ['bundle.js'];
+            return ['common.js', 'bundle.js'];
         }
     }
 }

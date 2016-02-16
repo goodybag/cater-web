@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 
 import {Category} from '../../../models/category';
+import {Order} from '../../../models/order';
 import {MenuItem} from '../../../models/menu-item';
 import {RestaurantMenuItemComponent} from './item';
 
@@ -9,11 +10,12 @@ import {RestaurantMenuItemComponent} from './item';
 export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired,
+        order: PropTypes.instanceOf(Order).isRequired,
         items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired
     };
 
     render() {
-        const {category, items} = this.props;
+        const {category, items, order} = this.props;
         const {name} = category;
 
         return (
@@ -34,6 +36,7 @@ export class RestaurantMenuCategoryComponent extends Component {
             return (
                 <RestaurantMenuItemComponent
                     item={item}
+                    order={order}
                     key={item.id}
                 />
             );

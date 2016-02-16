@@ -5,6 +5,7 @@ import {router, Route} from 'hiroshima';
 import {MenuSearchTerm} from '../../../lib/menu-search';
 
 import {MenuStore} from '../../../stores/menu';
+import {OrderStore} from '../../../stores/order';
 import {Category} from '../../../models/category';
 import {MenuItem} from '../../../models/menu-item';
 import {RestaurantMenuCategoryComponent} from './category';
@@ -12,14 +13,16 @@ import {RestaurantMenuTabComponent} from './tab';
 import {RestaurantMenuSearchboxComponent} from './searchbox';
 
 @inject({
-    menuStore: MenuStore
+    menuStore: MenuStore,
+    orderStore: OrderStore
 })
-@listeningTo(['menuStore'], ({menuStore, searchTerm}) => {
+@listeningTo(['menuStore', 'orderStore'], ({menuStore, orderStore, searchTerm}) => {
     const categories = menuStore.getCategories();
     const items = menuStore.getItems();
 
     return {
-        menu: searchTerm.groupMenu(categories, items, 'group')
+        menu: searchTerm.groupMenu(categories, items, 'group'),
+        order: orderStore.getOrder()
     };
 })
 class RestaurantMenuCateringComponent extends Component {
@@ -28,7 +31,7 @@ class RestaurantMenuCateringComponent extends Component {
     };
 
     render() {
-        const {menu} = this.props;
+        const {menu, order} = this.props;
 
         return (
             <div className="gb-restaurant-menu-catering">
@@ -41,6 +44,7 @@ class RestaurantMenuCateringComponent extends Component {
                 <RestaurantMenuCategoryComponent
                     category={category}
                     items={items}
+                    order={order}
                     key={category.id}
                 />
             );

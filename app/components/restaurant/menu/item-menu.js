@@ -10,14 +10,8 @@ import {OrderStore} from '../../../stores/order';
 import {OrderItemFormComponent} from '../../order-pane/items/item-form';
 
 @inject({
-    dispatcher: Dispatcher,
-    orderStore: OrderStore
-})
-@listeningTo(['orderStore'], ({orderStore}) => {
-    return {
-        order: orderStore.getOrder()
-    };
-})
+    dispatcher: Dispatcher
+}, [])
 export class RestaurantMenuItemMenuComponent extends Component {
     constructor(props) {
         super(props);

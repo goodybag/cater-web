@@ -6,6 +6,7 @@ import {listeningTo} from 'tokyo';
 import {FormattedNumber} from 'react-intl';
 
 import {OrderStore} from '../../../stores/order';
+import {Order} from '../../../models/order';
 import {MenuItem} from '../../../models/menu-item';
 import {
     RestaurantMenuItemMenuWrapperComponent,
@@ -13,16 +14,12 @@ import {
 } from './item-menu';
 
 @inject({
-    orderStore: OrderStore
+
 }, [RestaurantMenuItemMenuComponent])
-@listeningTo(['orderStore'], ({orderStore}) => {
-    return {
-        order: orderStore.getOrder()
-    };
-})
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
-        item: PropTypes.instanceOf(MenuItem).isRequired
+        item: PropTypes.instanceOf(MenuItem).isRequired,
+        order: PropTypes.instanceOf(Order).isRequired
     };
 
     state = {
@@ -51,6 +48,7 @@ export class RestaurantMenuItemComponent extends Component {
         const itemMenu = (
             <RestaurantMenuItemMenuWrapperComponent
                 showNoOrderMessage={!order || !order.id}
+                order={order}
                 item={item}
                 onClose={this.handleClose}
             />
