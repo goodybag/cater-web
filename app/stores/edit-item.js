@@ -1,6 +1,6 @@
 import {Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import {Dispatcher} from 'flux';
+import {Dispatcher} from 'tokyo';
 
 import {ReceiveEditOrderItemAction, CloseEditOrderItemAction} from '../actions/order-item';
 

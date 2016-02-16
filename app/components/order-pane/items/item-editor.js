@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama'
-import {Dispatcher} from 'flux';
+import {Dispatcher} from 'tokyo';
 import {cloneDeep, forIn} from 'lodash';
 
 import {OrderItemFormComponent} from './item-form';

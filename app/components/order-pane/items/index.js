@@ -13,24 +13,19 @@ import {RemoveOrderItemAction} from '../../../actions/order-item';
 import {OrderItemEditorComponent} from './item-editor';
 
 @inject({
-    dispatcher: Dispatcher,
-    orderItemStore: OrderItemStore,
-    orderStore: OrderStore,
     editItemStore: EditItemStore
 }, [OrderPaneItemComponent, OrderItemEditorComponent])
-@listeningTo(['orderItemStore', 'orderStore', 'editItemStore'], ({orderItemStore, orderStore, editItemStore}) => {
+@listeningTo(['editItemStore'], ({editItemStore}) => {
     return {
-        orderItems: orderItemStore.getOrderItems(),
-        order: orderStore.getOrder(),
         editOrderItemModalOpen: editItemStore.modalOpen,
         editOrderItem: editItemStore.orderItem
     };
 })
 export class OrderPaneItemsComponent extends Component {
     static propTypes = {
-        //dispatcher: PropTypes.instanceOf(Dispatcher),
-        //order: PropTypes.instanceOf(Order).isRequired,
-        //orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
+        dispatcher: PropTypes.instanceOf(Dispatcher),
+        order: PropTypes.instanceOf(Order).isRequired,
+        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     };
 
     render() {

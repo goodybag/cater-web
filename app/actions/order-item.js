@@ -16,13 +16,11 @@ export class AddOrderItemAction {
 export class EditOrderItemAction {
     constructor({orderItem}) {
         this.orderItem = orderItem;
-        console.log("edit order item action");
     }
 }
 
 export class RemoveOrderItemAction {
     constructor({orderItem}) {
         this.orderItem = orderItem;
-        console.log("remove order item action");
     }
 }

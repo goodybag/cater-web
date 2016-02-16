@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
-import {Dispatcher} from 'flux';
+import {Dispatcher} from 'tokyo';
 import {inject} from 'yokohama';
 import _ from 'lodash';
 
@@ -19,7 +19,6 @@ export class OrderPaneItemComponent extends Component {
         const {orderItem, dispatcher} = this.props;
 
         e.preventDefault();
-        console.log("edit item click");
         var action = new ReceiveEditOrderItemAction({orderItem});
         dispatcher.dispatch(action);
     };
@@ -28,7 +27,6 @@ export class OrderPaneItemComponent extends Component {
         const {orderItem, dispatcher} = this.props;
 
         e.preventDefault();
-        console.log("remove item click");
         var action = new RemoveOrderItemAction({orderItem});
         dispatcher.dispatch(action);
     };
