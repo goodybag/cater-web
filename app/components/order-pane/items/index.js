@@ -28,21 +28,13 @@ import {OrderItemEditorComponent} from './item-editor';
 })
 export class OrderPaneItemsComponent extends Component {
     static propTypes = {
-        dispatcher: PropTypes.instanceOf(Dispatcher),
-        order: PropTypes.instanceOf(Order).isRequired,
-        orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
-    };
-
-    handleRemoveItem = ({orderItem}) => {
-        const {dispatcher, order} = this.props;
-
-        const action = new RemoveOrderItemAction({order, orderItem});
-        dispatcher.dispatch(action);
+        //dispatcher: PropTypes.instanceOf(Dispatcher),
+        //order: PropTypes.instanceOf(Order).isRequired,
+        //orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     };
 
     render() {
         const {order, orderItems, editOrderItemModalOpen, editOrderItem} = this.props;
-        const {handleRemoveItem} = this;
         const {sub_total} = order;
 
         return (
@@ -65,7 +57,6 @@ export class OrderPaneItemsComponent extends Component {
                 <OrderPaneItemComponent
                     key={orderItem.id}
                     orderItem={orderItem}
-                    onRemoveItem={handleRemoveItem}
                 />
             );
         }

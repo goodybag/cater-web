@@ -130,8 +130,7 @@ export class OrderPaneComponent extends Component {
                 <div className="gb-order-pane-tablet-right">
                     <OrderPaneHeaderComponent title="Order Items">
                         <OrderPaneItemsComponent
-                            order={order}
-                            orderItems={orderItems}
+                            
                         />
                     </OrderPaneHeaderComponent>
                 </div>

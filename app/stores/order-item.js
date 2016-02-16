@@ -23,6 +23,7 @@ export class OrderItemStore extends Store {
     }
 
     onAddItem({orderId, orderItemData}) {
+        console.log("add order item store");
         this.orderItemService.createOrderItem(orderId, orderItemData)
             .then(item => {
                 this.orderItems.push(item);
@@ -31,29 +32,31 @@ export class OrderItemStore extends Store {
     }
 
     onEditOrderItem({orderItem}) {
-        this.orderItemService.updateOrderItem(orderItem.id, orderItem.order.id, orderItem)
-            .then(item => {
-                let index = null;
-
-                this.orderItems.forEach(function(orderItem, i) {
-                    if(orderItem.id === item.id) {
-                        index = i;
-                    }
-                });
-
-                this.orderItems[index] = item;
-                this.emit('change');
-            });
+        console.log("edit order item store");
+        // this.orderItemService.updateOrderItem(orderItem.id, orderItem.order.id, orderItem)
+        //     .then(item => {
+        //         let index = null;
+        //
+        //         this.orderItems.forEach(function(orderItem, i) {
+        //             if(orderItem.id === item.id) {
+        //                 index = i;
+        //             }
+        //         });
+        //
+        //         this.orderItems[index] = item;
+        //         this.emit('change');
+        //     });
     }
 
     onRemoveOrderItem({orderItem}) {
-        this.orderItemService.removeOrderItem(orderItem.id, orderItem.order.id)
-            .then(() => {
-                this.orderItems = this.orderItems.filter(item => {
-                    return item.id !== orderItem.id;
-                });
-
-                this.emit('change');
-            });
+        console.log("removeo order item store");
+        // this.orderItemService.removeOrderItem(orderItem.id, orderItem.order.id)
+        //     .then(() => {
+        //         this.orderItems = this.orderItems.filter(item => {
+        //             return item.id !== orderItem.id;
+        //         });
+        //
+        //         this.emit('change');
+        //     });
     }
 }

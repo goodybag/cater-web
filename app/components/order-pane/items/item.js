@@ -19,6 +19,7 @@ export class OrderPaneItemComponent extends Component {
         const {orderItem, dispatcher} = this.props;
 
         e.preventDefault();
+        console.log("edit item click");
         var action = new ReceiveEditOrderItemAction({orderItem});
         dispatcher.dispatch(action);
     };
@@ -27,12 +28,7 @@ export class OrderPaneItemComponent extends Component {
         const {orderItem, dispatcher} = this.props;
 
         e.preventDefault();
-        var action = new RemoveOrderItemAction({orderItem});
-        dispatcher.dispatch(action);
-    };
-
-    onRemoveItem = () => {
-        const {orderItem, dispatcher} = this.props;
+        console.log("remove item click");
         var action = new RemoveOrderItemAction({orderItem});
         dispatcher.dispatch(action);
     };
@@ -50,12 +46,9 @@ export class OrderPaneItemComponent extends Component {
                                 {name}
                             </td>
 
-                            {
-                                quantity > 0 ?
-                                    <td className="gb-order-pane-item-info-quantity">
-                                        x{quantity}
-                                    </td> : <td>{this.onRemoveItem()}</td>
-                            }
+                            <td className="gb-order-pane-item-info-quantity">
+                                x{quantity}
+                            </td>
 
                             <td className="gb-order-pane-item-info-price">
                                 <FormattedNumber
