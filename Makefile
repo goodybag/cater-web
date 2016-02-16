@@ -1,11 +1,6 @@
 export PATH := ./node_modules/.bin:$(PATH)
 export SHELL := /usr/bin/env bash
 
-define \n
-
-
-endef
-
 COMMON_MODULES=react react-dom lodash react-intl jquery bluebird react-addons-css-transition-group react-addons-transition-group superagent classnames moment-timezone @goodybag/react-pickadate nagoya hiroshima tokyo yokohama link-delegate flux
 
 OUTPUT_DIR=dist
@@ -19,7 +14,7 @@ SOURCE_ENTRY=$(SOURCE_DIR)/main.js
 STYLES_ENTRY=$(STYLES_DIR)/main.less
 STYLES_FILES=$(shell find $(STYLES_DIR) -name \*.less)
 SOURCE_FILES=$(shell find $(SOURCE_DIR) -name \*.js)
-STATIC_FILES=$(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(foreach PUBLIC_FILE,$(shell find $(PUBLIC_DIR)),$(PUBLIC_FILE:$(PUBLIC_DIR)/%=$(ASSETS_DIR)/%)))
+STATIC_FILES=$(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(foreach PUBLIC_FILE,$(shell find $(PUBLIC_DIR) -type f),$(PUBLIC_FILE:$(PUBLIC_DIR)/%=$(ASSETS_DIR)/%)))
 BUILD_FILES=$(SOURCE_FILES:$(SOURCE_DIR)%=$(BUILD_DIR)%)
 
 ASSET_FILES=$(ASSETS_DIR)/bundle.js \
@@ -92,7 +87,8 @@ $(ASSETS_DIR)/%: $(wildcard $(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(PUBLIC_DIR)/$$
 
 $(FINAL_DIR)/%.js: $(ASSETS_DIR)/%.js node_modules
 	@mkdir -p "$(@D)"
-	uglifyjs -m -c warnings=false < $< > $@
+	@#uglifyjs -m -c warnings=false < $< > $@
+	cp $< $@
 
 $(FINAL_DIR)/%.css: $(ASSETS_DIR)/%.css node_modules
 	@mkdir -p "$(@D)"

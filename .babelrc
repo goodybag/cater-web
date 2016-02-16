@@ -9,7 +9,14 @@
                 ["transform-es2015-modules-commonjs", {"loose": true}],
                 ["transform-es2015-destructuring", {"loose": true}],
                 ["transform-es2015-parameters", {"loose": true}],
-                ["transform-object-rest-spread", {"loose": true}]
+                ["transform-object-rest-spread", {"loose": true}],
+                ["transform-es2015-block-scoping", {"loose": true}],
+                ["transform-es2015-classes", {"loose": true}],
+                ["transform-es2015-spread", {"loose": true}],
+                ["transform-es2015-arrow-functions", {"loose": true}],
+                ["transform-es2015-shorthand-properties", {"loose": true}],
+                ["transform-es2015-computed-properties", {"loose": true}],
+                ["transform-es2015-template-literals", {"loose": true}]
             ],
             "sourceMaps": false
         }
