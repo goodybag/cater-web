@@ -258,7 +258,7 @@ export class OrderPaneEditComponent extends Component {
 
                         <div className="gb-order-pane-edit-checkmark"/>
                         <div className="gb-order-pane-edit-crossmark"/>
-                        {this.renderErrorMessageForColumn('date')}
+                        {this.renderErrorMessageForColumn('time')}
                     </div>
                 </div>
 
@@ -278,7 +278,7 @@ export class OrderPaneEditComponent extends Component {
 
                         <div className="gb-order-pane-edit-checkmark"/>
                         <div className="gb-order-pane-edit-crossmark"/>
-                        {this.renderErrorMessageForColumn('date')}
+                        {this.renderErrorMessageForColumn('guests')}
                     </div>
                 </div>
 
@@ -303,10 +303,14 @@ export class OrderPaneEditComponent extends Component {
         if (error) {
             return (
                 <div className="gb-order-pane-edit-error-tooltip">
-                    <div className="gb-prder-pane-edit-error-message">
+                    <div className="gb-order-pane-edit-error-message">
                         {error.message}
                     </div>
                 </div>
+            );
+        } else {
+            return (
+                <div className="gb-order-pane-edit-error-tooltip"/>
             );
         }
     }
