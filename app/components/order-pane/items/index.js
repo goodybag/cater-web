@@ -4,21 +4,21 @@ import {Dispatcher, listeningTo} from 'tokyo';
 
 import {OrderItemStore} from '../../../stores/order-item';
 import {OrderStore} from '../../../stores/order';
+import {EditItemStore} from '../../../stores/edit-item';
 import {OrderItem} from '../../../models/order-item';
 import {Order} from '../../../models/order';
 import {OrderPaneItemComponent} from './item';
 import {OrderPaneCheckoutComponent} from './checkout';
-import {RemoveOrderItemAction} from '../../../actions/order';
+import {RemoveOrderItemAction} from '../../../actions/order-item';
+import {OrderItemEditorComponent} from './item-editor';
 
 @inject({
-    dispatcher: Dispatcher,
-    orderItemStore: OrderItemStore,
-    orderStore: OrderStore
-})
-@listeningTo(['orderItemStore', 'orderStore'], ({orderItemStore, orderStore}) => {
+    editItemStore: EditItemStore
+}, [OrderPaneItemComponent, OrderItemEditorComponent])
+@listeningTo(['editItemStore'], ({editItemStore}) => {
     return {
-        orderItems: orderItemStore.getOrderItems(),
-        order: orderStore.getOrder()
+        editOrderItemModalOpen: editItemStore.modalOpen,
+        editOrderItem: editItemStore.orderItem
     };
 })
 export class OrderPaneItemsComponent extends Component {
@@ -28,23 +28,22 @@ export class OrderPaneItemsComponent extends Component {
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     };
 
-    handleRemoveItem = ({orderItem}) => {
-        const {dispatcher, order} = this.props;
-
-        const action = new RemoveOrderItemAction({order, orderItem});
-        dispatcher.dispatch(action);
-    };
-
     render() {
-        const {order, orderItems} = this.props;
-        const {handleRemoveItem} = this;
-        const {total} = order;
+        const {order, orderItems, editOrderItemModalOpen, editOrderItem} = this.props;
+        const {sub_total} = order;
 
         return (
             <div className="gb-order-pane-items">
                 {orderItems.map(renderOrderItem)}
 
-                <OrderPaneCheckoutComponent total={total}/>
+                <OrderPaneCheckoutComponent subtotal={sub_total}/>
+
+                {
+                    editOrderItemModalOpen ?
+                        <OrderItemEditorComponent
+                            orderItem={editOrderItem}
+                        /> : null
+                }
             </div>
         );
 
@@ -53,7 +52,6 @@ export class OrderPaneItemsComponent extends Component {
                 <OrderPaneItemComponent
                     key={orderItem.id}
                     orderItem={orderItem}
-                    onRemoveItem={handleRemoveItem}
                 />
             );
         }

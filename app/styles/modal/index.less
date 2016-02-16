@@ -1,45 +1,49 @@
-.gb-modal-overlay {
+.gb-modal-container {
     background: @gb-modal-background;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1000;
+    z-index: 999;
+    overflow-y: scroll;
+}
 
-    &:hover {
-        cursor: pointer;
-    }
+.gb-modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 1000;
+    overflow-y: scroll;
 }
 
 .gb-modal {
     background: @gb-white;
+    position: relative;
     width: 550px;
-    height: 565px;
-    position: fixed;
-    top: 65px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 65px auto;
     z-index: 1001;
     box-shadow: 2px 5px 13px 3px rgba(0, 0, 0, 0.4);
 
     @media screen and (max-width: 580px) {
         width: 100%;
-        height: 670px;
+        min-height: 670px;
     }
 
     @media screen and (max-width: @gb-breakpoint-mobile) {
-        height: 700px;
+        min-height: 700px;
     }
 }
 
-.gb-modal-order {
+.gb-modal-padding {
     box-sizing: border-box;
     padding: 30px 35px;
-    height: 100%;
 }
 
-.gb-modal-order-header {
+.gb-modal-header {
     font-size: 1.6em;
     font-weight: 600;
     padding-bottom: 3px;
@@ -53,8 +57,71 @@
     }
 }
 
-.gb-modal-order-contents {
+.gb-modal-contents {
     border-top: 1px solid @gb-shadow-mystic;
+}
+
+//** ORDER ITEM EDITOR
+
+.gb-modal {
+    .gb-order-item {
+        .gb-modal-padding;
+        text-shadow: none;
+        font-size: 1.1em;
+    }
+
+    .gb-order-item-header {
+        display: block;
+        .gb-modal-header;
+
+        .gb-order-item-header-detail {
+            display: inline-block;
+            font-size: 1rem;
+            font-weight: 500;
+            font-style: italic;
+            margin-left: 20px;
+
+            .header-detail {
+                margin-right: 20px;
+            }
+        }
+    }
+
+    .gb-order-item-contents {
+        .gb-modal-contents;
+    }
+
+    .gb-order-item-buttons {
+        float: right;
+    }
+
+    .gb-order-item-fields {
+        width: 100%;
+
+        .item-field-group:nth-child(1) {
+            width: 58%;
+        }
+
+        .item-field-group:nth-child(2) {
+            width: 25%;
+            float: right;
+        }
+    }
+}
+
+//** VIEW ORDER MODAL
+
+.gb-modal-order {
+    .gb-modal-padding;
+    height: 100%;
+}
+
+.gb-modal-order-header {
+    .gb-modal-header;
+}
+
+.gb-modal-order-contents {
+    .gb-modal-contents;
 }
 
 .gb-modal-order-details {
@@ -77,8 +144,6 @@
 
 .gb-modal-order-summary {
     margin-top: 30px;
-    height: 166px;
-    overflow-y: scroll;
 }
 
 .gb-modal-order-summary-header {
@@ -87,13 +152,7 @@
 }
 
 .gb-modal-order-footer {
-    box-sizing: border-box;
-    position: absolute;
-    left: 0;
-    bottom: 30px;
-    width: 100%;
-    padding-left: 35px;
-    padding-right: 35px;
+    margin-top: 60px;
 }
 
 .gb-modal-order-footer-subtotal {
@@ -193,7 +252,7 @@
     }
 }
 
-// Loading Animation
+//** LOADING SPINNER ANIMATION
 
 .gb-modal-loading-spinner {
   height: 50px;

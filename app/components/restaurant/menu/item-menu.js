@@ -1,150 +1,123 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
-import {find} from 'lodash';
+import {find, cloneDeep} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
 
 import {MenuItem} from '../../../models/menu-item';
-import {AddItemToOrderAction} from '../../../actions/menu';
+import {AddOrderItemAction} from '../../../actions/order-item';
 import {OrderStore} from '../../../stores/order';
-
-import {ItemOptions} from './item-options';
+import {OrderItemFormComponent} from '../../order-pane/items/item-form';
 
 @inject({
-    dispatcher: Dispatcher,
-    orderStore: OrderStore
-})
-@listeningTo(['orderStore'], ({orderStore}) => {
-    return {
-        order: orderStore.getOrder()
-    };
-})
+    dispatcher: Dispatcher
+}, [])
 export class RestaurantMenuItemMenuComponent extends Component {
+    constructor(props) {
+        super(props);
+
+        const clonedMenuItem = cloneDeep(props.item);
+
+        this.state = {
+            options_sets: clonedMenuItem.options_sets || [ ],
+            notes: "",
+            recipient: "",
+            quantity: clonedMenuItem.min_qty
+        };
+    };
+
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired,
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
         onClose: PropTypes.func.isRequired
     };
 
-    state = {
-        quantity: this.props.item.min_qty || 1,
-        notes: '',
-        name: '',
-        optionChoices: this.props.item.defaultOptionChoices()
-    };
-
-    handleAddClick = () => {
+    onSubmit = () => {
         const {dispatcher, item, order} = this.props;
-        const {quantity, notes, optionChoices} = this.state;
 
-        dispatcher.dispatch(new AddItemToOrderAction({
-            order,
-            orderItemData: {
-                item_id: item.id,
-                order_id: order.id,
-                name: item.name,
-                description: item.description,
-                price: item.price,
-                feeds_min: item.feeds_min,
-                feeds_max: item.feeds_min,
-                options_sets: item.options_sets,
-                recipient: item.recipient,
-                options_sets: optionChoices,
-                quantity,
-                notes
-            }
-        }));
+        const orderItemData = {
+            item_id: item.id,
+            order_id: order.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            feeds_min: item.feeds_min,
+            feeds_max: item.feeds_max,
+            options_sets: this.state.options_sets,
+            recipient: this.state.recipient,
+            quantity: this.state.quantity,
+            notes: this.state.notes
+        };
 
-        this.props.onClose();
+        const action = new AddOrderItemAction({orderId: order.id, orderItemData});
+        dispatcher.dispatch(action);
     };
 
-    handleQuantityChange = (event) => {
-        this.setState({quantity: event.target.value});
+    onChange = (data, e) => {
+        e = e || data; // <-- if no data is passed
+
+        switch(e.target.type) {
+            case "checkbox":
+                this.updateOptionState(data);
+                break;
+            case "textarea":
+                this.updateNotes(e.target.value);
+                break;
+            case "text":
+                this.updateRecipient(e.target.value);
+                break;
+            case "number":
+                this.updateQuantity(e.target.value);
+                break;
+            default:
+                return;
+        }
     };
 
-    handleNotesChange = (event) => {
-        this.setState({ notes: event.target.value });
+    updateOptionState = (data) => {
+        let {options_sets} = this.state;
+        const {optionGroupI, optionI} = data;
+
+        options_sets[optionGroupI].options[optionI].state = !options_sets[optionGroupI].options[optionI].state;
+
+        this.setState({
+            options_sets
+        });
+
     };
 
-    handleOptionChoiceChange = (event) => {
-        const id = event.target.name;
-        let isChecked = event.target.checked;
+    updateNotes = (value) => {
+        this.setState({
+            notes: value
+        });
+    };
 
-        // update the item options state
-        this.setState(state => {
-            state.optionChoices.forEach((choice, i) => {
-                let j = choice.options.indexOf(find(choice.options, { id }))
-                state.optionChoices[i].options[j].state = !!isChecked;
-            });
+    updateRecipient = (value) => {
+        this.setState({
+            recipient: value
+        });
+    };
+
+    updateQuantity = (value) => {
+        this.setState({
+            quantity: value
         });
     };
 
     render() {
-        const {item, onClose: close} = this.props;
-        const {description, min_qty, options_sets} = item;
-        const {notes, quantity, optionChoices} = this.state;
-
-        const descEl = (
-            <div className="gb-restaurant-menu-item-menu-desc">
-                {description}
-            </div>
-        );
-
-        const optionsEl = (
-            <div className="gb-restaurant-menu-item-menu-options">
-                <ItemOptions
-                    optionsSets={options_sets || []}
-                    optionChoices={optionChoices}
-                    onChange={this.handleOptionChoiceChange}
-                />
-            </div>
-        );
-
         return (
-            <div className="gb-restaurant-menu-item-menu">
-                {description && descEl}
-                {options_sets && optionsEl}
-
-                <div className="gb-restaurant-menu-item-menu-notes">
-                    <div className="gb-restaurant-menu-item-menu-box-title">
-                        Comments or Instructions
-                    </div>
-
-                    <textarea
-                        className="gb-restaurant-menu-item-menu-box-field"
-                        onChange={this.handleNotesChange}
-                        value={notes}
-                    />
-                </div>
-
-                <div className="gb-restaurant-menu-item-menu-bottomfields">
-                    <div className="gb-restaurant-menu-item-menu-quantity">
-                        <div className="gb-restaurant-menu-item-menu-box-title">
-                            Quantity
-                        </div>
-
-                        <input
-                            className="gb-restaurant-menu-item-menu-box-field"
-                            type="number"
-                            onChange={this.handleQuantityChange}
-                            value={quantity}
-                        />
-                    </div>
-
-                    <div className="gb-restaurant-menu-item-menu-buttons">
-                        <div className="gb-restaurant-menu-item-menu-cancel" onClick={close}>
-                            Cancel
-                        </div>
-
-                        <div className="gb-restaurant-menu-item-menu-addtoorder" onClick={this.handleAddClick}>
-                            Add to order
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <OrderItemFormComponent
+                item={this.props.item}
+                itemState={this.state}
+                onChange={this.onChange}
+                onCancel={this.props.onClose}
+                saveButton={
+                    <div className="item-add-btn" onClick={this.onSubmit}>Add to order</div>
+                }
+            />
         );
-    }
-}
+    };
+};
 
 export class RestaurantMenuItemMenuWrapperComponent extends Component {
     componentWillEnter(done) {

@@ -3,11 +3,3 @@ export class UpdateMenuSearchAction {
         this.queryText = queryText;
     }
 }
-
-// This will eventually include all those options and stuffs
-export class AddItemToOrderAction {
-  constructor({order, orderItemData}) {
-    this.order = order;
-    this.orderItemData = orderItemData;
-  }
-}

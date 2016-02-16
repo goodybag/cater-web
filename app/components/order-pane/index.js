@@ -107,7 +107,7 @@ export class OrderPaneComponent extends Component {
     }
 
     renderOrder() {
-        const {order, orderItems} = this.props;
+        const {order, orderItems, dispatcher} = this.props;
         const {editing} = this.state;
 
         return (
@@ -132,6 +132,7 @@ export class OrderPaneComponent extends Component {
                         <OrderPaneItemsComponent
                             order={order}
                             orderItems={orderItems}
+                            dispatcher={dispatcher}
                         />
                     </OrderPaneHeaderComponent>
                 </div>
