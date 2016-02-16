@@ -22,14 +22,12 @@ export class OrderItemStore extends Store {
         return this.orderItems;
     }
 
-    onAddItem({orderId, orderItem}) {
-        console.log("order id:", orderId);
-        console.log("orderItem: ", orderItem);
-        // this.orderItemService.createOrderItem(orderId, orderItem)
-        //     .then(item => {
-        //         this.orderItems.push(item);
-        //         this.emit('change');
-        //     });
+    onAddItem({orderId, orderItemData}) {
+        this.orderItemService.createOrderItem(orderId, orderItemData)
+            .then(item => {
+                this.orderItems.push(item);
+                this.emit('change');
+            });
     }
 
     onEditOrderItem({orderItem}) {

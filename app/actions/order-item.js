@@ -7,14 +7,14 @@ export class ReceiveEditOrderItemAction {
 export class CloseEditOrderItemAction {}
 
 export class AddOrderItemAction {
-    constructor({orderId, orderItem}) {
+    constructor({orderId, orderItemData}) {
         this.orderId = orderId;
-        this.orderItem = orderItem;
+        this.orderItemData = orderItemData;
     }
 }
 
 export class EditOrderItemAction {
-    constructor(orderItem) {
+    constructor({orderItem}) {
         this.orderItem = orderItem;
     }
 }
