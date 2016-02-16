@@ -42,6 +42,7 @@
     "yokohama": "^1.4.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.5.1",
     "babel-core": "^6.3.21",
     "babel-eslint": "^4.1.6",
     "babel-plugin-transform-class-properties": "^6.3.13",
@@ -80,8 +81,8 @@
     "gulp-util": "^3.0.6",
     "json-loader": "^0.5.2",
     "less-plugin-npm-import": "^2.1.0",
-    "nodemon": "^1.8.1",
     "mocha": "^2.2.5",
+    "nodemon": "^1.8.1",
     "sourceify": "0.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
