@@ -7,7 +7,6 @@ import {Dispatcher, listeningTo} from 'tokyo';
 import {MenuItem} from '../../../models/menu-item';
 import {AddOrderItemAction} from '../../../actions/order-item';
 import {OrderStore} from '../../../stores/order';
-import {OrderItemComponent} from '../../order-pane/items/item-edit';
 import {OrderItemFormComponent} from '../../order-pane/items/item-form';
 
 @inject({
