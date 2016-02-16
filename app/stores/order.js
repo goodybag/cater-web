@@ -3,19 +3,24 @@ import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 import delay from 'core-js/library/fn/delay';
 
+import {RestaurantPayload} from '../payloads/restaurant';
 import {OrderResolver} from '../resolvers/order';
 import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../actions/order';
 import {Order} from '../models/order';
 import {validate} from '../validators/order-info';
+import {validate as validateFulfillability} from '../validators/order-fulfillability';
 import {OrderService} from '../services/order';
+import {CurrentUserResolver} from '../resolvers/user';
 
-@dependencies(Dispatcher, OrderResolver, OrderService)
+@dependencies(Dispatcher, OrderResolver, OrderService, RestaurantPayload, CurrentUserResolver)
 export class OrderStore extends Store {
-    constructor(dispatcher, order, orderService) {
+    constructor(dispatcher, order, orderService, restaurantPayload, user) {
         super(dispatcher);
 
         this.orderService = orderService;
         this.order = order;
+        this.restaurantPayload = restaurantPayload;
+        this.user = user;
         this.saving = false;
 
         this.bind(SubmitOrderInfoAction, this.submitOrderInfo);
@@ -30,46 +35,33 @@ export class OrderStore extends Store {
         return this.order;
     }
 
-    submitOrderInfo({info}) {
-        this.saving = true;
-        this.emit('change');
-
+    handleInfoValidation(infoSet) {
         return Promise.try(() => {
-            validate(info, {subset: false});
-        }).then(() => {
-            return delay(500);
-        }).then(() => {
-            this.order = new Order({
-                street: '7901 Cameron Rd',
-                city: 'Austin',
-                state: 'TX',
-                zip: '78754',
-                datetime: '2016-02-15 11:00:00',
-                timezone: 'America/Chicago',
-                status: 'pending',
-                total: 8660,
-                guests: 5
-            });
+            validate(infoSet, {nullableColumns: false});
 
-            this.emit('change');
-        }).finally(() => {
-            this.saving = false;
-            this.emit('change');
-        });
-    }
-
-    updateOrderInfo({changes}) {
-        this.saving = true;
-        this.emit('change');
-
-        return Promise.try(() => {
-            return this.orderService.geocodeAddress(changes.address);
+            return this.orderService.geocodeAddress(infoSet.address);
         }).then(body => {
-            validate(changes, {
+            const {
+                restaurant,
+                restaurantDeliveryLeadTimes,
+                restaurantPickupLeadTimes,
+                restaurantDeliveryHours,
+                restaurantPickupHours,
+                restaurantDeliveryZips
+            } = this.restaurantPayload;
+
+            validateFulfillability(infoSet, {
                 nullableColumns: false,
                 context: {
-                    addressData: body
-                    // add restaurant delivery times/zips here
+                    addressData: body,
+                    restaurant: {
+                        ...restaurant,
+                        lead_times: restaurantDeliveryLeadTimes,
+                        pickup_lead_times: restaurantPickupLeadTimes,
+                        hours: restaurantPickupHours,
+                        delivery_hours: restaurantDeliveryHours,
+                        delivery_zips: restaurantDeliveryZips
+                    }
                 }
             });
 
@@ -82,10 +74,36 @@ export class OrderStore extends Store {
                 city: body.address.city,
                 state: body.address.state,
                 zip: body.address.zip,
-                datetime: `${changes.date} ${changes.time}`,
-                guests: changes.guests
+                datetime: `${infoSet.date} ${infoSet.time}`,
+                guests: infoSet.guests
             };
-        }).then(data => {
+        });
+    }
+
+    submitOrderInfo({info}) {
+        this.saving = true;
+        this.emit('change');
+
+        return this.handleInfoValidation(info).then(data => {
+            return this.orderService.create({
+                restaurant_id: this.restaurantPayload.restaurant.id,
+                user_id: this.user.id, // TODO
+                ...data
+            });
+        }).then(order => {
+            this.order = order;
+            this.emit('change');
+        }).finally(() => {
+            this.saving = false;
+            this.emit('change');
+        });
+    }
+
+    updateOrderInfo({changes}) {
+        this.saving = true;
+        this.emit('change');
+
+        return this.handleInfoValidation(changes).then(data => {
             return this.orderService.updateById(this.order.id, data);
         }).then(order => {
             this.order = order;

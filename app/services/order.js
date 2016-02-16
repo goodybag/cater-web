@@ -32,6 +32,11 @@ export class OrderService {
         });
     }
 
+    create(body) {
+        return this.apiService.create(`orders`, body)
+            .then(Order.parse);
+    }
+
     updateById(id, body) {
         return this.apiService.update(`orders/${id}`, body)
             .then(Order.parse);
