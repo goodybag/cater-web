@@ -2,8 +2,14 @@
     "env": {
         "production": {
             "plugins": [
-                ["transform-es2015-classes", {"loose": true}],
-                ["transform-es2015-block-scoping", {"loose": true}]
+                "transform-react-jsx",
+                "transform-decorators-legacy",
+                "transform-class-properties",
+                ["transform-runtime", {"polyfill": false}],
+                ["transform-es2015-modules-commonjs", {"loose": true}],
+                ["transform-es2015-destructuring", {"loose": true}],
+                ["transform-es2015-parameters", {"loose": true}],
+                ["transform-object-rest-spread", {"loose": true}]
             ],
             "sourceMaps": false
         }
