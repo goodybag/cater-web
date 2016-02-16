@@ -34,7 +34,7 @@ build: $(BUILD_FILES)
 final: assets build $(FINAL_FILES) $(FINAL_FILES:%=%.gz)
 styles: $(ASSETS_DIR)/main.css
 
-watch: watch-bundle watch-source watch-styles
+watch: watch-bundle watch-common watch-source watch-styles
 
 watch-styles:
 	@mkdir -p $(ASSETS_DIR)
@@ -51,6 +51,15 @@ watch-bundle:
 		--verbose \
 		$(foreach module,$(COMMON_MODULES),--external $(module)) \
 		-o $(ASSETS_DIR)/bundle.js
+
+watch-common:
+	@mkdir -p $(ASSETS_DIR)
+	@watchify \
+		--debug \
+		--verbose \
+		--ignore-watch="" \
+		$(foreach module,$(COMMON_MODULES),-r $(module)) \
+		-o $(ASSETS_DIR)/common.js
 
 clean:
 	rm -rf $(OUTPUT_DIR)
