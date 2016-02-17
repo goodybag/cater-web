@@ -102,7 +102,15 @@
 
     .item-field-group {
         display: inline-block;
-        margin-right: 18px;
+        margin-right: 5%;
+    }
+
+    .item-field-group:nth-child(1) {
+        width: 60%;
+    }
+
+    .item-field-group:nth-child(2) {
+        width: 30%;
     }
 
     .item-field-title {
@@ -165,8 +173,13 @@
         }
     }
 
+    .item-add-btn {
+        width: 120px;
+    }
+
     .item-save-btn,
     .item-add-btn {
+        text-align: center;
         padding: 6px 22px;
         border-radius: 3px;
         background-color: @gb-pink;
