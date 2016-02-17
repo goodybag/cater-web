@@ -65,7 +65,10 @@ export class RestaurantMenuItemMenuComponent extends Component {
 
         switch(e.target.type) {
             case "checkbox":
-                this.updateOptionState(data);
+                this.updateOptionState(data, "checkbox");
+                break;
+            case "radio":
+                this.updateOptionState(data, "radio");
                 break;
             case "textarea":
                 this.updateNotes(e.target.value);
@@ -81,9 +84,13 @@ export class RestaurantMenuItemMenuComponent extends Component {
         }
     };
 
-    updateOptionState = (data) => {
+    updateOptionState = (data, type) => {
         let {options_sets} = this.state;
         const {optionGroupI, optionI} = data;
+
+        if(type==="radio") {
+            options_sets[optionGroupI].options.forEach(option => option.state = false);
+        }
 
         options_sets[optionGroupI].options[optionI].state = !options_sets[optionGroupI].options[optionI].state;
 
