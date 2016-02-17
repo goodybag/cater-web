@@ -17,9 +17,16 @@ export class RestaurantMenuItemMenuComponent extends Component {
         super(props);
 
         const clonedMenuItem = cloneDeep(props.item);
+        let initOptionsSets = clonedMenuItem.options_sets || [ ];
+
+        initOptionsSets.forEach((optionGroup) => {
+            optionGroup.options.forEach((option) => {
+                option.state = option.default_state;
+            });
+        });
 
         this.state = {
-            options_sets: clonedMenuItem.options_sets || [ ],
+            options_sets: initOptionsSets,
             notes: "",
             recipient: "",
             quantity: clonedMenuItem.min_qty
