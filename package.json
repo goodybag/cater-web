@@ -1,6 +1,6 @@
 {
   "name": "@goodybag/cater-web",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "scripts": {
     "prepublish": "make clean && NODE_ENV=production make final",
     "test": "eslint app && NODE_ENV=test mocha"
@@ -15,7 +15,8 @@
   "homepage": "https://github.com/goodybag/cater-web",
   "dependencies": {
     "@goodybag/models-order": "^1.0.5",
-    "@goodybag/react-pickadate": "^1.2.0",
+    "@goodybag/react-pickadate": "^1.2.4",
+    "@goodybag/models-order": "^1.0.0",
     "babel-runtime": "^6.3.19",
     "bluebird": "^2.10.2",
     "classnames": "^2.2.1",

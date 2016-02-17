@@ -1,4 +1,5 @@
 import {dependencies} from 'yokohama';
+import {ValidationError} from 'nagoya';
 
 import {ApiService} from '../lib/api';
 import {Order} from '../models/order';
@@ -31,8 +32,17 @@ export class OrderService {
         });
     }
 
+    create(body) {
+        return this.apiService.create(`orders`, body)
+            .then(Order.parse);
+    }
+
     updateById(id, body) {
         return this.apiService.update(`orders/${id}`, body)
             .then(Order.parse);
+    }
+
+    geocodeAddress(address) {
+        return this.apiService.fetch(`maps/geocode/${address}`);
     }
 }

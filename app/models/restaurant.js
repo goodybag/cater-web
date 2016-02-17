@@ -49,7 +49,8 @@ export class Restaurant {
             gb_fee = null,
             region_id = null,
             region = null,
-            cover_photo_url = null
+            cover_photo_url = null,
+            supported_order_types = null
         } = attrs;
 
         this.id = id;
@@ -77,5 +78,6 @@ export class Restaurant {
         this.gb_fee = gb_fee;
         this.region = region;
         this.cover_photo_url = cover_photo_url;
+        this.supported_order_types = supported_order_types;
     }
 }

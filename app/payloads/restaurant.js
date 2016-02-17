@@ -10,8 +10,15 @@ export class RestaurantPayload {
         const restaurantDeliveryZips = (attrs.restaurantDeliveryZips || [])
             .map(RestaurantZip.parse);
 
-        const restaurantHours = (attrs.restaurantHours || [])
+        const restaurantPickupHours = (attrs.restaurantPickupHours || [])
             .map(RestaurantHour.parse);
+
+        const restaurantDeliveryHours = (attrs.restaurantDeliveryHours || [])
+            .map(RestaurantHour.parse);
+
+        const restaurantPickupLeadTimes = attrs.restaurantPickupLeadTimes || [];
+
+        const restaurantDeliveryLeadTimes = attrs.restaurantDeliveryLeadTimes || [];
 
         const menuItems = (attrs.menuItems || [])
             .map(MenuItem.parse);
@@ -19,9 +26,10 @@ export class RestaurantPayload {
         return new RestaurantPayload({
             restaurant,
             restaurantDeliveryZips,
-            restaurantHours,
-            // restaurantPickupLeadTimes,
-            // restaurantDeliveryLeadTimes,
+            restaurantPickupHours,
+            restaurantPickupLeadTimes,
+            restaurantDeliveryLeadTimes,
+            restaurantDeliveryHours,
             menuItems
         });
     }
@@ -30,7 +38,10 @@ export class RestaurantPayload {
         return RestaurantPayload.parse({
             restaurant: data,
             restaurantDeliveryZips: data.delivery_zips,
-            restaurantHours: data.hours,
+            restaurantPickupHours: data.hours,
+            restaurantDeliveryHours: data.delivery_times,
+            restaurantPickupLeadTimes: data.pickup_lead_times,
+            restaurantDeliveryLeadTimes: data.pickup_lead_times,
             menuItems: data.items
         });
     }
@@ -39,7 +50,8 @@ export class RestaurantPayload {
         const {
             restaurant = null,
             restaurantDeliveryZips = [],
-            restaurantHours = [],
+            restaurantPickupHours = [],
+            restaurantDeliveryHours = [],
             restaurantPickupLeadTimes = [],
             restaurantDeliveryLeadTimes = [],
             menuItems = []
@@ -47,7 +59,8 @@ export class RestaurantPayload {
 
         this.restaurant = restaurant;
         this.restaurantDeliveryZips = restaurantDeliveryZips;
-        this.restaurantHours = restaurantHours;
+        this.restaurantPickupHours = restaurantPickupHours;
+        this.restaurantDeliveryHours = restaurantDeliveryHours;
         this.restaurantPickupLeadTimes = restaurantPickupLeadTimes;
         this.restaurantDeliveryLeadTimes = restaurantDeliveryLeadTimes;
         this.menuItems = menuItems;
