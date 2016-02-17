@@ -108,8 +108,8 @@
 
     height: 34px;
     width: 100%;
-    padding-left: 32px;
-    padding-right: 40px;
+    padding-left: 29px;
+    padding-right: 29px;
     font-size: 1.04em;
     border: 1px solid transparent;
     border-radius: 3px;
@@ -122,12 +122,12 @@
 
     &:not([disabled]):not(:focus):not(.picker__input--active) {
         &.gb-order-pane-edit-box-valid {
-            //background: @gb-valid-background;
+            background: @gb-valid-background;
             border-color: @gb-valid-foreground;
         }
 
         &.gb-order-pane-edit-box-invalid {
-            //background: @gb-invalid-background;
+            background: @gb-invalid-background;
             border-color: @gb-invalid-foreground;
         }
     }
@@ -139,34 +139,10 @@
 }
 
 .gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-valid ~ .gb-order-pane-edit-checkmark {
-    box-sizing: border-box;
-    color: @gb-valid-foreground;
-    background: @gb-valid-background;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    height: 100%;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border: 1px solid @gb-valid-foreground;
-    animation-name: slide_in;
-    animation-duration: 200ms;
     display: block;
 }
 
 .gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-invalid ~ .gb-order-pane-edit-crossmark {
-    box-sizing: border-box;
-    color: @gb-invalid-foreground;
-    background: @gb-invalid-background;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    height: 100%;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    border: 1px solid @gb-invalid-foreground;
-    animation-name: slide_in;
-    animation-duration: 200ms;
     display: block;
 }
 
