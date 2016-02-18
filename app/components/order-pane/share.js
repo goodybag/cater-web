@@ -65,7 +65,8 @@ export class OrderPaneShareComponent extends Component {
                     />
                 </div>
 
-                <div className="gb-order-pane-share-box">
+                {/* Until we get Share be email working on the server, hide this */}
+                {/*<div className="gb-order-pane-share-box">
                     <div className="gb-order-pane-share-head">
                         <i className="icon-email2"></i>
                         Or invite by email:
@@ -78,7 +79,7 @@ export class OrderPaneShareComponent extends Component {
                     >
                         Share order by email
                     </div>
-                </div>
+                </div>*/}
             </div>
         );
     }
