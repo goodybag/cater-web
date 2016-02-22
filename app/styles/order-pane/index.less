@@ -19,11 +19,6 @@
     }
 }
 
-.gb-section-height {
-    height: 43px;
-    line-height: 43px;
-}
-
 .gb-section-text {
     font-size: 0.875em;
     font-weight: 600;
@@ -36,11 +31,10 @@
 }
 
 .gb-order-pane-header {
-    .gb-section-height;
     .gb-section-text;
     .gb-section-shading;
     box-sizing: border-box;
-    padding: 0 25px;
+    padding: 10px 25px;
     background-color: @gb-shadow-blue-charcoal;
     color: @gb-shadow-raven;
     text-transform: uppercase;
@@ -53,9 +47,11 @@
     .gb-order-pane-header-arrow {
         float: right;
         font-size: 0.78em;
+        height: 22px;
 
         & > * {
             display: inline-block;
+            padding: 5px 0;
             transition: transform 100ms linear;
         }
     }
