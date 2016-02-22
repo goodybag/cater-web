@@ -1,120 +1,67 @@
 import React, {Component, PropTypes} from 'react';
 import {DatePickerComponent, TimePickerComponent} from '@goodybag/react-pickadate';
 import cx from 'classnames';
-import moment from 'moment-timezone';
-import {ValidationError} from 'nagoya';
+import {ValidationResultError} from 'nagoya';
 import {chain} from 'lodash';
 import {listeningTo} from 'tokyo';
 
-import {Order} from '../../models/order';
-import {validate} from '../../validators/order-info';
+import {OrderParams} from '../../models/order-params';
 
-@listeningTo(['orderStore'], {
-    error: (props, error, component) => {
-        if (error instanceof ValidationError) {
-            component.setState({columnErrors: error.columns});
-        } else {
-            component.setState({unhandledError: error});
-        }
-    }
-})
 export class OrderPaneEditComponent extends Component {
     static propTypes = {
-        order: PropTypes.instanceOf(Order),
         saving: PropTypes.bool.isRequired,
-        onSaveInfo: PropTypes.func.isRequired,
-        onCancel: PropTypes.func
+        orderParams: PropTypes.instanceOf(OrderParams).isRequired,
+        saveButton: PropTypes.node,
+        cancelButton: PropTypes.node,
+        error: PropTypes.instanceOf(Error),
+        onChange: PropTypes.func.isRequired
     };
 
     static defaultProps = {
-        saving: false
+        saving: false,
+        saveButton: null,
+        cancelButton: null,
+        error: null
     };
 
     constructor(props) {
         super(props);
 
-        const {
-            order = null
-        } = this.props;
-
-        if (order == null) {
-            this.state = {
-                columnErrors: {},
-                unhandledError: null,
-                address: null,
-                guests: null,
-                date: null,
-                time: null
-            };
-        } else {
-            const datetime = moment(order.datetime).toDate();
-
-            this.state = {
-                columnErrors: {},
-                unhandledError: null,
-                address: order.displayAddress(),
-                guests: order.guests,
-                date: moment(datetime).format('YYYY-MM-DD'),
-                time: moment(datetime).format('HH:mm:ss')
-            };
-        }
-
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleSaveInfo = this.handleSaveInfo.bind(this);
         this.handleAddressChange = this.handleAddressChange.bind(this);
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleGuestsChange = this.handleGuestsChange.bind(this);
-        this.validateFields = this.validateFields.bind(this);
-    }
-
-    isCancellable() {
-        const {onCancel} = this.props;
-
-        return onCancel != null;
-    }
-
-    handleCancel() {
-        const {onCancel} = this.props;
-
-        onCancel();
-    }
-
-    handleSaveInfo() {
-        const {onSaveInfo: saveInfo} = this.props;
-        const {address, guests, date, time} = this.state;
-
-        this.setState({unhandledError: null}, () => {
-            saveInfo({address, guests, date, time});
-        });
     }
 
     handleAddressChange(event) {
+        const {orderParams, onChange: change} = this.props;
         const {target: {value}} = event;
 
-        this.setState({address: value || null}, () => {
-            this.validateFields();
-        });
+        change(new OrderParams({
+            ...orderParams,
+            address: value || null
+        }));
     }
 
     handleDateChange(date) {
-        this.setState({date}, () => {
-            this.validateFields();
-        });
+        const {orderParams, onChange: change} = this.props;
+
+        change(new OrderParams({...orderParams, date}));
     }
 
     handleTimeChange(time) {
-        this.setState({time}, () => {
-            this.validateFields();
-        });
+        const {orderParams, onChange: change} = this.props;
+
+        change(new OrderParams({...orderParams, time}));
     }
 
     handleGuestsChange(event) {
         const {target: {value}} = event;
+        const {orderParams, onChange: change} = this.props;
 
-        this.setState({guests: +value}, () => {
-            this.validateFields();
-        });
+        const guests = value ? parseInt(value) : null;
+
+        change(new OrderParams({...orderParams, guests}));
     }
 
     inputBoxClassNameByValidity(state, show = false) {
@@ -126,79 +73,64 @@ export class OrderPaneEditComponent extends Component {
     }
 
     classNameForColumn(columnName, value) {
-        const {columnErrors} = this.state;
+        const {error} = this.props;
 
-        if (columnErrors[columnName]) {
-            return this.inputBoxClassNameByValidity('invalid',
-                                                    this.shouldShowColumn(columnName));
-        } else if (value == null) {
-            return this.inputBoxClassNameByValidity();
-        } else {
-            return this.inputBoxClassNameByValidity('valid');
+        if (error instanceof ValidationResultError) {
+            const errors = error.byColumn(columnName);
+
+            if (errors.length > 0) {
+                return this.inputBoxClassNameByValidity('invalid',
+                                                        this.shouldShowColumn(columnName));
+            } else if (value != null) {
+                return this.inputBoxClassNameByValidity('valid');
+            }
         }
+
+        return this.inputBoxClassNameByValidity();
     }
 
     shouldShowColumn(columnName) {
-        const {columnErrors} = this.state;
+        const {error} = this.props;
 
-        const errors = [
-            {name: 'address', value: columnErrors.address},
-            {name: 'date', value: columnErrors.date},
-            {name: 'time', value: columnErrors.time},
-            {name: 'guests', value: columnErrors.guests},
+        const columnNames = [
+            'address',
+            'date',
+            'time',
+            'guests'
         ];
 
-        const result = chain(errors)
-            .filter('value')
-            .pluck('name')
+        const result = chain(columnNames)
+            .filter(name => error.byColumn(name).length > 0)
             .head()
             .value();
 
         return result === columnName;
     }
 
-    validateFields() {
-        const {address, date, time, guests} = this.state;
-
-        let columnErrors = {};
-
-        try {
-            validate({address, date, time, guests});
-        } catch (err) {
-            if (err instanceof ValidationError) {
-                columnErrors = err.columns;
-            } else {
-                throw err;
-            }
-        }
-
-        this.setState({columnErrors});
-    }
-
     render() {
-        const {saving} = this.props;
-        const {unhandledError, address, guests, date, time} = this.state;
+        const {
+            saving,
+            saveButton,
+            cancelButton,
+            orderParams,
+            error
+        } = this.props;
 
-        const errorEl = unhandledError && (
+        const {address, guests, date, time} = orderParams;
+
+        const errorMessage = null && ( // TODO
             <div className="gb-order-pane-edit-exception">
                 An unknown error occured
             </div>
         );
 
-        const cancelButton = (
-            <div className="gb-order-pane-edit-cancel"
-                onClick={this.handleCancel}
-                children="Cancel"
-            />
-        );
-
-        const saveOrderInfoSet = cx('gb-order-pane-edit-save', {
-            'gb-order-pane-edit-save-loading': saving
+        const set = cx('gb-order-pane-edit', {
+            'gb-order-pane-edit-saving': saving
         });
 
         return (
-            <div className="gb-order-pane-edit">
-                {errorEl}
+            <div className={set}>
+                {errorMessage}
 
                 <div className="gb-order-pane-edit-location">
                     <div className="gb-order-pane-edit-text">
@@ -282,29 +214,22 @@ export class OrderPaneEditComponent extends Component {
                     </div>
                 </div>
 
-                {this.isCancellable() && cancelButton}
-
-                <div className={saveOrderInfoSet} onClick={this.handleSaveInfo}>
-                    <div className="gb-order-pane-edit-save-spinner"/>
-
-                    <div className="gb-order-pane-edit-save-text">
-                        Save Order Info
-                    </div>
-                </div>
+                {cancelButton}
+                {saveButton}
             </div>
         );
     }
 
     renderErrorMessageForColumn(columnName) {
-        const {columnErrors} = this.state;
+        const {error} = this.props;
 
-        const error = columnErrors[columnName];
+        if (error instanceof ValidationResultError) {
+            const errors = error.byColumn(columnName);
 
-        if (error) {
             return (
                 <div className="gb-order-pane-edit-error-tooltip">
                     <div className="gb-order-pane-edit-error-message">
-                        {error.message}
+                        {errors.map(err => err.message).join(', ')}
                     </div>
                 </div>
             );
@@ -313,5 +238,78 @@ export class OrderPaneEditComponent extends Component {
                 <div className="gb-order-pane-edit-error-tooltip"/>
             );
         }
+    }
+}
+
+export class OrderPaneEditSaveComponent extends Component {
+    static propTypes = {
+        children: PropTypes.node.isRequired,
+        onClick: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        children: 'Save Order Info',
+        onClick: () => {}
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        const {onClick: click} = this.props;
+
+        click();
+    }
+
+    render() {
+        const {children} = this.props;
+
+        return (
+            <div className="gb-order-pane-edit-save" onClick={this.handleClick}>
+                <div className="gb-order-pane-edit-save-spinner"/>
+
+                <div className="gb-order-pane-edit-save-text">
+                    {children}
+                </div>
+            </div>
+        );
+    }
+}
+
+export class OrderPaneEditCancelComponent extends Component {
+    static propTypes = {
+        children: PropTypes.node.isRequired,
+        onClick: PropTypes.func.isRequired
+    };
+
+    static defaultProps = {
+        children: 'Cancel',
+        onClick: () => {}
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        const {onClick: click} = this.props;
+
+        click();
+    }
+
+    render() {
+        const {saving, children} = this.props;
+
+        return (
+            <div className="gb-order-pane-edit-cancel"
+                onClick={this.handleClick}
+                children={children}
+            />
+        );
     }
 }

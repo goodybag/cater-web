@@ -1,18 +1,28 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
-import cx from 'classnames';
 
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
 import {Order} from '../../models/order';
 import {OrderItem} from '../../models/order-item';
+import {OrderParams} from '../../models/order-params';
 import {OrderPaneInfoComponent} from './info';
-import {OrderPaneEditComponent} from './edit';
 import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
 import {OrderPaneTimeLeftComponent} from './timeleft';
-import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../../actions/order';
+import {OrderPaneHeaderComponent} from './header';
+
+import {
+    OrderPaneEditComponent,
+    OrderPaneEditCancelComponent,
+    OrderPaneEditSaveComponent
+} from './edit';
+
+import {
+    SubmitOrderParamsAction,
+    UpdateOrderParamsAction
+} from '../../actions/order';
 
 @inject({
     orderStore: OrderStore,
@@ -24,7 +34,6 @@ import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../../actions/order'
 
     return {
         order: orderStore.getOrder(),
-        savingOrder: orderStore.isSaving(),
         orderItems: orderItemStore.getOrderItems()
     };
 })
@@ -32,7 +41,6 @@ export class OrderPaneComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order),
         orderStore: PropTypes.instanceOf(OrderStore).isRequired,
-        savingOrder: PropTypes.bool.isRequired,
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem)),
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
     };
@@ -40,188 +48,189 @@ export class OrderPaneComponent extends Component {
     constructor(props) {
         super(props);
 
+        const {order} = props;
+
         this.state = {
-            editing: false
+            saving: false,
+            editorError: null,
+            editorOrderParams: order ? null : new OrderParams()
         };
 
         this.startEditing = this.startEditing.bind(this);
         this.stopEditing = this.stopEditing.bind(this);
-        this.handleSaveOrderInfo = this.handleSaveOrderInfo.bind(this);
+        this.handleSaveOrderParams = this.handleSaveOrderParams.bind(this);
         this.handleOrderSubmission = this.handleOrderSubmission.bind(this);
+        this.handleOrderParamsChange = this.handleOrderParamsChange.bind(this);
     }
 
     startEditing() {
-        this.setState({editing: true});
+        const {order} = this.props;
+
+        this.setState({
+            editorOrderParams: OrderParams.fromOrder(order)
+        });
     }
 
     stopEditing() {
-        this.setState({editing: false});
+        this.setState({editorOrderParams: null});
     }
 
-    handleSaveOrderInfo(changes) {
-        const {dispatcher} = this.props;
+    handleOrderParamsChange(editorOrderParams) {
+        this.setState({editorOrderParams, editorError: null});
+    }
 
-        dispatcher.dispatch(new UpdateOrderInfoAction({changes})).then(() => {
-            this.stopEditing();
+    handleSaveOrderParams() {
+        const {dispatcher, order} = this.props;
+        const {editorOrderParams} = this.state;
+
+        const action = new UpdateOrderParamsAction({
+            orderId: order.id,
+            params: editorOrderParams
+        });
+
+        this.whileSaving(() => {
+            return dispatcher.dispatch(action).then(() => {
+                this.setState({editorOrderParams: null});
+            }, editorError => {
+                this.setState({editorError});
+            });
         });
     }
 
     handleOrderSubmission(info) {
         const {dispatcher} = this.props;
+        const {editorOrderParams} = this.state;
 
-        dispatcher.dispatch(new SubmitOrderInfoAction({info}));
+        const action = new SubmitOrderParamsAction({
+            params: editorOrderParams
+        });
+
+        this.whileSaving(() => {
+            return dispatcher.dispatch(action).then(() => {
+                this.setState({
+                    editorOrderParams: null,
+                    editorError: null
+                });
+            }, editorError => {
+                this.setState({editorError});
+            });
+        });
+    }
+
+    whileSaving(block) {
+        this.setState({saving: true}, () => {
+            block().finally(() => {
+                this.setState({saving: false});
+            });
+        });
     }
 
     render() {
-        const {order, orderItems} = this.props;
+        const {
+            order,
+            orderItems,
+            dispatcher,
+            orderStore
+        } = this.props;
 
-        if (order == null) {
-            return this.renderEmpty();
-        } else {
-            return this.renderOrder();
-        }
-    }
+        const {
+            saving,
+            editorOrderParams,
+            editorError
+        } = this.state;
 
-    renderOrderInfo() {
-        const {order, savingOrder, orderStore} = this.props;
-        const {editing} = this.state;
+        const orderCreatorDisplay = editorOrderParams && (
+            <OrderPaneEditComponent
+                saving={saving}
+                orderParams={editorOrderParams}
+                error={editorError}
+                onChange={this.handleOrderParamsChange}
 
-        if (savingOrder || editing) {
-            return (
-                <OrderPaneEditComponent
-                    order={order}
-                    orderStore={orderStore}
-                    saving={savingOrder}
-                    onSaveInfo={this.handleSaveOrderInfo}
-                    onCancel={this.stopEditing}
-                />
-            );
-        } else {
-            return (
-                <OrderPaneInfoComponent
-                    order={order}
-                    onStartEditing={this.startEditing}
-                />
-            );
-        }
-    }
+                saveButton={
+                    <OrderPaneEditSaveComponent
+                        onClick={this.handleOrderSubmission}
+                    />
+                }
+            />
+        );
 
-    renderOrder() {
-        const {order, orderItems, dispatcher} = this.props;
-        const {editing} = this.state;
+        const orderEditorDisplay = order && editorOrderParams && (
+            <OrderPaneEditComponent
+                saving={saving}
+                orderParams={editorOrderParams}
+                onChange={this.handleOrderParamsChange}
+
+                saveButton={
+                    <OrderPaneEditSaveComponent
+                        onClick={this.handleSaveOrderParams}
+                    />
+                }
+
+                cancelButton={
+                    <OrderPaneEditCancelComponent
+                        onClick={this.stopEditing}
+                    />
+                }
+            />
+        );
+
+        const orderInfoDisplay = order && (
+            <OrderPaneInfoComponent
+                order={order}
+                onStartEditing={this.startEditing}
+            />
+        );
+
+        const orderDisplay = orderEditorDisplay
+            || orderInfoDisplay
+            || orderCreatorDisplay;
+
+        const orderSharing = order && (
+            <OrderPaneShareComponent order={order}/>
+        );
+
+        const orderItemsDisplay = order && (
+            <OrderPaneItemsComponent
+                order={order}
+                orderItems={orderItems}
+                dispatcher={dispatcher}
+            />
+        );
+
+        const orderTimeLeftSection = order && (
+            <OrderPaneTimeLeftComponent
+                order={order}
+            />
+        );
+
+        const orderDisplaySection = (
+            <OrderPaneHeaderComponent
+                title={order ? `Order - #${order.id}` : 'Order'}
+                children={orderDisplay}
+            />
+        );
+
+        const orderSharingSection = order && (
+            <OrderPaneHeaderComponent
+                title="Share Order (Optional)"
+                initiallyOpen={false}
+                children={orderSharing}
+            />
+        );
+
+        const orderItemsDisplaySection = order && (
+            <OrderPaneHeaderComponent
+                title="Order Items"
+                children={orderItemsDisplay}
+            />
+        );
 
         return (
             <div className="gb-order-pane">
-                <OrderPaneTimeLeftComponent order={order}/>
-
-                <div className="gb-order-pane-tablet-left">
-                    <OrderPaneHeaderComponent title={`Order - #${order.id}`}>
-                        {this.renderOrderInfo()}
-                    </OrderPaneHeaderComponent>
-
-                    <OrderPaneHeaderComponent
-                        title="Share Order (Optional)"
-                        defaultClosed>
-
-                        <OrderPaneShareComponent order={order}/>
-                    </OrderPaneHeaderComponent>
-                </div>
-
-                <div className="gb-order-pane-tablet-right">
-                    <OrderPaneHeaderComponent title="Order Items">
-                        <OrderPaneItemsComponent
-                            order={order}
-                            orderItems={orderItems}
-                            dispatcher={dispatcher}
-                        />
-                    </OrderPaneHeaderComponent>
-                </div>
-
-                <div className="gb-order-pane-endcap"/>
-            </div>
-        );
-    }
-
-    renderEmpty() {
-        const {orderStore, savingOrder} = this.props;
-
-        return (
-            <div className="gb-order-pane">
-                <div className="gb-order-pane-tablet-left">
-                    <OrderPaneHeaderComponent title="Order Info">
-                        <OrderPaneEditComponent
-                            orderStore={orderStore}
-                            saving={savingOrder}
-                            onSaveInfo={this.handleOrderSubmission}
-                        />
-                    </OrderPaneHeaderComponent>
-
-                    <OrderPaneHeaderComponent
-                        title="Share Order (Optional)"
-                        initiallyClosed>
-
-                        <OrderPaneShareComponent disabled/>
-                    </OrderPaneHeaderComponent>
-               </div>
-
-                <div className="gb-order-pane-tablet-right">
-                    <OrderPaneHeaderComponent title="Order Items"/>
-                </div>
-
-                <div className="gb-order-pane-endcap"/>
-            </div>
-        );
-    }
-}
-
-class OrderPaneHeaderComponent extends Component {
-    static propTypes = {
-        title: PropTypes.string.isRequired,
-        children: PropTypes.node,
-        defaultClosed: PropTypes.bool.isRequired
-    };
-
-    static defaultProps = {
-        defaultClosed: false
-    };
-
-    constructor(props) {
-        super(props);
-
-        const {defaultClosed} = this.props;
-
-        this.state = {
-            open: !defaultClosed
-        };
-    }
-
-    handleClick = () => {
-        this.setState(({open}) => {
-            return {open: !open};
-        });
-    };
-
-    render() {
-        const {open} = this.state;
-        const {title, children} = this.props;
-
-        const set = cx('gb-order-pane-header', {
-            'gb-order-pane-header-closed': !open
-        });
-
-        return (
-            <div className="gb-order-pane-block">
-                <div className={set} onClick={this.handleClick}>
-                    <div className="gb-order-pane-header-text">
-                        {title}
-                    </div>
-
-                    <div className="gb-order-pane-header-arrow">
-                        <div className="gb-arrow-down"/>
-                    </div>
-                </div>
-
-                {children}
+                {orderTimeLeftSection}
+                {orderDisplaySection}
+                {orderSharingSection}
+                {orderItemsDisplaySection}
             </div>
         );
     }
