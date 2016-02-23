@@ -2,15 +2,18 @@ import React, {Component, PropTypes} from 'react';
 import {DatePickerComponent, TimePickerComponent} from '@goodybag/react-pickadate';
 import cx from 'classnames';
 import {ValidationResultError} from 'nagoya';
-import {chain} from 'lodash';
+import {find, min, max, chain} from 'lodash';
 import {listeningTo} from 'tokyo';
+import moment from 'moment-timezone';
 
+import {RestaurantHour} from '../../models/restaurant-hour';
 import {OrderParams} from '../../models/order-params';
 
 export class OrderPaneEditComponent extends Component {
     static propTypes = {
         saving: PropTypes.bool.isRequired,
         orderParams: PropTypes.instanceOf(OrderParams).isRequired,
+        restaurantHours: PropTypes.arrayOf(PropTypes.instanceOf(RestaurantHour)).isRequired,
         saveButton: PropTypes.node,
         cancelButton: PropTypes.node,
         error: PropTypes.instanceOf(Error),
@@ -107,6 +110,47 @@ export class OrderPaneEditComponent extends Component {
         return result === columnName;
     }
 
+    disabledTimes() {
+        const {orderParams, restaurantHours} = this.props;
+
+        const {date} = orderParams;
+
+        if (date == null) {
+            return [];
+        } else {
+            const weekday = moment(date, 'YYYY-MM-DD').weekday();
+
+            const hours = find(restaurantHours, {day: weekday});
+            const start = moment(hours.start_time, 'HH:mm:ss');
+            const end = moment(hours.end_time, 'HH:mm:ss');
+
+            const from = [start.hour(), start.minute()];
+            const to = [end.hour(), end.minute()];
+
+            // the 'true' here is a pickadate option for
+            // whitelisting times instead of blacklisting
+            return [true, {from, to, inverted: true}];
+        }
+    }
+
+    timeBounds() {
+        const {restaurantHours} = this.props;
+
+        const startTimes = restaurantHours
+            .map(h => moment(h.start_time, 'HH:mm:ss').hour());
+
+        const endTimes = restaurantHours
+            .map(h => moment(h.end_time, 'HH:mm:ss').hour());
+
+        const minHour = min(startTimes);
+        const maxHour = max(endTimes);
+
+        return {
+            min: [minHour, 0],
+            max: [maxHour, 0]
+        };
+    }
+
     render() {
         const {
             saving,
@@ -117,6 +161,8 @@ export class OrderPaneEditComponent extends Component {
         } = this.props;
 
         const {address, guests, date, time} = orderParams;
+
+        const timeBounds = this.timeBounds();
 
         const errorMessage = null && ( // TODO
             <div className="gb-order-pane-edit-exception">
@@ -183,8 +229,11 @@ export class OrderPaneEditComponent extends Component {
 
                         <TimePickerComponent
                             disabled={saving}
+                            disabledTimes={this.disabledTimes()}
                             onChange={this.handleTimeChange}
                             time={time}
+                            minTime={timeBounds.min}
+                            maxTime={timeBounds.max}
                             className={this.classNameForColumn('time', time)}
                         />
 

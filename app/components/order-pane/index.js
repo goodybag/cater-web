@@ -4,8 +4,10 @@ import {Dispatcher, listeningTo} from 'tokyo';
 
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
+import {RestaurantStore} from '../../stores/restaurant';
 import {Order} from '../../models/order';
 import {OrderItem} from '../../models/order-item';
+import {RestaurantHour} from '../../models/restaurant-hour';
 import {OrderParams} from '../../models/order-params';
 import {OrderPaneInfoComponent} from './info';
 import {OrderPaneShareComponent} from './share';
@@ -27,14 +29,16 @@ import {
 @inject({
     orderStore: OrderStore,
     orderItemStore: OrderItemStore,
+    restaurantStore: RestaurantStore,
     dispatcher: Dispatcher
 }, [OrderPaneInfoComponent, OrderPaneItemsComponent, OrderPaneShareComponent])
-@listeningTo(['orderStore', 'orderItemStore'], props => {
-    const {orderStore, orderItemStore} = props;
+@listeningTo(['orderStore', 'orderItemStore', 'restaurantStore'], props => {
+    const {orderStore, orderItemStore, restaurantStore} = props;
 
     return {
         order: orderStore.getOrder(),
-        orderItems: orderItemStore.getOrderItems()
+        orderItems: orderItemStore.getOrderItems(),
+        restaurantHours: restaurantStore.getRestaurantHours()
     };
 })
 export class OrderPaneComponent extends Component {
@@ -42,6 +46,7 @@ export class OrderPaneComponent extends Component {
         order: PropTypes.instanceOf(Order),
         orderStore: PropTypes.instanceOf(OrderStore).isRequired,
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem)),
+        restaurantHours: PropTypes.arrayOf(PropTypes.instanceOf(RestaurantHour)).isRequired,
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
     };
 
@@ -130,6 +135,7 @@ export class OrderPaneComponent extends Component {
             order,
             orderItems,
             dispatcher,
+            restaurantHours,
             orderStore
         } = this.props;
 
@@ -145,6 +151,7 @@ export class OrderPaneComponent extends Component {
                 orderParams={editorOrderParams}
                 error={editorError}
                 onChange={this.handleOrderParamsChange}
+                restaurantHours={restaurantHours}
 
                 saveButton={
                     <OrderPaneEditSaveComponent
@@ -158,7 +165,9 @@ export class OrderPaneComponent extends Component {
             <OrderPaneEditComponent
                 saving={saving}
                 orderParams={editorOrderParams}
+                error={editorError}
                 onChange={this.handleOrderParamsChange}
+                restaurantHours={restaurantHours}
 
                 saveButton={
                     <OrderPaneEditSaveComponent

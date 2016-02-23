@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {FormattedDate, FormattedTime} from 'react-intl';
+import moment from 'moment-timezone';
 
 import {Order} from '../../models/order';
 
@@ -24,6 +24,11 @@ export class OrderPaneInfoComponent extends Component {
         const {guests, datetime} = order;
         const address = order.displayAddress();
 
+        const [date, time] = datetime.split(' ', 2);
+
+        const mDate = moment(date, 'YYYY-MM-DD');
+        const mTime = moment(time, 'HH:mm:ss');
+
         return (
             <div className="gb-order-pane-info">
                 <div className="gb-order-pane-info-show">
@@ -34,12 +39,12 @@ export class OrderPaneInfoComponent extends Component {
 
                     <div className="gb-order-pane-info-date">
                         <i className="icon-calendar"></i>
-                        <FormattedDate value={datetime}/>
+                        {mDate.format('M/DD/YYYY')}
                     </div>
 
                     <div className="gb-order-pane-info-time">
                         <i className="icon-clock"></i>
-                        <FormattedTime value={datetime} format="hhmma"/>
+                        {mTime.format('hh:mm a')}
                     </div>
 
                     <div className="gb-order-pane-info-guests">
