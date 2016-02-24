@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {inject, dependencies} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
-import {chain} from 'lodash';
+import {chain, find} from 'lodash';
 import cx from 'classnames';
 
 import {OrderItemStore} from '../../../stores/order-item';
@@ -44,7 +44,11 @@ export class OrderPaneItemsComponent extends Component {
         const {sub_total} = order;
 
         const recipients = this.getRecipients();
-        const extras = find(recipients, {recipient: ''});
+        var extras = find(recipients, {recipient: ''});
+
+        if (extras) {
+            extras = extras.items;
+        }
 
         return (
             <div className="gb-order-pane-items">
