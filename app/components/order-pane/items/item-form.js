@@ -179,26 +179,28 @@ export class OrderItemOptionComponent extends Component {
 
         return (
             <div className="gb-order-pane-item-edit-item-option">
-                <input
-                    type={optionGroupType}
-                    onChange={onChange.bind(null, data)}
-                    value={option.id}
-                    checked={option.state || option.default_state}
-                />
-                <div className="item-option-details">
-                    <div className="item-option-name">{option.name}</div>
-                    {
-                        option.price > 0 ?
-                            <span className="item-option-price">
-                                (+<FormattedNumber
-                                    value={option.price / 100}
-                                    style="currency"
-                                    currency="USD"
-                                />)
-                            </span> : null
-                    }
-                    <div className="item-option-description">{option.description}</div>
-                </div>
+                <label>
+                    <input
+                        type={optionGroupType}
+                        onChange={onChange.bind(null, data)}
+                        value={option.id}
+                        checked={option.state}
+                    />
+                    <div className="item-option-details">
+                        <div className="item-option-name">{option.name}</div>
+                        {
+                            option.price > 0 ?
+                                <span className="item-option-price">
+                                    (+<FormattedNumber
+                                        value={option.price / 100}
+                                        style="currency"
+                                        currency="USD"
+                                    />)
+                                </span> : null
+                        }
+                        <div className="item-option-description">{option.description}</div>
+                    </div>
+                </label>
             </div>
         )
     }
