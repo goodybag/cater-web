@@ -2,13 +2,16 @@ import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
 import {Dispatcher} from 'tokyo';
 import {inject} from 'yokohama';
-import _ from 'lodash';
+import {clone} from 'lodash';
 
 import {OrderItem} from '../../../models/order-item';
 import {ReceiveEditOrderItemAction, RemoveOrderItemAction} from '../../../actions/order-item';
+import {OrderItemEditorComponent} from './item-editor';
+import {ModalState} from '../../../lib/modal';
 
 @inject({
     dispatcher: Dispatcher,
+    modals: ModalState
 })
 export class OrderPaneItemComponent extends Component {
     static propTypes = {
@@ -16,11 +19,13 @@ export class OrderPaneItemComponent extends Component {
     };
 
     onEditItemClick = (e) => {
-        const {orderItem, dispatcher} = this.props;
+        const {orderItem, dispatcher, modals} = this.props;
 
         e.preventDefault();
-        var action = new ReceiveEditOrderItemAction({orderItem});
-        dispatcher.dispatch(action);
+
+        modals.open(OrderItemEditorComponent, {
+            orderItem
+        });
     };
 
     onRemoveItemClick = (e) => {
@@ -80,7 +85,7 @@ export class OrderPaneItemComponent extends Component {
         );
 
         function displayOptions() {
-            const optionsSets = _.clone(options_sets, true);
+            const optionsSets = clone(options_sets, true);
 
             return (optionsSets || [])
                 .filter(itemOption => {

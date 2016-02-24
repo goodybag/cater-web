@@ -13,7 +13,7 @@ import {RestaurantPastOrdersModalComponent} from './modal';
     restaurantStore: RestaurantStore,
     pastOrdersStore: PastOrdersStore,
     dispatcher: Dispatcher
-}, [RestaurantPastOrdersModalComponent])
+}, [RestaurantPastOrdersModalComponent, RestaurantOrdersRowComponent])
 @listeningTo(['restaurantStore', 'pastOrdersStore'], props => {
     const {pastOrdersStore, restaurantStore} = props;
 
@@ -37,8 +37,6 @@ export class RestaurantOrdersComponent extends Component {
                 <div className="gb-restaurant-orders-title">
                     Past Orders at {restaurant.name}
                 </div>
-
-                <RestaurantPastOrdersModalComponent />
 
                 <div className="gb-restaurant-orders-table">
                     <div className="gb-restaurant-orders-row-head">

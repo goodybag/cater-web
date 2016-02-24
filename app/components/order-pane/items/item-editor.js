@@ -28,22 +28,9 @@ export class OrderItemEditorComponent extends Component {
         orderItem: PropTypes.instanceOf(OrderItem).isRequired
     };
 
-    handleKeyDown = (e) => { // <-- 'ESC' key is keycode 27
-        if(e.keyCode === 27) this.onClose();
-    };
-
-    componentWillMount = () => {
-        window.addEventListener('keydown', this.handleKeyDown, false);
-    };
-
-    componentWillUnmount = () => {
-        window.removeEventListener('keydown', this.handleKeyDown, false);
-    };
-
     onClose = () => {
-        const {dispatcher} = this.props;
-        const action = new CloseEditOrderItemAction();
-        dispatcher.dispatch(action);
+        const {requestClose} = this.props;
+        requestClose();
     };
 
     onSubmit = () => {
@@ -120,9 +107,7 @@ export class OrderItemEditorComponent extends Component {
     render() {
 
         return (
-            <div className="gb-modal-container">
-                <div className="gb-modal-overlay" onClick={this.onClose}></div>
-                <div className="gb-modal">
+            <div className="modal">
                     <OrderItemFormComponent
                         item={this.props.orderItem}
                         itemState={this.state}
@@ -132,7 +117,6 @@ export class OrderItemEditorComponent extends Component {
                             <div className="item-save-btn" onClick={this.onSubmit}>Save changes</div>
                         }
                     />
-                </div>
             </div>
         );
     };

@@ -7,11 +7,9 @@ import {Order} from '../../../models/order';
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {OrderPaneItemComponent} from '../../order-pane/items/item';
 import {PastOrdersStore} from '../../../stores/past-orders';
-import {StopDisplayingOrderAction} from '../../../actions/past-orders';
 
 @inject({
-    pastOrdersStore: PastOrdersStore,
-    dispatcher: Dispatcher
+    pastOrdersStore: PastOrdersStore
 })
 @listeningTo(['pastOrdersStore'], ({pastOrdersStore}) => {
     return {
@@ -25,40 +23,21 @@ export class RestaurantPastOrdersModalComponent extends Component {
             PropTypes.string,
             PropTypes.instanceOf(Order)
         ]),
-        orderItems: PropTypes.array,
-        dispatcher: PropTypes.instanceOf(Dispatcher)
-    };
-
-    handleKeyDown = (e) => { // <-- 'ESC' key is keycode 27
-        if(e.keyCode === 27) this.close();
-    };
-
-    componentWillMount = () => {
-        window.addEventListener('keydown', this.handleKeyDown, false);
-    };
-
-    componentWillUnmount = () => {
-        window.removeEventListener('keydown', this.handleKeyDown, false);
+        orderItems: PropTypes.array
     };
 
     close = () => {
-        const {dispatcher} = this.props;
+        const {requestClose} = this.props;
 
-        const action = new StopDisplayingOrderAction();
-
-        dispatcher.dispatch(action);
+        requestClose();
     };
 
     render() {
         const {order} = this.props;
 
         return order && (
-            <div className="gb-modal-container">
-                <div className="gb-modal-overlay" onClick={this.close} />
-
-                <div className="gb-modal">
-                    {this.renderModal()}
-                </div>
+            <div className="modal">
+                {this.renderModal()}
             </div>
         );
     }

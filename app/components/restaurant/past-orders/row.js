@@ -1,12 +1,18 @@
 import React, {Component} from 'react';
 import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'tokyo';
+import {inject} from 'yokohama';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';
+import {RestaurantPastOrdersModalComponent} from './modal';
+import {ModalState} from '../../../lib/modal';
 
 import moment from 'moment-timezone';
 
+@inject({
+    modals: ModalState
+})
 export class RestaurantOrdersRowComponent extends Component {
     static propTypes = {
         order: React.PropTypes.object.isRequired,
@@ -14,11 +20,13 @@ export class RestaurantOrdersRowComponent extends Component {
     };
 
     handleViewClick = () => {
-        const {order, dispatcher} = this.props;
+        const {order, dispatcher, modals} = this.props;
 
         const action = new DisplayOrderAction({order});
 
         dispatcher.dispatch(action);
+
+        modals.open(RestaurantPastOrdersModalComponent);
     };
 
     handleDuplicateClick = () => {
