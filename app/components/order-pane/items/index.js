@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {inject, dependencies} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
-import {chain} from 'lodash';
+import {chain, find} from 'lodash';
 import cx from 'classnames';
 
 import {OrderItemStore} from '../../../stores/order-item';
