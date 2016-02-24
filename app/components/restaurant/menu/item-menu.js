@@ -40,7 +40,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
     };
 
     onSubmit = () => {
-        const {dispatcher, item, order} = this.props;
+        const {dispatcher, item, order, onClose} = this.props;
 
         const orderItemData = {
             item_id: item.id,
@@ -58,6 +58,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
 
         const action = new AddOrderItemAction({orderId: order.id, orderItemData});
         dispatcher.dispatch(action);
+        onClose();
     };
 
     onChange = (data, e) => {
