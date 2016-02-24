@@ -5,6 +5,9 @@ import moment from 'moment-timezone';
 export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
     const {address, date, time, guests} = orderParams;
 
+    const datetime = `${date} ${time}`;
+    const mDatetime = moment(datetime, 'YYYY-MM-DD HH:mm:ss');
+
     const strategyMapping = {
         OpenDay() {
             return {
@@ -35,12 +38,11 @@ export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
         }
     };
 
-    const fModel = fulfillability({
-        timezone,
-        datetime: `${date} ${time}`,
-        guests,
-        restaurant
-    });
+    const fModel = fulfillability({timezone, datetime, guests, restaurant});
+
+    const future = assert(() => mDatetime.isAfter(moment()),
+                          'provided date & time must be in the future')
+        .column('date', 'time');
 
     const fulfillable = assert(() => fModel.isFulfillable(),
                                () => fModel.why().map(toMessage));
@@ -61,8 +63,11 @@ export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
         nullable('guests', guests, 'guests is required')
             .column('guests');
 
-    return addressNotNull
-        .concat(dateNotNull.concat(timeNotNull).concat(guestsNotNull).and(fulfillable));
+    const datetimePresent = dateNotNull.concat(timeNotNull).concat(guestsNotNull);
+
+    const datetimeValidity = datetimePresent.and(future).and(fulfillable);
+
+    return addressNotNull.concat(datetimeValidity);
 
     function toMessage(strategyName) {
         if (strategyMapping[strategyName]) {
