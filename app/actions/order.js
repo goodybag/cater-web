@@ -1,12 +1,12 @@
-export class UpdateOrderInfoAction {
-    constructor({order, changes}) {
-        this.order = order;
-        this.changes = changes;
+export class UpdateOrderParamsAction {
+    constructor({orderId, params}) {
+        this.orderId = orderId;
+        this.params = params;
     }
 }
 
-export class SubmitOrderInfoAction {
-    constructor({info}) {
-        this.info = info;
+export class SubmitOrderParamsAction {
+    constructor({params}) {
+        this.params = params;
     }
 }

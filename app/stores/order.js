@@ -1,16 +1,17 @@
 import Promise from 'bluebird';
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
-import delay from 'core-js/library/fn/delay';
 
 import {RestaurantPayload} from '../payloads/restaurant';
 import {OrderResolver} from '../resolvers/order';
-import {SubmitOrderInfoAction, UpdateOrderInfoAction} from '../actions/order';
 import {Order} from '../models/order';
-import {validate} from '../validators/order-info';
-import {validate as validateFulfillability} from '../validators/order-fulfillability';
 import {OrderService} from '../services/order';
 import {CurrentUserResolver} from '../resolvers/user';
+import {fulfillabilitySchema, geocodingSchema} from '../validators/order';
+import {
+    SubmitOrderParamsAction,
+    UpdateOrderParamsAction
+} from '../actions/order';
 
 @dependencies(Dispatcher, OrderResolver, OrderService, RestaurantPayload, CurrentUserResolver)
 export class OrderStore extends Store {
@@ -21,26 +22,17 @@ export class OrderStore extends Store {
         this.order = order;
         this.restaurantPayload = restaurantPayload;
         this.user = user;
-        this.saving = false;
 
-        this.bind(SubmitOrderInfoAction, this.submitOrderInfo);
-        this.bind(UpdateOrderInfoAction, this.updateOrderInfo);
-    }
-
-    isSaving() {
-        return this.saving;
+        this.bind(SubmitOrderParamsAction, this.submitOrderParams);
+        this.bind(UpdateOrderParamsAction, this.updateOrderParams);
     }
 
     getOrder() {
         return this.order;
     }
 
-    handleInfoValidation(infoSet) {
+    handleParamsValidation(params) {
         return Promise.try(() => {
-            validate(infoSet, {nullableColumns: false});
-
-            return this.orderService.geocodeAddress(infoSet.address);
-        }).then(body => {
             const {
                 restaurant,
                 restaurantDeliveryLeadTimes,
@@ -50,41 +42,35 @@ export class OrderStore extends Store {
                 restaurantDeliveryZips
             } = this.restaurantPayload;
 
-            validateFulfillability(infoSet, {
-                nullableColumns: false,
-                context: {
-                    addressData: body,
-                    restaurant: {
-                        ...restaurant,
-                        lead_times: restaurantDeliveryLeadTimes,
-                        pickup_lead_times: restaurantPickupLeadTimes,
-                        hours: restaurantPickupHours,
-                        delivery_hours: restaurantDeliveryHours,
-                        delivery_zips: restaurantDeliveryZips
-                    }
+            fulfillabilitySchema(params, {
+                timezone: this.user.timezone,
+                restaurant: {
+                    ...restaurant,
+                    lead_times: restaurantDeliveryLeadTimes,
+                    pickup_lead_times: restaurantPickupLeadTimes,
+                    hours: restaurantPickupHours,
+                    delivery_hours: restaurantDeliveryHours,
+                    delivery_zips: restaurantDeliveryZips
                 }
-            });
+            }).validate();
 
-            if (!body.valid) {
-                throw new TypeError('Failed to invalidate empty geocode body');
-            }
+            return this.orderService.geocodeAddress(params.address);
+        }).then(body => {
+            geocodingSchema(body).validate();
 
             return {
                 street: body.address.street,
                 city: body.address.city,
                 state: body.address.state,
                 zip: body.address.zip,
-                datetime: `${infoSet.date} ${infoSet.time}`,
-                guests: infoSet.guests
+                datetime: `${params.date} ${params.time}`,
+                guests: params.guests
             };
         });
     }
 
-    submitOrderInfo({info}) {
-        this.saving = true;
-        this.emit('change');
-
-        return this.handleInfoValidation(info).then(data => {
+    submitOrderParams({params}) {
+        return this.handleParamsValidation(params).then(data => {
             return this.orderService.create({
                 restaurant_id: this.restaurantPayload.restaurant.id,
                 user_id: this.user.id, // TODO
@@ -93,23 +79,14 @@ export class OrderStore extends Store {
         }).then(order => {
             this.order = order;
             this.emit('change');
-        }).finally(() => {
-            this.saving = false;
-            this.emit('change');
         });
     }
 
-    updateOrderInfo({changes}) {
-        this.saving = true;
-        this.emit('change');
-
-        return this.handleInfoValidation(changes).then(data => {
+    updateOrderParams({params}) {
+        return this.handleParamsValidation(params).then(data => {
             return this.orderService.updateById(this.order.id, data);
         }).then(order => {
             this.order = order;
-            this.emit('change');
-        }).finally(() => {
-            this.saving = false;
             this.emit('change');
         });
     }

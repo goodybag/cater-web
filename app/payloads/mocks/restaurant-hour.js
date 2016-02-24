@@ -8,6 +8,6 @@ import {RestaurantHours} from '../../models/restaurant-hour';
 @dependencies(RestaurantPayload)
 export class RestaurantHoursResolver {
     constructor(payload) {
-        return payload.restaurantHours;
+        return payload.restaurantDeliveryHours;
     }
 }
