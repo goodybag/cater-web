@@ -110,29 +110,6 @@ export class OrderPaneEditComponent extends Component {
         return result === columnName;
     }
 
-    disabledTimes() {
-        const {orderParams, restaurantHours} = this.props;
-
-        const {date} = orderParams;
-
-        if (date == null) {
-            return [];
-        } else {
-            const weekday = moment(date, 'YYYY-MM-DD').weekday();
-
-            const hours = find(restaurantHours, {day: weekday});
-            const start = moment(hours.start_time, 'HH:mm:ss');
-            const end = moment(hours.end_time, 'HH:mm:ss');
-
-            const from = [start.hour(), start.minute()];
-            const to = [end.hour(), end.minute()];
-
-            // the 'true' here is a pickadate option for
-            // whitelisting times instead of blacklisting
-            return [true, {from, to, inverted: true}];
-        }
-    }
-
     timeBounds() {
         const {restaurantHours} = this.props;
 
@@ -229,7 +206,6 @@ export class OrderPaneEditComponent extends Component {
 
                         <TimePickerComponent
                             disabled={saving}
-                            disabledTimes={this.disabledTimes()}
                             onChange={this.handleTimeChange}
                             time={time}
                             minTime={timeBounds.min}
