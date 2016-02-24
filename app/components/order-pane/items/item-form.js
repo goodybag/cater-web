@@ -184,7 +184,7 @@ export class OrderItemOptionComponent extends Component {
                         type={optionGroupType}
                         onChange={onChange.bind(null, data)}
                         value={option.id}
-                        checked={option.state || option.default_state}
+                        checked={option.state}
                     />
                     <div className="item-option-details">
                         <div className="item-option-name">{option.name}</div>
