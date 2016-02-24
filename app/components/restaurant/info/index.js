@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
+import {FormattedNumber} from 'react-intl';
+import moment from 'moment-timezone';
 
 import {Config} from '../../../lib/config';
 import {PriceComponent} from '../../price';
@@ -9,9 +11,11 @@ import {Restaurant} from '../../../models/restaurant';
 import {RestaurantGmapComponent} from './gmap';
 import {RestaurantInfoSectionComponent} from './section';
 import {RestaurantInfoHeaderComponent} from './header';
+import {RestaurantPayload} from '../../../payloads/restaurant';
 
 @inject({
     restaurantStore: RestaurantStore,
+    restaurantPayload: RestaurantPayload,
     config: Config
 })
 @listeningTo(['restaurantStore'], props => {
@@ -25,11 +29,12 @@ import {RestaurantInfoHeaderComponent} from './header';
 export class RestaurantInfoComponent extends Component {
     static propTypes = {
         restaurant: PropTypes.instanceOf(Restaurant).isRequired,
+        restaurantPayload: PropTypes.object.isRequired,
         config: PropTypes.instanceOf(Config).isRequired
     };
 
     render() {
-        const {restaurant, config} = this.props;
+        const {restaurant, restaurantPayload, config} = this.props;
 
         const {
             cuisine,
@@ -42,29 +47,16 @@ export class RestaurantInfoComponent extends Component {
             websites
         } = restaurant;
 
-        const hours = [
-            {day: 'Monday', time: '11:00 am — 9:00 pm'},
-            {day: 'Tuesday', time: '11:00 am — 9:00 pm'},
-            {day: 'Wednesday', time: '11:00 am — 9:00 pm'},
-            {day: 'Thursday', time: '11:00 am — 9:00 pm'},
-            {day: 'Friday', time: '11:00 am — 9:00 pm'},
-            {day: 'Saturday', time: '11:00 am — 9:00 pm'},
-            {day: 'Sunday', time: '11:00 am — 9:00 pm'}
-        ];
-
-        const leadTimes = [
-            {guests: 30, hours: 16},
-            {guests: 50, hours: 24},
-            {guests: 100, hours: 36},
-            {guests: 200, hours: 48}
-        ];
+        const leadTimes = restaurantPayload.restaurantDeliveryLeadTimes;
+        const deliveryHours = restaurantPayload.restaurantDeliveryHours;
+        const hours = restaurantPayload.restaurantPickupHours;
 
         return (
             <div className="gb-restaurant-info">
                 <div className="gb-restaurant-info-left">
                     <RestaurantInfoSectionComponent>
                         <div className="gb-restaurant-info-cuisine">
-                            {cuisine}
+                            {cuisine.join(', ')}
                         </div>
                         <div className="gb-restaurant-info-bull">&bull;</div>
                         <PriceComponent price={price}/>
@@ -76,7 +68,7 @@ export class RestaurantInfoComponent extends Component {
                         </RestaurantInfoHeaderComponent>
 
                         <table className="gb-restaurant-info-table">
-                            <tbody>{hours.map(renderHour)}</tbody>
+                            <tbody>{deliveryHours.map(renderHour)}</tbody>
                         </table>
                     </RestaurantInfoSectionComponent>
 
@@ -95,15 +87,12 @@ export class RestaurantInfoComponent extends Component {
                             Order Minimum
                         </RestaurantInfoHeaderComponent>
 
-                        {minimum_order ? minimum_order : 'None'}
-                    </RestaurantInfoSectionComponent>
-
-                    <RestaurantInfoSectionComponent>
-                        <RestaurantInfoHeaderComponent>
-                            Max Guests
-                        </RestaurantInfoHeaderComponent>
-
-                        500
+                        {minimum_order ?
+                            <FormattedNumber
+                                value={minimum_order / 100}
+                                style="currency"
+                                currency="USD"
+                             /> : 'None'}
                     </RestaurantInfoSectionComponent>
                 </div>
 
@@ -134,7 +123,7 @@ export class RestaurantInfoComponent extends Component {
 
                         <div>Give us a call to place an order here!</div>
                         <div className="gb-restaurant-info-phone-icon"></div>
-                        <div className="gb-restaurant-info-phone-number">512-270-6555</div>
+                        <div className="gb-restaurant-info-phone-number">(512) 677-4224</div>
                     </RestaurantInfoSectionComponent>
 
                     <RestaurantInfoSectionComponent>
@@ -148,20 +137,24 @@ export class RestaurantInfoComponent extends Component {
             </div>
         );
 
-        function renderHour({day, time}) {
+        function renderHour({day, start_time, end_time}) {
             return (
                 <tr key={day}>
-                    <td>{day}</td>
-                    <td>{time}</td>
+                    <td>{moment(day, 'e').format('dddd')}</td>
+                    <td>
+                        {moment(start_time, 'HH:mm:ss').format('hh:mm a')}
+                        {' - '}
+                        {moment(end_time, 'HH:mm:ss').format('hh:mm a')}
+                    </td>
                 </tr>
             );
         }
 
-        function renderLeadTime({guests, hours}) {
+        function renderLeadTime({max_guests, lead_time}) {
             return (
-                <tr key={guests}>
-                    <td>Up to {guests} guests</td>
-                    <td>{hours} hrs</td>
+                <tr key={max_guests}>
+                    <td>Up to {max_guests} guests</td>
+                    <td>{lead_time / 60} hrs</td>
                 </tr>
             );
         }
