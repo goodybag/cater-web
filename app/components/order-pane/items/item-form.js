@@ -126,6 +126,11 @@ export class OrderItemOptionGroupComponent extends Component {
         onChange: PropTypes.func.isRequired
     };
 
+    maxReached = () => {
+        const {optionGroup} = this.props;
+        return optionGroup.options.filter(option => option.state).length >= optionGroup.selected_max;
+    };
+
     render() {
         const {optionGroup} = this.props;
 
@@ -158,6 +163,7 @@ export class OrderItemOptionGroupComponent extends Component {
                 optionI={i}
                 optionGroupI={this.props.optionGroupI}
                 onChange={this.props.onChange}
+                maxReached={this.maxReached()}
                 key={i}
             />
         )
@@ -170,11 +176,12 @@ export class OrderItemOptionComponent extends Component {
         optionGroupType: PropTypes.string.isRequired,
         optionI: PropTypes.number.isRequired,
         optionGroupI: PropTypes.number.isRequired,
-        onChange: PropTypes.func.isRequired
+        onChange: PropTypes.func.isRequired,
+        maxReached: PropTypes.bool.isRequired
     };
 
     render() {
-        const {option, optionGroupType, optionI, optionGroupI, onChange} = this.props;
+        const {option, optionGroupType, optionI, optionGroupI, onChange, maxReached} = this.props;
         const data = { optionI, optionGroupI }
 
         return (
@@ -185,6 +192,7 @@ export class OrderItemOptionComponent extends Component {
                         onChange={onChange.bind(null, data)}
                         value={option.id}
                         checked={option.state}
+                        disabled={maxReached}
                     />
                     <div className="item-option-details">
                         <div className="item-option-name">{option.name}</div>
