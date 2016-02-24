@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {inject, dependencies} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
+import {chain} from 'lodash';
+import cx from 'classnames';
 
 import {OrderItemStore} from '../../../stores/order-item';
 import {OrderStore} from '../../../stores/order';
@@ -28,13 +30,39 @@ export class OrderPaneItemsComponent extends Component {
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem))
     };
 
+    getRecipients() {
+        const {orderItems} = this.props;
+
+        return chain(orderItems)
+            .groupBy(i => i.recipient.toLowerCase())
+            .map((items, recipient) => ({items, recipient}))
+            .value();
+    }
+
     render() {
         const {order, orderItems, editOrderItemModalOpen, editOrderItem} = this.props;
         const {sub_total} = order;
 
+        const recipients = this.getRecipients();
+        const extras = find(recipients, {recipient: ''});
+
         return (
             <div className="gb-order-pane-items">
-                {orderItems.map(renderOrderItem)}
+                {
+                    chain(recipients)
+                        .filter('recipient')
+                        .map(renderRecipient)
+                        .value()
+                }
+
+                {
+                    extras.length > 0 &&
+                        <div className={cx('gb-order-pane-extra-items', {
+                                'gb-order-pane-extra-items-line' : recipients.length > 0
+                            })}>
+                            {extras.map(renderOrderItem)}
+                        </div>
+                }
 
                 <OrderPaneCheckoutComponent subtotal={sub_total}/>
 
@@ -47,6 +75,20 @@ export class OrderPaneItemsComponent extends Component {
             </div>
         );
 
+        function renderRecipient({recipient, items}) {
+            return (
+                <div className={cx('gb-order-pane-recipient-group', {
+                        'gb-order-pane-recipient-group-line': extras.length > 0
+                        })} key={recipient}>
+                    <OrderPaneRecipientComponent
+                        recipient={recipient}
+                    />
+
+                    {items.map(renderOrderItem)}
+                </div>
+            );
+        };
+
         function renderOrderItem(orderItem) {
             return (
                 <OrderPaneItemComponent
@@ -55,5 +97,20 @@ export class OrderPaneItemsComponent extends Component {
                 />
             );
         }
+    }
+}
+
+export class OrderPaneRecipientComponent extends Component {
+    static propTypes = {
+        recipient: PropTypes.string
+    };
+
+    render() {
+        return (
+            <div className="gb-order-pane-recipient">
+                <span className="icon-profile"></span>
+                {this.props.recipient}
+            </div>
+        );
     }
 }
