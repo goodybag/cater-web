@@ -192,7 +192,7 @@ export class OrderItemOptionComponent extends Component {
                         onChange={onChange.bind(null, data)}
                         value={option.id}
                         checked={option.state}
-                        disabled={maxReached}
+                        disabled={!option.state && maxReached}
                     />
                     <div className="item-option-details">
                         <div className="item-option-name">{option.name}</div>
