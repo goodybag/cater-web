@@ -17,7 +17,8 @@ export class Config {
             cdnPrefix = '/assets/',
             apiPrefix = '/api/',
             serverRendering = true,
-            gmapsKey = 'AIzaSyBbsgtm6Tqdh3ZyWfRj2Mg_eSZDW8ajLss'
+            gmapsKey = 'AIzaSyBbsgtm6Tqdh3ZyWfRj2Mg_eSZDW8ajLss',
+            baseUrl
         } = options;
 
         this.env = env;
@@ -26,6 +27,7 @@ export class Config {
         this.apiPrefix = apiPrefix;
         this.serverRendering = serverRendering;
         this.gmapsKey = gmapsKey;
+        this.baseUrl = baseUrl;
     }
 
     resolveAssetURL(assetName) {
