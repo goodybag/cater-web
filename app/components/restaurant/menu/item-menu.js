@@ -29,7 +29,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
             options_sets: initOptionsSets,
             notes: "",
             recipient: "",
-            quantity: clonedMenuItem.min_qty
+            quantity: clonedMenuItem.min_qty || 1
         };
     };
 
