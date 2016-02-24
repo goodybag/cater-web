@@ -24,6 +24,7 @@ export class Restaurant {
     constructor(attrs) {
         const {
             id = null,
+            text_id = null,
             created_at = null,
             name = null,
             street = null,
@@ -54,6 +55,7 @@ export class Restaurant {
         } = attrs;
 
         this.id = id;
+        this.text_id = text_id;
         this.created_at = created_at;
         this.name = name;
         this.street = street;
