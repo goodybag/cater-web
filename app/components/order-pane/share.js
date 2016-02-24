@@ -7,9 +7,11 @@ import {OrderStore} from '../../stores/order';
 import {Order} from '../../models/order';
 import {ShareOrderModal} from '../share-order-modal';
 import {ModalState} from '../../lib/modal';
+import {Config} from '../../lib/config';
 
 @inject({
-    modals: ModalState
+    modals: ModalState,
+    config: Config
 })
 export class OrderPaneShareComponent extends Component {
     static propTypes = {
@@ -20,6 +22,11 @@ export class OrderPaneShareComponent extends Component {
     static defaultProps = {
         disabled: false
     };
+
+
+    static getShareLinkUrl(baseUrl, order) {
+        return `${baseUrl}/restaurants/${order.restaurant.text_id}?edit_token=${order.edit_token}`;
+    }
 
     constructor(props, context) {
         super(props, context);
@@ -37,9 +44,8 @@ export class OrderPaneShareComponent extends Component {
     };
 
     render() {
-        const {disabled} = this.props;
-        const token = '14e4eeba-4509-11e5-ae0b-a8a54c5cf93c';
-        const url = `https://example.com/some-url-here?token=${token}`;
+        const {disabled, order, config} = this.props;
+        const url = OrderPaneShareComponent.getShareLinkUrl(config.baseUrl, order);
 
         const set = cx('gb-order-pane-share', {
             'gb-order-pane-share-disabled': disabled
