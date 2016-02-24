@@ -40,7 +40,7 @@ export class OrderPaneItemsComponent extends Component {
     }
 
     render() {
-        const {order, orderItems, editOrderItemModalOpen, editOrderItem} = this.props;
+        const {order, orderItems, editOrderItem} = this.props;
         const {sub_total} = order;
 
         const recipients = this.getRecipients();
@@ -65,13 +65,6 @@ export class OrderPaneItemsComponent extends Component {
                 }
 
                 <OrderPaneCheckoutComponent subtotal={sub_total}/>
-
-                {
-                    editOrderItemModalOpen ?
-                        <OrderItemEditorComponent
-                            orderItem={editOrderItem}
-                        /> : null
-                }
             </div>
         );
 
