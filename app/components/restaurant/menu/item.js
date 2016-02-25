@@ -19,24 +19,20 @@ import {
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired,
-        order: PropTypes.instanceOf(Order).isRequired
-    };
-
-    state = {
-        open: false
+        order: PropTypes.instanceOf(Order).isRequired,
+        requestOpen: PropTypes.func.isRequired
     };
 
     handleOpen = () => {
-        this.setState({open: true});
+        this.props.requestOpen(this.props.item.id);
     };
 
     handleClose = () => {
-        this.setState({open: false});
+        this.props.requestClose();
     };
 
     render() {
-        const {open} = this.state;
-        const {item, order} = this.props;
+        const {item, order, isOpen} = this.props;
         const {
             name,
             tags,
@@ -63,11 +59,11 @@ export class RestaurantMenuItemComponent extends Component {
         );
 
         const cname = cx('gb-restaurant-menu-item', {
-            'gb-restaurant-menu-item-open': open
+            'gb-restaurant-menu-item-open': isOpen
         });
 
         return (
-            <div className={cname} onClick={!open && this.handleOpen}>
+            <div className={cname} onClick={!isOpen && this.handleOpen}>
                 <div className="gb-restaurant-menu-item-heading" onClick={this.handleClose}>
                     <div className="gb-restaurant-menu-item-title">
                         <div className="gb-restaurant-menu-item-title-content">
@@ -95,7 +91,7 @@ export class RestaurantMenuItemComponent extends Component {
 
                 {description && descEl}
 
-                <TransitionGroup>{open && itemMenu}</TransitionGroup>
+                <TransitionGroup>{isOpen && itemMenu}</TransitionGroup>
             </div>
         );
 

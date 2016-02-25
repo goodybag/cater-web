@@ -31,7 +31,7 @@ class RestaurantMenuCateringComponent extends Component {
     };
 
     render() {
-        const {menu, order} = this.props;
+        const {menu, order, openItem, requestOpen, requestClose} = this.props;
 
         return (
             <div className="gb-restaurant-menu-catering">
@@ -45,6 +45,9 @@ class RestaurantMenuCateringComponent extends Component {
                     category={category}
                     items={items}
                     order={order}
+                    requestOpen={requestOpen}
+                    requestClose={requestClose}
+                    openItem={openItem}
                     key={category.id}
                 />
             );
@@ -71,7 +74,7 @@ class RestaurantMenuIndividualComponent extends Component {
     };
 
     render() {
-        const {menu, order} = this.props;
+        const {menu, order, openItem, requestOpen, requestClose} = this.props;
 
         return (
             <div className="gb-restaurant-menu-individual">
@@ -85,6 +88,9 @@ class RestaurantMenuIndividualComponent extends Component {
                     category={category}
                     items={items}
                     order={order}
+                    requestOpen={requestOpen}
+                    requestClose={requestClose}
+                    openItem={openItem}
                     key={category.id}
                 />
             );
@@ -141,7 +147,16 @@ export class RestaurantMenuComponent extends Component {
         children: PropTypes.element.isRequired
     };
 
-    state = {searchTerm: new MenuSearchTerm('')};
+    state = {
+        searchTerm: new MenuSearchTerm(''),
+        openItem: null
+    };
+
+    constructor(props) {
+        super(props);
+        this.onItemRequestOpen = this.onItemRequestOpen.bind(this);
+        this.onItemRequestClose = this.onItemRequestClose.bind(this);
+    }
 
     handleSearchTermChange = (text) => {
         this.setState({
@@ -151,9 +166,14 @@ export class RestaurantMenuComponent extends Component {
 
     render() {
         const {children} = this.props;
-        const {searchTerm} = this.state;
+        const {searchTerm, openItem} = this.state;
 
-        const child = cloneElement(children, {searchTerm});
+        const child = cloneElement(children, {
+            searchTerm,
+            openItem,
+            requestOpen: this.onItemRequestOpen,
+            requestClose: this.onItemRequestClose
+        });
 
         return (
             <div className="gb-restaurant-menu">
@@ -167,5 +187,13 @@ export class RestaurantMenuComponent extends Component {
                 {child}
             </div>
         );
+    }
+
+    onItemRequestOpen(openItem) {
+        this.setState({ openItem });
+    }
+
+    onItemRequestClose() {
+        this.setState({ openItem: null });
     }
 }
