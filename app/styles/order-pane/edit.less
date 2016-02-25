@@ -4,11 +4,16 @@
 @error-transition-delay: 100ms;
 
 .gb-order-pane-edit {
-    font-size: 0.9em;
+    font-size: 0.92em;
+    font-weight: 900;
 
     i[class^="icon-"] {
         .gb-order-pane-edit-icon;
     }
+}
+
+.gb-order-pane-edit-input {
+    position: relative;
 }
 
 .gb-order-pane-edit-location,
@@ -16,25 +21,36 @@
 .gb-order-pane-edit-time,
 .gb-order-pane-edit-guests {
     position: relative;
-    margin-bottom: 9px;
+    margin-bottom: 10px;
 }
 
 .gb-order-pane-edit-date {
     #components > #datepicker > .init();
     text-shadow: none;
+
+    .picker__frame {
+        font-weight: 500;
+        font-size: 0.92em;
+    }
 }
 
 .gb-order-pane-edit-time {
     #components > #timepicker > .init();
     text-shadow: none;
+
+    .picker__list {
+        font-weight: 500;
+        font-size: 0.97em;
+    }
 }
 
 .gb-order-pane-edit-icon {
     color: @gb-shadow-cadet-blue;
     position: absolute;
-    bottom: 7px;
-    left: 5px;
-    font-size: 1.41em;
+    top: 0;
+    left: 0;
+    padding: 7px;
+    font-size: 1.5em;
     text-shadow: none;
 }
 
@@ -94,8 +110,11 @@
     width: 100%;
     padding-left: 29px;
     padding-right: 29px;
-    font-size: 1.11em;
+    font-size: 1.04em;
     border: 1px solid transparent;
+    border-radius: 3px;
+    color: @gb-shadow-mako;
+    text-overflow: ellipsis;
 
     &[disabled] {
         background: @gb-shadow-athens-gray;
@@ -103,15 +122,20 @@
 
     &:not([disabled]):not(:focus):not(.picker__input--active) {
         &.gb-order-pane-edit-box-valid {
-            background: @gb-evergreen;
-            border-color: @gb-green;
+            background: @gb-valid-background;
+            border-color: @gb-valid-foreground;
         }
 
         &.gb-order-pane-edit-box-invalid {
-            background: lighten(@gb-red, 30%);
-            border-color: @gb-red;
+            background: @gb-invalid-background;
+            border-color: @gb-invalid-foreground;
         }
     }
+}
+
+@keyframes slide_in {
+    from {padding: 7px 9px;}
+    to {padding: 7px 7px;}
 }
 
 .gb-order-pane-edit-box:not([disabled]):not(:focus):not(.picker__input--active).gb-order-pane-edit-box-valid ~ .gb-order-pane-edit-checkmark {
@@ -140,7 +164,7 @@
     border: 1px solid @gb-white;
     font-size: 1.12em;
     font-weight: 900;
-    margin-top: 15px;
+    margin-top: 20px;
     text-shadow: none;
     overflow: hidden;
 }
