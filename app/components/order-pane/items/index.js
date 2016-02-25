@@ -48,6 +48,8 @@ export class OrderPaneItemsComponent extends Component {
 
         if (extras) {
             extras = extras.items;
+        } else {
+            extras = [ ];
         }
 
         return (

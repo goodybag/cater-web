@@ -53,14 +53,16 @@ class RestaurantMenuCateringComponent extends Component {
 }
 
 @inject({
-    menuStore: MenuStore
+    menuStore: MenuStore,
+    orderStore: OrderStore
 })
-@listeningTo(['menuStore'], ({menuStore, searchTerm}) => {
+@listeningTo(['menuStore', 'orderStore'], ({menuStore, orderStore, searchTerm}) => {
     const categories = menuStore.getCategories();
     const items = menuStore.getItems();
 
     return {
-        menu: searchTerm.groupMenu(categories, items, 'individual')
+        menu: searchTerm.groupMenu(categories, items, 'individual'),
+        order: orderStore.getOrder()
     };
 })
 class RestaurantMenuIndividualComponent extends Component {
@@ -69,7 +71,7 @@ class RestaurantMenuIndividualComponent extends Component {
     };
 
     render() {
-        const {menu} = this.props;
+        const {menu, order} = this.props;
 
         return (
             <div className="gb-restaurant-menu-individual">
@@ -82,6 +84,7 @@ class RestaurantMenuIndividualComponent extends Component {
                 <RestaurantMenuCategoryComponent
                     category={category}
                     items={items}
+                    order={order}
                     key={category.id}
                 />
             );
