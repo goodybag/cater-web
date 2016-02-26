@@ -77,7 +77,10 @@ export class OrderPaneComponent extends Component {
     }
 
     stopEditing() {
-        this.setState({editorOrderParams: null});
+        this.setState({
+            editorError: null,
+            editorOrderParams: null
+        });
     }
 
     handleOrderParamsChange(editorOrderParams) {
