@@ -11,11 +11,23 @@ export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired,
         order: PropTypes.instanceOf(Order).isRequired,
-        items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired
+        items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired,
+        openItem: PropTypes.string.isRequired,
+        requestOpen: PropTypes.func.isRequired,
+        requestClose: PropTypes.func.isRequired
     };
 
+    static getIdString(categoryId, itemId) {
+        return `${categoryId}-${itemId}`;
+    }
+
+    constructor(props) {
+        super(props);
+        this.onItemRequestOpen = this.onItemRequestOpen.bind(this);
+    }
+
     render() {
-        const {category, items, order} = this.props;
+        const {category, items, order, openItem, requestClose} = this.props;
         const {name} = category;
 
         return (
@@ -27,19 +39,32 @@ export class RestaurantMenuCategoryComponent extends Component {
                 </div>
 
                 <div className="gb-restaurant-menu-items">
-                    {items.map(renderItem)}
+                    {items.map(item => {
+                        const idString = RestaurantMenuCategoryComponent.getIdString(
+                            category.id, item.id
+                        );
+
+                        return (
+                            <RestaurantMenuItemComponent
+                                key={item.id}
+                                item={item}
+                                order={order}
+                                isOpen={idString === openItem}
+                                requestOpen={this.onItemRequestOpen}
+                                requestClose={requestClose}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         );
+    }
 
-        function renderItem(item) {
-            return (
-                <RestaurantMenuItemComponent
-                    item={item}
-                    order={order}
-                    key={item.id}
-                />
-            );
-        }
+    onItemRequestOpen(itemId) {
+        const idString = RestaurantMenuCategoryComponent.getIdString(
+            this.props.category.id, itemId
+        );
+
+        this.props.requestOpen(idString);
     }
 }
