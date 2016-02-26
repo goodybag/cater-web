@@ -43,7 +43,7 @@ export class OrderStore extends Store {
             } = this.restaurantPayload;
 
             fulfillabilitySchema(params, {
-                timezone: this.user.timezone,
+                timezone: this.user.region.timezone,
                 restaurant: {
                     ...restaurant,
                     lead_times: restaurantDeliveryLeadTimes,
