@@ -11,15 +11,12 @@ import router from './router';
 
 Intl.NumberFormat = IntlPolyfill.NumberFormat;
 
+const staticDir = `${__dirname}/../build`;
+
 export function makeHandler(options) {
     const config = new Config(options);
 
-    const app = express();
-
-    // TODO: make this only happen in dev env
-    app.use('/assets', express.static(`${__dirname}/../build`));
-
-    app.use(function(req, res, next) {
+    return function(req, res, next) {
         const {components, params} = router.match(req.path, {
             method: req.method,
             query: req.query
@@ -53,7 +50,9 @@ export function makeHandler(options) {
                 next(err);
             });
         }
-    });
+    };
+}
 
-    return app;
+export function mountStatic(app) {
+    app.use('/assets', express.static(staticDir));
 }
