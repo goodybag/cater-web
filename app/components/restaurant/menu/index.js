@@ -27,7 +27,10 @@ import {RestaurantMenuSearchboxComponent} from './searchbox';
 })
 class RestaurantMenuCateringComponent extends Component {
     static propTypes = {
-        menu: PropTypes.array.isRequired
+        menu: PropTypes.array.isRequired,
+        openItem: PropTypes.string.isRequired,
+        requestOpen: PropTypes.func.isRequired,
+        requestClose: PropTypes.func.isRequired
     };
 
     render() {
@@ -70,7 +73,10 @@ class RestaurantMenuCateringComponent extends Component {
 })
 class RestaurantMenuIndividualComponent extends Component {
     static propTypes = {
-        menu: PropTypes.array.isRequired
+        menu: PropTypes.array.isRequired,
+        openItem: PropTypes.string.isRequired,
+        requestOpen: PropTypes.func.isRequired,
+        requestClose: PropTypes.func.isRequired
     };
 
     render() {
@@ -149,7 +155,7 @@ export class RestaurantMenuComponent extends Component {
 
     state = {
         searchTerm: new MenuSearchTerm(''),
-        openItem: null
+        openItem: ''
     };
 
     constructor(props) {
@@ -194,6 +200,6 @@ export class RestaurantMenuComponent extends Component {
     }
 
     onItemRequestClose() {
-        this.setState({ openItem: null });
+        this.setState({ openItem: '' });
     }
 }

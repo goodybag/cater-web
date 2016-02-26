@@ -20,7 +20,9 @@ export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired,
         order: PropTypes.instanceOf(Order).isRequired,
-        requestOpen: PropTypes.func.isRequired
+        requestOpen: PropTypes.func.isRequired,
+        requestClose: PropTypes.func.isRequired,
+        isOpen: PropTypes.bool.isRequired
     };
 
     handleOpen = () => {

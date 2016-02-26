@@ -11,7 +11,10 @@ export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired,
         order: PropTypes.instanceOf(Order).isRequired,
-        items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired
+        items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired,
+        openItem: PropTypes.string.isRequired,
+        requestOpen: PropTypes.func.isRequired,
+        requestClose: PropTypes.func.isRequired
     };
 
     static getIdString(categoryId, itemId) {
