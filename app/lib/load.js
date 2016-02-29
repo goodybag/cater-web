@@ -1,6 +1,5 @@
 import link from 'link-delegate';
 import Promise from 'bluebird';
-import 'babel-polyfill';
 
 import {handleError} from './error';
 import {getContextFromURL, renderPage, handleReroute} from './reroute';
