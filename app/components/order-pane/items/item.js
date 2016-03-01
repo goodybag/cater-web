@@ -87,14 +87,16 @@ export class OrderPaneItemComponent extends Component {
         function displayOptions() {
             const optionsSets = clone(options_sets, true);
 
-            return (optionsSets || [])
+            const itemOptionGroups = (optionsSets || [])
                 .filter(itemOption => {
                     itemOption.options = itemOption.options.filter(option => option.state);
                     return itemOption.options.length > 0;
-                })
+                });
+
+            return itemOptionGroups
                 .map((itemOption, i) => {
                     return (
-                        <div key={i}>&bull; {itemOption.name}: {displayOption(itemOption.options)}</div>
+                        <div key={i}>{ itemOptionGroups.length > 1 ? <span>&bull;</span> : null} {itemOption.name}: {displayOption(itemOption.options)}</div>
                     );
                 });
 
