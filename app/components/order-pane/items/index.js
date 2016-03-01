@@ -64,7 +64,7 @@ export class OrderPaneItemsComponent extends Component {
                 {
                     extras.length > 0 &&
                         <div className={cx('gb-order-pane-extra-items', {
-                                'gb-order-pane-extra-items-line' : recipients.length > 0
+                                'gb-order-pane-extra-items-line' : recipients.length !== 1
                             })}>
                             {extras.map(renderOrderItem)}
                         </div>
