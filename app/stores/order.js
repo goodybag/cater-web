@@ -2,25 +2,22 @@ import Promise from 'bluebird';
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
-import {RestaurantPayload} from '../payloads/restaurant';
 import {Order} from '../models/order';
 import {OrderService} from '../services/order';
-import {CurrentUser} from '../models/user';
-import {fulfillabilitySchema, geocodingSchema} from '../validators/order';
+import {OrderParamsValidator} from '../validators/order-params';
 import {
     SubmitOrderParamsAction,
     UpdateOrderParamsAction
 } from '../actions/order';
 
-@dependencies(Dispatcher, Order, OrderService, RestaurantPayload, CurrentUser)
+@dependencies(Dispatcher, Order, OrderService, OrderParamsValidator)
 export class OrderStore extends Store {
-    constructor(dispatcher, order, orderService, restaurantPayload, user) {
+    constructor(dispatcher, order, orderService, orderParamsValidator) {
         super(dispatcher);
 
         this.orderService = orderService;
         this.order = order;
-        this.restaurantPayload = restaurantPayload;
-        this.user = user;
+        this.orderParamsValidator = orderParamsValidator;
 
         this.bind(SubmitOrderParamsAction, this.submitOrderParams);
         this.bind(UpdateOrderParamsAction, this.updateOrderParams);
@@ -32,30 +29,11 @@ export class OrderStore extends Store {
 
     handleParamsValidation(params) {
         return Promise.try(() => {
-            const {
-                restaurant,
-                restaurantDeliveryLeadTimes,
-                restaurantPickupLeadTimes,
-                restaurantDeliveryHours,
-                restaurantPickupHours,
-                restaurantDeliveryZips
-            } = this.restaurantPayload;
-
-            fulfillabilitySchema(params, {
-                timezone: this.user.region.timezone,
-                restaurant: {
-                    ...restaurant,
-                    lead_times: restaurantDeliveryLeadTimes,
-                    pickup_lead_times: restaurantPickupLeadTimes,
-                    hours: restaurantPickupHours,
-                    delivery_hours: restaurantDeliveryHours,
-                    delivery_zips: restaurantDeliveryZips
-                }
-            }).validate();
+            this.orderParamsValidator.schema(params).validate();
 
             return this.orderService.geocodeAddress(params.address);
         }).then(body => {
-            geocodingSchema(body).validate();
+            this.orderParamsValidator.geocodingSchema(body).validate();
 
             return {
                 street: body.address.street,

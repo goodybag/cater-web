@@ -82,14 +82,18 @@ export class OrderPaneEditComponent extends Component {
             const errors = error.byColumn(columnName);
 
             if (errors.length > 0) {
-                return this.inputBoxClassNameByValidity('invalid',
-                                                        this.shouldShowColumn(columnName));
-            } else if (value != null) {
-                return this.inputBoxClassNameByValidity('valid');
+                return this.inputBoxClassNameByValidity(
+                    'invalid',
+                    this.shouldShowColumn(columnName)
+                );
             }
         }
 
-        return this.inputBoxClassNameByValidity();
+        if (value != null) {
+            return this.inputBoxClassNameByValidity('valid');
+        } else {
+            return this.inputBoxClassNameByValidity();
+        }
     }
 
     shouldShowColumn(columnName) {

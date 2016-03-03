@@ -2,8 +2,9 @@ import {assert, nullable} from 'nagoya';
 import fulfillability from '@goodybag/models-order/stamps/fulfillability';
 import moment from 'moment-timezone';
 
-export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
+export function fulfillabilitySchema(orderParams, context) {
     const {address, date, time, guests} = orderParams;
+    const {now, timezone, restaurant} = context;
 
     const datetime = `${date} ${time}`;
     const mDatetime = moment(datetime, 'YYYY-MM-DD HH:mm:ss');
@@ -40,7 +41,7 @@ export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
 
     const fModel = fulfillability({timezone, datetime, guests, restaurant});
 
-    const future = assert(() => mDatetime.isAfter(moment()),
+    const future = assert(() => mDatetime.isAfter(now),
                           'provided date & time must be in the future')
         .column('date', 'time');
 
@@ -96,4 +97,13 @@ export function fulfillabilitySchema(orderParams, {timezone, restaurant}) {
 export function geocodingSchema(address) {
     return assert(() => address.valid, 'failed to geocode address')
         .column('address');
+}
+
+export function deadlineSchema(order, now) {
+    return assert(() => +now < +new Date(order.deadline),
+                  [
+                      'Looks like time is up to place this order!',
+                      'Change the time if you still want to place it.'
+                  ].join(' '))
+        .column('date', 'time');
 }
