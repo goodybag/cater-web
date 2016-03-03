@@ -2,7 +2,12 @@ import link from 'link-delegate';
 import Promise from 'bluebird';
 
 import {handleError} from './error';
-import {getContextFromURL, renderPage, handleReroute} from './reroute';
+import {
+    getContextFromURL,
+    renderPage,
+    handleReroute,
+    startTimeKeeper
+} from './reroute';
 import {ModalState} from './modal';
 
 /**
@@ -41,6 +46,8 @@ export function load(element, currentContext = {}) {
                     load(element, context);
                 });
             }
+
+            startTimeKeeper();
         });
     }).catch(err => handleError(err, element));
 }

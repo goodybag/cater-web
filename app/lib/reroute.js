@@ -5,7 +5,9 @@ import {Injector, provide} from 'yokohama';
 import {Route} from 'hiroshima';
 import {render} from 'react-dom';
 import {isEqual} from 'lodash';
+import {Dispatcher} from 'tokyo';
 
+import {TickTimeAction} from '../actions/time-keeper';
 import {generateParsingMocks} from './parser';
 import {handleError} from './error';
 import router from '../router';
@@ -13,6 +15,7 @@ import {mocks} from '../cmocks';
 import {RouteParams} from './route';
 import {preventDefault, stopPropogation} from './dom';
 import {MainContainerComponent} from '../components/main';
+import {Config} from './config';
 
 export const sharedInjector = generateInitialInjector();
 
@@ -99,6 +102,22 @@ export function renderPage({route, components, dependencyCache}, element, cb) {
     );
 
     render(main, element, cb);
+}
+
+/**
+ * Starts a timeout loop that dispatches the TickTimeAction
+ * at the configured interval.
+ */
+export function startTimeKeeper() {
+    sharedInjector.get([Dispatcher, Config]).then(([dispatcher, config]) => {
+        function tick() {
+            dispatcher.dispatch(new TickTimeAction(new Date()));
+
+            setTimeout(tick, config.tickInterval);
+        }
+
+        tick();
+    });
 }
 
 /**
