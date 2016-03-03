@@ -14,14 +14,11 @@ export class Order {
             ? new User(attrs.user, {parse: true}) // TODO
             : new User({id: attrs.user_id});
 
-        const deadline = new Date(moment.tz(attrs.deadline, attrs.timezone));
-
         return new Order({
             ...attrs,
             created_at,
             restaurant,
-            user,
-            deadline
+            user
         });
     }
 
