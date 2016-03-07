@@ -200,24 +200,29 @@
 // Setup the "no order" message
 .gb-restaurant-menu-item-menu-wrapper {
     position: relative;
-}
 
-.gb-restaurant-menu-item-no-order-message {
-    position: absolute;
-    background: fade( @gb-shadow-athens-gray, 80% );
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: flex;
-    align-items: center;
+    &.show-no-order-message {
+        max-height: 410px;
+    }
 
-    .gb-restaurant-menu-item-no-order-message-wrapper {
-        flex: 1;
-        // For non-flexy browsers, at least add some padding
-        padding: 20px 0;
-        font-size: 1.1em;
-        text-align: center;
+    .gb-restaurant-menu-item-no-order-message {
+        box-sizing: border-box;
+        position: absolute;
+        background: fade( @gb-shadow-athens-gray, 80% );
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+
+        .gb-restaurant-menu-item-no-order-message-wrapper {
+            flex: 1;
+            // For non-flexy browsers, at least add some padding
+            padding: 20px 0;
+            font-size: 1.1em;
+            text-align: center;
+        }
     }
 }
