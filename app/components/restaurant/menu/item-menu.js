@@ -3,6 +3,7 @@ import {findDOMNode} from 'react-dom';
 import {find, cloneDeep} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
+import cx from 'classnames';
 
 import {MenuItem} from '../../../models/menu-item';
 import {AddOrderItemAction} from '../../../actions/order-item';
@@ -151,9 +152,13 @@ export class RestaurantMenuItemMenuWrapperComponent extends Component {
     }
 
     render() {
+        const {showNoOrderMessage} = this.props;
+
         return (
-            <div className="gb-restaurant-menu-item-menu-wrapper" ref="wrapper">
-                {this.props.showNoOrderMessage
+            <div className={cx({
+                    "gb-restaurant-menu-item-menu-wrapper": true,
+                    "show-no-order-message": showNoOrderMessage})} ref="wrapper">
+                {showNoOrderMessage
                     ? <RestaurantMenuItemMenuWrapperComponent.NoOrderMessage />
                     : null
                 }
