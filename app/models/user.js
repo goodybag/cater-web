@@ -41,3 +41,9 @@ export class User {
         return this.groups.some(group => group === 'admin');
     }
 }
+
+export class CurrentUser {
+    static parse(attrs) {
+        return User.parse(attrs);
+    }
+}

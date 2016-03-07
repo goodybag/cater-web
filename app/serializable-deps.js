@@ -1,18 +1,19 @@
 import {Config} from './lib/config';
-import {CurrentUserResolver} from './resolvers/user';
-import {OrderResolver} from './resolvers/order';
 import {RestaurantPayload} from './payloads/restaurant';
 import {MenuCategories} from './models/category';
+import {OrderItems} from './models/order-item';
 
-import {User} from './models/user';
-import {Order} from './models/order';
+import {CurrentUser} from './models/user';
+import {Order, PastOrders} from './models/order';
 
 export const serializableDependencies = [
     {name: 'config', token: Config},
-    {name: 'currentUser', token: CurrentUserResolver, parser: User.parse},
+    {name: 'currentUser', token: CurrentUser},
     {name: 'restaurantPayload', token: RestaurantPayload},
-    {name: 'order', token: OrderResolver, parser: Order.parse},
-    {name: 'menuCategories', token: MenuCategories}
+    {name: 'order', token: Order},
+    {name: 'orderItems', token: OrderItems},
+    {name: 'menuCategories', token: MenuCategories},
+    {name: 'pastOrders', token: PastOrders}
 ];
 
 export function getSerializableDependencies(config) {

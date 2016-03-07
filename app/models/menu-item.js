@@ -87,3 +87,9 @@ export class MenuItem {
         }
     }
 }
+
+export class MenuItems {
+    static parse(items) {
+        return items.map(MenuItem.parse);
+    }
+}

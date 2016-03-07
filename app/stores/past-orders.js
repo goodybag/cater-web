@@ -1,7 +1,7 @@
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
-import {PastOrdersResolver} from '../resolvers/past-orders';
+import {PastOrders} from '../models/order';
 import {OrderItemService} from '../services/order-item';
 import {PastOrdersService} from '../services/past-orders';
 import {DisplayOrderAction,
@@ -10,7 +10,7 @@ import {DisplayOrderAction,
     CancelOrderAction,
     UncancelOrderAction} from '../actions/past-orders';
 
-@dependencies(Dispatcher, PastOrdersResolver, OrderItemService, PastOrdersService)
+@dependencies(Dispatcher, PastOrders, OrderItemService, PastOrdersService)
 export class PastOrdersStore extends Store {
     constructor(dispatcher, pastOrders, orderItemService, pastOrdersService) {
         super(dispatcher);

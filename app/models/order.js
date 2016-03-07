@@ -101,3 +101,9 @@ export class Order {
         this.status = status;
     }
 }
+
+export class PastOrders {
+    static parse(orders) {
+        return orders.map(Order.parse);
+    }
+}
