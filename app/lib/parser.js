@@ -25,6 +25,6 @@ export function generateParsingMocks(config) {
             }
         }
 
-        return DependencyParser;
-    });
+        return __GBDATA__.hasOwnProperty(name) && DependencyParser;
+    }).filter(x => x);
 }
