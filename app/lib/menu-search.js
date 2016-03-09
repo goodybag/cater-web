@@ -42,4 +42,19 @@ export class MenuSearchTerm {
             }
         }
     }
+
+    match(item) {
+        return item.matchSearchTerm(this.searchTermText);
+    }
+
+    getPopularItems(categories, items, categoryMenu) {
+        return chain(items)
+            .filter(i => this.match(i) && i.is_popular)
+            .filter(i => {
+                const category = find(categories, {id: +i.category.id});
+
+                return category.hasMenu(categoryMenu);
+            })
+            .value();
+    }
 }

@@ -22,22 +22,38 @@ import {RestaurantMenuSearchboxComponent} from './searchbox';
 
     return {
         menu: searchTerm.groupMenu(categories, items, 'group'),
+        popularItems: searchTerm.getPopularItems(categories, items, 'group'),
         order: orderStore.getOrder()
     };
 })
 class RestaurantMenuCateringComponent extends Component {
     static propTypes = {
         menu: PropTypes.array.isRequired,
+        popularItems: PropTypes.array.isRequired,
         openItem: PropTypes.string.isRequired,
         requestOpen: PropTypes.func.isRequired,
         requestClose: PropTypes.func.isRequired
     };
 
     render() {
-        const {menu, order, openItem, requestOpen, requestClose} = this.props;
+        const {
+            menu, popularItems, order, openItem, requestOpen, requestClose
+        } = this.props;
+
+        const popularSection = popularItems.length > 0 && (
+            <RestaurantMenuCategoryComponent
+                category={new Category({name: 'Popular Items'})}
+                items={popularItems}
+                requestOpen={requestOpen}
+                requestClose={requestClose}
+                openItem={openItem}
+                key="popular"
+            />
+        );
 
         return (
             <div className="gb-restaurant-menu-catering">
+                {popularSection}
                 {menu.map(renderSection)}
             </div>
         );

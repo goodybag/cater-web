@@ -35,6 +35,7 @@ export class MenuItem {
             min_qty = null,
             hide_pricing = null,
             photo_url = null,
+            is_popular = null,
             tags = []
         } = attrs;
 
@@ -53,6 +54,7 @@ export class MenuItem {
         this.min_qty = min_qty;
         this.hide_pricing = hide_pricing;
         this.photo_url = photo_url;
+        this.is_popular = is_popular;
         this.tags = tags;
     }
 

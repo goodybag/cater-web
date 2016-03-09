@@ -72,6 +72,7 @@ export class RestaurantMenuItemComponent extends Component {
                             {name}
                         </div>
                         <div className="gb-restaurant-menu-item-tags">
+                            {item.is_popular && <div className="gb-restaurant-menu-item-popular">Popular!</div>}
                             {tags.map(renderTag)}
                         </div>
                     </div>
