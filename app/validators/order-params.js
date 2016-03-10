@@ -1,6 +1,6 @@
 import {dependencies} from 'yokohama';
 
-import {CurrentUserResolver} from '../resolvers/user';
+import {CurrentUser} from '../models/user';
 import {RestaurantPayload} from '../payloads/restaurant';
 import {
     fulfillabilitySchema,
@@ -8,7 +8,7 @@ import {
     geocodingSchema
 } from '../schemas/order-params';
 
-@dependencies(CurrentUserResolver, RestaurantPayload)
+@dependencies(CurrentUser, RestaurantPayload)
 export class OrderParamsValidator {
     constructor(user, restaurantPayload) {
         this.user = user;
