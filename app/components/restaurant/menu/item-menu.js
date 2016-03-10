@@ -6,6 +6,7 @@ import {Dispatcher, listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {MenuItem} from '../../../models/menu-item';
+import {OrderItem} from '../../../models/order-item';
 import {AddOrderItemAction} from '../../../actions/order-item';
 import {OrderStore} from '../../../stores/order';
 import {OrderItemFormComponent} from '../../order-pane/items/item-form';
@@ -43,9 +44,7 @@ export class RestaurantMenuItemMenuComponent extends Component {
     onSubmit = () => {
         const {dispatcher, item, order, onClose} = this.props;
 
-        const orderItemData = {
-            item_id: item.id,
-            order_id: order.id,
+        const orderItem = new OrderItem({
             name: item.name,
             description: item.description,
             price: item.price,
@@ -55,9 +54,9 @@ export class RestaurantMenuItemMenuComponent extends Component {
             recipient: this.state.recipient,
             quantity: this.state.quantity,
             notes: this.state.notes
-        };
+        });
 
-        const action = new AddOrderItemAction({orderId: order.id, orderItemData});
+        const action = new AddOrderItemAction({order, menuItem: item, orderItem});
         dispatcher.dispatch(action);
         onClose();
     };
