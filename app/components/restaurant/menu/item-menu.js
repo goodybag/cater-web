@@ -139,24 +139,46 @@ export class RestaurantMenuItemMenuWrapperComponent extends Component {
         const {wrapper, child} = this.refs;
         const node = findDOMNode(child);
 
-        wrapper.style.height = `${node.clientHeight}px`;
-        setTimeout(done, 200);
+        this.setState({height: node.clientHeight}, () => {
+            setTimeout(() => {
+                this.setState({height: 'auto'}, done);
+            }, 400);
+        });
     }
 
     componentWillLeave(done) {
-        const {wrapper} = this.refs;
+        const {wrapper, child} = this.refs;
+        const node = findDOMNode(child);
 
-        wrapper.style.height = 0;
-        setTimeout(done, 200);
+        this.setState({height: node.clientHeight}, () => {
+            requestAnimationFrame(() => {
+                this.setState({height: 0}, () => {
+                    setTimeout(done, 400);
+                });
+            });
+        });
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            height: 0
+        };
     }
 
     render() {
         const {showNoOrderMessage} = this.props;
+        const {height} = this.state;
 
         return (
-            <div className={cx({
+            <div
+                className={cx({
                     "gb-restaurant-menu-item-menu-wrapper": true,
-                    "show-no-order-message": showNoOrderMessage})} ref="wrapper">
+                    "show-no-order-message": showNoOrderMessage
+                })}
+                ref="wrapper"
+                style={{height}}>
                 {showNoOrderMessage
                     ? <RestaurantMenuItemMenuWrapperComponent.NoOrderMessage />
                     : null
