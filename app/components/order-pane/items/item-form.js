@@ -1,5 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
+import {ValidationResultError} from 'nagoya';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
+import cx from 'classnames';
 
 import {OrderItem} from '../../../models/order-item';
 import {MenuItem} from '../../../models/menu-item';
@@ -13,14 +16,58 @@ export class OrderItemFormComponent extends Component {
         itemState: PropTypes.object.isRequired,
         onChange: PropTypes.func.isRequired,
         onCancel: PropTypes.func.isRequired,
-        saveButton: PropTypes.element.isRequired
+        saveButton: PropTypes.element.isRequired,
+        saving: PropTypes.bool.isRequired,
+        error: PropTypes.instanceOf(Error)
     };
 
+    static defaultProps = {
+        saving: false,
+        error: null
+    };
+
+    renderUnkownError() {
+        const {error} = this.props;
+
+        if (error && !ValidationResultError.test(error)) {
+            return (
+                <div className="gb-order-item-error">
+                    An Unkown Error Occured
+                </div>
+            );
+        }
+    }
+
+    renderQuantityErrors() {
+        const {error} = this.props;
+
+        if (error && ValidationResultError.test(error)) {
+            const errs = error.byColumn('quantity');
+
+            return errs.map((err, idx) => {
+                return (
+                    <div className="gb-order-item-error" key={idx}>
+                        {err.message}
+                    </div>
+                );
+            });
+        } else {
+            return [];
+        }
+    }
+
     render() {
-        const {item, itemState, onChange, onCancel, saveButton} = this.props;
+        const {item, itemState, onChange, onCancel, saveButton, saving, error} = this.props;
+
+        const set = cx('gb-order-item', {
+            'gb-order-item-saving': saving
+        });
+
+        const unknownErrorEl = this.renderUnkownError();
+        const quantityErrorEls = this.renderQuantityErrors();
 
         return (
-            <div className="gb-order-item">
+            <div className={set}>
                 <div className="gb-order-item-header">
                     {item.name}
                     <span className="icon-x" onClick={onCancel} />
@@ -58,6 +105,14 @@ export class OrderItemFormComponent extends Component {
                     <div className="gb-order-item-contents-description">
                         {item.description}
                     </div>
+
+                    <CSSTransitionGroup
+                        transitionName="gb-order-item-error"
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                        children={unknownErrorEl}
+                    />
+
                     {
                         item.options_sets ?
                             itemState.options_sets.map(this.renderItemOptionGroup) : null
@@ -70,8 +125,17 @@ export class OrderItemFormComponent extends Component {
                             className="item-notes-field"
                             defaultValue={itemState.notes}
                             onChange={onChange}
+                            disabled={saving}
                         />
                     </div>
+
+                    <CSSTransitionGroup
+                        transitionName="gb-order-item-error"
+                        transitionEnterTimeout={200}
+                        transitionLeaveTimeout={200}
+                        children={quantityErrorEls}
+                    />
+
                     <div className="gb-order-item-fields">
                         <div className="item-field-group">
                             <div className="item-field-title">Who is this item for?</div>
@@ -81,6 +145,7 @@ export class OrderItemFormComponent extends Component {
                                 type="text"
                                 defaultValue={itemState.recipient}
                                 onChange={onChange}
+                                disabled={saving}
                             />
                         </div>
                         <div className="item-field-group">
@@ -95,6 +160,7 @@ export class OrderItemFormComponent extends Component {
                                 defaultValue={itemState.quantity}
                                 min={item.min_qty}
                                 onChange={onChange}
+                                disabled={saving}
                             />
                         </div>
                     </div>
@@ -113,9 +179,11 @@ export class OrderItemFormComponent extends Component {
                 optionGroup={optionGroup}
                 optionGroupI={i}
                 onChange={this.props.onChange}
+                saving={this.props.saving}
+                error={this.props.error}
                 key={i}
             />
-        )
+        );
     };
 };
 
@@ -123,6 +191,8 @@ export class OrderItemOptionGroupComponent extends Component {
     static propTypes = {
         optionGroup: PropTypes.object.isRequired,
         optionGroupI: PropTypes.number.isRequired,
+        saving: PropTypes.bool.isRequired,
+        error: PropTypes.instanceOf(Error),
         onChange: PropTypes.func.isRequired
     };
 
@@ -131,8 +201,28 @@ export class OrderItemOptionGroupComponent extends Component {
         return optionGroup.options.filter(option => option.state).length >= optionGroup.selected_max;
     };
 
+    renderErrors() {
+        const {optionGroup, error} = this.props;
+
+        if (error && ValidationResultError.test(error)) {
+            const errs = error.byColumn(`option_set:${optionGroup.id}`);
+
+            return errs.map((err, idx) => {
+                return (
+                    <div className="gb-order-item-error" key={idx}>
+                        {err.message}
+                    </div>
+                );
+            });
+        } else {
+            return [];
+        }
+    }
+
     render() {
         const {optionGroup} = this.props;
+
+        const errorEls = this.renderErrors();
 
         return (
             <div className="gb-order-pane-item-edit-item-option-set">
@@ -147,6 +237,14 @@ export class OrderItemOptionGroupComponent extends Component {
                             <span>Maximum: {optionGroup.selected_max}</span> : null
                     }
                 </div>
+
+                <CSSTransitionGroup
+                    transitionName="gb-order-item-error"
+                    transitionEnterTimeout={200}
+                    transitionLeaveTimeout={200}
+                    children={errorEls}
+                />
+
                 {
                     optionGroup.options ?
                         optionGroup.options.map(this.renderItemOption) : null
@@ -164,6 +262,7 @@ export class OrderItemOptionGroupComponent extends Component {
                 optionGroupI={this.props.optionGroupI}
                 onChange={this.props.onChange}
                 maxReached={this.maxReached()}
+                saving={this.props.saving}
                 key={i}
             />
         )
@@ -177,11 +276,12 @@ export class OrderItemOptionComponent extends Component {
         optionI: PropTypes.number.isRequired,
         optionGroupI: PropTypes.number.isRequired,
         onChange: PropTypes.func.isRequired,
-        maxReached: PropTypes.bool.isRequired
+        maxReached: PropTypes.bool.isRequired,
+        saving: PropTypes.bool.isRequired
     };
 
     render() {
-        const {option, optionGroupType, optionI, optionGroupI, onChange, maxReached} = this.props;
+        const {option, optionGroupType, optionI, optionGroupI, onChange, maxReached, saving} = this.props;
         const data = { optionI, optionGroupI }
 
         return (
@@ -192,7 +292,7 @@ export class OrderItemOptionComponent extends Component {
                         onChange={onChange.bind(null, data)}
                         value={option.id}
                         checked={option.state}
-                        disabled={!option.state && maxReached}
+                        disabled={saving || (!option.state && maxReached)}
                     />
                     <div className="item-option-details">
                         <div className="item-option-name">{option.name}</div>

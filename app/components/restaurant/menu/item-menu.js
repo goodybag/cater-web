@@ -1,11 +1,13 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
+import Promise from 'bluebird';
 import {find, cloneDeep} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
 import cx from 'classnames';
 
 import {MenuItem} from '../../../models/menu-item';
+import {OrderItem} from '../../../models/order-item';
 import {AddOrderItemAction} from '../../../actions/order-item';
 import {OrderStore} from '../../../stores/order';
 import {OrderItemFormComponent} from '../../order-pane/items/item-form';
@@ -30,7 +32,9 @@ export class RestaurantMenuItemMenuComponent extends Component {
             options_sets: initOptionsSets,
             notes: "",
             recipient: "",
-            quantity: clonedMenuItem.min_qty || 1
+            quantity: clonedMenuItem.min_qty || 1,
+            savingError: null,
+            saving: false
         };
     };
 
@@ -40,12 +44,20 @@ export class RestaurantMenuItemMenuComponent extends Component {
         onClose: PropTypes.func.isRequired
     };
 
-    onSubmit = () => {
-        const {dispatcher, item, order, onClose} = this.props;
+    whileSaving(block) {
+        return new Promise(resolve => {
+            this.setState({saving: true}, resolve);
+        }).then(() => {
+            return block();
+        }).finally(() => {
+            this.setState({saving: false});
+        });
+    }
 
-        const orderItemData = {
-            item_id: item.id,
-            order_id: order.id,
+    onSubmit = () => {
+        const {dispatcher, item, order} = this.props;
+
+        const orderItem = new OrderItem({
             name: item.name,
             description: item.description,
             price: item.price,
@@ -55,11 +67,17 @@ export class RestaurantMenuItemMenuComponent extends Component {
             recipient: this.state.recipient,
             quantity: this.state.quantity,
             notes: this.state.notes
-        };
+        });
 
-        const action = new AddOrderItemAction({orderId: order.id, orderItemData});
-        dispatcher.dispatch(action);
-        onClose();
+        const action = new AddOrderItemAction({order, menuItem: item, orderItem});
+
+        this.whileSaving(() => {
+            return dispatcher.dispatch(action);
+        }).then(() => {
+            this.props.onClose();
+        }, err => {
+            this.setState({savingError: err});
+        });
     };
 
     onChange = (data, e) => {
@@ -84,6 +102,8 @@ export class RestaurantMenuItemMenuComponent extends Component {
             default:
                 return;
         }
+
+        this.setState({savingError: null});
     };
 
     updateOptionState = (data, type) => {
@@ -127,8 +147,16 @@ export class RestaurantMenuItemMenuComponent extends Component {
                 itemState={this.state}
                 onChange={this.onChange}
                 onCancel={this.props.onClose}
+                saving={this.state.saving}
+                error={this.state.savingError}
                 saveButton={
-                    <div className="item-add-btn" onClick={this.onSubmit}>Add to order</div>
+                    <div className="gb-order-item-add" onClick={this.onSubmit}>
+                        <div className="gb-order-item-add-spinner"/>
+
+                        <div className="gb-order-item-add-text">
+                            Add to order
+                        </div>
+                    </div>
                 }
             />
         );
@@ -140,24 +168,46 @@ export class RestaurantMenuItemMenuWrapperComponent extends Component {
         const {wrapper, child} = this.refs;
         const node = findDOMNode(child);
 
-        wrapper.style.height = `${node.clientHeight}px`;
-        setTimeout(done, 200);
+        this.setState({height: node.clientHeight}, () => {
+            setTimeout(() => {
+                this.setState({height: 'auto'}, done);
+            }, 400);
+        });
     }
 
     componentWillLeave(done) {
-        const {wrapper} = this.refs;
+        const {wrapper, child} = this.refs;
+        const node = findDOMNode(child);
 
-        wrapper.style.height = 0;
-        setTimeout(done, 200);
+        this.setState({height: node.clientHeight}, () => {
+            requestAnimationFrame(() => {
+                this.setState({height: 0}, () => {
+                    setTimeout(done, 400);
+                });
+            });
+        });
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            height: 0
+        };
     }
 
     render() {
         const {showNoOrderMessage} = this.props;
+        const {height} = this.state;
 
         return (
-            <div className={cx({
+            <div
+                className={cx({
                     "gb-restaurant-menu-item-menu-wrapper": true,
-                    "show-no-order-message": showNoOrderMessage})} ref="wrapper">
+                    "show-no-order-message": showNoOrderMessage
+                })}
+                ref="wrapper"
+                style={{height}}>
                 {showNoOrderMessage
                     ? <RestaurantMenuItemMenuWrapperComponent.NoOrderMessage />
                     : null

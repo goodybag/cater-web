@@ -1,17 +1,20 @@
 import {Dispatcher, Store} from 'tokyo';
+import Promise from 'bluebird';
 import {dependencies} from 'yokohama';
 
 import {OrderItems} from '../models/order-item';
 import {EditOrderItemAction, RemoveOrderItemAction, AddOrderItemAction} from '../actions/order-item';
 import {OrderItemService} from '../services/order-item';
+import {OrderItemValidator} from '../validators/order-item';
 
-@dependencies(Dispatcher, OrderItems, OrderItemService)
+@dependencies(Dispatcher, OrderItems, OrderItemService, OrderItemValidator)
 export class OrderItemStore extends Store {
-    constructor(dispatcher, orderItems, orderItemService) {
+    constructor(dispatcher, orderItems, orderItemService, orderItemValidator) {
         super(dispatcher);
 
         this.orderItems = orderItems;
         this.orderItemService = orderItemService;
+        this.orderItemValidator = orderItemValidator;
 
         this.bind(AddOrderItemAction, this.onAddItem);
         this.bind(EditOrderItemAction, this.onEditOrderItem);
@@ -22,12 +25,21 @@ export class OrderItemStore extends Store {
         return this.orderItems;
     }
 
-    onAddItem({orderId, orderItemData}) {
-        this.orderItemService.createOrderItem(orderId, orderItemData)
-            .then(item => {
-                this.orderItems.push(item);
-                this.emit('change');
-            });
+    onAddItem({order, menuItem, orderItem}) {
+        const data = {
+            order_id: order.id,
+            item_id: menuItem.id,
+            ...orderItem
+        };
+
+        return Promise.try(() => {
+            this.orderItemValidator.schema(orderItem, menuItem).validate();
+
+            return this.orderItemService.createOrderItem(order.id, data)
+        }).then(item => {
+            this.orderItems.push(item);
+            this.emit('change');
+        });
     }
 
     onEditOrderItem({orderItem}) {
