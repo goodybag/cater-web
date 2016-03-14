@@ -41,8 +41,7 @@ export class OrderPaneItemsComponent extends Component {
 
     render() {
         const {order, orderItems, editOrderItem} = this.props;
-        const {sub_total} = order;
-
+        const subtotal = order.getSubtotal(orderItems);
         const recipients = this.getRecipients();
         var extras = find(recipients, {recipient: ''});
 
@@ -70,7 +69,7 @@ export class OrderPaneItemsComponent extends Component {
                         </div>
                 }
 
-                <OrderPaneCheckoutComponent subtotal={sub_total}/>
+                <OrderPaneCheckoutComponent subtotal={subtotal}/>
             </div>
         );
 
