@@ -8,15 +8,15 @@ import {Order} from '../../models/order';
 
 export class OrderPaneTimeLeftComponent extends Component {
     static propTypes = {
-        order: PropTypes.instanceOf(Order).isRequired
+        order: PropTypes.instanceOf(Order).isRequired,
+        now: PropTypes.instanceOf(Date).isRequired
     };
 
     render() {
-        const {order} = this.props;
-        const {timezone, datetime} = order;
-        const now = moment().tz(timezone);
-        const then = moment(datetime).tz(timezone);
-        const time = moment.duration(now - then);
+        const {order, now} = this.props;
+        const {deadline} = order;
+        const then = moment(deadline);
+        const time = moment.duration(Math.max(then.diff(moment(now)), 0));
 
         const set = cx('gb-order-pane-timeleft', {
             'gb-order-pane-timeleft-urgent': time.asHours() < 3
@@ -46,7 +46,7 @@ export class OrderPaneTimeLeftMetricComponent extends Component {
 
         return (
             <div className="gb-order-pane-timeleft-metric">
-                {time.humanize()}
+                {+time !== 0 ? time.humanize() : '0 min'}
             </div>
         );
     }

@@ -16,6 +16,7 @@ import moment from 'moment-timezone';
 export class RestaurantOrdersRowComponent extends Component {
     static propTypes = {
         order: React.PropTypes.object.isRequired,
+        now: React.PropTypes.instanceOf(Date).isRequired,
         dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
 
@@ -54,7 +55,7 @@ export class RestaurantOrdersRowComponent extends Component {
     };
 
     render() {
-        const {order} = this.props;
+        const {order, now} = this.props;
 
         return (
             <div className="gb-restaurant-orders-row">
@@ -80,7 +81,7 @@ export class RestaurantOrdersRowComponent extends Component {
                 </div>
                 <div className="gb-restaurant-orders-row-group-second">
                     <div className="gb-restaurant-orders-col-expired">
-                        { order.deadline < Date.now() ? "Expired" : ""}
+                        {order.deadline < now && 'Expired'}
                     </div>
 
                     <div className="gb-restaurant-orders-col-resume">

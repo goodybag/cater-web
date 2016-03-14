@@ -5,6 +5,7 @@ import {Dispatcher, listeningTo} from 'tokyo';
 import {RestaurantStore} from '../../../stores/restaurant';
 import {Restaurant} from '../../../models/restaurant';
 import {PastOrdersStore} from '../../../stores/past-orders';
+import {TimeKeeperStore} from '../../../stores/time-keeper';
 import {Order} from '../../../models/order';
 import {RestaurantOrdersRowComponent} from './row';
 import {RestaurantPastOrdersModalComponent} from './modal';
@@ -12,25 +13,28 @@ import {RestaurantPastOrdersModalComponent} from './modal';
 @inject({
     restaurantStore: RestaurantStore,
     pastOrdersStore: PastOrdersStore,
+    timeKeeperStore: TimeKeeperStore,
     dispatcher: Dispatcher
 }, [RestaurantPastOrdersModalComponent, RestaurantOrdersRowComponent])
 @listeningTo(['restaurantStore', 'pastOrdersStore'], props => {
-    const {pastOrdersStore, restaurantStore} = props;
+    const {pastOrdersStore, restaurantStore, timeKeeperStore} = props;
 
     return {
         restaurant: restaurantStore.getRestaurant(),
-        orders: pastOrdersStore.getPastOrders()
+        orders: pastOrdersStore.getPastOrders(),
+        now: timeKeeperStore.getCurrentTime()
     };
 })
 export class RestaurantOrdersComponent extends Component {
     static propTypes = {
         dispatcher: PropTypes.instanceOf(Dispatcher),
         restaurant: PropTypes.instanceOf(Restaurant),
+        now: PropTypes.instanceOf(Date).isRequired,
         orders: PropTypes.arrayOf(PropTypes.instanceOf(Order))
     };
 
     render() {
-        const {restaurant, orders, dispatcher} = this.props;
+        const {restaurant, orders, dispatcher, now} = this.props;
 
         return (
             <div className="gb-restaurant-orders">
@@ -61,6 +65,7 @@ export class RestaurantOrdersComponent extends Component {
                     key={order.id}
                     order={order}
                     dispatcher={dispatcher}
+                    now={now}
                 />
             );
         }

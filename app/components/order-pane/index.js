@@ -1,10 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
+import {ValidationResultError} from 'nagoya';
 
 import {OrderStore} from '../../stores/order';
 import {OrderItemStore} from '../../stores/order-item';
 import {RestaurantStore} from '../../stores/restaurant';
+import {TimeKeeperStore} from '../../stores/time-keeper';
 import {Order} from '../../models/order';
 import {OrderItem} from '../../models/order-item';
 import {RestaurantHour} from '../../models/restaurant-hour';
@@ -14,6 +16,7 @@ import {OrderPaneShareComponent} from './share';
 import {OrderPaneItemsComponent} from './items';
 import {OrderPaneTimeLeftComponent} from './timeleft';
 import {OrderPaneHeaderComponent} from './header';
+import {OrderParamsValidator} from '../../validators/order-params';
 
 import {
     OrderPaneEditComponent,
@@ -30,23 +33,32 @@ import {
     orderStore: OrderStore,
     orderItemStore: OrderItemStore,
     restaurantStore: RestaurantStore,
+    timeKeeperStore: TimeKeeperStore,
+    orderParamsValidator: OrderParamsValidator,
     dispatcher: Dispatcher
 }, [OrderPaneInfoComponent, OrderPaneItemsComponent, OrderPaneShareComponent])
 @listeningTo(['orderStore', 'orderItemStore', 'restaurantStore'], props => {
-    const {orderStore, orderItemStore, restaurantStore} = props;
+    const {
+        orderStore,
+        orderItemStore,
+        restaurantStore,
+        timeKeeperStore
+    } = props;
 
     return {
         order: orderStore.getOrder(),
         orderItems: orderItemStore.getOrderItems(),
-        restaurantHours: restaurantStore.getRestaurantHours()
+        restaurantHours: restaurantStore.getRestaurantHours(),
+        now: timeKeeperStore.getCurrentTime()
     };
 })
 export class OrderPaneComponent extends Component {
     static propTypes = {
         order: PropTypes.instanceOf(Order),
-        orderStore: PropTypes.instanceOf(OrderStore).isRequired,
         orderItems: PropTypes.arrayOf(PropTypes.instanceOf(OrderItem)),
         restaurantHours: PropTypes.arrayOf(PropTypes.instanceOf(RestaurantHour)).isRequired,
+        now: PropTypes.instanceOf(Date).isRequired,
+        orderParamsValidator: PropTypes.instanceOf(OrderParamsValidator).isRequired,
         dispatcher: PropTypes.instanceOf(Dispatcher).isRequired,
     };
 
@@ -57,7 +69,8 @@ export class OrderPaneComponent extends Component {
 
         this.state = {
             saving: false,
-            editorError: null,
+            editing: false,
+            savingError: null,
             editorOrderParams: order ? null : new OrderParams()
         };
 
@@ -72,24 +85,28 @@ export class OrderPaneComponent extends Component {
         const {order} = this.props;
 
         this.setState({
-            editorOrderParams: OrderParams.fromOrder(order)
+            editing: true
         });
     }
 
     stopEditing() {
         this.setState({
-            editorError: null,
+            editing: false,
             editorOrderParams: null
         });
     }
 
     handleOrderParamsChange(editorOrderParams) {
-        this.setState({editorOrderParams, editorError: null});
+        this.setState({
+            editorOrderParams,
+            savingError: null,
+            editing: true
+        });
     }
 
     handleSaveOrderParams() {
         const {dispatcher, order} = this.props;
-        const {editorOrderParams} = this.state;
+        const editorOrderParams = this.getEditorOrderParams();
 
         const action = new UpdateOrderParamsAction({
             orderId: order.id,
@@ -98,16 +115,17 @@ export class OrderPaneComponent extends Component {
 
         this.whileSaving(() => {
             return dispatcher.dispatch(action).then(() => {
-                this.setState({editorOrderParams: null});
-            }, editorError => {
-                this.setState({editorError});
+                this.setState({
+                    editing: false,
+                    editorOrderParams: null
+                });
             });
         });
     }
 
     handleOrderSubmission(info) {
         const {dispatcher} = this.props;
-        const {editorOrderParams} = this.state;
+        const editorOrderParams = this.getEditorOrderParams();
 
         const action = new SubmitOrderParamsAction({
             params: editorOrderParams
@@ -116,21 +134,42 @@ export class OrderPaneComponent extends Component {
         this.whileSaving(() => {
             return dispatcher.dispatch(action).then(() => {
                 this.setState({
-                    editorOrderParams: null,
-                    editorError: null
+                    editorOrderParams: null
                 });
-            }, editorError => {
-                this.setState({editorError});
             });
         });
     }
 
     whileSaving(block) {
         this.setState({saving: true}, () => {
-            block().finally(() => {
+            block().catch(err => {
+                this.setState({savingError: err});
+            }).finally(() => {
                 this.setState({saving: false});
             });
         });
+    }
+
+    getParamsValidationError() {
+        const {orderParamsValidator, order, now} = this.props;
+
+        const {editorOrderParams} = this.state;
+
+        return editorOrderParams ? (
+            orderParamsValidator.schema(editorOrderParams).error()
+        ) : (
+            order && orderParamsValidator.deadlineSchema(order, now).error()
+        );
+    }
+
+    getEditorOrderParams() {
+        const {order} = this.props;
+
+        const {editorOrderParams} = this.state;
+
+        return editorOrderParams || (
+            order && OrderParams.fromOrder(order)
+        );
     }
 
     render() {
@@ -139,16 +178,22 @@ export class OrderPaneComponent extends Component {
             orderItems,
             dispatcher,
             restaurantHours,
-            orderStore
+            now
         } = this.props;
 
         const {
             saving,
-            editorOrderParams,
-            editorError
+            editing,
+            savingError
         } = this.state;
 
-        const orderCreatorDisplay = editorOrderParams && (
+        const editorOrderParams = this.getEditorOrderParams();
+
+        const paramsValidationError = this.getParamsValidationError();
+
+        const editorError = savingError || paramsValidationError;
+
+        const orderCreatorDisplay = (
             <OrderPaneEditComponent
                 saving={saving}
                 orderParams={editorOrderParams}
@@ -164,7 +209,7 @@ export class OrderPaneComponent extends Component {
             />
         );
 
-        const orderEditorDisplay = order && editorOrderParams && (
+        const orderEditorDisplay = order && (editing || editorError) && (
             <OrderPaneEditComponent
                 saving={saving}
                 orderParams={editorOrderParams}
@@ -179,7 +224,7 @@ export class OrderPaneComponent extends Component {
                 }
 
                 cancelButton={
-                    <OrderPaneEditCancelComponent
+                    !editorError && <OrderPaneEditCancelComponent
                         onClick={this.stopEditing}
                     />
                 }
@@ -211,6 +256,7 @@ export class OrderPaneComponent extends Component {
 
         const orderTimeLeftSection = order && (
             <OrderPaneTimeLeftComponent
+                now={now}
                 order={order}
             />
         );

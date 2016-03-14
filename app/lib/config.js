@@ -18,7 +18,8 @@ export class Config {
             apiPrefix = '/api/',
             serverRendering = true,
             gmapsKey = 'AIzaSyBbsgtm6Tqdh3ZyWfRj2Mg_eSZDW8ajLss',
-            baseUrl
+            baseUrl,
+            tickInterval = 30 * 1000
         } = options;
 
         this.env = env;
@@ -28,6 +29,7 @@ export class Config {
         this.serverRendering = serverRendering;
         this.gmapsKey = gmapsKey;
         this.baseUrl = baseUrl;
+        this.tickInterval = tickInterval;
     }
 
     resolveAssetURL(assetName) {
