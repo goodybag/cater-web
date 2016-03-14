@@ -1,10 +1,9 @@
 import {IncomingMessage} from 'http';
 import {dependencies, provide} from 'yokohama';
 
-import {CurrentUserResolver} from '../user';
-import {User} from '../../models/user';
+import {CurrentUser, User} from '../../models/user';
 
-@provide(CurrentUserResolver)
+@provide(CurrentUser)
 @dependencies(IncomingMessage)
 export class ServerUserResolver {
     constructor(req) {

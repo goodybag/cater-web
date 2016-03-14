@@ -3,17 +3,16 @@ import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
 import {RestaurantPayload} from '../payloads/restaurant';
-import {OrderResolver} from '../resolvers/order';
 import {Order} from '../models/order';
 import {OrderService} from '../services/order';
-import {CurrentUserResolver} from '../resolvers/user';
+import {CurrentUser} from '../models/user';
 import {fulfillabilitySchema, geocodingSchema} from '../validators/order';
 import {
     SubmitOrderParamsAction,
     UpdateOrderParamsAction
 } from '../actions/order';
 
-@dependencies(Dispatcher, OrderResolver, OrderService, RestaurantPayload, CurrentUserResolver)
+@dependencies(Dispatcher, Order, OrderService, RestaurantPayload, CurrentUser)
 export class OrderStore extends Store {
     constructor(dispatcher, order, orderService, restaurantPayload, user) {
         super(dispatcher);

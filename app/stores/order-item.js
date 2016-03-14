@@ -1,11 +1,11 @@
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
-import {OrderItemsResolver} from '../resolvers/order-item';
+import {OrderItems} from '../models/order-item';
 import {EditOrderItemAction, RemoveOrderItemAction, AddOrderItemAction} from '../actions/order-item';
 import {OrderItemService} from '../services/order-item';
 
-@dependencies(Dispatcher, OrderItemsResolver, OrderItemService)
+@dependencies(Dispatcher, OrderItems, OrderItemService)
 export class OrderItemStore extends Store {
     constructor(dispatcher, orderItems, orderItemService) {
         super(dispatcher);

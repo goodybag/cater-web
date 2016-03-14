@@ -61,3 +61,13 @@ export class OrderItem {
         this.min_qty = min_qty;
     }
 }
+
+export class OrderItems {
+    static parse(items) {
+        return items.map(OrderItem.parse);
+    }
+
+    constructor(items) {
+        return items;
+    }
+}

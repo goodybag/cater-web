@@ -1,12 +1,12 @@
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
-import {CurrentUserResolver} from '../resolvers/user';
+import {CurrentUser} from '../models/user';
 import {UpdateUserAction, UpdateUserRegionAction} from '../actions/user';
 import {UserService} from '../services/user';
 import {Region} from '../models/region';
 
-@dependencies(Dispatcher, CurrentUserResolver, UserService)
+@dependencies(Dispatcher, CurrentUser, UserService)
 export class CurrentUserStore extends Store {
     constructor(dispatcher, user, userService) {
         super(dispatcher);

@@ -1,10 +1,10 @@
 import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
-import {MenuItemsResolver} from '../resolvers/menu';
+import {MenuItems} from '../models/menu-item';
 import {MenuCategories} from '../models/category';
 
-@dependencies(Dispatcher, MenuItemsResolver, MenuCategories)
+@dependencies(Dispatcher, MenuItems, MenuCategories)
 export class MenuStore extends Store {
     constructor(dispatcher, items, categories) {
         super(dispatcher);
