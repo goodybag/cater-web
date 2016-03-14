@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
+import Promise from 'bluebird';
 import {find, cloneDeep} from 'lodash';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
@@ -31,7 +32,9 @@ export class RestaurantMenuItemMenuComponent extends Component {
             options_sets: initOptionsSets,
             notes: "",
             recipient: "",
-            quantity: clonedMenuItem.min_qty || 1
+            quantity: clonedMenuItem.min_qty || 1,
+            savingError: null,
+            saving: false
         };
     };
 
@@ -41,8 +44,18 @@ export class RestaurantMenuItemMenuComponent extends Component {
         onClose: PropTypes.func.isRequired
     };
 
+    whileSaving(block) {
+        return new Promise(resolve => {
+            this.setState({saving: true}, resolve);
+        }).then(() => {
+            return block();
+        }).finally(() => {
+            this.setState({saving: false});
+        });
+    }
+
     onSubmit = () => {
-        const {dispatcher, item, order, onClose} = this.props;
+        const {dispatcher, item, order} = this.props;
 
         const orderItem = new OrderItem({
             name: item.name,
@@ -57,8 +70,14 @@ export class RestaurantMenuItemMenuComponent extends Component {
         });
 
         const action = new AddOrderItemAction({order, menuItem: item, orderItem});
-        dispatcher.dispatch(action);
-        onClose();
+
+        this.whileSaving(() => {
+            return dispatcher.dispatch(action);
+        }).then(() => {
+            this.props.onClose();
+        }, err => {
+            this.setState({savingError: err});
+        });
     };
 
     onChange = (data, e) => {
@@ -83,6 +102,8 @@ export class RestaurantMenuItemMenuComponent extends Component {
             default:
                 return;
         }
+
+        this.setState({savingError: null});
     };
 
     updateOptionState = (data, type) => {
@@ -126,8 +147,16 @@ export class RestaurantMenuItemMenuComponent extends Component {
                 itemState={this.state}
                 onChange={this.onChange}
                 onCancel={this.props.onClose}
+                saving={this.state.saving}
+                error={this.state.savingError}
                 saveButton={
-                    <div className="item-add-btn" onClick={this.onSubmit}>Add to order</div>
+                    <div className="gb-order-item-add" onClick={this.onSubmit}>
+                        <div className="gb-order-item-add-spinner"/>
+
+                        <div className="gb-order-item-add-text">
+                            Add to order
+                        </div>
+                    </div>
                 }
             />
         );

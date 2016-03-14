@@ -1,4 +1,5 @@
 import {Dispatcher, Store} from 'tokyo';
+import Promise from 'bluebird';
 import {dependencies} from 'yokohama';
 
 import {OrderItems} from '../models/order-item';
@@ -31,13 +32,14 @@ export class OrderItemStore extends Store {
             ...orderItem
         };
 
-        this.orderItemValidator.schema(orderItem, menuItem).validate();
+        return Promise.try(() => {
+            this.orderItemValidator.schema(orderItem, menuItem).validate();
 
-        this.orderItemService.createOrderItem(order.id, data)
-            .then(item => {
-                this.orderItems.push(item);
-                this.emit('change');
-            });
+            return this.orderItemService.createOrderItem(order.id, data)
+        }).then(item => {
+            this.orderItems.push(item);
+            this.emit('change');
+        });
     }
 
     onEditOrderItem({orderItem}) {
