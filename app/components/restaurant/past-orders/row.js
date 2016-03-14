@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'tokyo';
 import {inject} from 'yokohama';
+import cx from 'classnames';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';
@@ -20,7 +21,12 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
 
-    handleViewClick = () => {
+    state = {
+        isCurrentOrder: false
+    }
+
+    handleViewClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher, modals} = this.props;
 
         const action = new DisplayOrderAction({order});
@@ -30,7 +36,8 @@ export class RestaurantOrdersRowComponent extends Component {
         modals.open(RestaurantPastOrdersModalComponent);
     };
 
-    handleDuplicateClick = () => {
+    handleDuplicateClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new DuplicateOrderAction(order.id);
@@ -38,7 +45,8 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
-    handleCancelClick = () => {
+    handleCancelClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new CancelOrderAction(order.id);
@@ -46,7 +54,8 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
-    handleUncancelClick = () => {
+    handleUncancelClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new UncancelOrderAction(order.id);
@@ -54,11 +63,30 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
+    handleResumeClick = (e) => {
+        e.preventDefault();
+    }
+
+    checkCurrentOrder = () => {
+        const {order, currentOrder} = this.props;
+        this.setState({
+            isCurrentOrder: order.id === currentOrder.id
+        })
+    }
+
+    componentWillMount = () => {
+        this.checkCurrentOrder();
+    }
+
     render() {
         const {order, now} = this.props;
+        const {isCurrentOrder} = this.state;
 
         return (
-            <div className="gb-restaurant-orders-row">
+            <div className={cx({
+                    "gb-restaurant-orders-row": true,
+                    "current-order-row": isCurrentOrder
+                })}>
                 <div className="gb-restaurant-orders-row-group-first">
                     <div className="gb-restaurant-orders-col-status">
                         <RestaurantOrdersStatusLabelComponent
@@ -66,10 +94,16 @@ export class RestaurantOrdersRowComponent extends Component {
                         />
                     </div>
                     <div className="gb-restaurant-orders-col-date">
-                        <FormattedDate value={order.datetime} day="numeric" month="numeric" year="numeric"/>
+                        {
+                            order.datetime ?
+                                <FormattedDate value={order.datetime} day="numeric" month="numeric" year="numeric"/> : "None"
+                        }
                     </div>
                     <div className="gb-restaurant-orders-col-time">
-                        <FormattedTime value={order.datetime} format="hhmma"/>
+                        {
+                            order.datetime ?
+                                <FormattedTime value={order.datetime} format="hhmma"/> : null
+                        }
                     </div>
                     <div className="gb-restaurant-orders-col-total">
                         <FormattedNumber
@@ -86,26 +120,24 @@ export class RestaurantOrdersRowComponent extends Component {
 
                     <div className="gb-restaurant-orders-col-resume">
                         {
-                            order.status==="pending" ?
-                                <a href="/restaurants/111/orders">
+                            order.status==="pending" && !isCurrentOrder ?
+                                <a onClick={this.handleResumeClick}>
                                     Resume
                                 </a> :
                             order.status==="canceled" ?
-                                <a href="/restaurants/111/orders" onClick={this.handleUncancelClick}>
+                                <a onClick={this.handleUncancelClick}>
                                     Uncancel
                                 </a> : null
                         }
                     </div>
                     <div className="gb-restaurant-orders-col-view">
                         <a
-                            href="/restaurants/111/orders"
                             onClick={this.handleViewClick}>
                             View
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-duplicate">
                         <a
-                            href="/restaurants/111/orders"
                             onClick={this.handleDuplicateClick} >
                             Duplicate
                         </a>
@@ -113,7 +145,7 @@ export class RestaurantOrdersRowComponent extends Component {
                     <div className="gb-restaurant-orders-col-cancel">
                         {
                             order.status === 'canceled' ? null :
-                                <a href="/restaurants/111/orders" onClick={this.handleCancelClick}>
+                                <a onClick={this.handleCancelClick}>
                                     Cancel
                                 </a>
                         }

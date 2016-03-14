@@ -28,8 +28,21 @@
 
 // Table Body
 
-.gb-restaurant-orders-row {
-    margin-top: 30px;
+.gb-restaurant-orders-table-body {
+    margin-top: 5px;
+
+    .current-order-row {
+        background: lighten(@gb-shadow-athens-gray, 2%);
+        margin-left: -26px;
+        padding-left: 26px;
+        margin-right: -26px;
+        padding-right: 26px;
+    }
+
+    .gb-restaurant-orders-row {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
 }
 
 // Columns
@@ -76,10 +89,9 @@
 
 // Row Groups (Cut in Halves)
 
+
+
 .gb-restaurant-orders-half-row {
-    .gb-restaurant-orders-row {
-        margin-top: 25px;
-    }
 
     .gb-restaurant-orders-row-group-first,
     .gb-restaurant-orders-row-group-second {

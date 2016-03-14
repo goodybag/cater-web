@@ -4,6 +4,7 @@ import {Dispatcher, listeningTo} from 'tokyo';
 
 import {RestaurantStore} from '../../../stores/restaurant';
 import {Restaurant} from '../../../models/restaurant';
+import {OrderStore} from '../../../stores/order';
 import {PastOrdersStore} from '../../../stores/past-orders';
 import {TimeKeeperStore} from '../../../stores/time-keeper';
 import {Order} from '../../../models/order';
@@ -14,13 +15,15 @@ import {RestaurantPastOrdersModalComponent} from './modal';
     restaurantStore: RestaurantStore,
     pastOrdersStore: PastOrdersStore,
     timeKeeperStore: TimeKeeperStore,
-    dispatcher: Dispatcher
+    dispatcher: Dispatcher,
+    orderStore: OrderStore
 }, [RestaurantPastOrdersModalComponent, RestaurantOrdersRowComponent])
-@listeningTo(['restaurantStore', 'pastOrdersStore'], props => {
-    const {pastOrdersStore, restaurantStore, timeKeeperStore} = props;
+@listeningTo(['restaurantStore', 'pastOrdersStore', 'orderStore'], props => {
+    const {pastOrdersStore, restaurantStore, timeKeeperStore, orderStore} = props;
 
     return {
         restaurant: restaurantStore.getRestaurant(),
+        currentOrder: orderStore.getOrder(),
         orders: pastOrdersStore.getPastOrders(),
         now: timeKeeperStore.getCurrentTime()
     };
@@ -34,7 +37,7 @@ export class RestaurantOrdersComponent extends Component {
     };
 
     render() {
-        const {restaurant, orders, dispatcher, now} = this.props;
+        const {restaurant, orders, dispatcher, now, currentOrder} = this.props;
 
         return (
             <div className="gb-restaurant-orders">
@@ -53,16 +56,18 @@ export class RestaurantOrdersComponent extends Component {
                     </div>
 
                     <div className="gb-restaurant-orders-table-body">
-                        {orders.map(renderPastOrderItem)}
+                        {orders.map(renderPastOrderItem, this)}
                     </div>
                 </div>
             </div>
         );
 
         function renderPastOrderItem(order) {
+
             return (
                 <RestaurantOrdersRowComponent
                     key={order.id}
+                    currentOrder={this.props.currentOrder}
                     order={order}
                     dispatcher={dispatcher}
                     now={now}
