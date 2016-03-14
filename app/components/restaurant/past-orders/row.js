@@ -33,7 +33,9 @@ export class RestaurantOrdersRowComponent extends Component {
 
         dispatcher.dispatch(action);
 
-        modals.open(RestaurantPastOrdersModalComponent);
+        modals.open(RestaurantPastOrdersModalComponent, {
+            isCurrentOrder: this.state.isCurrentOrder
+        });
     };
 
     handleDuplicateClick = (e) => {
