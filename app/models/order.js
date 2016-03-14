@@ -1,6 +1,7 @@
 import {Restaurant} from './restaurant';
 import {User} from './user';
 import moment from 'moment-timezone';
+import OrderModel from '@goodybag/models-order';
 
 export class Order {
     static parse(attrs) {
@@ -96,6 +97,10 @@ export class Order {
 
     updateStatus(status) {
         this.status = status;
+    }
+
+    getSubtotal(orderItems) {
+        return OrderModel({ items: orderItems }).getSubTotal();
     }
 }
 
