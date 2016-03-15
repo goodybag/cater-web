@@ -25,6 +25,14 @@ export class OrderItemStore extends Store {
         return this.orderItems;
     }
 
+    refreshOrderItems(orderId) {
+        this.orderItemService.fetchAllByOrderId(orderId)
+            .then( items => {
+                this.orderItems = items;
+                this.emit('change');
+            });
+    }
+
     onAddItem({order, menuItem, orderItem}) {
         const data = {
             order_id: order.id,

@@ -3,7 +3,8 @@ export class OrderParams {
         const {street, city, state, zip, datetime, guests} = order;
 
         const address = `${street}, ${city}, ${state}, ${zip}`;
-        const [date, time] = datetime.split(' ', 2);
+
+        const [date, time] = datetime ? datetime.split(' ', 2) : [null, null];
 
         return new OrderParams({address, date, time, guests});
     }

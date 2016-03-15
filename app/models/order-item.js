@@ -16,12 +16,19 @@ export class OrderItem {
 
         const options_sets = (attrs.options_sets || []).map(ItemOption.parse);
 
+        let recipient = attrs.recipient;
+
+        if(attrs.recipient == null) {
+            recipient = '';
+        }
+
         return new OrderItem({
             ...attrs,
             created_at,
             item,
             order,
-            options_sets
+            options_sets,
+            recipient
         });
     }
 

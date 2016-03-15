@@ -7,20 +7,24 @@ import {OrderService} from '../services/order';
 import {OrderParamsValidator} from '../validators/order-params';
 import {
     SubmitOrderParamsAction,
-    UpdateOrderParamsAction
+    UpdateOrderParamsAction,
+    ResumeOrderAction
 } from '../actions/order';
+import {OrderItemStore} from '../stores/order-item';
 
-@dependencies(Dispatcher, Order, OrderService, OrderParamsValidator)
+@dependencies(Dispatcher, Order, OrderService, OrderParamsValidator, OrderItemStore)
 export class OrderStore extends Store {
-    constructor(dispatcher, order, orderService, orderParamsValidator) {
+    constructor(dispatcher, order, orderService, orderParamsValidator, orderItemStore) {
         super(dispatcher);
 
         this.orderService = orderService;
         this.order = order;
         this.orderParamsValidator = orderParamsValidator;
+        this.orderItemStore = orderItemStore;
 
         this.bind(SubmitOrderParamsAction, this.submitOrderParams);
         this.bind(UpdateOrderParamsAction, this.updateOrderParams);
+        this.bind(ResumeOrderAction, this.onResumeOrder);
     }
 
     getOrder() {
@@ -66,5 +70,11 @@ export class OrderStore extends Store {
             this.order = order;
             this.emit('change');
         });
+    }
+
+    onResumeOrder({order}) {
+        this.order = order;
+        this.orderItemStore.refreshOrderItems(order.id);
+        this.emit('change');
     }
 }

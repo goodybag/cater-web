@@ -33,7 +33,7 @@ export class RestaurantTabsComponent extends Component {
                 </RestaurantTabComponent>
 
                 <RestaurantTabComponent href={`${path}/orders`} route={route}>
-                    Past Orders
+                    Orders
                     <div className="gb-restaurant-tab-ncount">3</div>
                 </RestaurantTabComponent>
             </div>

@@ -125,6 +125,16 @@
 
 .gb-modal-order-footer {
     margin-top: 60px;
+
+    .gb-modal-order-footer-flag {
+        display: block;
+        margin-bottom: 22px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        text-align: center;
+        background: @gb-shadow-athens-gray;
+        font-style: italic;
+    }
 }
 
 .gb-modal-order-footer-subtotal {
@@ -221,6 +231,13 @@
     @media screen and (max-width: @gb-breakpoint-tablet) {
         padding-left: 25px;
         padding-right: 25px;
+    }
+
+    &.disabled-btn {
+        background: @gb-shadow-athens-gray;
+        color: darken(@gb-shadow-athens-gray, 20%);
+        border-color: darken(@gb-shadow-athens-gray, 10%);
+        cursor: not-allowed;
     }
 }
 

@@ -2,9 +2,11 @@ import React, {Component} from 'react';
 import {FormattedNumber, FormattedDate, FormattedTime} from 'react-intl';
 import {Dispatcher} from 'tokyo';
 import {inject} from 'yokohama';
+import cx from 'classnames';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';
+import {ResumeOrderAction} from '../../../actions/order';
 import {RestaurantPastOrdersModalComponent} from './modal';
 import {ModalState} from '../../../lib/modal';
 
@@ -17,20 +19,23 @@ export class RestaurantOrdersRowComponent extends Component {
     static propTypes = {
         order: React.PropTypes.object.isRequired,
         now: React.PropTypes.instanceOf(Date).isRequired,
+        isCurrentOrder: React.PropTypes.bool.isRequired,
         dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
 
-    handleViewClick = () => {
-        const {order, dispatcher, modals} = this.props;
+    handleViewClick = (e) => {
+        e.preventDefault();
+        const {order, dispatcher, modals, isCurrentOrder} = this.props;
 
         const action = new DisplayOrderAction({order});
 
         dispatcher.dispatch(action);
 
-        modals.open(RestaurantPastOrdersModalComponent);
+        modals.open(RestaurantPastOrdersModalComponent, { isCurrentOrder });
     };
 
-    handleDuplicateClick = () => {
+    handleDuplicateClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new DuplicateOrderAction(order.id);
@@ -38,7 +43,8 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
-    handleCancelClick = () => {
+    handleCancelClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new CancelOrderAction(order.id);
@@ -46,7 +52,8 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
-    handleUncancelClick = () => {
+    handleUncancelClick = (e) => {
+        e.preventDefault();
         const {order, dispatcher} = this.props;
 
         const action = new UncancelOrderAction(order.id);
@@ -54,11 +61,23 @@ export class RestaurantOrdersRowComponent extends Component {
         dispatcher.dispatch(action);
     };
 
+    handleResumeClick = (e) => {
+        e.preventDefault();
+        const {order, dispatcher} = this.props;
+
+        const action = new ResumeOrderAction(order);
+
+        dispatcher.dispatch(action);
+    }
+
     render() {
-        const {order, now} = this.props;
+        const {order, now, isCurrentOrder} = this.props;
 
         return (
-            <div className="gb-restaurant-orders-row">
+            <div className={cx({
+                    "gb-restaurant-orders-row": true,
+                    "current-order-row": isCurrentOrder
+                })}>
                 <div className="gb-restaurant-orders-row-group-first">
                     <div className="gb-restaurant-orders-col-status">
                         <RestaurantOrdersStatusLabelComponent
@@ -66,10 +85,13 @@ export class RestaurantOrdersRowComponent extends Component {
                         />
                     </div>
                     <div className="gb-restaurant-orders-col-date">
-                        <FormattedDate value={order.datetime} day="numeric" month="numeric" year="numeric"/>
+                        {
+                            order.datetime ?
+                                <FormattedDate value={order.datetime} day="numeric" month="numeric" year="numeric"/> : "None"
+                        }
                     </div>
                     <div className="gb-restaurant-orders-col-time">
-                        <FormattedTime value={order.datetime} format="hhmma"/>
+                        { order.datetime && <FormattedTime value={order.datetime} format="hhmma"/> }
                     </div>
                     <div className="gb-restaurant-orders-col-total">
                         <FormattedNumber
@@ -86,26 +108,24 @@ export class RestaurantOrdersRowComponent extends Component {
 
                     <div className="gb-restaurant-orders-col-resume">
                         {
-                            order.status==="pending" ?
-                                <a href="/restaurants/111/orders">
+                            order.status==="pending" && !isCurrentOrder ?
+                                <a onClick={this.handleResumeClick}>
                                     Resume
                                 </a> :
                             order.status==="canceled" ?
-                                <a href="/restaurants/111/orders" onClick={this.handleUncancelClick}>
+                                <a onClick={this.handleUncancelClick}>
                                     Uncancel
                                 </a> : null
                         }
                     </div>
                     <div className="gb-restaurant-orders-col-view">
                         <a
-                            href="/restaurants/111/orders"
                             onClick={this.handleViewClick}>
                             View
                         </a>
                     </div>
                     <div className="gb-restaurant-orders-col-duplicate">
                         <a
-                            href="/restaurants/111/orders"
                             onClick={this.handleDuplicateClick} >
                             Duplicate
                         </a>
@@ -113,7 +133,7 @@ export class RestaurantOrdersRowComponent extends Component {
                     <div className="gb-restaurant-orders-col-cancel">
                         {
                             order.status === 'canceled' ? null :
-                                <a href="/restaurants/111/orders" onClick={this.handleCancelClick}>
+                                <a onClick={this.handleCancelClick}>
                                     Cancel
                                 </a>
                         }

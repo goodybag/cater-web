@@ -10,3 +10,9 @@ export class SubmitOrderParamsAction {
         this.params = params;
     }
 }
+
+export class ResumeOrderAction {
+    constructor(order) {
+        this.order = order;
+    }
+}

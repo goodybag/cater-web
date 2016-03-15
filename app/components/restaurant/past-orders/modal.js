@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {FormattedDate, FormattedTime, FormattedNumber} from 'react-intl';
 import {inject} from 'yokohama';
 import {Dispatcher, listeningTo} from 'tokyo';
+import cx from 'classnames';
 
 import {Order} from '../../../models/order';
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
@@ -43,7 +44,7 @@ export class RestaurantPastOrdersModalComponent extends Component {
     }
 
     renderModal() {
-        const {order, orderItems} = this.props;
+        const {order, orderItems, isCurrentOrder} = this.props;
 
         if (order === 'loading') {
             return <ModalLoaderComponent/>;
@@ -52,6 +53,7 @@ export class RestaurantPastOrdersModalComponent extends Component {
                 <ModalOrderComponent
                     order={order}
                     orderItems={orderItems}
+                    isCurrentOrder={isCurrentOrder}
                     onModalClose={this.close}
                 />
             );
@@ -76,6 +78,7 @@ export class ModalOrderComponent extends Component {
             PropTypes.instanceOf(Order)
         ]),
         orderItems: PropTypes.array,
+        isCurrentOrder: PropTypes.bool,
         onModalClose: PropTypes.func
     };
 
@@ -84,7 +87,13 @@ export class ModalOrderComponent extends Component {
     };
 
     render() {
-        const {order, orderItems} = this.props;
+        const {order, orderItems, isCurrentOrder} = this.props;
+
+        const currentlyEditingMsg = isCurrentOrder && (
+            <span className="gb-modal-order-footer-flag">
+                You are currently editing this order.
+            </span>
+        );
 
         return (
             <div className="gb-modal-order">
@@ -183,6 +192,8 @@ export class ModalOrderComponent extends Component {
                         </div>
                     </div>
                     <div className="gb-modal-order-footer-buttons">
+                        { currentlyEditingMsg }
+
                         <div
                             className="gb-modal-order-close-btn"
                             onClick={this.close}>
@@ -228,11 +239,14 @@ export class ModalOrderComponent extends Component {
     }
 
     renderActionButton() {
-        const {order} = this.props;
+        const {order, isCurrentOrder} = this.props;
 
         if (order.status === 'pending') {
             return (
-                <div className="gb-modal-order-resume-btn">
+                <div className={cx({
+                        "gb-modal-order-resume-btn": true,
+                        "disabled-btn": isCurrentOrder
+                    })}>
                     Resume this order
                 </div>
             );
