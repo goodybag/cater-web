@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import {RestaurantOrdersStatusLabelComponent} from './status-label';
 import {DisplayOrderAction, DuplicateOrderAction, CancelOrderAction, UncancelOrderAction} from '../../../actions/past-orders';
+import {ResumeOrderAction} from '../../../actions/order';
 import {RestaurantPastOrdersModalComponent} from './modal';
 import {ModalState} from '../../../lib/modal';
 
@@ -18,24 +19,19 @@ export class RestaurantOrdersRowComponent extends Component {
     static propTypes = {
         order: React.PropTypes.object.isRequired,
         now: React.PropTypes.instanceOf(Date).isRequired,
+        isCurrentOrder: React.PropTypes.bool.isRequired,
         dispatcher: React.PropTypes.instanceOf(Dispatcher)
     };
 
-    state = {
-        isCurrentOrder: false
-    }
-
     handleViewClick = (e) => {
         e.preventDefault();
-        const {order, dispatcher, modals} = this.props;
+        const {order, dispatcher, modals, isCurrentOrder} = this.props;
 
         const action = new DisplayOrderAction({order});
 
         dispatcher.dispatch(action);
 
-        modals.open(RestaurantPastOrdersModalComponent, {
-            isCurrentOrder: this.state.isCurrentOrder
-        });
+        modals.open(RestaurantPastOrdersModalComponent, { isCurrentOrder });
     };
 
     handleDuplicateClick = (e) => {
@@ -67,22 +63,15 @@ export class RestaurantOrdersRowComponent extends Component {
 
     handleResumeClick = (e) => {
         e.preventDefault();
-    }
+        const {order, dispatcher} = this.props;
 
-    checkCurrentOrder = () => {
-        const {order, currentOrder} = this.props;
-        this.setState({
-            isCurrentOrder: order.id === currentOrder.id
-        })
-    }
+        const action = new ResumeOrderAction(order);
 
-    componentWillMount = () => {
-        this.checkCurrentOrder();
+        dispatcher.dispatch(action);
     }
 
     render() {
-        const {order, now} = this.props;
-        const {isCurrentOrder} = this.state;
+        const {order, now, isCurrentOrder} = this.props;
 
         return (
             <div className={cx({

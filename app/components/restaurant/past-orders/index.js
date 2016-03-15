@@ -42,7 +42,7 @@ export class RestaurantOrdersComponent extends Component {
         return (
             <div className="gb-restaurant-orders">
                 <div className="gb-restaurant-orders-title">
-                    Past Orders at {restaurant.name}
+                    Orders at {restaurant.name}
                 </div>
 
                 <div className="gb-restaurant-orders-table">
@@ -63,11 +63,12 @@ export class RestaurantOrdersComponent extends Component {
         );
 
         function renderPastOrderItem(order) {
+            const {currentOrder} = this.props;
 
             return (
                 <RestaurantOrdersRowComponent
                     key={order.id}
-                    currentOrder={this.props.currentOrder}
+                    isCurrentOrder={order.id === currentOrder.id}
                     order={order}
                     dispatcher={dispatcher}
                     now={now}
