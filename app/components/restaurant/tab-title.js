@@ -22,7 +22,7 @@ export class RestaurantTabTitleComponent extends Component {
         return (
             <div className={clsNs}>
                 <span>{title}</span>
-                {title === 'Past Orders' && orderNotifications()}
+                {title === 'Orders' && orderNotifications()}
             </div>
         );
     }
