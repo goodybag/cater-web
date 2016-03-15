@@ -63,7 +63,6 @@ export class RestaurantOrdersComponent extends Component {
         );
 
         function renderPastOrderItem(order) {
-            const {currentOrder} = this.props;
 
             return (
                 <RestaurantOrdersRowComponent

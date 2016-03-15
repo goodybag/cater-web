@@ -91,10 +91,7 @@ export class RestaurantOrdersRowComponent extends Component {
                         }
                     </div>
                     <div className="gb-restaurant-orders-col-time">
-                        {
-                            order.datetime ?
-                                <FormattedTime value={order.datetime} format="hhmma"/> : null
-                        }
+                        { order.datetime && <FormattedTime value={order.datetime} format="hhmma"/> }
                     </div>
                     <div className="gb-restaurant-orders-col-total">
                         <FormattedNumber

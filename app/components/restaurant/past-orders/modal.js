@@ -89,6 +89,12 @@ export class ModalOrderComponent extends Component {
     render() {
         const {order, orderItems, isCurrentOrder} = this.props;
 
+        const currentlyEditingMsg = isCurrentOrder && (
+            <span className="gb-modal-order-footer-flag">
+                You are currently editing this order.
+            </span>
+        );
+
         return (
             <div className="gb-modal-order">
 
@@ -186,12 +192,8 @@ export class ModalOrderComponent extends Component {
                         </div>
                     </div>
                     <div className="gb-modal-order-footer-buttons">
-                        {
-                            isCurrentOrder ?
-                                <span className="gb-modal-order-footer-flag">
-                                    You are currently editing this order.
-                                </span> : null
-                        }
+                        { currentlyEditingMsg }
+
                         <div
                             className="gb-modal-order-close-btn"
                             onClick={this.close}>
