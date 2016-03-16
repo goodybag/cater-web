@@ -44,6 +44,7 @@ class RestaurantMenuCateringComponent extends Component {
             <RestaurantMenuCategoryComponent
                 category={new Category({name: 'Popular Items'})}
                 items={popularItems}
+                order={order}
                 requestOpen={requestOpen}
                 requestClose={requestClose}
                 openItem={openItem}
@@ -84,6 +85,7 @@ class RestaurantMenuCateringComponent extends Component {
 
     return {
         menu: searchTerm.groupMenu(categories, items, 'individual'),
+        popularItems: searchTerm.getPopularItems(categories, items, 'individual'),
         order: orderStore.getOrder()
     };
 })
@@ -96,10 +98,23 @@ class RestaurantMenuIndividualComponent extends Component {
     };
 
     render() {
-        const {menu, order, openItem, requestOpen, requestClose} = this.props;
+        const {menu, order, popularItems, openItem, requestOpen, requestClose} = this.props;
+
+        const popularSection = popularItems.length > 0 && (
+            <RestaurantMenuCategoryComponent
+                category={new Category({name: 'Popular Items'})}
+                items={popularItems}
+                order={order}
+                requestOpen={requestOpen}
+                requestClose={requestClose}
+                openItem={openItem}
+                key="popular"
+            />
+        );
 
         return (
             <div className="gb-restaurant-menu-individual">
+                {popularSection}
                 {menu.map(renderSection)}
             </div>
         );
