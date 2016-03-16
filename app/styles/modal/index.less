@@ -178,11 +178,6 @@
     &:hover {
         background: @gb-shadow-mischka;
     }
-
-    @media screen and (max-width: 580px) {
-        width: 100%;
-        margin-bottom: 5px;
-    }
 }
 
 .gb-modal-order-close-btn,
@@ -206,11 +201,6 @@
     float: right;
     padding-left: 30px;
     padding-right: 30px;
-
-    @media screen and (max-width: @gb-breakpoint-tablet) {
-        padding-left: 19px;
-        padding-right: 19px;
-    }
 }
 
 .gb-modal-order-resume-btn {
@@ -228,7 +218,7 @@
         background-color: lighten(@gb-red, 5%);
     }
 
-    @media screen and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (max-width: @gb-max-tablet-width) {
         padding-left: 25px;
         padding-right: 25px;
     }

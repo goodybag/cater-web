@@ -37,6 +37,7 @@
 
     .gb-navbar {
       position: relative;
+      z-index: @z-index;
       display: table;
       width: 100%;
       box-sizing: border-box;
@@ -50,7 +51,6 @@
     }
 
     .gb-navbar-fixed {
-      z-index: @z-index;
       position: fixed;
       top: 0;
       left: 0;
@@ -111,7 +111,6 @@
       display: none;
       .gb-navbar-toggle {
         &:extend(.gb-button-white);
-        &:extend(.gb-button-small);
       }
     }
 

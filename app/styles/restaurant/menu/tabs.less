@@ -1,5 +1,5 @@
 .gb-restaurant-menu-tabs {
-    @media screen and (max-width: @gb-breakpoint-tablet - 1px) {
+    @media screen and (max-width: @gb-max-tablet-width - 1px) {
         text-align: center;
     }
 }
@@ -7,6 +7,7 @@
 .gb-restaurant-menu-tab-title-catering,
 .gb-restaurant-menu-tab-title-individual {
     display: inline-block;
+    text-align: center;
     position: relative;
     background: @gb-background;
     height: 52px;
@@ -20,19 +21,21 @@
         z-index: 100;
     }
 
-    @media screen and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (max-width: @gb-max-tablet-width) {
         width: 49%;
     }
-    @media screen and (min-width: @gb-breakpoint-tablet) {
-        width: 26%;
-        max-width: 186px;
+
+    @media screen and (min-width: @gb-max-tablet-width) {
+        width: 180px;
     }
 }
 
 .gb-menu-tab-top-color(@color) {
-    &::before {
+    &:before {
         content: "";
         position: absolute;
+        left: 0;
+        right: 0;
         top: 0;
         height: 3px;
         width: 100%;
@@ -40,25 +43,44 @@
     }
 }
 
+.gb-menu-tab-bottom-color(@color) {
+    &:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 5px;
+        width: 100%;
+        background-color: @color;
+        display: none;
+    }
+}
+
 .gb-restaurant-menu-tab-title-catering {
     .gb-menu-tab-top-color(@gb-blue);
     margin-right: 2px;
+
+    .gb-restaurant-menu-tab-title-content {
+        .gb-menu-tab-bottom-color(@gb-blue);
+    }
 }
 
 .gb-restaurant-menu-tab-title-individual {
     .gb-menu-tab-top-color(@gb-teal);
     margin-left: 2px;
+
+    .gb-restaurant-menu-tab-title-content {
+        .gb-menu-tab-bottom-color(@gb-teal);
+    }
 }
 
 .gb-restaurant-menu-tab-title-content {
-    width: 96%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: inline-block;
+    position: relative;
     text-transform: uppercase;
-    text-align: center;
     color: @gb-shadow-shuttle-gray;
     font-size: 0.89em;
     font-weight: 600;
+    line-height: 52px;
 }
