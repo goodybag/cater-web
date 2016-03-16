@@ -103,7 +103,7 @@ export class RestaurantOrdersRowComponent extends Component {
                 </div>
                 <div className="gb-restaurant-orders-row-group-second">
                     <div className="gb-restaurant-orders-col-expired">
-                        {order.deadline < now && 'Expired'}
+                        {order.status === "pending" && order.datetime && new Date(order.deadline) < now && 'Expired'}
                     </div>
 
                     <div className="gb-restaurant-orders-col-resume">
