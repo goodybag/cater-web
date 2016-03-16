@@ -2,20 +2,20 @@ import React, {Component, PropTypes, cloneElement} from 'react';
 import {inject} from 'yokohama';
 import {listeningTo} from 'tokyo';
 import {router, Route} from 'hiroshima';
-import {MenuSearchTerm} from '../../../lib/menu-search';
 
+import {MenuSearchTerm} from '../../../lib/menu-search';
 import {MenuStore} from '../../../stores/menu';
 import {OrderStore} from '../../../stores/order';
 import {Category} from '../../../models/category';
 import {MenuItem} from '../../../models/menu-item';
 import {RestaurantMenuCategoryComponent} from './category';
 import {RestaurantMenuTabComponent} from './tab';
-import {RestaurantMenuSearchboxComponent} from './searchbox';
+import {RestaurantMenuBarComponent} from './bar';
 
 @inject({
     menuStore: MenuStore,
     orderStore: OrderStore
-})
+}, [RestaurantMenuCategoryComponent])
 @listeningTo(['menuStore', 'orderStore'], ({menuStore, orderStore, searchTerm}) => {
     const categories = menuStore.getCategories();
     const items = menuStore.getItems();
@@ -78,7 +78,7 @@ class RestaurantMenuCateringComponent extends Component {
 @inject({
     menuStore: MenuStore,
     orderStore: OrderStore
-})
+}, [RestaurantMenuCategoryComponent])
 @listeningTo(['menuStore', 'orderStore'], ({menuStore, orderStore, searchTerm}) => {
     const categories = menuStore.getCategories();
     const items = menuStore.getItems();
@@ -135,49 +135,12 @@ class RestaurantMenuIndividualComponent extends Component {
     }
 }
 
-@inject({
-    route: Route
-}, [
-    RestaurantMenuCateringComponent,
-    RestaurantMenuSearchboxComponent,
-    RestaurantMenuTabComponent,
-    RestaurantMenuCategoryComponent
-])
-class RestaurantMenuTabsComponent extends Component {
-    static propTypes = {
-        route: PropTypes.instanceOf(Route).isRequired
-    };
-
-    render() {
-        const {route} = this.props;
-        const {restaurant_id} = route.params;
-        const path = `/restaurants/${restaurant_id}`;
-
-        return (
-            <div className="gb-restaurant-menu-tabs">
-                <RestaurantMenuTabComponent
-                    href={path}
-                    type="catering">
-                    Catering Menu
-                </RestaurantMenuTabComponent>
-
-                <RestaurantMenuTabComponent
-                    href={`${path}/individual`}
-                    type="individual">
-                    Individual Menu
-                </RestaurantMenuTabComponent>
-            </div>
-        );
-    }
-}
-
 @router(route => {
     route.index(RestaurantMenuCateringComponent);
     route.dir('individual').index(RestaurantMenuIndividualComponent);
 })
 @inject({}, [
-    RestaurantMenuSearchboxComponent,
-    RestaurantMenuTabsComponent
+    RestaurantMenuBarComponent
 ])
 export class RestaurantMenuComponent extends Component {
     static propTypes = {
@@ -214,12 +177,10 @@ export class RestaurantMenuComponent extends Component {
 
         return (
             <div className="gb-restaurant-menu">
-                <RestaurantMenuSearchboxComponent
+                <RestaurantMenuBarComponent
                     searchTerm={searchTerm}
                     onSearchTermChange={this.handleSearchTermChange}
                 />
-
-                <RestaurantMenuTabsComponent/>
 
                 {child}
             </div>
