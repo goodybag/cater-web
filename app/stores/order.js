@@ -3,6 +3,8 @@ import {Dispatcher, Store} from 'tokyo';
 import {dependencies} from 'yokohama';
 
 import {Order} from '../models/order';
+import {Restaurant} from '../models/restaurant';
+import {CurrentUser} from '../models/user';
 import {OrderService} from '../services/order';
 import {OrderParamsValidator} from '../validators/order-params';
 import {
@@ -12,15 +14,17 @@ import {
 } from '../actions/order';
 import {OrderItemStore} from '../stores/order-item';
 
-@dependencies(Dispatcher, Order, OrderService, OrderParamsValidator, OrderItemStore)
+@dependencies(Dispatcher, Order, OrderService, OrderParamsValidator, OrderItemStore, Restaurant, CurrentUser)
 export class OrderStore extends Store {
-    constructor(dispatcher, order, orderService, orderParamsValidator, orderItemStore) {
+    constructor(dispatcher, order, orderService, orderParamsValidator, orderItemStore, restaurant, user) {
         super(dispatcher);
 
         this.orderService = orderService;
         this.order = order;
         this.orderParamsValidator = orderParamsValidator;
         this.orderItemStore = orderItemStore;
+        this.restaurant = restaurant;
+        this.user = user;
 
         this.bind(SubmitOrderParamsAction, this.submitOrderParams);
         this.bind(UpdateOrderParamsAction, this.updateOrderParams);
@@ -53,7 +57,7 @@ export class OrderStore extends Store {
     submitOrderParams({params}) {
         return this.handleParamsValidation(params).then(data => {
             return this.orderService.create({
-                restaurant_id: this.restaurantPayload.restaurant.id,
+                restaurant_id: this.restaurant.id,
                 user_id: this.user.id, // TODO
                 ...data
             });
