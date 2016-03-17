@@ -198,7 +198,10 @@ export class OrderItemOptionGroupComponent extends Component {
 
     maxReached = () => {
         const {optionGroup} = this.props;
-        return optionGroup.options.filter(option => option.state).length >= optionGroup.selected_max;
+        const {selected_max, options} = optionGroup;
+        const selected = options.filter(o => o.state).length;
+
+        return selected_max >= 1 && selected > selected_max;
     };
 
     renderErrors() {
