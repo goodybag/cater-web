@@ -123,7 +123,7 @@ export class NavbarComponent extends Component {
                         </button>
                     </div>
 
-                    <a className="gb-navbar-points-component" href="/users/me/rewards">1432</a>
+                    <a className="gb-navbar-points-component" href="/users/me/rewards">{`${points} points`}</a>
                     <div className="gb-navbar-nav-component">
                         <ul className="nav">
                             {user.isAdmin() ? (
