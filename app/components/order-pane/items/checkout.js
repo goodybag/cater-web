@@ -1,13 +1,16 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
 
+import {Order} from '../../../models/order';
+
 export class OrderPaneCheckoutComponent extends Component {
     static propTypes = {
-        subtotal: PropTypes.number.isRequired
+        subtotal: PropTypes.number.isRequired,
+        order: PropTypes.instanceOf(Order).isRequired
     };
 
     render() {
-        const {subtotal} = this.props;
+        const {subtotal, order} = this.props;
 
         return (
             <div className="gb-order-pane-checkout">
@@ -29,9 +32,9 @@ export class OrderPaneCheckoutComponent extends Component {
                     </tbody>
                 </table>
 
-                <div className="gb-order-pane-checkout-btn">
+                <a href={`/orders/${order.id}/items`} className="gb-order-pane-checkout-btn">
                     Checkout
-                </div>
+                </a>
             </div>
         );
     }

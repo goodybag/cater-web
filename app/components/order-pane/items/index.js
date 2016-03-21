@@ -69,7 +69,10 @@ export class OrderPaneItemsComponent extends Component {
                         </div>
                 }
 
-                <OrderPaneCheckoutComponent subtotal={subtotal}/>
+                <OrderPaneCheckoutComponent
+                    subtotal={subtotal}
+                    order={order}
+                />
             </div>
         );
 
