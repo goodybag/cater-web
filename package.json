@@ -92,6 +92,7 @@
     "less-plugin-npm-import": "^2.1.0",
     "mocha": "^2.2.5",
     "nodemon": "^1.8.1",
+    "rev-all": "0.0.0",
     "sourceify": "0.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
