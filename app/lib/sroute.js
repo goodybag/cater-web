@@ -74,7 +74,7 @@ export function loadPage({req, res, config, components, route}) {
 
             const data = this.serializer.serializeCache(cache);
 
-            const encodedData = new Buffer(JSON.stringify(data)).toString('base64');
+            const encodedData = new Buffer(JSON.stringify(data), 'binary').toString('base64');
             const script = `window.__GBDATA__=JSON.parse(atob('${encodedData}'))`;
 
             const markup = this.getMainMarkup(cache);
