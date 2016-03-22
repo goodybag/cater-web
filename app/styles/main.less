@@ -9,24 +9,18 @@
 @import "../lib/modal/styles/index";
 
 #components > #gb-container > .init(
-  @width: 1145px,
-  @horizontal-padding: @gb-body-padding-large
+  @width: @gb-max-tablet-width,
+  @horizontal-padding: @gb-tablet-padding
 );
 
 #components > #gb-navbar .init(
   @color: @gb-foreground,
-  @accent-color: @gb-red
+  @accent-color: @gb-red,
+  @breakpoint: @gb-max-tablet-width,
+  @z-index: 10
 );
 
 #modal > .init(
     @width: 562px,
     @offset-top: 64px
 );
-
-.gb-restaurant {
-  // Exported from gb-navbar .init()
-  ///////////////////////////////////
-  // Apply margin-top to .gb-restaurant so navbar does not
-  // sit on top of content
-  .gb-navbar-provide-offset-margin();
-}

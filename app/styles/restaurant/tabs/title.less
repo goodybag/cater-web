@@ -4,7 +4,7 @@
     text-align: center;
     font-size: 1em;
 
-    @media screen and (min-width: @gb-breakpoint-mobile) {
+    @media screen and (min-width: @gb-max-mobile-width) {
         display: inline-block;
         padding-left: 22px;
         padding-right: 22px;
@@ -12,7 +12,7 @@
 
     &.active {
         font-weight: 600;
-        @media screen and (max-width: @gb-breakpoint-mobile) {
+        @media screen and (max-width: @gb-max-mobile-width) {
             .gb-restaurant-tab-title-content {
                 background: @gb-shadow-athens-gray;
             }
@@ -21,7 +21,7 @@
 }
 
 .gb-restaurant-tab-title-content {
-    @media screen and (max-width: @gb-breakpoint-mobile) {
+    @media screen and (max-width: @gb-max-mobile-width) {
         &:active {
             background: @gb-shadow-athens-gray;
         }

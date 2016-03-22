@@ -45,15 +45,21 @@
 @gb-invalid-background: #fbe1e3;
 @gb-invalid-foreground: @gb-status-denied;
 
+// The max mobile width is the maximum width where we consider the screen to be
+// a mobile device. Anything less than or equal to it is considered mobile.
+@gb-max-mobile-width: 480px;
 
-@gb-breakpoint-mobile: 480px;
-@gb-breakpoint-mid-tablet: 642px;
-@gb-breakpoint-tablet: 769px;
-@gb-breakpoint-mid-laptop: 910px;
-@gb-breakpoint-laptop: 1680px;
+// The max tablet width is the maximum width where we consider the screen to be
+// on a tablet. Anything between the mobile maximum and the tablet maximum is
+// on a tablet/small computer where the width is variable.
+//
+// Everything after this is considered to be on a desktop display with a static
+// width and centered with an empty margin.
+@gb-max-tablet-width: 1160px;
 
-@gb-body-padding-large: 17px;
-@gb-body-padding-small: 0px;
+// This is the padding to be applied to any body-level elements in combination
+// with @gb-max-tablet-width and border-box sizing.
+@gb-tablet-padding: 10px;
 
 html {
     -webkit-font-smoothing: antialiased;
@@ -61,15 +67,6 @@ html {
     background-color: @gb-background;
     color: @gb-foreground;
     font-family: 'Avenir', 'Proxima Nova', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    @media screen and (max-width: @gb-breakpoint-mobile) {
-        font-size: 1.05em;
-    }
-    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
-        font-size: 0.998em;
-    }
-    @media screen and (min-width: @gb-breakpoint-tablet) and (max-width: @gb-breakpoint-laptop) {
-        font-size: 0.924em;
-    }
 }
 
 body {
@@ -92,17 +89,11 @@ table {
 }
 
 .gb-body {
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 @gb-body-padding-large;
+    margin: 0 auto;
     box-sizing: border-box;
-    width: 100%;
+    max-width: @gb-max-tablet-width;
 
-    @media screen and (max-width: @gb-breakpoint-mobile) {
-        padding: 0 @gb-body-padding-small;
-    }
-
-    @media screen and (max-width: @gb-breakpoint-laptop) {
-        max-width: 1111px + (@gb-body-padding-large * 2);
+    @media and screen (min-width: @gb-max-mobile-width) {
+        padding: 0 @gb-tablet-padding;
     }
 }

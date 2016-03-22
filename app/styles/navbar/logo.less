@@ -3,22 +3,17 @@
     height: 100%;
     max-height: 58px;
     max-width: 138px;
+    display: inline-block;
 
-    @media screen and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (max-width: @gb-max-tablet-width) {
         display: none;
-    }
-
-    @media screen and (min-width: @gb-breakpoint-tablet) {
-        display: inline-block;
     }
 }
 
 .gb-navbar-logo-small {
-    @media screen and (max-width: @gb-breakpoint-tablet) {
-        display: table-cell;
-    }
+    display: none;
 
-    @media screen and (min-width: @gb-breakpoint-tablet) {
-        display: none;
+    @media screen and (max-width: @gb-max-tablet-width) {
+        display: table-cell;
     }
 }

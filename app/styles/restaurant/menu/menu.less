@@ -5,10 +5,6 @@
 .gb-restaurant-menu-catering,
 .gb-restaurant-menu-individual {
     margin-top: -7px;
-
-    @media screen and (min-width: @gb-breakpoint-tablet) {
-        margin-top: -6px;
-    }
 }
 
 // Menu Category Titles
@@ -72,18 +68,11 @@
 
 .gb-restaurant-menu-item-title {
     .gb-restaurant-menu-item-column;
+    width: 60%;
+    max-width: 420px;
 
-    @media screen and (max-width: @gb-breakpoint-mobile) {
+    @media screen and (max-width: @gb-max-mobile-width) {
         width: 40%;
-    }
-
-    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
-        width: 50%;
-    }
-
-    @media screen and (min-width: @gb-breakpoint-tablet) {
-        width: 60%;
-        max-width: 420px;
     }
 }
 
@@ -97,16 +86,16 @@
 
     font-weight: 500;
 
-    @media screen and (max-width: @gb-breakpoint-mobile) {
+    @media screen and (max-width: @gb-max-mobile-width) {
         width: 30%;
     }
 
-    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (min-width: @gb-max-mobile-width) and (max-width: @gb-max-tablet-width) {
         text-align: center;
         width: 25%;
     }
 
-    @media screen and (min-width: @gb-breakpoint-tablet) {
+    @media screen and (min-width: @gb-max-tablet-width) {
         width: 20%;
         max-width: 132px;
     }
@@ -117,15 +106,15 @@
 
     font-weight: 500;
 
-    @media screen and (max-width: @gb-breakpoint-mobile) {
+    @media screen and (max-width: @gb-max-tablet-width) {
         width: 30%;
     }
 
-    @media screen and (min-width: @gb-breakpoint-mobile) and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (min-width: @gb-max-mobile-width) and (max-width: @gb-max-tablet-width) {
         width: 25%;
     }
 
-    @media screen and (min-width: @gb-breakpoint-tablet) {
+    @media screen and (min-width: @gb-max-tablet-width) {
         width: 20%;
         max-width: 132px;
     }
@@ -156,12 +145,12 @@
 .gb-restaurant-menu-item-desc {
     margin-top: 20px;
 
-    @media screen and (max-width: @gb-breakpoint-tablet) {
+    @media screen and (max-width: @gb-max-tablet-width) {
         display: none;
     }
 }
 
-@media screen and (min-width: @gb-breakpoint-tablet) {
+@media screen and (min-width: @gb-max-tablet-width) {
     @transition-duration: 100ms;
     @transition-delay: 500ms;
 

@@ -98,8 +98,7 @@ export class NavbarComponent extends Component {
         return (
             <div className={cx({
                 'gb-navbar': this.state.isExpanded,
-                'gb-navbar-collapsed': !this.state.isExpanded,
-                'gb-navbar-fixed': true
+                'gb-navbar-collapsed': !this.state.isExpanded
             })}>
                 <div className="gb-container">
                     <div className="gb-navbar-logo-component">
