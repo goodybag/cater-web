@@ -79,7 +79,7 @@ export function loadPage({req, res, config, components, route}) {
 
             const markup = this.getMainMarkup(cache);
 
-            const bundles = config.getBundleNames().map(bundleName => {
+            const bundles = config.bundles.map(bundleName => {
                 return <script src={config.resolveAssetURL(bundleName)}/>;
             });
 

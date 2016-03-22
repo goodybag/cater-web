@@ -2,6 +2,7 @@ import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import express from 'express';
 import 'intl';
+import path from 'path';
 
 import {ErrorComponent} from './components/error';
 import {Config} from './lib/config';
@@ -11,7 +12,7 @@ import router from './router';
 
 Intl.NumberFormat = IntlPolyfill.NumberFormat;
 
-const staticDir = `${__dirname}/../build`;
+const staticDir = `dist/build`;
 
 export function makeHandler(options) {
     const config = new Config(options);
@@ -53,6 +54,6 @@ export function makeHandler(options) {
     };
 }
 
-export function mountStatic(app) {
-    app.use('/assets', express.static(staticDir));
+export function mountStatic(app, dir = staticDir) {
+    app.use('/assets', express.static(path.resolve(__dirname, '../../', dir)));
 }

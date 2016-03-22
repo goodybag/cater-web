@@ -31,7 +31,7 @@ all: node_modules assets build
 static: $(STATIC_FILES)
 assets: $(ASSET_FILES)
 build: $(BUILD_FILES)
-final: assets build $(FINAL_FILES) $(FINAL_FILES:%=%.gz)
+final: assets build $(FINAL_FILES) $(OUTPUT_DIR)/static
 styles: $(ASSETS_DIR)/main.css
 
 watch: watch-bundle watch-common watch-source watch-styles
@@ -63,6 +63,10 @@ watch-common:
 
 clean:
 	rm -rf $(OUTPUT_DIR)
+
+$(OUTPUT_DIR)/static: $(FINAL_FILES)
+	rev-all $(FINAL_DIR) $@ -m $(OUTPUT_DIR)/manifest.json
+	gzip -kf $@/*
 
 $(BUILD_FILES): $(BUILD_DIR)
 
@@ -96,12 +100,11 @@ $(ASSETS_DIR)/%: $(wildcard $(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(PUBLIC_DIR)/$$
 
 $(FINAL_DIR)/%.js: $(ASSETS_DIR)/%.js node_modules
 	@mkdir -p "$(@D)"
-	@#uglifyjs -m -c warnings=false < $< > $@
-	cp $< $@
+	uglifyjs -m -c warnings=false < $< > $@
 
 $(FINAL_DIR)/%.css: $(ASSETS_DIR)/%.css node_modules
 	@mkdir -p "$(@D)"
-	cssnano $^ > $@
+	cssnano $< $@
 
 $(FINAL_DIR)/%.gz: $(FINAL_DIR)/%
 	gzip -kf $<

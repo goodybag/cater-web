@@ -18,6 +18,7 @@ export class Config {
             apiPrefix = '/api/',
             serverRendering = true,
             gmapsKey = 'AIzaSyBbsgtm6Tqdh3ZyWfRj2Mg_eSZDW8ajLss',
+            bundles = ['common.js', 'bundle.js'],
             baseUrl,
             tickInterval = 30 * 1000
         } = options;
@@ -28,6 +29,7 @@ export class Config {
         this.apiPrefix = apiPrefix;
         this.serverRendering = serverRendering;
         this.gmapsKey = gmapsKey;
+        this.bundles = bundles;
         this.baseUrl = baseUrl;
         this.tickInterval = tickInterval;
     }
@@ -39,14 +41,6 @@ export class Config {
 
     resolveResourceURL(resourcePath) {
         return resolveURL(this.apiPrefix, resourcePath);
-    }
-
-    getBundleNames() {
-        if (this.env === 'production') {
-            return ['runtime.js'];
-        } else {
-            return ['common.js', 'bundle.js'];
-        }
     }
 }
 
