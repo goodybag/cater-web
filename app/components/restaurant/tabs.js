@@ -34,7 +34,6 @@ export class RestaurantTabsComponent extends Component {
 
                 <RestaurantTabComponent href={`${path}/orders`} route={route}>
                     Orders
-                    <div className="gb-restaurant-tab-ncount">3</div>
                 </RestaurantTabComponent>
             </div>
         );
