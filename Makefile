@@ -111,6 +111,6 @@ $(FINAL_DIR)/%: $(ASSETS_DIR)/%
 	cp $< $@
 
 node_modules:
-	npm install
+	npm install --ignore-scripts
 
 .DELETE_ON_ERROR:
