@@ -6,11 +6,11 @@ export class NavbarAccountMenuComponent extends Component {
     render() {
         return (
             <NavbarMenuComponent>
-                <NavbarMenuLinkComponent href="/">Settings</NavbarMenuLinkComponent>
+                <NavbarMenuLinkComponent href="/users/me">Settings</NavbarMenuLinkComponent>
 
-                <NavbarMenuLinkComponent href="/">My Rewards</NavbarMenuLinkComponent>
+                <NavbarMenuLinkComponent href="/users/me/rewards">My Rewards</NavbarMenuLinkComponent>
 
-                <NavbarMenuLinkComponent href="/">Logout</NavbarMenuLinkComponent>
+                <NavbarMenuLinkComponent href="/auth/logout">Logout</NavbarMenuLinkComponent>
             </NavbarMenuComponent>
         );
     }

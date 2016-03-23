@@ -101,14 +101,15 @@ export class NavbarComponent extends Component {
                 'gb-navbar-collapsed': !this.state.isExpanded
             })}>
                 <div className="gb-container">
-                    <div className="gb-navbar-logo-component">
+                    <a className="gb-navbar-logo-component" href="/">
                         <img
                             className="gb-navbar-logo-mobile"
                             src={config.resolveAssetURL('logo-small.svg')} />
                         <img
                             className="gb-navbar-logo"
                             src={config.resolveAssetURL('logo-large.svg')} />
-                    </div>
+                    </a>
+
                     <div className="gb-navbar-caption-component">
                         <span className="gb-navbar-caption-assist"><strong>Let us help you with your order!</strong></span>
                         <span className="gb-navbar-caption-number">(512) 677-4224</span>

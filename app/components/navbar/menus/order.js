@@ -8,9 +8,9 @@ export class NavbarOrderMenuComponent extends Component {
             <NavbarMenuComponent>
                 <NavbarMenuLinkComponent href="/">Start New Order</NavbarMenuLinkComponent>
 
-                <NavbarMenuLinkComponent href="/">My Orders</NavbarMenuLinkComponent>
+                <NavbarMenuLinkComponent href="/users/me/orders/calendar">My Orders</NavbarMenuLinkComponent>
 
-                <NavbarMenuLinkComponent href="/">My Receipts</NavbarMenuLinkComponent>
+                <NavbarMenuLinkComponent href="/users/me/orders/receipts">My Receipts</NavbarMenuLinkComponent>
             </NavbarMenuComponent>
         );
     }
