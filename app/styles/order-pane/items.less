@@ -69,12 +69,19 @@
 
 // Table: Subtotal
 
-.gb-order-pane-checkout-subtotal {
+.gb-order-pane-checkout-subtotal,
+.gb-order-pane-checkout-min-order-text {
     width: 100%;
 }
 
-.gb-order-pane-checkout-subtotal-price {
+.gb-order-pane-checkout-subtotal-price,
+.gb-order-pane-checkout-min-order-price {
     text-align: right;
+}
+
+.gb-order-pane-checkout-min-order-text,
+.gb-order-pane-checkout-min-order-price {
+    font-style: italic;
 }
 
 // Checkout
@@ -92,6 +99,15 @@
     font-weight: 900;
     text-shadow: none;
     width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+
+    &.disabled-btn {
+        background: @gb-shadow-shuttle-gray;
+        color: darken(@gb-shadow-athens-gray, 20%);
+        border-color: darken(@gb-shadow-shuttle-gray, 10%);
+        cursor: not-allowed;
+    }
 }
 
 .gb-order-pane-item-options {
