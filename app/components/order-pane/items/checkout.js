@@ -15,8 +15,6 @@ export class OrderPaneCheckoutComponent extends Component {
         const {minimum_order} = order.restaurant;
         const isDisabled = minimum_order && (minimum_order > subtotal);
 
-        console.log("order:", order);
-
         const minOrderComponent = minimum_order &&
             (
                 <tr>
