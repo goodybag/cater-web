@@ -26,13 +26,16 @@ FINAL_FILES=$(FINAL_DIR)/runtime.js \
 			$(FINAL_DIR)/main.css \
 			$(STATIC_FILES:$(ASSETS_DIR)%=$(FINAL_DIR)%)
 
-all: node_modules assets build
+all: node_modules assets build final styles
 
 static: $(STATIC_FILES)
 assets: $(ASSET_FILES)
 build: $(BUILD_FILES)
-final: assets build $(FINAL_FILES) $(OUTPUT_DIR)/static
+final: assets build $(FINAL_FILES) $(OUTPUT_DIR)/static shrinkwrap
 styles: $(ASSETS_DIR)/main.css
+
+shrinkwrap: node_modules
+	npm shrinkwrap
 
 watch: watch-bundle watch-common watch-source watch-styles
 
@@ -62,7 +65,7 @@ watch-common:
 		-o $(ASSETS_DIR)/common.js
 
 clean:
-	rm -rf $(OUTPUT_DIR)
+	rm -rf $(OUTPUT_DIR) npm-shrinkwrap.json
 
 $(OUTPUT_DIR)/static: $(FINAL_FILES)
 	rev-all $(FINAL_DIR) $@ -m $(OUTPUT_DIR)/manifest.json

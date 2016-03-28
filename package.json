@@ -101,7 +101,8 @@
   "files": [
     "server.js",
     "index.js",
-    "dist"
+    "dist",
+    "npm-shrinkwrap.json"
   ],
   "license": "UNLICENSED",
   "browserify": {
