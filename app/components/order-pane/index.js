@@ -134,7 +134,8 @@ export class OrderPaneComponent extends Component {
         this.whileSaving(() => {
             return dispatcher.dispatch(action).then(() => {
                 this.setState({
-                    editorOrderParams: null
+                    editorOrderParams: null,
+                    editing: false
                 });
             });
         });
@@ -197,13 +198,14 @@ export class OrderPaneComponent extends Component {
             <OrderPaneEditComponent
                 saving={saving}
                 orderParams={editorOrderParams}
-                error={editorError}
+                error={savingError}
                 onChange={this.handleOrderParamsChange}
                 restaurantHours={restaurantHours}
 
                 saveButton={
                     <OrderPaneEditSaveComponent
                         onClick={this.handleOrderSubmission}
+                        children="Start Order"
                     />
                 }
             />
