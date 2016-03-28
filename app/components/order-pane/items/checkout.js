@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {FormattedNumber} from 'react-intl';
+import cx from 'classnames';
 
 import {Order} from '../../../models/order';
 
@@ -11,6 +12,25 @@ export class OrderPaneCheckoutComponent extends Component {
 
     render() {
         const {subtotal, order} = this.props;
+        const {minimum_order} = order.restaurant;
+        const isDisabled = minimum_order && (minimum_order > subtotal);
+
+        const minOrderComponent = isDisabled &&
+            (
+                <tr>
+                    <td className="gb-order-pane-checkout-min-order-text">
+                        Minimum order size:
+                    </td>
+
+                    <td className="gb-order-pane-checkout-min-order-price">
+                        <FormattedNumber
+                            value={minimum_order / 100}
+                            style="currency"
+                            currency="USD"
+                        />
+                    </td>
+                </tr>
+            );
 
         return (
             <div className="gb-order-pane-checkout">
@@ -29,10 +49,14 @@ export class OrderPaneCheckoutComponent extends Component {
                                 />
                             </td>
                         </tr>
+                        {minOrderComponent}
                     </tbody>
                 </table>
 
-                <a href={`/orders/${order.id}/items`} className="gb-order-pane-checkout-btn">
+                <a href={ isDisabled ? '#' : `/orders/${order.id}/items`} className={cx({
+                        "gb-order-pane-checkout-btn": true,
+                        "disabled-btn": isDisabled
+                    })}>
                     Checkout
                 </a>
             </div>
