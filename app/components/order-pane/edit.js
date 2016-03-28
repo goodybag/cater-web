@@ -9,6 +9,9 @@ import moment from 'moment-timezone';
 import {RestaurantHour} from '../../models/restaurant-hour';
 import {OrderParams} from '../../models/order-params';
 
+// TODO: factor the "shouldShowColumn" and "className" logic into
+//       domain models
+
 export class OrderPaneEditComponent extends Component {
     static propTypes = {
         saving: PropTypes.bool.isRequired,
