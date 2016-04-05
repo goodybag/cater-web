@@ -1,6 +1,6 @@
 {
   "name": "@goodybag/cater-web",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "scripts": {
     "prepublish": "make clean && NODE_ENV=production make final",
     "test": "eslint app && NODE_ENV=test mocha"
