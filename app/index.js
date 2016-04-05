@@ -55,5 +55,16 @@ export function makeHandler(options) {
 }
 
 export function mountStatic(app, dir = staticDir) {
-    app.use('/assets', express.static(path.resolve(__dirname, '../../', dir)));
+    const folder = path.resolve(__dirname, '../../', dir);
+
+    const serveFinal = express.static(folder, {maxAge: 31557600000});
+    const serveDev = express.static(folder);
+
+    app.use('/assets', (req, res, next) => {
+        if (/^\/[\w-\+]+\.(?:[a-z0-9]){8}\.\w+$/.test(req.path)) {
+            serveFinal(req, res, next);
+        } else {
+            serveDev(req, res, next);
+        }
+    });
 }
