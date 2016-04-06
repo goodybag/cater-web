@@ -67,7 +67,7 @@ export class RestaurantOrdersComponent extends Component {
             return (
                 <RestaurantOrdersRowComponent
                     key={order.id}
-                    isCurrentOrder={order.id === currentOrder.id}
+                    isCurrentOrder={!!currentOrder && order.id === currentOrder.id}
                     order={order}
                     dispatcher={dispatcher}
                     now={now}
