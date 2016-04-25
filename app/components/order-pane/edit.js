@@ -148,20 +148,12 @@ export class OrderPaneEditComponent extends Component {
 
         const timeBounds = this.timeBounds();
 
-        const errorMessage = null && ( // TODO
-            <div className="gb-order-pane-edit-exception">
-                An unknown error occured
-            </div>
-        );
-
         const set = cx('gb-order-pane-edit', {
             'gb-order-pane-edit-saving': saving
         });
 
         return (
             <div className={set}>
-                {errorMessage}
-
                 <div className="gb-order-pane-edit-location">
                     <div className="gb-order-pane-edit-text">
                         Full address (street, city, state, zip)
