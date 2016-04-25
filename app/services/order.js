@@ -34,15 +34,52 @@ export class OrderService {
 
     create(body) {
         return this.apiService.create(`orders`, body)
-            .then(Order.parse);
+            .then(Order.parse)
+            .catch(isBadRequest, handleBadRequest);
     }
 
     updateById(id, body) {
         return this.apiService.update(`orders/${id}`, body)
-            .then(Order.parse);
+            .then(Order.parse)
+            .catch(isBadRequest, handleBadRequest);
     }
 
     geocodeAddress(address) {
         return this.apiService.fetch(`maps/geocode/${address}`);
     }
+}
+
+export function BadRequestError(message, details = {}) {
+    const {
+        body = {},
+        stackFn = this.constructor
+    } = details;
+
+    this.message = message;
+    this.body = body;
+
+    if (message instanceof Error) {
+        this.message = message.message;
+        this.stack = message.stack;
+    } else if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, stackFn);
+    }
+}
+
+BadRequestError.prototype = Object.create(Error.prototype);
+BadRequestError.prototype.constructor = BadRequestError;
+
+Object.defineProperty(BadRequestError.prototype, 'name', {
+    value: 'BadRequestError'
+});
+
+function isBadRequest(err) {
+    return err.status === 400;
+}
+
+function handleBadRequest(err) {
+    throw new BadRequestError('Bad Request', {
+        stackFn: OrderService.prototype.create,
+        body: err.response.body
+    });
 }

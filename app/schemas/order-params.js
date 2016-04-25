@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 
 export function fulfillabilitySchema(orderParams, context) {
     const {address, date, time, guests} = orderParams;
-    const {now, timezone, restaurant} = context;
+    const {now, timezone, restaurant, why = null} = context;
 
     const datetime = `${date} ${time}`;
     const mDatetime = moment(datetime, 'YYYY-MM-DD HH:mm:ss');
@@ -45,8 +45,8 @@ export function fulfillabilitySchema(orderParams, context) {
                           'provided date & time must be in the future')
         .column('date', 'time');
 
-    const fulfillable = assert(() => fModel.isFulfillable(),
-                               () => fModel.why().map(toMessage));
+    const fulfillable = assert(() => isFulfillable(),
+                               () => reasons().map(toMessage));
 
     const addressNotNull =
         nullable('address', address, 'address is required')
@@ -76,6 +76,14 @@ export function fulfillabilitySchema(orderParams, context) {
         } else {
             return strategyName;
         }
+    }
+
+    function isFulfillable() {
+        return !why && fModel.isFulfillable();
+    }
+
+    function reasons() {
+        return why || fModel.why();
     }
 
     function formattedTime() {
