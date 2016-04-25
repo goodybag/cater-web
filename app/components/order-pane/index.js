@@ -143,7 +143,7 @@ export class OrderPaneComponent extends Component {
 
     whileSaving(block) {
         this.setState({saving: true}, () => {
-            block().catch(err => {
+            block().catch(ValidationResultError, err => {
                 this.setState({savingError: err});
             }).finally(() => {
                 this.setState({saving: false});

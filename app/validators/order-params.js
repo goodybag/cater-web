@@ -15,7 +15,9 @@ export class OrderParamsValidator {
         this.restaurantPayload = restaurantPayload;
     }
 
-    schema(params) {
+    schema(params, options = {}) {
+        const {why = null} = options;
+
         const {
             restaurant,
             restaurantDeliveryLeadTimes,
@@ -37,7 +39,9 @@ export class OrderParamsValidator {
                 delivery_zips: restaurantDeliveryZips
             },
 
-            now: new Date()
+            now: new Date(),
+
+            why
         });
     }
 

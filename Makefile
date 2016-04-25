@@ -34,8 +34,7 @@ build: $(BUILD_FILES)
 final: assets build $(FINAL_FILES) $(OUTPUT_DIR)/static shrinkwrap
 styles: $(ASSETS_DIR)/main.css
 
-shrinkwrap: node_modules
-	npm shrinkwrap
+shrinkwrap: npm-shrinkwrap.json
 
 watch: watch-bundle watch-common watch-source watch-styles
 
@@ -90,7 +89,7 @@ $(ASSETS_DIR)/common.js: $(wildcard node_modules/**/*.js) node_modules
 
 $(ASSETS_DIR)/runtime.js: $(SOURCE_FILES) node_modules
 	@mkdir -p "$(@D)"
-	NODE_ENV=production browserify $(SOURCE_ENTRY) > $@
+	NODE_ENV=production browserify -d $(SOURCE_ENTRY) | exorcist $@.map > $@
 
 $(ASSETS_DIR)/main.css: $(STYLES_FILES) node_modules
 	@mkdir -p "$(@D)"
@@ -103,7 +102,7 @@ $(ASSETS_DIR)/%: $(wildcard $(foreach PUBLIC_DIR,$(PUBLIC_DIRS),$(PUBLIC_DIR)/$$
 
 $(FINAL_DIR)/%.js: $(ASSETS_DIR)/%.js node_modules
 	@mkdir -p "$(@D)"
-	uglifyjs -m -c warnings=false < $< > $@
+	uglifyjs --mangle --source-map $@.map --source-map-includes-sources --source-map-url=$(@F).map --in-source-map=$<.map --compress warnings=false $< -o $@
 
 $(FINAL_DIR)/%.css: $(ASSETS_DIR)/%.css node_modules
 	@mkdir -p "$(@D)"
@@ -115,6 +114,9 @@ $(FINAL_DIR)/%.gz: $(FINAL_DIR)/%
 $(FINAL_DIR)/%: $(ASSETS_DIR)/%
 	@mkdir -p "$(@D)"
 	cp $< $@
+
+npm-shrinkwrap.json: node_modules
+	npm shrinkwrap
 
 node_modules:
 	npm install --ignore-scripts

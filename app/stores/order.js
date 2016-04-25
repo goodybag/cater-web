@@ -5,7 +5,7 @@ import {dependencies} from 'yokohama';
 import {Order} from '../models/order';
 import {Restaurant} from '../models/restaurant';
 import {CurrentUser} from '../models/user';
-import {OrderService} from '../services/order';
+import {BadRequestError, OrderService} from '../services/order';
 import {OrderParamsValidator} from '../validators/order-params';
 import {
     SubmitOrderParamsAction,
@@ -64,6 +64,9 @@ export class OrderStore extends Store {
         }).then(order => {
             this.order = order;
             this.emit('change');
+        }).catch(isFulfillabilityFailure, err => {
+            this.orderParamsValidator.schema(params, {why: err.body.details}).validate();
+            throw err;
         });
     }
 
@@ -73,6 +76,10 @@ export class OrderStore extends Store {
         }).then(order => {
             this.order = order;
             this.emit('change');
+            throw new Error('what');
+        }).catch(isFulfillabilityFailure, err => {
+            this.orderParamsValidator.schema(params, {why: err.body.details}).validate();
+            throw err;
         });
     }
 
@@ -81,4 +88,9 @@ export class OrderStore extends Store {
         this.orderItemStore.refreshOrderItems(order.id);
         this.emit('change');
     }
+}
+
+function isFulfillabilityFailure(err) {
+    return err instanceof BadRequestError &&
+        err.body.name === 'FULFILLABILITY_FAILED';
 }
