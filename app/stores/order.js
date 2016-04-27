@@ -76,7 +76,6 @@ export class OrderStore extends Store {
         }).then(order => {
             this.order = order;
             this.emit('change');
-            throw new Error('what');
         }).catch(isFulfillabilityFailure, err => {
             this.orderParamsValidator.schema(params, {why: err.body.details}).validate();
             throw err;
