@@ -5,8 +5,16 @@ import {inject} from 'yokohama';
 import cx from 'classnames';
 import url from 'url';
 
+import {CurrentUserStore} from '../../stores/user';
+
 @inject({
-    route: Route
+    route: Route,
+    currentUserStore: CurrentUserStore
+})
+@listeningTo(['currentUserStore'], props => {
+    return {
+        user: props.currentUserStore.getUser()
+    };
 })
 export class RestaurantTabsComponent extends Component {
     static propTypes = {
@@ -14,7 +22,7 @@ export class RestaurantTabsComponent extends Component {
     };
 
     render() {
-        const {route} = this.props;
+        const {route, user} = this.props;
         const {restaurant_id} = route.params;
         const path = `/restaurants/${restaurant_id}`;
 
@@ -35,6 +43,13 @@ export class RestaurantTabsComponent extends Component {
                 <RestaurantTabComponent href={`${path}/orders`} route={route}>
                     Orders
                 </RestaurantTabComponent>
+
+                {user.isAdmin() ?
+                    <RestaurantTabComponent href={`${path}/events`} route={route}>
+                        Events Calendar
+                    </RestaurantTabComponent>
+                    : null
+                }
             </div>
         );
     }
