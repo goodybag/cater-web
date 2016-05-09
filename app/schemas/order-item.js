@@ -1,4 +1,4 @@
-import {assert, nullable, concat} from 'nagoya';
+import {assert, nullable, concat, empty} from 'nagoya';
 
 // TODO
 const msg = 'If you\'re reading this then we forgot to write the copy for this error message';
@@ -16,8 +16,19 @@ export function orderItemSchema(menuItem, orderItem) {
     return minimumQuantity.concat(optionsSetsValid);
 
     function verifyChoice(optionSet) {
-        return assert(check, `You need to select a minimum of ${optionSet.selected_min} choice(s) for this option`)
-            .column(`option_set:${optionSet.id}`);
+        return verifier().column(`option_set:${optionSet.id}`);
+
+        function verifier() {
+            if (optionSet.selected_min) {
+                return assert(check,
+                              `You need to select a minimum of ${optionSet.selected_min} choice(s) for this option`);
+            } else if (optionSet.type === 'radio') {
+                return assert(() => optionSet.options.some(c => c.state),
+                              'You need to select a choice for this option');
+            } else {
+                return empty();
+            }
+        }
 
         function check() {
             const selected = optionSet.options.filter(c => c.state).length;
