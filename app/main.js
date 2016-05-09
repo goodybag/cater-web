@@ -6,9 +6,11 @@ const element = document.getElementById('gb-body');
 window.addEventListener('unhandledrejection', event => {
     event.preventDefault();
 
-    alert('An expected error occured! Please refresh the page and trying again');
-
     throw event.detail.reason;
+});
+
+window.addEventListener('error', event => {
+    window.alert('An unexpected error occured! Please refresh the page or inspect the error with alt+cmd+j');
 });
 
 load(element);

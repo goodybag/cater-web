@@ -31,7 +31,7 @@
     "link-delegate": "0.0.1",
     "lodash": "^3.10.1",
     "moment-timezone": "^0.4.0",
-    "nagoya": "^1.2.0",
+    "nagoya": "^1.2.3",
     "polyfill-service": "^2.2.0",
     "react": "^0.14.0-rc1",
     "react-addons-css-transition-group": "^0.14.0-rc1",
