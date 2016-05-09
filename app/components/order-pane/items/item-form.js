@@ -201,7 +201,7 @@ export class OrderItemOptionGroupComponent extends Component {
         const {selected_max, options} = optionGroup;
         const selected = options.filter(o => o.state).length;
 
-        return selected_max >= 1 && selected > selected_max;
+        return selected_max >= 1 && selected >= selected_max;
     };
 
     renderErrors() {
