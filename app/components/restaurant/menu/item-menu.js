@@ -109,17 +109,16 @@ export class RestaurantMenuItemMenuComponent extends Component {
     };
 
     updateOptionState = (data, type) => {
-        let {options_sets} = this.state;
-        const {optionGroupI, optionI} = data;
+        this.setState(({options_sets}) => {
+            const {optionGroupI, optionI} = data;
 
-        if(type==="radio") {
-            options_sets[optionGroupI].options.forEach(option => option.state = false);
-        }
+            if(type==="radio") {
+                options_sets[optionGroupI].options.forEach(option => option.state = false);
+            }
 
-        options_sets[optionGroupI].options[optionI].state = !options_sets[optionGroupI].options[optionI].state;
+            options_sets[optionGroupI].options[optionI].state = !options_sets[optionGroupI].options[optionI].state;
 
-        this.setState({
-            options_sets
+            return {options_sets};
         });
 
     };
