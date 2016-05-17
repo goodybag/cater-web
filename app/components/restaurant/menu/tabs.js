@@ -21,17 +21,21 @@ export class RestaurantMenuTabsComponent extends Component {
         const {restaurant_id} = route.params;
         const path = `/restaurants/${restaurant_id}`;
 
+        const currentMenu = route.query.menu || 'catering';
+
         return (
             <div className="gb-restaurant-menu-tabs">
                 <RestaurantMenuTabComponent
                     href={path}
-                    type="catering">
+                    type="catering"
+                    active={currentMenu !== 'individual'}>
                     Catering Menu
                 </RestaurantMenuTabComponent>
 
                 <RestaurantMenuTabComponent
-                    href={`${path}/individual`}
-                    type="individual">
+                    href={`${path}?menu=individual`}
+                    type="individual"
+                    active={currentMenu === 'individual'}>
                     Individual Menu
                 </RestaurantMenuTabComponent>
             </div>

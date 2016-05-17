@@ -136,8 +136,8 @@ class RestaurantMenuIndividualComponent extends Component {
 }
 
 @router(route => {
+    route.where({query: {menu: 'individual'}}).index(RestaurantMenuIndividualComponent)
     route.index(RestaurantMenuCateringComponent);
-    route.dir('individual').index(RestaurantMenuIndividualComponent);
 })
 @inject({}, [
     RestaurantMenuBarComponent
