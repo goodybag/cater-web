@@ -2,6 +2,8 @@ import {assert, nullable} from 'nagoya';
 import fulfillability from '@goodybag/models-order/stamps/fulfillability';
 import moment from 'moment-timezone';
 
+const fModelOptions = {omit: ['Zip', 'MinimumOrder']};
+
 export function fulfillabilitySchema(orderParams, context) {
     const {address, date, time, guests} = orderParams;
     const {now, timezone, restaurant, why = null} = context;
@@ -79,11 +81,11 @@ export function fulfillabilitySchema(orderParams, context) {
     }
 
     function isFulfillable() {
-        return !why && fModel.isFulfillable();
+        return !why && fModel.isFulfillable(fModelOptions);
     }
 
     function reasons() {
-        return why || fModel.why();
+        return why || fModel.why(fModelOptions);
     }
 
     function formattedTime() {
