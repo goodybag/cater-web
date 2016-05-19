@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/goodybag/cater-web",
   "dependencies": {
-    "@goodybag/models-order": "^1.0.0",
+    "@goodybag/models-order": "^1.1.0",
     "@goodybag/react-pickadate": "^1.3.0",
     "babel-polyfill": "^6.5.0",
     "babel-runtime": "^6.3.19",
@@ -26,7 +26,7 @@
     "express": "^4.13.3",
     "flux": "^2.1.1",
     "fuzzysearch": "^1.0.3",
-    "hiroshima": "^2.4.5",
+    "hiroshima": "^2.4.6",
     "intl": "^1.0.1",
     "link-delegate": "0.0.1",
     "lodash": "^3.10.1",

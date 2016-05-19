@@ -10,7 +10,7 @@ import {RestaurantMenuItemComponent} from './item';
 export class RestaurantMenuCategoryComponent extends Component {
     static propTypes = {
         category: PropTypes.instanceOf(Category).isRequired,
-        order: PropTypes.instanceOf(Order).isRequired,
+        order: PropTypes.instanceOf(Order),
         items: PropTypes.arrayOf(PropTypes.instanceOf(MenuItem)).isRequired,
         openItem: PropTypes.string.isRequired,
         requestOpen: PropTypes.func.isRequired,

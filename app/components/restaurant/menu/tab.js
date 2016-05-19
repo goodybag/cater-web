@@ -10,19 +10,18 @@ import cx from 'classnames';
 })
 export class RestaurantMenuTabComponent extends Component {
     static propTypes = {
-        route: PropTypes.instanceOf(Route).isRequired,
+        active: PropTypes.bool.isRequired,
         type: PropTypes.string.isRequired,
         href: PropTypes.string.isRequired,
         children: PropTypes.node.isRequired
     };
 
+    static defaultProps = {
+        active: false
+    };
+
     render() {
-        const {href, children, type, route} = this.props;
-        const {path} = route;
-
-        const {pathname} = url.parse(href);
-
-        const active = path === pathname;
+        const {href, children, type, active} = this.props;
 
         const className = cx(
             `gb-restaurant-menu-tab-title-${type}`,

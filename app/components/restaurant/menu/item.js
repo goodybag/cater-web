@@ -19,7 +19,7 @@ import {
 export class RestaurantMenuItemComponent extends Component {
     static propTypes = {
         item: PropTypes.instanceOf(MenuItem).isRequired,
-        order: PropTypes.instanceOf(Order).isRequired,
+        order: PropTypes.instanceOf(Order),
         requestOpen: PropTypes.func.isRequired,
         requestClose: PropTypes.func.isRequired,
         isOpen: PropTypes.bool.isRequired
@@ -88,7 +88,7 @@ export class RestaurantMenuItemComponent extends Component {
                             currency="USD"
                         />
 
-                        {min_qty ? ' per person' : null}
+                        {min_qty > 1 ? ' per person' : null}
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@ export class RestaurantMenuItemComponent extends Component {
         const {item} = this.props;
         const {min_qty, feeds_min, feeds_max} = item;
 
-        if (min_qty !== 0) {
+        if (min_qty > 1) {
             return `Min. ${min_qty}`;
         } else if (feeds_max > feeds_min) {
             return `Feeds ${feeds_min}-${feeds_max}`;

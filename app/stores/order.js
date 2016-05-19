@@ -91,5 +91,5 @@ export class OrderStore extends Store {
 
 function isFulfillabilityFailure(err) {
     return err instanceof BadRequestError &&
-        err.body.name === 'FULFILLABILITY_FAILED';
+        err.body && err.body.name === 'FULFILLABILITY_FAILED';
 }
