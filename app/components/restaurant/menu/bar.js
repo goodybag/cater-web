@@ -39,12 +39,49 @@ export class RestaurantMenuBarWrapperComponent extends Component {
     static propTypes = {
         children: PropTypes.node
     };
+
+    state = {affix: false};
+
+    componentDidMount() {
+        const {container, child} = this.refs;
+        const containerNode = findDOMNode(container);
+        const childNode = findDOMNode(child);
+
+        this.handleScroll = () => {
+            const {affix} = this.state;
+            const scrollTop = document.body.scrollTop;
+            const offset = containerNode.getBoundingClientRect().top;
+
+            if (!affix && offset <= 0) {
+                this.setState({affix: true});
+            }
+
+            if (affix && offset > 0) {
+                this.setState({affix: false});
+            }
+        };
+
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.handleScroll);
+   }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleScroll);
+    }
+
     render() {
         const {children} = this.props;
+        const {affix} = this.state;
+        const set = cx('gb-restaurant-menu-bar', {
+            'gb-restaurant-menu-bar-affix': affix
+        });
 
         return (
-            <div className="gb-restaurant-menu-bar-container">
-                {children}
+            <div ref="container" className="gb-restaurant-menu-bar-container">
+                <div ref="child" className={set}>
+                    {children}
+                </div>
             </div>
         );
     }
